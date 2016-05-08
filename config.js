@@ -1,0 +1,20 @@
+{
+    "debug": false,
+    "featureManagerIsAlwaysOnlineEnabled": true,
+    "featureManagerIsBrowserCacheTTLEnabled": true,
+    "featureManagerIsBrowserIntegrityCheckEnabled": true,
+    "featureManagerIsCacheLevelEnabled": true,
+    "featureManagerIsChallengePassageEnabled": true,
+    "featureManagerIsDevelopmentModeEnabled": true,
+    "featureManagerIsFullZoneProvisioningEnabled": false,
+    "featureManagerIsIpv6Enabled": true,
+    "featureManagerIsMinifyEnabled": true,
+    "featureManagerIsPurgeCacheEnabled": true,
+    "featureManagerIsRailgunEnabled": true,
+    "featureManagerIsScanEnabled": false,
+    "featureManagerIsSecurityLevelEnabled": true,
+    "featureManagerIsSSLEnabled": false,
+    "locale": "en",
+    "integrationName": "cpanel",
+    "version": "6.0.0"
+}
