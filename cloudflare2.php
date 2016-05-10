@@ -1,8 +1,4 @@
 <?
-/*
-wp_register_style( 'prefix-style', plugins_url('style.css', __FILE__) );
-    wp_enqueue_style( 'prefix-style' );
-    */
 wp_register_style( 'cf-corecss', plugins_url('stylesheets/cf.core.css', __FILE__));
 wp_enqueue_style('cf-corecss');
 wp_register_style( 'cf-componentscss', plugins_url('cloudflare/stylesheets/components.css', __FILE__));
@@ -10,7 +6,6 @@ wp_enqueue_style('cf-componentcss');
 wp_register_style( 'cf-hackscss', plugins_url('cloudflare/stylesheets/hacks.css', __FILE__));
 wp_enqueue_style('cf-hackscss');
 wp_enqueue_script( 'cf-compiledjs', plugins_url( 'compiled.js' , __FILE__ ), null, true);
-echo plugins_url('cloudflare/stylesheets/hacks.css');
 ?>
 <div id="root" class="cloudflare-partners site-wrapper"></div>
 <script>
@@ -27,6 +22,7 @@ echo plugins_url('cloudflare/stylesheets/hacks.css');
  * @param {Function} [opts.onError]
  */
 function RestProxyCallback(opts) {
+    var absolutePath = '<?=plugins_url('/cloudflare/');?>';
     //only proxy external REST calls
     if(opts.url.lastIndexOf("http", 0) === 0) {
         if(opts.method.toUpperCase() !== "GET") {
@@ -44,7 +40,7 @@ function RestProxyCallback(opts) {
 
         opts.url = "./proxy.live.php";
     } else {
-    	opts.url = 'http://localhost:8888/wordpress/wp-content/plugins/cloudflare/' + opts.url;
+    	opts.url = absolutePath + opts.url;
     }
 }
 </script>
