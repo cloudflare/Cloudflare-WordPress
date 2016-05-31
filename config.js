@@ -1,5 +1,5 @@
 {
-    "debug": false,
+    "debug": true,
     "featureManagerIsAlwaysOnlineEnabled": true,
     "featureManagerIsBrowserCacheTTLEnabled": true,
     "featureManagerIsBrowserIntegrityCheckEnabled": true,
@@ -15,6 +15,6 @@
     "featureManagerIsSecurityLevelEnabled": true,
     "featureManagerIsSSLEnabled": false,
     "locale": "en",
-    "integrationName": "cpanel",
+    "integrationName": "wordpress",
     "version": "6.0.0"
 }
