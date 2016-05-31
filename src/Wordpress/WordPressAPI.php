@@ -1,5 +1,4 @@
 <?php
-
 namespace CF\WordPress;
 
 class WordPressAPI implements IntegrationAPIInterface 
