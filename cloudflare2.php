@@ -14,6 +14,7 @@ wp_enqueue_script( 'cf-compiledjs', plugins_url( 'compiled.js' , __FILE__ ), nul
 ?>
 <div id="root" class="cloudflare-partners site-wrapper"></div>
 <script>
+var absoluteUrlBase = '<?=plugins_url('/cloudflare/');?>'
 localStorage.cfEmail = '<?=$dataStore->getCloudFlareEmail();?>';
 /*
  * A callback for cf-util-http to proxy all calls to our backend
@@ -28,14 +29,13 @@ localStorage.cfEmail = '<?=$dataStore->getCloudFlareEmail();?>';
  * @param {Function} [opts.onError]
  */
 function RestProxyCallback(opts) {
-    var absolutePath = '<?=plugins_url('/cloudflare/');?>';
     //only proxy external REST calls
     if(opts.url.lastIndexOf("http", 0) === 0) {
         if(opts.method.toUpperCase() !== "GET") {
             if(!opts.body) {
                 opts.body = {};
             }
-            opts.body['cfCSRFToken'] = cfCSRFToken;
+            opts.body['cfCSRFToken'] = cfCSRFToken; 
             opts.body['proxyURL'] = opts.url;
         } else {
             if(!opts.parameters) {
@@ -46,7 +46,7 @@ function RestProxyCallback(opts) {
 
         opts.url = "./proxy.live.php";
     } else {
-    	opts.url = absolutePath + opts.url;
+    	opts.url = absoluteUrlBase + opts.url;
     }
 }
 </script>
