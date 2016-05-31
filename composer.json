@@ -5,7 +5,6 @@
   "version": "1.0.0",
   "scripts": {
     "test": "vendor/bin/phpunit",
-    "format": "vendor/bin/phpcs -n --standard=PSR2 --extensions=php,live.php src/"
   },
   "require": {
     "symfony/yaml": "~2.6",
