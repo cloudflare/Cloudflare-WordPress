@@ -1,5 +1,5 @@
 {
-    "debug": true,
+    "debug": false,
     "featureManagerIsAlwaysOnlineEnabled": true,
     "featureManagerIsBrowserCacheTTLEnabled": true,
     "featureManagerIsBrowserIntegrityCheckEnabled": true,
