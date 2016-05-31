@@ -1,14 +1,14 @@
 <?
 require_once("vendor/autoload.php");
-$config = new CF\Integration\DefaultConfig(file_get_contents("config.js"));
+$config = new CF\Integration\DefaultConfig(file_get_contents("config.js", true));
 $logger = new CF\Integration\DefaultLogger($config->getValue("debug"));
 $dataStore = new CF\Wordpress\DataStore($logger);
 
 wp_register_style( 'cf-corecss', plugins_url('stylesheets/cf.core.css', __FILE__));
 wp_enqueue_style('cf-corecss');
-wp_register_style( 'cf-componentscss', plugins_url('cloudflare/stylesheets/components.css', __FILE__));
+wp_register_style( 'cf-componentscss', plugins_url('stylesheets/components.css', __FILE__));
 wp_enqueue_style('cf-componentcss');
-wp_register_style( 'cf-hackscss', plugins_url('cloudflare/stylesheets/hacks.css', __FILE__));
+wp_register_style( 'cf-hackscss', plugins_url('stylesheets/hacks.css', __FILE__));
 wp_enqueue_style('cf-hackscss');
 wp_enqueue_script( 'cf-compiledjs', plugins_url( 'compiled.js' , __FILE__ ), null, true);
 ?>
