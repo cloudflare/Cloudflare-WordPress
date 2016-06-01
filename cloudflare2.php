@@ -17,6 +17,8 @@ wp_enqueue_script( 'cf-compiledjs', plugins_url( 'compiled.js' , __FILE__ ), nul
 <div id="root" class="cloudflare-partners site-wrapper"></div>
 <script>
 var absoluteUrlBase = '<?=plugins_url('/cloudflare/');?>';
+// TODO: change $wordpressAPI->getHostAPIKey() to something appropriate
+// since it's null
 cfCSRFToken = '<?=CF\SecurityUtil::csrfTokenGenerate($wordpressAPI->getHostAPIKey(), $wordpressAPI->getUserId());?>';
 localStorage.cfEmail = '<?=$dataStore->getCloudFlareEmail();?>';
 /*
