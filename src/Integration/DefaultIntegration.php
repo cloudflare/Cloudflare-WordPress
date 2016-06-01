@@ -8,7 +8,7 @@ use CF\Integration\IntegrationAPIInterface;
 use CF\Integration\IntegrationInterface;
 use CF\Integration\LoggerInterface;
 
-abstract class AbstractIntegration implements IntegrationInterface
+class DefaultIntegration implements IntegrationInterface
 {
     private $config;
     private $integrationAPI;
