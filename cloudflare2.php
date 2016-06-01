@@ -3,6 +3,8 @@ require_once("vendor/autoload.php");
 $config = new CF\Integration\DefaultConfig(file_get_contents("config.js", true));
 $logger = new CF\Integration\DefaultLogger($config->getValue("debug"));
 $dataStore = new CF\Wordpress\DataStore($logger);
+$wordpressAPI = new CF\Wordpress\WordpressAPI($dataStore);
+
 
 wp_register_style( 'cf-corecss', plugins_url('stylesheets/cf.core.css', __FILE__));
 wp_enqueue_style('cf-corecss');
@@ -14,7 +16,8 @@ wp_enqueue_script( 'cf-compiledjs', plugins_url( 'compiled.js' , __FILE__ ), nul
 ?>
 <div id="root" class="cloudflare-partners site-wrapper"></div>
 <script>
-var absoluteUrlBase = '<?=plugins_url('/cloudflare/');?>'
+var absoluteUrlBase = '<?=plugins_url('/cloudflare/');?>';
+cfCSRFToken = '<?=CF\SecurityUtil::csrfTokenGenerate($wordpressAPI->getHostAPIKey(), $wordpressAPI->getUserId());?>';
 localStorage.cfEmail = '<?=$dataStore->getCloudFlareEmail();?>';
 /*
  * A callback for cf-util-http to proxy all calls to our backend
@@ -44,7 +47,7 @@ function RestProxyCallback(opts) {
             opts.parameters['proxyURL'] = opts.url;
         }
 
-        opts.url = "./proxy.live.php";
+        opts.url = absoluteUrlBase + "./proxy.php";
     } else {
     	opts.url = absoluteUrlBase + opts.url;
     }
