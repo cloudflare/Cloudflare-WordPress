@@ -1,6 +1,7 @@
 <?php
 require_once("vendor/autoload.php");
 
+// TODO: the following code gives error. Require wp-load.php without error
 // include wp-load.php relatively
 // $parse_uri = explode( 'wp-content', $_SERVER['SCRIPT_FILENAME'] );
 // require_once( $parse_uri[0] . 'wp-load.php' );
@@ -28,6 +29,8 @@ unset($body['proxyURL']);
 $request = new CF\API\Request($method, $path, $parameters, $body);
 
 //only check CSRF if its not a GET request
+// TODO: change $wordpressAPI->getHostAPIKey() to something appropriate
+// since it's null
 $isCSRFTokenValid = false;
 $isCSRFTokenValid = ($request->getMethod() === "GET") ? true : CF\SecurityUtil::csrfTokenValidate($wordpressAPI->getHostAPIKey(), $wordpressAPI->getUserId(), $request->getBody()['cfCSRFToken']);
 unset($body['cfCSRFToken']);
@@ -44,7 +47,7 @@ if($isCSRFTokenValid) {
     $apiResponse = $apiRouter->route($request);
 } else {
     $apiResponse = $apiRouter->getAPIClient()->createAPIError("CSRF Token not valid.");
-    // We should add return error response here.
+    // TODO: We should add return error response here.
 }
 
 echo json_encode($apiResponse);
