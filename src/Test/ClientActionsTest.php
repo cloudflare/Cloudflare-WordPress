@@ -1,6 +1,6 @@
 <?php
 
-namespace CF\Cpanel\Test;
+namespace CF\WordPress\Test;
 
 use CF\API\Request;
 use CF\WordPress\ClientActions;
