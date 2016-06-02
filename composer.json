@@ -4,7 +4,7 @@
   "license": "BSD-3-Clause",
   "version": "1.0.0",
   "scripts": {
-    "test": "vendor/bin/phpunit",
+    "test": "vendor/bin/phpunit src/",
     "format": "vendor/bin/phpcs -n --standard=PSR2 --extensions=php,live.php src/"
   },
   "require": {
