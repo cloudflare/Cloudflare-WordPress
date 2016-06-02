@@ -53,7 +53,11 @@ class WordPressAPI implements IntegrationAPIInterface
      * @param null $userId
      * @return mixed
      */
-    public function getDomainList($userId = null) { return null; }
+    public function getDomainList($userId = null) 
+    { 
+        // TODO: fix this
+        return "example.com";//get_site_url();
+    }
 
     /**
      * @return mixed
