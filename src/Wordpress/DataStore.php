@@ -1,8 +1,7 @@
 <?php
-namespace CF\Wordpress;
+namespace CF\WordPress;
 
 use CF\Integration\LoggerInterface;
-use Symfony\Component\Yaml\Yaml as Yaml;
 use CF\Integration\DataStoreInterface;
 
 class DataStore implements DataStoreInterface
