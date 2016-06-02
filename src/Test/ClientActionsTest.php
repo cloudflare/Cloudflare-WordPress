@@ -35,7 +35,8 @@ class ClientActionsTest extends \PHPUnit_Framework_TestCase
         $this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);
     }
 
-    public function testReturnWordPressDomain() {
+    public function testReturnWordPressDomain()
+    {
         $wordPressDomain = "example.com";
         $request = new Request(null, null, null, null);
 

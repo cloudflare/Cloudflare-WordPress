@@ -17,8 +17,8 @@ class ClientActions
 
     /**
      * @param DefaultIntegration $defaultIntegration
-     * @param APIInterface $api
-     * @param Request $request
+     * @param APIInterface       $api
+     * @param Request            $request
      */
     public function __construct(DefaultIntegration $defaultIntegration, APIInterface $api, Request $request)
     {
@@ -31,7 +31,8 @@ class ClientActions
     }
 
     /**
-     * GET /zones
+     * GET /zones.
+     *
      * @return mixed
      */
     public function returnWordPressDomain()
@@ -43,8 +44,8 @@ class ClientActions
             $domain_list = array();
 
             $found = false;
-            foreach ($cf_zones_list["result"] as $cf_zone) {
-                if ($cf_zone["name"] === $wordpress_domain) {
+            foreach ($cf_zones_list['result'] as $cf_zone) {
+                if ($cf_zone['name'] === $wordpress_domain) {
                     $found = true;
                     array_push($domain_list, $cf_zone);
                 }
@@ -55,11 +56,11 @@ class ClientActions
                     'name' => $wordpress_domain,
                     'plan' => array('name' => ''),
                     'type' => '',
-                    'status' => 'inactive'
+                    'status' => 'inactive',
                 ));
             }
         }
-        $cf_zones_list["result"] = $domain_list;
+        $cf_zones_list['result'] = $domain_list;
 
         return $cf_zones_list;
     }

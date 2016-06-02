@@ -1,4 +1,5 @@
 <?php
+
 namespace CF\WordPress;
 
 class ClientRoutes
@@ -8,10 +9,9 @@ class ClientRoutes
                     'class' => 'CF\WordPress\ClientActions',
                     'methods' => array(
                         'GET' => array(
-                            'function' => 'returnWordPressDomain'
-                        )
-                    )
+                            'function' => 'returnWordPressDomain',
+                        ),
+                    ),
                 ),
     );
-
 }

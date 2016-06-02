@@ -25,7 +25,8 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
         $this->wordpressAPI = new WordPressAPI($this->mockDataStore);
     }
 
-    public function testGetDomainList() {
+    public function testGetDomainList()
+    {
         $domain_list = $this->wordpressAPI->getDomainList();
 
         $this->assertEquals(1, count($domain_list));
