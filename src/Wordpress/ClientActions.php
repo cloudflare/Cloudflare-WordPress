@@ -40,18 +40,18 @@ class ClientActions
         $wordpress_domain = $this->wordpressAPI->getDomainList()[0];
 
         if ($this->api->responseOk($cf_zones_list)) {
-            $merged_domain_list = array();
+            $domain_list = array();
 
             $found = false;
             foreach ($cf_zones_list["result"] as $cf_zone) {
                 if ($cf_zone["name"] === $wordpress_domain) {
                     $found = true;
-                    array_push($merged_domain_list, $cf_zone);
+                    array_push($domain_list, $cf_zone);
                 }
             }
 
             if ($found === false) {
-                array_push($merged_domain_list, array(
+                array_push($domain_list, array(
                     'name' => $wordpress_domain,
                     'plan' => array('name' => ''),
                     'type' => '',
@@ -59,7 +59,7 @@ class ClientActions
                 ));
             }
         }
-        $cf_zones_list["result"] = $merged_domain_list;
+        $cf_zones_list["result"] = $domain_list;
 
         return $cf_zones_list;
     }
