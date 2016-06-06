@@ -11,13 +11,13 @@ header('Content-Type: application/json');
 
 $config = new CF\Integration\DefaultConfig(file_get_contents("config.js"));
 $logger = new CF\Integration\DefaultLogger($config->getValue("debug"));
-$dataStore = new CF\Wordpress\DataStore($logger);
-$wordpressAPI = new CF\Wordpress\WordpressAPI($dataStore);
+$dataStore = new CF\WordPress\DataStore($logger);
+$wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);
 $wordpressIntegration = new CF\Integration\DefaultIntegration($config, $wordpressAPI, $dataStore, $logger);
 $clientAPIClient = new CF\API\Client($wordpressIntegration);
-$clientAPIClientRoutes = CF\Wordpress\ClientRoutes::$routes;
+$clientAPIClientRoutes = CF\WordPress\ClientRoutes::$routes;
 $pluginAPIClient = new CF\API\Client($wordpressIntegration);
-$pluginAPIPluginRoutes = CF\Wordpress\PluginRoutes::$routes;
+$pluginAPIPluginRoutes = CF\WordPress\PluginRoutes::$routes;
 
 $method = $_SERVER['REQUEST_METHOD'];
 $parameters = $_GET;

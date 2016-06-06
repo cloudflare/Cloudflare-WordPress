@@ -2,8 +2,8 @@
 require_once("vendor/autoload.php");
 $config = new CF\Integration\DefaultConfig(file_get_contents("config.js", true));
 $logger = new CF\Integration\DefaultLogger($config->getValue("debug"));
-$dataStore = new CF\Wordpress\DataStore($logger);
-$wordpressAPI = new CF\Wordpress\WordpressAPI($dataStore);
+$dataStore = new CF\WordPress\DataStore($logger);
+$wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);
 
 
 wp_register_style( 'cf-corecss', plugins_url('stylesheets/cf.core.css', __FILE__));

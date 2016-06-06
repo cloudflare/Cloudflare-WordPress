@@ -1,12 +1,12 @@
 <?php
+
 namespace CF\WordPress;
 
 use CF\Integration\IntegrationAPIInterface;
 use CF\DNSRecord;
 
-class WordPressAPI implements IntegrationAPIInterface 
+class WordPressAPI implements IntegrationAPIInterface
 {
-
     private $dataStore;
 
     /**
@@ -19,46 +19,70 @@ class WordPressAPI implements IntegrationAPIInterface
 
     /**
      * @param $domain_name
+     *
      * @return mixed
      */
-    public function getDNSRecords($domain_name) { return null; }
+    public function getDNSRecords($domain_name)
+    {
+        return;
+    }
 
     /**
      * @param $domain_name
      * @param DNSRecord $DNSRecord
+     *
      * @return mixed
      */
-    public function addDNSRecord($domain_name, DNSRecord $DNSRecord) { return null; }
+    public function addDNSRecord($domain_name, DNSRecord $DNSRecord)
+    {
+        return;
+    }
 
     /**
      * @param $domain_name
      * @param DNSRecord $DNSRecord
+     *
      * @return mixed
      */
-    public function editDNSRecord($domain_name, DNSRecord $DNSRecord) { return null; }
+    public function editDNSRecord($domain_name, DNSRecord $DNSRecord)
+    {
+        return;
+    }
 
     /**
      * @param $domain_name
      * @param DNSRecord $DNSRecord
+     *
      * @return mixed
      */
-    public function removeDNSRecord($domain_name, DNSRecord $DNSRecord) { return null; }
+    public function removeDNSRecord($domain_name, DNSRecord $DNSRecord)
+    {
+        return;
+    }
 
     /**
      * @return mixed
      */
-    public function getHostAPIKey() { return null; }
+    public function getHostAPIKey()
+    {
+        return;
+    }
 
     /**
      * @param null $userId
+     *
      * @return mixed
      */
-    public function getDomainList($userId = null) { return null; }
+    public function getDomainList($userId = null)
+    {
+        // TODO: fix this
+        return array('example.com');//get_site_url();
+    }
 
     /**
      * @return mixed
      */
-    public function getUserId() 
+    public function getUserId()
     {
         return $this->dataStore->getCloudFlareEmail();
     }
