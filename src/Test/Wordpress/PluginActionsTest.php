@@ -1,6 +1,6 @@
 <?php
 
-namespace CF\WordPress\Test;
+namespace CF\Test\WordPress;
 
 use CF\API\Request;
 use CF\WordPress\PluginActions;

@@ -1,6 +1,6 @@
 <?php
 
-namespace CF\WordPress\Test;
+namespace CF\Test\API;
 
 use CF\Integration\DefaultIntegration;
 use CF\API\Plugin;
