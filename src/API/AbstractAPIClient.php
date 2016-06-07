@@ -35,6 +35,10 @@ abstract class AbstractAPIClient implements APIInterface
     public function callAPI(Request $request)
     {
         try {
+            if ($this->getAPIClientName() == 'PLUGIN API') {
+                $this->logger->error('Plugin API can not be called');
+            }
+
             $client = new GuzzleHttp\Client(['base_url' => $this->getEndpoint()]);
 
             $request = $this->beforeSend($request);

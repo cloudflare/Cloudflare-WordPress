@@ -75,8 +75,7 @@ class WordPressAPI implements IntegrationAPIInterface
      */
     public function getDomainList($userId = null)
     {
-        // TODO: fix this
-        return array('example.com');//get_site_url();
+        return array($_SERVER['SERVER_NAME']);
     }
 
     /**
