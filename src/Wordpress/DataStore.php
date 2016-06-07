@@ -28,8 +28,15 @@ class DataStore implements DataStoreInterface
      */
     public function createUserDataStore($client_api_key, $email, $unique_id, $user_key)
     {
-        update_option(self::API_KEY, $client_api_key);
-        update_option(self::EMAIL, $email);
+        // Clear options
+        update_option(self::API_KEY, '');
+        update_option(self::EMAIL, '');
+
+        // Fill options
+        $isUpdated1 = update_option(self::API_KEY, $client_api_key);
+        $isUpdated2 = update_option(self::EMAIL, $email);
+
+        return $isUpdated1 && $isUpdated2;
     }
 
     /**

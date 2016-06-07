@@ -30,8 +30,16 @@ class Plugin extends Client
      */
     public function callAPI(Request $request)
     {
-        $this->logger->error('Plugin API can not be called');
+        $this->logger->error('CF\\API\\Plugin\\callAPI should never be called');
 
-        return;
+        return $this->createAPIError('The url: '.$request->getUrl().' is not a valid path.');
+    }
+
+    public function createAPISuccessResponse($result)
+    {
+        return array(
+            'success' => 'true',
+            'result' => $result,
+            );
     }
 }

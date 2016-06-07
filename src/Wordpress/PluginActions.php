@@ -40,15 +40,14 @@ class PluginActions
         $apiKey = $this->request->getBody()['apiKey'];
         $email = $this->request->getBody()['email'];
 
-        // TODO: what should the exact response be?
-        $response = array(
-            'success' => 'true',
-            'result' => array(
-                    'email' => $email,
-                ),
-            );
+        $response = $this->api->createAPISuccessResponse(array('email' => $email));
+        $isCreated = $this->dataStore->createUserDataStore($apiKey, $email, null, null);
 
-        $this->dataStore->createUserDataStore($apiKey, $email, null, null);
+        if (!$isCreated) {
+            $this->logger->error('Creating user data to store failed');
+
+            return $this->api->createAPIError('Unable to save user credentials');
+        }
 
         return $response;
     }
