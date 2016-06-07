@@ -46,7 +46,6 @@ if ($isCSRFTokenValid) {
     $apiResponse = $apiRouter->route($request);
 } else {
     $apiResponse = $apiRouter->getAPIClient()->createAPIError('CSRF Token not valid.');
-    // TODO: We should add return error response here.
 }
 
 echo json_encode($apiResponse);
