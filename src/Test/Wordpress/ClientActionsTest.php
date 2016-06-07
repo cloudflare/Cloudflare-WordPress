@@ -37,7 +37,7 @@ class ClientActionsTest extends \PHPUnit_Framework_TestCase
 
     public function testReturnWordPressDomain()
     {
-        $wordPressDomain = "example.com";
+        $wordPressDomain = 'example.com';
         $request = new Request(null, null, null, null);
 
         $clientActions = new ClientActions($this->mockDefaultIntegration, $this->mockClientAPI, $request);
@@ -45,9 +45,9 @@ class ClientActionsTest extends \PHPUnit_Framework_TestCase
             array($wordPressDomain)
         );
         $this->mockClientAPI->method('responseOk')->willReturn(true);
-        $this->mockClientAPI->method('callAPI')->willReturn(array("result" => array()));
+        $this->mockClientAPI->method('callAPI')->willReturn(array('result' => array()));
         $response = $clientActions->returnWordPressDomain();
 
-        $this->assertEquals($wordPressDomain, $response["result"][0]["name"]);
+        $this->assertEquals($wordPressDomain, $response['result'][0]['name']);
     }
 }

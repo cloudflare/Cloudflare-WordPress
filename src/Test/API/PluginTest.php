@@ -2,6 +2,7 @@
 
 namespace CF\Test\API;
 
+use CF\API\Request;
 use CF\Integration\DefaultIntegration;
 use CF\API\Plugin;
 
@@ -48,5 +49,19 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('true', $secondResponse['success']);
         $this->assertEquals($resultString, $firstResponse['result']);
         $this->assertEquals($resultArray, $secondResponse['result']);
+    }
+
+    public function testCallAPI()
+    {
+        $request = new Request(null, null, null, null);
+        $pluginAPI = new Plugin($this->mockDefaultIntegration);
+
+        $this->mockWordPressAPI->method('createAPIError')->willReturn($error);
+
+        $response = $pluginAPI->callAPI($request);
+
+        var_dump($response);
+
+        $this->assertEquals(false, $response['success']);
     }
 }
