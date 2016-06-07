@@ -37,16 +37,8 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
 
     public function testLoginWordPressSuccess()
     {
-        $apiKey = '123456';
         $email = 'email@example.com';
-
         $request = new Request(null, null, null, null);
-        $request->setBody(
-            array(
-                'apiKey' => $apiKey,
-                'email' => $email,
-            )
-        );
 
         $this->mockPluginAPI->method('createAPISuccessResponse')->willReturn(
             array(
@@ -65,18 +57,10 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
 
     public function testLoginWordPressFail()
     {
-        $apiKey = '123456';
         $email = 'email@example.com';
         $error = 'error';
 
         $request = new Request(null, null, null, null);
-        $request->setBody(
-            array(
-                'apiKey' => $apiKey,
-                'email' => $email,
-            )
-        );
-
         $this->mockPluginAPI->method('createAPISuccessResponse')->willReturn(
             array(
             'success' => 'true',
