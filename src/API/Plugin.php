@@ -22,4 +22,16 @@ class Plugin extends Client
     {
         return self::PLUGIN_API_NAME;
     }
+
+    /**
+     * @param Request $request
+     *
+     * @return array|mixed
+     */
+    public function callAPI(Request $request)
+    {
+        $this->logger->error('Plugin API can not be called');
+
+        return;
+    }
 }
