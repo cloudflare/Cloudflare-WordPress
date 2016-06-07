@@ -74498,7 +74498,7 @@ function configUpdateByKey(key, value) {
     };
 }
 
-},{"../actions/user":497,"../constants/ActionTypes":511,"../reducers/config":544,"../utils/Auth/Auth":559,"./intl":495,"./notifications":496,"cf-util-http":115}],495:[function(_dereq_,module,exports){
+},{"../actions/user":497,"../constants/ActionTypes":511,"../reducers/config":547,"../utils/Auth/Auth":562,"./intl":495,"./notifications":496,"cf-util-http":115}],495:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -74642,6 +74642,7 @@ exports.userLoginSuccess = userLoginSuccess;
 exports.asyncUserLoginSuccess = asyncUserLoginSuccess;
 exports.userLoginError = userLoginError;
 exports.asyncLogin = asyncLogin;
+exports.asyncAPILogin = asyncAPILogin;
 exports.userLogout = userLogout;
 exports.userSignup = userSignup;
 exports.userSignupSuccess = userSignupSuccess;
@@ -74651,6 +74652,8 @@ exports.asyncUserSignup = asyncUserSignup;
 var _reduxSimpleRouter = _dereq_('redux-simple-router');
 
 var _CFHostAPI = _dereq_('../utils/CFHostAPI/CFHostAPI');
+
+var _PluginAPI = _dereq_('../utils/PluginAPI/PluginAPI');
 
 var _notifications = _dereq_('./notifications');
 
@@ -74689,6 +74692,7 @@ function asyncUserLoginSuccess(email) {
     return function (dispatch) {
         dispatch(userLoginSuccess(email));
         dispatch((0, _zones.asyncFetchZones)());
+        dispatch(_reduxSimpleRouter.routeActions.push(UrlPaths.DOMAINS_OVERVIEW_PAGE));
     };
 }
 
@@ -74703,13 +74707,25 @@ function asyncLogin(email, password) {
     return function (dispatch) {
         dispatch(userLogin());
         (0, _CFHostAPI.userAuth)({ cloudflare_email: email, cloudflare_pass: password }, function (response) {
-
             if ((0, _CFHostAPI.hostAPIResponseOk)(response)) {
                 dispatch(asyncUserLoginSuccess(response.body.response.cloudflare_email));
-                dispatch(_reduxSimpleRouter.routeActions.push(UrlPaths.DOMAINS_OVERVIEW_PAGE));
             } else {
                 dispatch(userLoginError());
                 dispatch((0, _notifications.notificationAddError)(response.body.msg));
+            }
+        }, function (error) {
+            dispatch(userLoginError());
+            dispatch((0, _notifications.notificationAddError)(error));
+        });
+    };
+}
+
+function asyncAPILogin(email, apiKey) {
+    return function (dispatch) {
+        dispatch(userLogin());
+        (0, _PluginAPI.pluginAccountPost)(email, apiKey, function (response) {
+            if ((0, _PluginAPI.pluginResponseOk)(response)) {
+                dispatch(asyncUserLoginSuccess(email));
             }
         }, function (error) {
             dispatch(userLoginError());
@@ -74760,7 +74776,7 @@ function asyncUserSignup(email, password) {
     };
 }
 
-},{"../constants/ActionTypes":511,"../constants/UrlPaths":513,"../utils/CFHostAPI/CFHostAPI":561,"./notifications":496,"./zones":505,"redux-simple-router":477}],498:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"../constants/UrlPaths":513,"../utils/CFHostAPI/CFHostAPI":564,"../utils/PluginAPI/PluginAPI":565,"./notifications":496,"./zones":505,"redux-simple-router":477}],498:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -74814,7 +74830,7 @@ function asyncZoneFetchAnalytics(zoneId) {
     };
 }
 
-},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":560,"./notifications":496}],499:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":563,"./notifications":496}],499:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -74958,7 +74974,7 @@ function asyncDNSRecordUpdate(zoneId, dnsRecord, proxied) {
     };
 }
 
-},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":560,"./notifications":496}],500:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":563,"./notifications":496}],500:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75136,7 +75152,7 @@ function asyncSetHostAPIProvisionedDomainActive(domainName) {
     };
 }
 
-},{"../constants/ActionTypes":511,"../constants/Schemas":512,"../utils/CFClientV4API/CFClientV4API":560,"../utils/CFHostAPI/CFHostAPI":561,"./activeZone":492,"./notifications":496,"./zones":505}],501:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"../constants/Schemas":512,"../utils/CFClientV4API/CFClientV4API":563,"../utils/CFHostAPI/CFHostAPI":564,"./activeZone":492,"./notifications":496,"./zones":505}],501:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75189,7 +75205,7 @@ function asyncZonePurgeCache(zoneId) {
     };
 }
 
-},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":560,"./notifications":496}],502:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":563,"./notifications":496}],502:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75290,7 +75306,7 @@ function asyncZoneRailgunConnectionUpdate(zoneId, railgun, isConnected) {
     };
 }
 
-},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":560,"./notifications":496}],503:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":563,"./notifications":496}],503:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75387,7 +75403,7 @@ function asyncZoneUpdateScan(zoneId, showInterstitial) {
     };
 }
 
-},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":560,"./notifications":496}],504:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":563,"./notifications":496}],504:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75490,7 +75506,7 @@ function asyncZoneUpdateSetting(settingName, zoneId, value) {
     };
 }
 
-},{"../actions/zoneDnsRecords":499,"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":560,"../utils/CFHostAPI/CFHostAPI":561,"./notifications":496}],505:[function(_dereq_,module,exports){
+},{"../actions/zoneDnsRecords":499,"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":563,"../utils/CFHostAPI/CFHostAPI":564,"./notifications":496}],505:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75606,7 +75622,7 @@ function asyncFetchZones() {
     };
 }
 
-},{"../constants/ActionTypes":511,"../constants/Schemas":512,"../utils/CFClientV4API/CFClientV4API":560,"../utils/CFHostAPI/CFHostAPI":561,"./activeZone":492,"./notifications":496,"./zoneDnsRecords":499}],506:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"../constants/Schemas":512,"../utils/CFClientV4API/CFClientV4API":563,"../utils/CFHostAPI/CFHostAPI":564,"./activeZone":492,"./notifications":496,"./zoneDnsRecords":499}],506:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -76050,6 +76066,9 @@ function normalizeZoneRailgunGetAll(result) {
 
 exports.__esModule = true;
 var ANALYTICS_PAGE = exports.ANALYTICS_PAGE = "/analytics";
+var CLOUDFLARE_API_KB_ARTICLE_PAGE = exports.CLOUDFLARE_API_KB_ARTICLE_PAGE = "https://support.cloudflare.com/hc/en-us/articles/200167836-Where-do-I-find-my-CloudFlare-API-key-";
+var CLOUDFLARE_FORGOT_PASSWORD_PAGE = exports.CLOUDFLARE_FORGOT_PASSWORD_PAGE = "https://cloudflare.com/a/forgot-password";
+var CLOUDFLARE_SIGNUP_PAGE = exports.CLOUDFLARE_SIGNUP_PAGE = "https://www.cloudflare.com/a/sign-up";
 var CLOUDFLARE_UPGRADE_PAGE = exports.CLOUDFLARE_UPGRADE_PAGE = "http://cloudflare.com/plans";
 var DOMAINS_OVERVIEW_PAGE = exports.DOMAINS_OVERVIEW_PAGE = "/zones";
 var LOGIN_PAGE = exports.LOGIN_PAGE = "/login";
@@ -76747,7 +76766,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps)(AppWrapper);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"../../actions/config":494,"../../containers/ActiveZoneSelector/ActiveZoneSelector":515,"../../containers/AppNavigation/AppNavigation":519,"../../containers/NotificationList/NotificationList":530,"../../containers/UnderAttackButton/UnderAttackButton":539,"../../selectors/config":557,"../../utils/Auth/Auth":559,"cf-component-layout":58,"intl":150,"react":475,"react-gateway":244,"react-intl":255,"react-redux":277}],519:[function(_dereq_,module,exports){
+},{"../../actions/config":494,"../../containers/ActiveZoneSelector/ActiveZoneSelector":515,"../../containers/AppNavigation/AppNavigation":519,"../../containers/NotificationList/NotificationList":533,"../../containers/UnderAttackButton/UnderAttackButton":542,"../../selectors/config":560,"../../utils/Auth/Auth":562,"cf-component-layout":58,"intl":150,"react":475,"react-gateway":244,"react-intl":255,"react-redux":277}],519:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -76931,7 +76950,7 @@ AppNavigation.propTypes = {
 };
 exports.default = AppNavigation;
 
-},{"../../constants/UrlPaths":513,"../../utils/Auth/Auth":559,"cf-component-link":60,"react":475,"react-intl":255,"redux-simple-router":477}],520:[function(_dereq_,module,exports){
+},{"../../constants/UrlPaths":513,"../../utils/Auth/Auth":562,"cf-component-link":60,"react":475,"react-intl":255,"redux-simple-router":477}],520:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77314,6 +77333,186 @@ var _reactRedux = _dereq_('react-redux');
 
 var _reactIntl = _dereq_('react-intl');
 
+var _reactRouter = _dereq_('react-router');
+
+var _reduxSimpleRouter = _dereq_('redux-simple-router');
+
+var _MarketingFeatureCollection = _dereq_('../../containers/MarketingFeatureCollection/MarketingFeatureCollection');
+
+var _MarketingFeatureCollection2 = _interopRequireDefault(_MarketingFeatureCollection);
+
+var _user = _dereq_('../../actions/user');
+
+var _UrlPaths = _dereq_('../../constants/UrlPaths.js');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ClientLoginPage = function (_Component) {
+    _inherits(ClientLoginPage, _Component);
+
+    function ClientLoginPage() {
+        _classCallCheck(this, ClientLoginPage);
+
+        return _possibleConstructorReturn(this, _Component.apply(this, arguments));
+    }
+
+    ClientLoginPage.prototype.handleLoginSubmit = function handleLoginSubmit(e) {
+        e.preventDefault();
+
+        var dispatch = this.props.dispatch;
+
+        var email = this.refs.email.value;
+        var apiKey = this.refs.apiKey.value;
+
+        dispatch((0, _user.asyncAPILogin)(email, apiKey));
+    };
+
+    ClientLoginPage.prototype.render = function render() {
+        var _this2 = this;
+
+        var formatMessage = this.props.intl.formatMessage;
+
+
+        return _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+                'section',
+                { className: 'center login-form' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'login-container' },
+                    _react2.default.createElement(
+                        'form',
+                        { className: 'form', onSubmit: function onSubmit(e) {
+                                return _this2.handleLoginSubmit(e);
+                            } },
+                        _react2.default.createElement(
+                            'legend',
+                            null,
+                            _react2.default.createElement(
+                                'h3',
+                                { className: 'form-title' },
+                                _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.clientLogin.form.title' })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'fieldset',
+                            null,
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'control-group' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'control-label' },
+                                    _react2.default.createElement(
+                                        'label',
+                                        { className: 'assistive-text' },
+                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.clientLogin.form.email' })
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'controls' },
+                                    _react2.default.createElement('input', { ref: 'email', type: 'text', placeholder: formatMessage({ id: "component.clientLogin.form.email" }), className: 'width-full' })
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'control-group' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'control-label' },
+                                    _react2.default.createElement(
+                                        'label',
+                                        { className: 'assistive-text' },
+                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.clientLogin.form.apiKey' })
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'controls' },
+                                    _react2.default.createElement('input', { ref: 'apiKey', type: 'text', placeholder: formatMessage({ id: "component.clientLogin.form.apiKey" }), className: 'width-full' })
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'control-group' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'controls' },
+                                    _react2.default.createElement(
+                                        'button',
+                                        { type: 'submit', className: 'btn btn-success btn-large width-full' },
+                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.clientLogin.form.button' })
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'control-group' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'row' },
+                                    _react2.default.createElement(
+                                        'a',
+                                        { className: 'pull-right', href: _UrlPaths.CLOUDFLARE_API_KB_ARTICLE_PAGE, target: '_blank' },
+                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.clientLogin.form.apiKeyHelp' })
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'row' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'col-16' },
+                    _react2.default.createElement(
+                        'p',
+                        { style: { 'textAlign': 'center', 'marginBottom': '2.5rem' } },
+                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.clientLogin.cloudflare.description' }),
+                        ' ',
+                        _react2.default.createElement(
+                            'a',
+                            { href: _UrlPaths.CLOUDFLARE_SIGNUP_PAGE, target: '_blank' },
+                            'CloudFlare.com'
+                        ),
+                        '.'
+                    )
+                )
+            ),
+            _react2.default.createElement(_MarketingFeatureCollection2.default, null)
+        );
+    };
+
+    return ClientLoginPage;
+}(_react.Component);
+
+exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)()(ClientLoginPage));
+
+},{"../../actions/user":497,"../../constants/UrlPaths.js":513,"../../containers/MarketingFeatureCollection/MarketingFeatureCollection":531,"react":475,"react-intl":255,"react-redux":277,"react-router":307,"redux-simple-router":477}],525:[function(_dereq_,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _react = _dereq_('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = _dereq_('react-redux');
+
+var _reactIntl = _dereq_('react-intl');
+
 var _lodash = _dereq_('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -77480,7 +77679,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(DNSManagementPage));
 
-},{"../../constants/UrlPaths.js":513,"../../containers/ActivationCheckCard/ActivationCheckCard":514,"../../containers/DNSRecordEditor/DNSRecordEditor":525,"../../containers/ZoneProvisionContainer/ZoneProvisionContainer":540,"cf-component-button":5,"cf-component-heading":54,"cf-component-table":98,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],525:[function(_dereq_,module,exports){
+},{"../../constants/UrlPaths.js":513,"../../containers/ActivationCheckCard/ActivationCheckCard":514,"../../containers/DNSRecordEditor/DNSRecordEditor":526,"../../containers/ZoneProvisionContainer/ZoneProvisionContainer":543,"cf-component-button":5,"cf-component-heading":54,"cf-component-table":98,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],526:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77637,7 +77836,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(DNSRecordEditor));
 
-},{"../../actions/zoneDnsRecords":499,"../../components/CloudToggle/CloudToggle":506,"../../components/Loading/Loading":508,"cf-component-table":98,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],526:[function(_dereq_,module,exports){
+},{"../../actions/zoneDnsRecords":499,"../../components/CloudToggle/CloudToggle":506,"../../components/Loading/Loading":508,"cf-component-table":98,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],527:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77731,7 +77930,195 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(DevelopmentModeCard));
 
-},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],527:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],528:[function(_dereq_,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _react = _dereq_('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = _dereq_('react-redux');
+
+var _reactIntl = _dereq_('react-intl');
+
+var _reactRouter = _dereq_('react-router');
+
+var _reduxSimpleRouter = _dereq_('redux-simple-router');
+
+var _MarketingFeatureCollection = _dereq_('../../containers/MarketingFeatureCollection/MarketingFeatureCollection');
+
+var _MarketingFeatureCollection2 = _interopRequireDefault(_MarketingFeatureCollection);
+
+var _user = _dereq_('../../actions/user');
+
+var UserActionCreators = _interopRequireWildcard(_user);
+
+var _UrlPaths = _dereq_('../../constants/UrlPaths.js');
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var HostLoginPage = function (_Component) {
+    _inherits(HostLoginPage, _Component);
+
+    function HostLoginPage() {
+        _classCallCheck(this, HostLoginPage);
+
+        return _possibleConstructorReturn(this, _Component.apply(this, arguments));
+    }
+
+    HostLoginPage.prototype.handleLoginSubmit = function handleLoginSubmit(e) {
+        e.preventDefault();
+
+        var dispatch = this.props.dispatch;
+
+        var email = this.refs.email.value;
+        var password = this.refs.password.value;
+
+        dispatch(UserActionCreators.asyncLogin(email, password));
+    };
+
+    HostLoginPage.prototype.handleLogout = function handleLogout(e) {
+        var dispatch = this.props.dispatch;
+
+        dispatch(UserActionCreators.logout());
+    };
+
+    HostLoginPage.prototype.render = function render() {
+        var _this2 = this;
+
+        var formatMessage = this.props.intl.formatMessage;
+
+
+        return _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+                'section',
+                { className: 'center login-form' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'login-container' },
+                    _react2.default.createElement(
+                        'form',
+                        { className: 'form', onSubmit: function onSubmit(e) {
+                                return _this2.handleLoginSubmit(e);
+                            } },
+                        _react2.default.createElement(
+                            'legend',
+                            null,
+                            _react2.default.createElement(
+                                'h3',
+                                { className: 'form-title' },
+                                _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.login.form.title' })
+                            )
+                        ),
+                        _react2.default.createElement(
+                            'fieldset',
+                            null,
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'control-group' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'control-label' },
+                                    _react2.default.createElement(
+                                        'label',
+                                        { className: 'assistive-text' },
+                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.login.form.email' })
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'controls' },
+                                    _react2.default.createElement('input', { ref: 'email', type: 'text', placeholder: formatMessage({ id: "component.login.form.email" }), className: 'width-full' })
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'control-group' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'control-label' },
+                                    _react2.default.createElement(
+                                        'label',
+                                        { className: 'assistive-text' },
+                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.login.form.password' })
+                                    )
+                                ),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'controls' },
+                                    _react2.default.createElement('input', { ref: 'password', type: 'password', placeholder: formatMessage({ id: "component.login.form.password" }), className: 'width-full' })
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'control-group' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'controls' },
+                                    _react2.default.createElement(
+                                        'button',
+                                        { type: 'submit', className: 'btn btn-success btn-large width-full' },
+                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.login.form.button' })
+                                    )
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'control-group' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'row' },
+                                    _react2.default.createElement(
+                                        _reactRouter.Link,
+                                        { className: 'pull-left', to: _UrlPaths.SIGN_UP_PAGE },
+                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.login.form.signUp' })
+                                    ),
+                                    _react2.default.createElement(
+                                        'a',
+                                        { className: 'pull-right', href: _UrlPaths.CLOUDFLARE_FORGOT_PASSWORD_PAGE, target: '_blank' },
+                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.login.form.forgotPassword' })
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'row' },
+                _react2.default.createElement(
+                    'div',
+                    { className: 'col-16' },
+                    _react2.default.createElement(
+                        'p',
+                        { style: { 'textAlign': 'center', 'marginBottom': '2.5rem' } },
+                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.login.cloudflare.description' })
+                    )
+                )
+            ),
+            _react2.default.createElement(_MarketingFeatureCollection2.default, null)
+        );
+    };
+
+    return HostLoginPage;
+}(_react.Component);
+
+exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)()(HostLoginPage));
+
+},{"../../actions/user":497,"../../constants/UrlPaths.js":513,"../../containers/MarketingFeatureCollection/MarketingFeatureCollection":531,"react":475,"react-intl":255,"react-redux":277,"react-router":307,"redux-simple-router":477}],529:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77825,7 +78212,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(IPV6Card));
 
-},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],528:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],530:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77836,29 +78223,21 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRedux = _dereq_('react-redux');
 
-var _redux = _dereq_('redux');
-
-var _reactIntl = _dereq_('react-intl');
-
-var _reactRouter = _dereq_('react-router');
-
 var _reduxSimpleRouter = _dereq_('redux-simple-router');
-
-var _MarketingFeature = _dereq_('../../components/MarketingFeature/MarketingFeature');
-
-var _MarketingFeature2 = _interopRequireDefault(_MarketingFeature);
-
-var _user = _dereq_('../../actions/user');
-
-var UserActionCreators = _interopRequireWildcard(_user);
-
-var _UrlPaths = _dereq_('../../constants/UrlPaths.js');
 
 var _Auth = _dereq_('../../utils/Auth/Auth');
 
+var _UrlPaths = _dereq_('../../constants/UrlPaths.js');
+
 var _config = _dereq_('../../selectors/config');
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+var _ClientLoginPage = _dereq_('../../containers/ClientLoginPage/ClientLoginPage');
+
+var _ClientLoginPage2 = _interopRequireDefault(_ClientLoginPage);
+
+var _HostLoginPage = _dereq_('../../containers/HostLoginPage/HostLoginPage');
+
+var _HostLoginPage2 = _interopRequireDefault(_HostLoginPage);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -77886,164 +78265,14 @@ var LoginPage = function (_Component) {
     };
 
     LoginPage.prototype.render = function render() {
-        var _this2 = this;
-
-        var formatMessage = this.props.intl.formatMessage;
         var config = this.props.config;
 
-
+        var isHostAPILogin = (0, _config.getConfigValue)(config, "useHostAPILogin");
         return _react2.default.createElement(
             'div',
             null,
-            _react2.default.createElement(
-                'section',
-                { className: 'center login-form' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'login-container' },
-                    _react2.default.createElement(
-                        'form',
-                        { className: 'form', onSubmit: function onSubmit(e) {
-                                return _this2.handleLoginSubmit(e);
-                            } },
-                        _react2.default.createElement(
-                            'legend',
-                            null,
-                            _react2.default.createElement(
-                                'h3',
-                                { className: 'form-title' },
-                                _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.login.form.title' })
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'fieldset',
-                            null,
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'control-group' },
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'control-label' },
-                                    _react2.default.createElement(
-                                        'label',
-                                        { className: 'assistive-text' },
-                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.login.form.email' })
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'controls' },
-                                    _react2.default.createElement('input', { ref: 'email', type: 'text', placeholder: formatMessage({ id: "component.login.form.email" }), className: 'width-full' })
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'control-group' },
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'control-label' },
-                                    _react2.default.createElement(
-                                        'label',
-                                        { className: 'assistive-text' },
-                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.login.form.password' })
-                                    )
-                                ),
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'controls' },
-                                    _react2.default.createElement('input', { ref: 'password', type: 'password', placeholder: formatMessage({ id: "component.login.form.password" }), className: 'width-full' })
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'control-group' },
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'controls' },
-                                    _react2.default.createElement(
-                                        'button',
-                                        { type: 'submit', className: 'btn btn-success btn-large width-full' },
-                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.login.form.button' })
-                                    )
-                                )
-                            ),
-                            _react2.default.createElement(
-                                'div',
-                                { className: 'control-group' },
-                                _react2.default.createElement(
-                                    'div',
-                                    { className: 'row' },
-                                    _react2.default.createElement(
-                                        _reactRouter.Link,
-                                        { className: 'pull-left', to: _UrlPaths.SIGN_UP_PAGE },
-                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.login.form.signUp' })
-                                    ),
-                                    _react2.default.createElement(
-                                        'a',
-                                        { className: 'pull-right', href: 'https://cloudflare.com/a/forgot-password', target: '_blank' },
-                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.login.form.forgotPassword' })
-                                    )
-                                )
-                            )
-                        )
-                    )
-                )
-            ),
-            _react2.default.createElement(
-                'div',
-                { className: 'row' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'col-16' },
-                    _react2.default.createElement(
-                        'p',
-                        { style: { 'textAlign': 'center', 'marginBottom': '2.5rem' } },
-                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'component.login.cloudflare.description' })
-                    )
-                )
-            ),
-            _react2.default.createElement(
-                'div',
-                { className: 'row' },
-                _react2.default.createElement(
-                    'div',
-                    { className: 'col-4' },
-                    _react2.default.createElement(_MarketingFeature2.default, { imgSrc: (0, _config.getAbsoluteUrl)(config, "assets/icon-pin.svg"), titleKey: 'component.marketingFeature.cdn.title', descriptionKey: 'component.marketingFeature.cdn.description' })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'col-4' },
-                    _react2.default.createElement(_MarketingFeature2.default, { imgSrc: (0, _config.getAbsoluteUrl)(config, "assets/icon-bolt.svg"), titleKey: 'component.marketingFeature.optimization.title', descriptionKey: 'component.marketingFeature.optimization.description' })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'col-4' },
-                    _react2.default.createElement(_MarketingFeature2.default, { imgSrc: (0, _config.getAbsoluteUrl)(config, "assets/icon-shield.svg"), titleKey: 'component.marketingFeature.security.title', descriptionKey: 'component.marketingFeature.security.description' })
-                ),
-                _react2.default.createElement(
-                    'div',
-                    { className: 'col-4' },
-                    _react2.default.createElement(_MarketingFeature2.default, { imgSrc: (0, _config.getAbsoluteUrl)(config, "assets/icon-lock.svg"), titleKey: 'component.marketingFeature.ddos.title', descriptionKey: 'component.marketingFeature.ddos.description' })
-                )
-            )
+            isHostAPILogin ? _react2.default.createElement(_HostLoginPage2.default, null) : _react2.default.createElement(_ClientLoginPage2.default, null)
         );
-    };
-
-    LoginPage.prototype.handleLoginSubmit = function handleLoginSubmit(e) {
-        e.preventDefault();
-
-        var dispatch = this.props.dispatch;
-
-        var email = this.refs.email.value;
-        var password = this.refs.password.value;
-
-        dispatch(UserActionCreators.asyncLogin(email, password));
-    };
-
-    LoginPage.prototype.handleLogout = function handleLogout(e) {
-        var dispatch = this.props.dispatch;
-
-        dispatch(UserActionCreators.logout());
     };
 
     return LoginPage;
@@ -78053,9 +78282,82 @@ function mapStateToProps(state) {
     return { config: state.config };
 }
 
-exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(LoginPage));
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(LoginPage);
 
-},{"../../actions/user":497,"../../components/MarketingFeature/MarketingFeature":509,"../../constants/UrlPaths.js":513,"../../selectors/config":557,"../../utils/Auth/Auth":559,"react":475,"react-intl":255,"react-redux":277,"react-router":307,"redux":484,"redux-simple-router":477}],529:[function(_dereq_,module,exports){
+},{"../../constants/UrlPaths.js":513,"../../containers/ClientLoginPage/ClientLoginPage":524,"../../containers/HostLoginPage/HostLoginPage":528,"../../selectors/config":560,"../../utils/Auth/Auth":562,"react":475,"react-redux":277,"redux-simple-router":477}],531:[function(_dereq_,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _react = _dereq_('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = _dereq_('react-redux');
+
+var _MarketingFeature = _dereq_('../../components/MarketingFeature/MarketingFeature');
+
+var _MarketingFeature2 = _interopRequireDefault(_MarketingFeature);
+
+var _config = _dereq_('../../selectors/config');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MarketingFeatureCollection = function (_Component) {
+    _inherits(MarketingFeatureCollection, _Component);
+
+    function MarketingFeatureCollection() {
+        _classCallCheck(this, MarketingFeatureCollection);
+
+        return _possibleConstructorReturn(this, _Component.apply(this, arguments));
+    }
+
+    MarketingFeatureCollection.prototype.render = function render() {
+        var config = this.props.config;
+
+
+        return _react2.default.createElement(
+            'div',
+            { className: 'row' },
+            _react2.default.createElement(
+                'div',
+                { className: 'col-4' },
+                _react2.default.createElement(_MarketingFeature2.default, { imgSrc: (0, _config.getAbsoluteUrl)(config, "assets/icon-pin.svg"), titleKey: 'component.marketingFeature.cdn.title', descriptionKey: 'component.marketingFeature.cdn.description' })
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'col-4' },
+                _react2.default.createElement(_MarketingFeature2.default, { imgSrc: (0, _config.getAbsoluteUrl)(config, "assets/icon-bolt.svg"), titleKey: 'component.marketingFeature.optimization.title', descriptionKey: 'component.marketingFeature.optimization.description' })
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'col-4' },
+                _react2.default.createElement(_MarketingFeature2.default, { imgSrc: (0, _config.getAbsoluteUrl)(config, "assets/icon-shield.svg"), titleKey: 'component.marketingFeature.security.title', descriptionKey: 'component.marketingFeature.security.description' })
+            ),
+            _react2.default.createElement(
+                'div',
+                { className: 'col-4' },
+                _react2.default.createElement(_MarketingFeature2.default, { imgSrc: (0, _config.getAbsoluteUrl)(config, "assets/icon-lock.svg"), titleKey: 'component.marketingFeature.ddos.title', descriptionKey: 'component.marketingFeature.ddos.description' })
+            )
+        );
+    };
+
+    return MarketingFeatureCollection;
+}(_react.Component);
+
+function mapStateToProps(state) {
+    return { config: state.config };
+}
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps)(MarketingFeatureCollection);
+
+},{"../../components/MarketingFeature/MarketingFeature":509,"../../selectors/config":560,"react":475,"react-redux":277}],532:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78175,7 +78477,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(MinifyCard));
 
-},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-checkbox":22,"react":475,"react-intl":255,"react-redux":277}],530:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-checkbox":22,"react":475,"react-intl":255,"react-redux":277}],533:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78240,7 +78542,7 @@ var NotificationList = function (_Component) {
 
 exports.default = NotificationList;
 
-},{"../../actions/notifications":496,"../../components/Notification/Notification":510,"react":475,"react-addons-css-transition-group":235}],531:[function(_dereq_,module,exports){
+},{"../../actions/notifications":496,"../../components/Notification/Notification":510,"react":475,"react-addons-css-transition-group":235}],534:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78388,7 +78690,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(PerformancePage));
 
-},{"../../components/FeatureManager/FeatureManager":507,"../../containers/AlwaysOnlineCard/AlwaysOnlineCard":516,"../../containers/BrowserCacheTTLCard/BrowserCacheTTLCard":520,"../../containers/CacheLevelCard/CacheLevelCard":522,"../../containers/DevelopmentModeCard/DevelopmentModeCard":526,"../../containers/IPV6Card/IPV6Card":527,"../../containers/MinifyCard/MinifyCard":529,"../../containers/PurgeCacheCard/PurgeCacheCard":532,"../../containers/RailgunCard/RailgunCard":533,"cf-component-heading":54,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],532:[function(_dereq_,module,exports){
+},{"../../components/FeatureManager/FeatureManager":507,"../../containers/AlwaysOnlineCard/AlwaysOnlineCard":516,"../../containers/BrowserCacheTTLCard/BrowserCacheTTLCard":520,"../../containers/CacheLevelCard/CacheLevelCard":522,"../../containers/DevelopmentModeCard/DevelopmentModeCard":527,"../../containers/IPV6Card/IPV6Card":529,"../../containers/MinifyCard/MinifyCard":532,"../../containers/PurgeCacheCard/PurgeCacheCard":535,"../../containers/RailgunCard/RailgunCard":536,"cf-component-heading":54,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],535:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78540,7 +78842,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(PurgeCacheCard));
 
-},{"../../actions/zonePurgeCache":501,"cf-component-button":5,"cf-component-card":15,"cf-component-modal":72,"react":475,"react-intl":255,"react-redux":277}],533:[function(_dereq_,module,exports){
+},{"../../actions/zonePurgeCache":501,"cf-component-button":5,"cf-component-card":15,"cf-component-modal":72,"react":475,"react-intl":255,"react-redux":277}],536:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78705,7 +79007,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(RailgunCard));
 
-},{"../../actions/zoneRailgun":502,"cf-component-button":5,"cf-component-card":15,"cf-component-table":98,"cf-component-toggle":113,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],534:[function(_dereq_,module,exports){
+},{"../../actions/zoneRailgun":502,"cf-component-button":5,"cf-component-card":15,"cf-component-table":98,"cf-component-toggle":113,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],537:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78798,7 +79100,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(SSLCard));
 
-},{"../../actions/zoneSettings":504,"../../components/FeatureManager/FeatureManager":507,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],535:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":504,"../../components/FeatureManager/FeatureManager":507,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],538:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78890,7 +79192,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ScanCard));
 
-},{"../../actions/zoneScan":503,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],536:[function(_dereq_,module,exports){
+},{"../../actions/zoneScan":503,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],539:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78981,7 +79283,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(SecurityLevelCard));
 
-},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],537:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],540:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79104,7 +79406,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(SecurityPage));
 
-},{"../../components/FeatureManager/FeatureManager":507,"../../containers/BrowserIntegrityCheckCard/BrowserIntegrityCheckCard":521,"../../containers/ChallengePassageCard/ChallengePassageCard":523,"../../containers/SSLCard/SSLCard":534,"../../containers/ScanCard/ScanCard":535,"../../containers/SecurityLevelCard/SecurityLevelCard":536,"cf-component-heading":54,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],538:[function(_dereq_,module,exports){
+},{"../../components/FeatureManager/FeatureManager":507,"../../containers/BrowserIntegrityCheckCard/BrowserIntegrityCheckCard":521,"../../containers/ChallengePassageCard/ChallengePassageCard":523,"../../containers/SSLCard/SSLCard":537,"../../containers/ScanCard/ScanCard":538,"../../containers/SecurityLevelCard/SecurityLevelCard":539,"cf-component-heading":54,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],541:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79330,7 +79632,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(SignUpPage));
 
-},{"../../actions/notifications":496,"../../actions/user":497,"../../constants/UrlPaths":513,"lodash":152,"react":475,"react-intl":255,"react-redux":277,"redux":484}],539:[function(_dereq_,module,exports){
+},{"../../actions/notifications":496,"../../actions/user":497,"../../constants/UrlPaths":513,"lodash":152,"react":475,"react-intl":255,"react-redux":277,"redux":484}],542:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79420,7 +79722,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(UnderAttackButton));
 
-},{"../../actions/zoneSettings":504,"cf-component-button":5,"react":475,"react-intl":255,"react-redux":277}],540:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":504,"cf-component-button":5,"react":475,"react-intl":255,"react-redux":277}],543:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79656,7 +79958,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ZoneProvisionContainer));
 
-},{"../../actions/zoneProvision":500,"../../actions/zones":505,"../../components/FeatureManager/FeatureManager":507,"../../components/Loading/Loading":508,"../../constants/Schemas":512,"cf-component-button":5,"cf-component-layout":58,"cf-component-modal":72,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],541:[function(_dereq_,module,exports){
+},{"../../actions/zoneProvision":500,"../../actions/zones":505,"../../components/FeatureManager/FeatureManager":507,"../../components/Loading/Loading":508,"../../constants/Schemas":512,"cf-component-button":5,"cf-component-layout":58,"cf-component-modal":72,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],544:[function(_dereq_,module,exports){
 'use strict';
 
 var _react = _dereq_('react');
@@ -79708,7 +80010,7 @@ _reactDom2.default.render(_react2.default.createElement(
     )
 ), document.getElementById('root'));
 
-},{"./routes":556,"./store/configureStore":558,"cf-util-http":115,"history/lib/createHashHistory":133,"react":475,"react-dom":239,"react-redux":277,"react-router":307}],542:[function(_dereq_,module,exports){
+},{"./routes":559,"./store/configureStore":561,"cf-util-http":115,"history/lib/createHashHistory":133,"react":475,"react-dom":239,"react-redux":277,"react-router":307}],545:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -79743,7 +80045,7 @@ function activeZoneReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511}],543:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511}],546:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79776,7 +80078,7 @@ function appReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511}],544:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511}],547:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -79828,7 +80130,7 @@ function configReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511}],545:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511}],548:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79882,7 +80184,7 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./activeZone":542,"./app":543,"./config":544,"./intl":546,"./notifications":547,"./user":548,"./zoneAnalytics":549,"./zoneDnsRecords.js":550,"./zonePurgeCache":551,"./zoneRailgun":552,"./zoneScan":553,"./zoneSettings":554,"./zones":555,"redux":484,"redux-simple-router":477}],546:[function(_dereq_,module,exports){
+},{"./activeZone":545,"./app":546,"./config":547,"./intl":549,"./notifications":550,"./user":551,"./zoneAnalytics":552,"./zoneDnsRecords.js":553,"./zonePurgeCache":554,"./zoneRailgun":555,"./zoneScan":556,"./zoneSettings":557,"./zones":558,"redux":484,"redux-simple-router":477}],549:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -79927,7 +80229,7 @@ function intlReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511}],547:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511}],550:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79962,7 +80264,7 @@ function notificationsReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511}],548:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511}],551:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80026,7 +80328,7 @@ function userReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511,"../utils/Auth/Auth":559}],549:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"../utils/Auth/Auth":562}],552:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80108,7 +80410,7 @@ function buildZoneAnalyticsData(zoneAnalyticsResponse) {
     return data;
 }
 
-},{"../constants/ActionTypes":511,"lodash":152}],550:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"lodash":152}],553:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80203,7 +80505,7 @@ function patchDnsRecord(zoneId, dnsRecordList, dnsRecord) {
     return dnsRecordList;
 }
 
-},{"../constants/ActionTypes":511,"lodash":152,"normalizr":156}],551:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"lodash":152,"normalizr":156}],554:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80250,7 +80552,7 @@ function zonePurgeCacheReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511,"lodash":152}],552:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"lodash":152}],555:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80326,7 +80628,7 @@ function getPatchedEntities(state, action) {
     return patchedEntities;
 }
 
-},{"../constants/ActionTypes":511,"../constants/Schemas":512,"lodash":152}],553:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"../constants/Schemas":512,"lodash":152}],556:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80398,7 +80700,7 @@ function patchEntity(zoneId, zoneScan, state) {
     return entities;
 }
 
-},{"../constants/ActionTypes":511,"lodash":152,"normalizr":156}],554:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"lodash":152,"normalizr":156}],557:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80475,7 +80777,7 @@ function patchSetting(zoneId, setting, state) {
     return patchedEntities;
 }
 
-},{"../constants/ActionTypes":511,"lodash":152,"normalizr":156}],555:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"lodash":152,"normalizr":156}],558:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80569,7 +80871,7 @@ function zonesReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511,"../constants/Schemas":512,"lodash":152}],556:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":511,"../constants/Schemas":512,"lodash":152}],559:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80639,11 +80941,12 @@ exports.default = _react2.default.createElement(
     _react2.default.createElement(_reactRouter.Route, { path: UrlPaths.SECURITY_PAGE, component: _SecurityPage2.default, onEnter: requireAuth })
 );
 
-},{"./constants/UrlPaths":513,"./containers/AnalyticsPage/AnaltyicsPage":517,"./containers/App/App":518,"./containers/DNSManagementPage/DNSManagementPage":524,"./containers/LoginPage/LoginPage":528,"./containers/PerformancePage/PerformancePage":531,"./containers/SecurityPage/SecurityPage":537,"./containers/SignUpPage/SignUpPage":538,"./utils/Auth/Auth":559,"react":475,"react-router":307}],557:[function(_dereq_,module,exports){
+},{"./constants/UrlPaths":513,"./containers/AnalyticsPage/AnaltyicsPage":517,"./containers/App/App":518,"./containers/DNSManagementPage/DNSManagementPage":525,"./containers/LoginPage/LoginPage":530,"./containers/PerformancePage/PerformancePage":534,"./containers/SecurityPage/SecurityPage":540,"./containers/SignUpPage/SignUpPage":541,"./utils/Auth/Auth":562,"react":475,"react-router":307}],560:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
 exports.getAbsoluteUrl = getAbsoluteUrl;
+exports.getConfigValue = getConfigValue;
 
 var _config = _dereq_('../reducers/config');
 
@@ -80652,7 +80955,11 @@ function getAbsoluteUrl(config, url) {
     return baseUrl + url;
 }
 
-},{"../reducers/config":544}],558:[function(_dereq_,module,exports){
+function getConfigValue(config, key) {
+    return config.config[key];
+}
+
+},{"../reducers/config":547}],561:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80687,7 +80994,7 @@ function configureStore(history, initialState) {
     return store;
 }
 
-},{"../reducers":545,"redux":484,"redux-logger":476,"redux-simple-router":477,"redux-thunk":478}],559:[function(_dereq_,module,exports){
+},{"../reducers":548,"redux":484,"redux-logger":476,"redux-simple-router":477,"redux-thunk":478}],562:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80716,7 +81023,7 @@ function setEmail(email) {
     localStorage.cfEmail = email;
 }
 
-},{"lodash":152}],560:[function(_dereq_,module,exports){
+},{"lodash":152}],563:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81086,7 +81393,7 @@ function zoneScanPut(zoneId, showInterstitial, onSuccess, onError) {
     return _cfUtilHttp2.default.put(ENDPOINT + "/zones/" + zoneId + "/scan", opts, onSuccess, onError);
 }
 
-},{"cf-util-http":115}],561:[function(_dereq_,module,exports){
+},{"cf-util-http":115}],564:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81267,7 +81574,50 @@ function send(method, opts, onSuccess, onError) {
     return _cfUtilHttp2.default.request(method, ENDPOINT, opts, onSuccess, onError);
 }
 
-},{"cf-util-http":115}]},{},[541])
+},{"cf-util-http":115}],565:[function(_dereq_,module,exports){
+'use strict';
+
+exports.__esModule = true;
+exports.pluginResponseOk = pluginResponseOk;
+exports.pluginAccountPost = pluginAccountPost;
+
+var _cfUtilHttp = _dereq_('cf-util-http');
+
+var _cfUtilHttp2 = _interopRequireDefault(_cfUtilHttp);
+
+var _CFClientV4API = _dereq_('../../utils/CFClientV4API/CFClientV4API');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/*
+ * This endpoint isn't real but we'll use it to identify REST calls for
+ * plugin specific functionality like saving a v4 API key/email or toggling
+ * admin settings.  The structure of this API's responses will mimic the client V4 API.
+ */
+var ENDPOINT = 'https://partners.cloudflare/plugins';
+
+/*
+ * Indicates api call success
+ *
+ * @param {Object} [response]
+ *
+ * @returns {Boolean} Successful
+ */
+function pluginResponseOk(response) {
+    return (0, _CFClientV4API.v4ResponseOk)(response);
+}
+
+function pluginAccountPost(email, apiKey, onSuccess, onError) {
+    var opts = {
+        body: {
+            email: email,
+            apiKey: apiKey
+        }
+    };
+    return _cfUtilHttp2.default.post(ENDPOINT + "/account/", opts, onSuccess, onError);
+}
+
+},{"../../utils/CFClientV4API/CFClientV4API":563,"cf-util-http":115}]},{},[544])
 
  })();
 //# sourceMappingURL=compiled.js.map
