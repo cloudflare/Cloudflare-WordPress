@@ -40,7 +40,6 @@ class PluginActions
         $apiKey = $this->request->getBody()['apiKey'];
         $email = $this->request->getBody()['email'];
 
-        $response = $this->api->createAPISuccessResponse(array('email' => $email));
         $isCreated = $this->dataStore->createUserDataStore($apiKey, $email, null, null);
 
         if (!$isCreated) {
@@ -48,6 +47,8 @@ class PluginActions
 
             return $this->api->createAPIError('Unable to save user credentials');
         }
+
+        $response = $this->api->createAPISuccessResponse(array('email' => $email));
 
         return $response;
     }

@@ -60,8 +60,6 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
         $response = $pluginAPI->callAPI($request);
 
-        var_dump($response);
-
         $this->assertEquals(false, $response['success']);
     }
 }

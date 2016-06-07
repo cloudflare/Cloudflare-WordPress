@@ -59,14 +59,8 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
     {
         $email = 'email@example.com';
         $error = 'error';
-
         $request = new Request(null, null, null, null);
-        $this->mockPluginAPI->method('createAPISuccessResponse')->willReturn(
-            array(
-            'success' => 'true',
-            'result' => array('email' => $email),
-            )
-        );
+
         $this->mockDataStore->method('createUserDataStore')->willReturn(false);
         $this->mockPluginAPI->method('createAPIError')->willReturn($error);
         $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->mockPluginAPI, $request);
