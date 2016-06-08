@@ -63,6 +63,7 @@ class ComposerStaticInit39a28a0208fb12e191005eae3cc6d4bf
         'CF\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
+            1 => __DIR__ . '/..' . '/cloudflare/cloudflare-plugin-backend/src',
         ),
     );
 
@@ -76,6 +77,10 @@ class ComposerStaticInit39a28a0208fb12e191005eae3cc6d4bf
         ),
         'P' => 
         array (
+            'Psr\\Log\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/psr/log',
+            ),
             'Prophecy\\' => 
             array (
                 0 => __DIR__ . '/..' . '/phpspec/prophecy/src',

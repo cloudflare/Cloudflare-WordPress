@@ -2,16 +2,8 @@
 
 namespace CF\Integration;
 
-interface LoggerInterface
+interface LoggerInterface extends \Psr\Log\LoggerInterface
 {
-
-    /**
-     * @param $logLevel
-     * @param $message
-     * @return mixed
-     */
-    public function log($logLevel, $message);
-
     /**
      * @param $api
      * @param $message

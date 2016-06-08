@@ -12,5 +12,5 @@ return array(
     'GuzzleHttp\\Ring\\' => array($vendorDir . '/guzzlehttp/ringphp/src'),
     'GuzzleHttp\\' => array($vendorDir . '/guzzlehttp/guzzle/src'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
-    'CF\\' => array($baseDir . '/src'),
+    'CF\\' => array($baseDir . '/src', $vendorDir . '/cloudflare/cloudflare-plugin-backend/src'),
 );
