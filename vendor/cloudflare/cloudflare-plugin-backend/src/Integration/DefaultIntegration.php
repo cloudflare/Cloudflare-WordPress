@@ -2,11 +2,6 @@
 
 namespace CF\Integration;
 
-use CF\Integration\ConfigInterface;
-use CF\Integration\DataStoreInterface;
-use CF\Integration\IntegrationAPIInterface;
-use CF\Integration\IntegrationInterface;
-use CF\Integration\LoggerInterface;
 
 class DefaultIntegration implements IntegrationInterface
 {
