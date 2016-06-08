@@ -1,4 +1,5 @@
 <?php
+
 namespace CF\WordPress;
 
 use CF\Integration\LoggerInterface;
@@ -6,8 +7,8 @@ use CF\Integration\DataStoreInterface;
 
 class DataStore implements DataStoreInterface
 {
-    const API_KEY = "cloudflare_api_key";
-    const EMAIL = "cloudflare_api_email";
+    const API_KEY = 'cloudflare_api_key';
+    const EMAIL = 'cloudflare_api_email';
 
     /**
      * @param LoggerInterface $logger
@@ -22,12 +23,20 @@ class DataStore implements DataStoreInterface
      * @param $email
      * @param $unique_id
      * @param $user_key
+     *
      * @return bool
      */
     public function createUserDataStore($client_api_key, $email, $unique_id, $user_key)
     {
-        update_option(self::API_KEY, $client_api_key);
-        update_option(self::EMAIL, $email);
+        // Clear options
+        update_option(self::API_KEY, '');
+        update_option(self::EMAIL, '');
+
+        // Fill options
+        $isUpdated1 = update_option(self::API_KEY, $client_api_key);
+        $isUpdated2 = update_option(self::EMAIL, $email);
+
+        return $isUpdated1 && $isUpdated2;
     }
 
     /**
@@ -35,7 +44,7 @@ class DataStore implements DataStoreInterface
      */
     public function getHostAPIUserUniqueId()
     {
-        return null;
+        return;
     }
 
     /**
@@ -51,7 +60,7 @@ class DataStore implements DataStoreInterface
      */
     public function getHostAPIUserKey()
     {
-        return null;
+        return;
     }
 
     /**

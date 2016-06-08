@@ -1,4 +1,11 @@
 {
+    "component.clientLogin.form.email": "Email",
+    "component.clientLogin.form.apiKeyHelp": "Where can I find my API key?",
+    "component.clientLogin.form.apiKey": "API Key",
+    "component.clientLogin.form.button": "Save API Credentials",
+    "component.clientLogin.form.signUp": "Sign up",
+    "component.clientLogin.form.title": "Enter CloudFlare API Credentials",
+    "component.clientLogin.cloudflare.description": "New to CloudFlare?  Sign up at",
     "component.login.form.email": "Email",
     "component.login.form.forgotPassword": "Forgot your password?",
     "component.login.form.password": "Password",

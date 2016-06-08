@@ -1,14 +1,14 @@
 <?php
 
-namespace CF\WordPress\Test;
+namespace CF\Test\API;
 
 use CF\API\Request;
-use CF\WordPress\ClientActions;
 use CF\Integration\DefaultIntegration;
+use CF\API\Plugin;
 
-class ClientActionsTest extends \PHPUnit_Framework_TestCase
+class PluginTest extends \PHPUnit_Framework_TestCase
 {
-    private $mockClientAPI;
+    private $mockPluginAPI;
     private $mockConfig;
     private $mockWordPressAPI;
     private $mockDataStore;
@@ -17,7 +17,7 @@ class ClientActionsTest extends \PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $this->mockClientAPI = $this->getMockBuilder('CF\API\Client')
+        $this->mockPluginAPI = $this->getMockBuilder('CF\API\Plugin')
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
@@ -35,19 +35,31 @@ class ClientActionsTest extends \PHPUnit_Framework_TestCase
         $this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);
     }
 
-    public function testReturnWordPressDomain()
+    public function testCreateAPISuccessResponse()
     {
-        $wordPressDomain = "example.com";
+        $resultString = 'result';
+        $resultArray = array('email' => $resultString);
+
+        $pluginAPI = new Plugin($this->mockDefaultIntegration);
+
+        $firstResponse = $pluginAPI->createAPISuccessResponse($resultString);
+        $secondResponse = $pluginAPI->createAPISuccessResponse($resultArray);
+
+        $this->assertEquals('true', $firstResponse['success']);
+        $this->assertEquals('true', $secondResponse['success']);
+        $this->assertEquals($resultString, $firstResponse['result']);
+        $this->assertEquals($resultArray, $secondResponse['result']);
+    }
+
+    public function testCallAPI()
+    {
         $request = new Request(null, null, null, null);
+        $pluginAPI = new Plugin($this->mockDefaultIntegration);
 
-        $clientActions = new ClientActions($this->mockDefaultIntegration, $this->mockClientAPI, $request);
-        $this->mockWordPressAPI->method('getDomainList')->willReturn(
-            array($wordPressDomain)
-        );
-        $this->mockClientAPI->method('responseOk')->willReturn(true);
-        $this->mockClientAPI->method('callAPI')->willReturn(array("result" => array()));
-        $response = $clientActions->returnWordPressDomain();
+        $this->mockWordPressAPI->method('createAPIError')->willReturn($error);
 
-        $this->assertEquals($wordPressDomain, $response["result"][0]["name"]);
+        $response = $pluginAPI->callAPI($request);
+
+        $this->assertEquals(false, $response['success']);
     }
 }

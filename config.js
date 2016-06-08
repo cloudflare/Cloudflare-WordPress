@@ -16,5 +16,6 @@
     "featureManagerIsSSLEnabled": false,
     "locale": "en",
     "integrationName": "wordpress",
-    "version": "6.0.0"
+    "useHostAPILogin": false,
+    "version": "1.0.0"
 }
