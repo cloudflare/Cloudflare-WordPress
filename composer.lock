@@ -4,9 +4,49 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d84bbf8f5e9fa2c05b63ac8e07256f82",
-    "content-hash": "548a8930d1da1b333edafdc167f26bbb",
+    "hash": "5bdd952f9593e7f31ff152cc171940d7",
+    "content-hash": "06a37033b7c9b60f3465945b91f94434",
     "packages": [
+        {
+            "name": "cloudflare/cf-ip-rewrite",
+            "version": "v0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cloudflare/cf-ip-rewrite.git",
+                "reference": "a16eec5f06189dc505108626d161c1bdf9c54490"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/a16eec5f06189dc505108626d161c1bdf9c54490",
+                "reference": "a16eec5f06189dc505108626d161c1bdf9c54490",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "CloudFlare\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "CloudFlare",
+                    "homepage": "http://www.cloudflare.com/"
+                }
+            ],
+            "description": "Library to rewrite CloudFlare IP Addresses to the end-user IP address",
+            "keywords": [
+                "cloudflare",
+                "ip rewrite"
+            ],
+            "time": "2015-03-06 23:13:36"
+        },
         {
             "name": "cloudflare/cloudflare-plugin-backend",
             "version": "1.0.1",

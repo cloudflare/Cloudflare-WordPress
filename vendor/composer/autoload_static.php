@@ -86,6 +86,13 @@ class ComposerStaticInit39a28a0208fb12e191005eae3cc6d4bf
                 0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
             ),
         ),
+        'C' => 
+        array (
+            'CloudFlare\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/cloudflare/cf-ip-rewrite/src',
+            ),
+        ),
     );
 
     public static $classMap = array (
