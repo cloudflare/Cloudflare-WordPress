@@ -32,13 +32,7 @@ define('CLOUDFLARE_VERSION', '1.3.24');
 define('CLOUDFLARE_API_URL', 'https://www.cloudflare.com/api_json.html');
 define('CLOUDFLARE_SPAM_URL', 'https://www.cloudflare.com/ajax/external-event.html');
 
-// require_once 'IpRewrite.php';
-// require_once 'IpRange.php';
-
-use \CloudFlare\IpRange;
 use \CloudFlare\IpRewrite;
-
-// use cloudflare\IpRange;
 
 $cfPostKeys = array('cloudflare_zone_name', 'cf_key', 'cf_email', 'dev_mode', 'protocol_rewrite');
 
