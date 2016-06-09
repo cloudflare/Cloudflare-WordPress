@@ -26,63 +26,73 @@ Plugin adapted from the Akismet WP plugin.
 
 */
 
+require_once 'vendor/autoload.php';
+
 define('CLOUDFLARE_VERSION', '1.3.24');
 define('CLOUDFLARE_API_URL', 'https://www.cloudflare.com/api_json.html');
 define('CLOUDFLARE_SPAM_URL', 'https://www.cloudflare.com/ajax/external-event.html');
 
-require_once("IpRewrite.php");
-require_once("IpRange.php");
+// require_once 'IpRewrite.php';
+// require_once 'IpRange.php';
 
-use CloudFlare\IpRewrite;
+use \CloudFlare\IpRange;
+use \CloudFlare\IpRewrite;
 
-$cfPostKeys = array("cloudflare_zone_name", "cf_key", "cf_email", "dev_mode", "protocol_rewrite");
+// use cloudflare\IpRange;
 
-foreach($_POST as $key => $value) {
-    if(in_array($key, $cfPostKeys)) {
+$cfPostKeys = array('cloudflare_zone_name', 'cf_key', 'cf_email', 'dev_mode', 'protocol_rewrite');
+
+foreach ($_POST as $key => $value) {
+    if (in_array($key, $cfPostKeys)) {
         $_POST[$key] = cloudflare_filter_xss($_POST[$key]);
     }
 }
 
-function cloudflare_filter_xss($input) {
-    return htmlentities($input, ENT_QUOTES | ENT_HTML5, "UTF-8");
+function cloudflare_filter_xss($input)
+{
+    return htmlentities($input, ENT_QUOTES | ENT_HTML5, 'UTF-8');
 }
 
-
 // Make sure we don't expose any info if called directly
-if ( !function_exists( 'add_action' ) ) {
+if (!function_exists('add_action')) {
     echo "Hi there!  I'm just a plugin, not much I can do when called directly.";
     exit;
 }
 
-function cloudflare_init() {
+function cloudflare_init()
+{
     global $is_cf;
 
     $is_cf = IpRewrite::isCloudFlare();
 
     add_action('admin_menu', 'cloudflare_config_page');
 }
-add_action('init', 'cloudflare_init',1);
+add_action('init', 'cloudflare_init', 1);
 
-function cloudflare_admin_init() {
-
+function cloudflare_admin_init()
+{
 }
 
 add_action('admin_init', 'cloudflare_admin_init');
 
-function cloudflare_plugin_action_links( $links ) {
-    $links[] = '<a href="'. get_admin_url(null, 'options-general.php?page=cloudflare') .'">Settings</a>';
+function cloudflare_plugin_action_links($links)
+{
+    $links[] = '<a href="'.get_admin_url(null, 'options-general.php?page=cloudflare').'">Settings</a>';
+
     return $links;
 }
 
-add_filter( 'plugin_action_links_' . plugin_basename(__FILE__), 'cloudflare_plugin_action_links' );
+add_filter('plugin_action_links_'.plugin_basename(__FILE__), 'cloudflare_plugin_action_links');
 
-function cloudflare_config_page() {
+function cloudflare_config_page()
+{
     if (function_exists('add_options_page')) {
         add_options_page(__('CloudFlare Configuration'), __('CloudFlare'), 'manage_options', 'cloudflare', 'cloudflare_conf2');
     }
 }
 
-function load_cloudflare_keys () {
+function load_cloudflare_keys()
+{
     global $cloudflare_api_key, $cloudflare_api_email, $cloudflare_zone_name, $cloudflare_protocol_rewrite;
     $cloudflare_api_key = get_option('cloudflare_api_key');
     $cloudflare_api_email = get_option('cloudflare_api_email');
