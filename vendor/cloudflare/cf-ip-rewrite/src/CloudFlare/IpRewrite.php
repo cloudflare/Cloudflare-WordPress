@@ -86,8 +86,7 @@ class IpRewrite {
                 foreach (self::$cf_ipv4 as $range) {
                     if (IpRange::ipv4_in_range(self::$original_ip, $range)) {
                         if (self::$is_cf) {
-                            self::$rewritten_ip = $_SERVER["REMOTE_ADDR"] = 
-$_SERVER["HTTP_CF_CONNECTING_IP"];
+                            self::$rewritten_ip = $_SERVER["REMOTE_ADDR"] = $_SERVER["HTTP_CF_CONNECTING_IP"];
                         }
                         break;
                     }
@@ -97,8 +96,7 @@ $_SERVER["HTTP_CF_CONNECTING_IP"];
                 foreach (self::$cf_ipv6 as $range) {
                     if (IpRange::ipv6_in_range($ipv6, $range)) {
                         if (self::$is_cf) {
-                            self::$rewritten_ip = $_SERVER["REMOTE_ADDR"] = 
-$_SERVER["HTTP_CF_CONNECTING_IP"];
+                            self::$rewritten_ip = $_SERVER["REMOTE_ADDR"] = $_SERVER["HTTP_CF_CONNECTING_IP"];
                         }
                         break;
                     }

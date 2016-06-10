@@ -9,4 +9,5 @@ return array(
     'phpDocumentor' => array($vendorDir . '/phpdocumentor/reflection-docblock/src'),
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
+    'CloudFlare\\' => array($vendorDir . '/cloudflare/cf-ip-rewrite/src'),
 );
