@@ -78,4 +78,32 @@ class PluginActions
 
         return $response;
     }
+
+    /**
+     * PATCH /zones/:zonedId/settings/:settingId.
+     *
+     * @return mixed
+     */
+    public function patchPluginSettings()
+    {
+        $path_array = explode('/', $this->request->getUrl());
+        $zone_tag = $path_array[1];
+        $setting_tag = $path_array[3];
+        $value = $this->request->getBody()['value'];
+
+        $settings = $this->dataStore->setIpRewrite($zone_tag, $setting_tag, $value);
+
+        if (isset($settings)) {
+            return $this->api->createAPIError('Unable to update plugin settings');
+        }
+
+        $response = $this->api->createAPISuccessResponse(
+            $settings
+        );
+
+        $response['errors'] = []; // TODO: This doesn't seem a nice way
+        $response['messages'] = [];
+
+        return $response;
+    }
 }
