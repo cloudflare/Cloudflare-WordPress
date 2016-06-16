@@ -66,7 +66,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         $settingId = 'testId';
         $value = 'testValue';
 
-        $request = new Request(null, '/zones/:zonedId/settings/:settingId', null, null);
+        $request = new Request(null, '/plugin/:zonedId/settings/:settingId', null, null);
 
         $this->mockDataStore->method('setIpRewrite')->willReturn(array(
                 array(
@@ -91,7 +91,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         $settingId = 'testId';
         $value = 'testValue';
 
-        $request = new Request(null, 'zones/:zonedId/settings', null, null);
+        $request = new Request(null, 'plugin/:zonedId/settings', null, null);
 
         $this->mockDataStore->method('getIpRewrite')->willReturn(array(
                 array(

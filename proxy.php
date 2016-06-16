@@ -15,7 +15,7 @@ $wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);
 $wordpressIntegration = new CF\Integration\DefaultIntegration($config, $wordpressAPI, $dataStore, $logger);
 $clientAPIClient = new CF\API\Client($wordpressIntegration);
 $clientAPIClientRoutes = CF\WordPress\ClientRoutes::$routes;
-$pluginAPIClient = new CF\API\Plugin($wordpressIntegration);
+$pluginAPIClient = new CF\WordPress\API\Plugin($wordpressIntegration);
 $pluginAPIPluginRoutes = CF\WordPress\PluginRoutes::$routes;
 
 $method = $_SERVER['REQUEST_METHOD'];

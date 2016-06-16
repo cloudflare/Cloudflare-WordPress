@@ -54,7 +54,7 @@ class PluginActions
     }
 
     /**
-     * GET /zones/:zonedId/settings.
+     * GET /plugin/:zonedId/settings.
      *
      * @return mixed
      */
@@ -80,7 +80,7 @@ class PluginActions
     }
 
     /**
-     * PATCH /zones/:zonedId/settings/:settingId.
+     * PATCH /plugin/:zonedId/settings/:settingId.
      *
      * @return mixed
      */

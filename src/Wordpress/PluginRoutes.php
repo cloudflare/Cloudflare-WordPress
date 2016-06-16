@@ -14,7 +14,7 @@ class PluginRoutes
             ),
         ),
 
-        'zones/:zoneId/settings' => array(
+        'plugin/:id/settings' => array(
             'class' => 'CF\WordPress\PluginActions',
             'methods' => array(
                 'GET' => array(
@@ -23,7 +23,7 @@ class PluginRoutes
             ),
         ),
 
-        'zones/:zoneId/settings/:settingId' => array(
+        'plugin/:id/settings/:human_readable_id' => array(
             'class' => 'CF\WordPress\PluginActions',
             'methods' => array(
                 'PATCH' => array(
