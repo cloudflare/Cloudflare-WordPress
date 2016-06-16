@@ -52,4 +52,30 @@ class PluginActions
 
         return $response;
     }
+
+    /**
+     * GET /zones/:zonedId/settings.
+     *
+     * @return mixed
+     */
+    public function getPluginSettings()
+    {
+        $path_array = explode('/', $this->request->getUrl());
+        $zone_tag = $path_array[1];
+
+        $settings = $this->dataStore->getIpRewrite($zone_tag);
+
+        if (isset($settings)) {
+            return $this->api->createAPIError('Unable to get plugin settings');
+        }
+
+        $response = $this->api->createAPISuccessResponse(
+            $settings
+        );
+
+        $response['errors'] = []; // TODO: This doesn't seem a nice way
+        $response['messages'] = [];
+
+        return $response;
+    }
 }
