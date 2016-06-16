@@ -4,7 +4,7 @@ namespace CF\Test\API;
 
 use CF\API\Request;
 use CF\Integration\DefaultIntegration;
-use CF\API\Plugin;
+use CF\WordPress\API\Plugin;
 
 class PluginTest extends \PHPUnit_Framework_TestCase
 {
@@ -17,7 +17,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $this->mockPluginAPI = $this->getMockBuilder('CF\API\Plugin')
+        $this->mockPluginAPI = $this->getMockBuilder('CF\WordPress\API\Plugin')
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')

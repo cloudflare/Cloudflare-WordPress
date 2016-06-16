@@ -9,6 +9,7 @@ class DataStore implements DataStoreInterface
 {
     const API_KEY = 'cloudflare_api_key';
     const EMAIL = 'cloudflare_api_email';
+    const IP_REWRITE = 'cloudflare_ip_rewrite';
 
     /**
      * @param LoggerInterface $logger
@@ -69,6 +70,8 @@ class DataStore implements DataStoreInterface
     public function getCloudFlareEmail()
     {
         return get_option(self::EMAIL);
+    }
+
     /**
      * @param $zoneId
      * 
