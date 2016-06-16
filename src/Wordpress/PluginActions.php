@@ -65,7 +65,7 @@ class PluginActions
 
         $settings = $this->dataStore->getIpRewrite($zone_tag);
 
-        if (isset($settings)) {
+        if (!isset($settings)) {
             return $this->api->createAPIError('Unable to get plugin settings');
         }
 
@@ -93,7 +93,7 @@ class PluginActions
 
         $settings = $this->dataStore->setIpRewrite($zone_tag, $setting_tag, $value);
 
-        if (isset($settings)) {
+        if (!isset($settings)) {
             return $this->api->createAPIError('Unable to update plugin settings');
         }
 
