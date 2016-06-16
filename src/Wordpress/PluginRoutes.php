@@ -6,12 +6,21 @@ class PluginRoutes
 {
     public static $routes = array(
         'account' => array(
-                    'class' => 'CF\WordPress\PluginActions',
-                    'methods' => array(
-                        'POST' => array(
-                            'function' => 'loginWordPress',
-                        ),
-                    ),
+            'class' => 'CF\WordPress\PluginActions',
+            'methods' => array(
+                'POST' => array(
+                    'function' => 'loginWordPress',
                 ),
+            ),
+        ),
+
+        ' zones/:zoneId/settings' => array(
+            'class' => 'CF\WordPress\PluginActions',
+            'methods' => array(
+                'GET' => array(
+                    'function' => 'getPluginSettings',
+                ),
+            ),
+        ),
     );
 }

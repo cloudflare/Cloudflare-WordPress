@@ -9,7 +9,7 @@ use CF\Integration\DefaultIntegration;
 
 class PluginActionsTest extends \PHPUnit_Framework_TestCase
 {
-    private $mockPluginAPI;
+    private $pluginAPI;
     private $mockConfig;
     private $mockWordPressAPI;
     private $mockDataStore;
@@ -18,9 +18,6 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $this->mockPluginAPI = $this->getMockBuilder('CF\API\Plugin')
-            ->disableOriginalConstructor()
-            ->getMock();
         $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
             ->disableOriginalConstructor()
             ->getMock();
@@ -34,22 +31,19 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);
+
+        $this->pluginAPI = new Plugin($this->mockDefaultIntegration);
     }
 
     public function testLoginWordPressSuccess()
     {
         $email = 'email@example.com';
-        $request = new Request(null, null, null, null);
+        $apiKey = 'apiKey';
+        $request = new Request(null, null, null, array('apiKey' => $apiKey, 'email' => $email));
 
-        $this->mockPluginAPI->method('createAPISuccessResponse')->willReturn(
-            array(
-            'success' => 'true',
-            'result' => array('email' => $email),
-            )
-        );
         $this->mockDataStore->method('createUserDataStore')->willReturn(true);
 
-        $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->mockPluginAPI, $request);
+        $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->pluginAPI, $request);
         $response = $pluginActions->loginWordPress();
 
         $this->assertEquals($email, $response['result']['email']);
@@ -58,15 +52,26 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
 
     public function testLoginWordPressFail()
     {
-        $email = 'email@example.com';
-        $error = 'error';
         $request = new Request(null, null, null, null);
 
         $this->mockDataStore->method('createUserDataStore')->willReturn(false);
-        $this->mockPluginAPI->method('createAPIError')->willReturn($error);
-        $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->mockPluginAPI, $request);
+        $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->pluginAPI, $request);
         $response = $pluginActions->loginWordPress();
 
-        $this->assertEquals($error, $response);
+        $this->assertEquals(false, $response['success']);
+    }
+
+    public function testGetPluginSettings()
+    {
+        $request = new Request(null, 'zones/:zonedId/settings', null, null);
+
+        $this->mockDataStore->method('getIpRewrite')->willReturn(true);
+
+        $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->pluginAPI, $request);
+        $response = $pluginActions->getPluginSettings();
+
+        $this->assertEquals('true', $response['success']);
+        $this->assertEquals('ip_rewrite', $response['result'][0]['id']);
+        $this->assertEquals(true, $response['result'][0]['value']);
     }
 }
