@@ -79,10 +79,23 @@ class DataStore implements DataStoreInterface
      */
     public function getIpRewrite($zoneId)
     {
-        error_log('GET IP REWRITE ');
-        error_log(get_option(self::IP_REWRITE));
+        update_option(self::IP_REWRITE, array(
+            'd5f3de2714f70b791a46d5640f80abed' => array(
+                    'id' => 'ip_rewrite',
+                    'value' => true,
+                    'editable' => true,
+                    'modified_on' => '',
+                ),
+            )
+        );
 
-        return get_option(self::IP_REWRITE)[$zoneId];
+        $options = get_option(self::IP_REWRITE);
+
+        if (!isset($options[$zoneId])) {
+            return;
+        }
+
+        return $options[$zoneId];
     }
 
     /**
