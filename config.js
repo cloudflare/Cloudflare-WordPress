@@ -8,6 +8,7 @@
     "featureManagerIsDevelopmentModeEnabled": true,
     "featureManagerIsFullZoneProvisioningEnabled": false,
     "featureManagerIsIpv6Enabled": true,
+    "featureManagerIsIpRewriteEnabled": true,
     "featureManagerIsMinifyEnabled": true,
     "featureManagerIsPurgeCacheEnabled": true,
     "featureManagerIsRailgunEnabled": true,

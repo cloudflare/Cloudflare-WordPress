@@ -167,5 +167,7 @@
     "container.zoneProvision.modal.title": "Delete Website",
     "container.zoneProvision.modal.description": "Are you sure you want to delete {zoneName}? To temporarily disable CloudFlare service and save your website settings, pause your website instead.",
     "container.zoneProvision.modal.buttonCancel": "Cancel",
+    "container.ipRewrite.title": "IP Rewrite",
+    "container.ipRewrite.description": "Rewrite CloudFlare IP Addresses for actual end-user IP Addresses at the application layer.",
     "errors.noActiveZoneSelected": "Please select a domain that is provisioned with CloudFlare."
 }
