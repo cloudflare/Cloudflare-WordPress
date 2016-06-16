@@ -69,5 +69,60 @@ class DataStore implements DataStoreInterface
     public function getCloudFlareEmail()
     {
         return get_option(self::EMAIL);
+    /**
+     * @param $zoneId
+     * 
+     * @return mixed
+     */
+    public function getIpRewrite($zoneId)
+    {
+        error_log('GET IP REWRITE ');
+        error_log(get_option(self::IP_REWRITE));
+
+        return get_option(self::IP_REWRITE)[$zoneId];
+    }
+
+    /**
+     * @param $zoneId
+     * @param $settingId
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function setIpRewrite($zoneId, $settingId, $value)
+    {
+        $options = get_option(self::IP_REWRITE);
+
+        if (!isset($options[$zoneId])) {
+            return;
+        }
+
+        $updated = false;
+        for ($i = 0; $i < count($options[$zoneId]); ++$i) {
+            if ($options[$zoneId][$i]['id'] == $settingId) {
+                $options[$zoneId][$i]['id'] = $value;
+                $updated = true;
+                break;
+            }
+        }
+
+        if (!$updated) {
+            array_push($options[$zoneId],
+                array(
+                    'id' => $settingId,
+                    'value' => $value,
+                    'editable' => true,
+                    'modified_on' => '',
+                )
+            );
+        }
+
+        if (!update_option(self::IP_REWRITE, $options)) {
+            return;
+        }
+
+        $options = get_option(self::IP_REWRITE);
+
+        return $options;
     }
 }
