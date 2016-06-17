@@ -9,6 +9,16 @@ span#pageHeading {
     display: block;
 }
 
+/* center the dot in radio button */
+input[type="radio"]:checked:before {
+    margin-top: 3px;
+    margin-left: 4px;
+    height: 6px;
+    left: 0px;
+    top: 0px;
+    width: 6px;
+}
+
 /* change bg of body, wrapper */
 body, .cloudflare-partners .wrapper {
     background-color: #ebebeb; /* new */
