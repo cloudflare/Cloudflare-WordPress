@@ -60,17 +60,18 @@ class PluginActions
      */
     public function getPluginSettings()
     {
-        $path_array = explode('/', $this->request->getUrl());
-        $zone_tag = $path_array[1];
-
-        $settings = $this->dataStore->getIpRewrite($zone_tag);
-
-        if (!isset($settings)) {
-            return $this->api->createAPIError('Unable to get plugin settings');
-        }
+        // Always return true
+        $value = true;//$this->dataStore->getIpRewrite();
 
         $response = $this->api->createAPISuccessResponse(
-            $settings
+            array(
+                array(
+                'id' => 'ip_rewrite',
+                'value' => $value,
+                'editable' => true,
+                'modified_on' => '',
+                ),
+            )
         );
 
         $response['errors'] = []; // TODO: This doesn't seem a nice way
@@ -87,18 +88,24 @@ class PluginActions
     public function patchPluginSettings()
     {
         $path_array = explode('/', $this->request->getUrl());
-        $zone_tag = $path_array[1];
-        $setting_tag = $path_array[3];
+        $settingId = $path_array[3];
+
         $value = $this->request->getBody()['value'];
+        $isOK = $this->dataStore->setIpRewrite($value);
 
-        $settings = $this->dataStore->setIpRewrite($zone_tag, $setting_tag, $value);
-
-        if (!isset($settings)) {
+        if (!$isOK) {
             return $this->api->createAPIError('Unable to update plugin settings');
         }
 
         $response = $this->api->createAPISuccessResponse(
-            $settings
+            array(
+                array(
+                    'id' => $settingId,
+                    'value' => $value,
+                    'editable' => true,
+                    'modified_on' => '',
+                ),
+            )
         );
 
         $response['errors'] = []; // TODO: This doesn't seem a nice way

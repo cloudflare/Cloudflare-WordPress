@@ -73,72 +73,24 @@ class DataStore implements DataStoreInterface
     }
 
     /**
-     * @param $zoneId
-     * 
-     * @return mixed
+     * @return (bool)
      */
-    public function getIpRewrite($zoneId)
+    public function getIpRewrite()
     {
-        update_option(self::IP_REWRITE, array(
-            'd5f3de2714f70b791a46d5640f80abed' => array(
-                    'id' => 'ip_rewrite',
-                    'value' => true,
-                    'editable' => true,
-                    'modified_on' => '',
-                ),
-            )
-        );
-
-        $options = get_option(self::IP_REWRITE);
-
-        if (!isset($options[$zoneId])) {
-            return;
-        }
-
-        return $options[$zoneId];
+        return get_option(self::IP_REWRITE);
     }
 
     /**
-     * @param $zoneId
-     * @param $settingId
      * @param $value
      *
-     * @return mixed
+     * @return bool
      */
-    public function setIpRewrite($zoneId, $settingId, $value)
+    public function setIpRewrite($value)
     {
-        $options = get_option(self::IP_REWRITE);
+        // Clear option with temp value
+        update_option(self::IP_REWRITE, 'cleared');
 
-        if (!isset($options[$zoneId])) {
-            return;
-        }
-
-        $updated = false;
-        for ($i = 0; $i < count($options[$zoneId]); ++$i) {
-            if ($options[$zoneId][$i]['id'] == $settingId) {
-                $options[$zoneId][$i]['id'] = $value;
-                $updated = true;
-                break;
-            }
-        }
-
-        if (!$updated) {
-            array_push($options[$zoneId],
-                array(
-                    'id' => $settingId,
-                    'value' => $value,
-                    'editable' => true,
-                    'modified_on' => '',
-                )
-            );
-        }
-
-        if (!update_option(self::IP_REWRITE, $options)) {
-            return;
-        }
-
-        $options = get_option(self::IP_REWRITE);
-
-        return $options;
+        // Set option
+        return update_option(self::IP_REWRITE, $value);
     }
 }
