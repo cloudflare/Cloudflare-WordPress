@@ -66,17 +66,9 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         $settingId = 'testId';
         $value = 'testValue';
 
-        $request = new Request(null, '/plugin/:zonedId/settings/:settingId', null, null);
+        $request = new Request(null, "plugin/:zonedId/settings/$settingId", null, array('value' => $value));
 
-        $this->mockDataStore->method('setIpRewrite')->willReturn(array(
-                array(
-                    'id' => $settingId,
-                    'value' => $value,
-                    'editable' => true,
-                    'modified_on' => '',
-                ),
-            )
-        );
+        $this->mockDataStore->method('setIpRewrite')->willReturn(true);
 
         $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->pluginAPI, $request);
         $response = $pluginActions->patchPluginSettings();
@@ -88,20 +80,12 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
 
     public function testGetPluginSettings()
     {
-        $settingId = 'testId';
-        $value = 'testValue';
+        $settingId = 'ip_rewrite';
+        $value = true;
 
         $request = new Request(null, 'plugin/:zonedId/settings', null, null);
 
-        $this->mockDataStore->method('getIpRewrite')->willReturn(array(
-                array(
-                    'id' => $settingId,
-                    'value' => $value,
-                    'editable' => true,
-                    'modified_on' => '',
-                ),
-            )
-        );
+        $this->mockDataStore->method('getIpRewrite')->willReturn(true);
 
         $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->pluginAPI, $request);
         $response = $pluginActions->getPluginSettings();
