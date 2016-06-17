@@ -11,12 +11,12 @@ span#pageHeading {
 
 /* center the dot in radio button */
 input[type="radio"]:checked:before {
-    margin-top: 3px;
-    margin-left: 4px;
-    height: 6px;
-    left: 0px;
-    top: 0px;
-    width: 6px;
+    margin-top: 3px; /* new */
+    margin-left: 4px; /* new */
+    height: 6px; /* 7px */
+    left: 0px; /* 3px */
+    top: 0px; /* 7px */
+    width: 6px; /* 7px */
 }
 
 /* change bg of body, wrapper */
