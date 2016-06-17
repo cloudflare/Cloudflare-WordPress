@@ -9,6 +9,11 @@ span#pageHeading {
     display: block;
 }
 
+/* fix the wrapper to stick to top */
+.wrapper {
+    margin-top: 20px; /* new */
+}
+
 /* center the dot in radio button */
 input[type="radio"]:checked:before {
     margin-top: 3px; /* new */
