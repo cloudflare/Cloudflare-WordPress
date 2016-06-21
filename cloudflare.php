@@ -42,6 +42,30 @@ foreach ($_POST as $key => $value) {
     }
 }
 
+// Call when the Plugin is activated in server. 
+function cloudflare_activate()
+{
+    global $wp_version;
+    $min_wp_version = '3.1';
+    $min_php_version = '5.3';
+
+    if (version_compare(PHP_VERSION, $min_php_version, '<')) {
+        $flag = 'PHP';
+    } elseif (version_compare($wp_version, $min_wp_version, '<')) {
+        $flag = 'WordPress';
+    } else {
+        return;
+    }
+    $version = 'PHP' == $flag ? $min_php_version : $min_wp_version;
+
+    // Deactivate Plugin
+    deactivate_plugins(basename(__FILE__));
+
+    // Kill Execution
+    wp_die('<p><strong>Cloudflare</strong> plugin requires '.$flag.'  version '.$version.' or greater.</p>', 'Plugin Activation Error',  array('response' => 200, 'back_link' => true));
+}
+register_activation_hook(__FILE__, 'cloudflare_activate');
+
 function cloudflare_filter_xss($input)
 {
     return htmlentities($input, ENT_QUOTES | ENT_HTML5, 'UTF-8');
