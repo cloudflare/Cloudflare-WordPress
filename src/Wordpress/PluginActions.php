@@ -64,18 +64,8 @@ class PluginActions
         $value = true;//$this->dataStore->getIpRewrite();
 
         $response = $this->api->createAPISuccessResponse(
-            array(
-                array(
-                'id' => 'ip_rewrite',
-                'value' => $value,
-                'editable' => true,
-                'modified_on' => '',
-                ),
-            )
+            $settings
         );
-
-        $response['errors'] = []; // TODO: This doesn't seem a nice way
-        $response['messages'] = [];
 
         return $response;
     }
@@ -99,17 +89,9 @@ class PluginActions
 
         $response = $this->api->createAPISuccessResponse(
             array(
-                array(
-                    'id' => $settingId,
-                    'value' => $value,
-                    'editable' => true,
-                    'modified_on' => '',
-                ),
+                $this->api->createPluginResult($settingId, $value, true, ''),
             )
         );
-
-        $response['errors'] = []; // TODO: This doesn't seem a nice way
-        $response['messages'] = [];
 
         return $response;
     }

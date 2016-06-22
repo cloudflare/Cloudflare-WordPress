@@ -43,6 +43,18 @@ class Plugin extends Client
         return array(
             'success' => 'true',
             'result' => $result,
+            'messages' => [],
+            'errors' => [],
+        );
+    }
+
+    public function createPluginResult($id, $value, $editable, $modified_on)
+    {
+        return array(
+            'id' => $id,
+            'value' => $value,
+            'editable' => $editable,
+            'modified_on' => $modified_on,
         );
     }
 }
