@@ -10,6 +10,7 @@
     "featureManagerIsIpv6Enabled": true,
     "featureManagerIsIpRewriteEnabled": true,
     "featureManagerIsMinifyEnabled": true,
+    "featureManagerIsProtocolRewriteEnabled": true,
     "featureManagerIsPurgeCacheEnabled": true,
     "featureManagerIsRailgunEnabled": true,
     "featureManagerIsScanEnabled": false,
