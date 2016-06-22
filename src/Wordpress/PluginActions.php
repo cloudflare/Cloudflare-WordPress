@@ -61,7 +61,7 @@ class PluginActions
     public function getPluginSettings()
     {
         // Always return true
-        $value = true;//$this->dataStore->getIpRewrite();
+        $settings = $this->dataStore->getPluginSettings($this->api);
 
         $response = $this->api->createAPISuccessResponse(
             $settings
@@ -81,9 +81,9 @@ class PluginActions
         $settingId = $path_array[3];
 
         $value = $this->request->getBody()['value'];
-        $isOK = $this->dataStore->setIpRewrite($value);
+        $options = $this->dataStore->setPluginSetting($settingId, $value);
 
-        if (!$isOK) {
+        if (!isset($options)) {
             return $this->api->createAPIError('Unable to update plugin settings');
         }
 
