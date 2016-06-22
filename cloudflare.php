@@ -36,6 +36,9 @@ use \CloudFlare\IpRewrite;
 
 $cfPostKeys = array('cloudflare_zone_name', 'cf_key', 'cf_email', 'dev_mode', 'protocol_rewrite');
 
+const MIN_PHP_VERSION = '5.3';
+const MIN_WP_VERSION = '3.1';
+
 foreach ($_POST as $key => $value) {
     if (in_array($key, $cfPostKeys)) {
         $_POST[$key] = cloudflare_filter_xss($_POST[$key]);
@@ -46,23 +49,26 @@ foreach ($_POST as $key => $value) {
 function cloudflare_activate()
 {
     global $wp_version;
-    $min_wp_version = '3.1';
-    $min_php_version = '5.3';
 
-    if (version_compare(PHP_VERSION, $min_php_version, '<')) {
+    if (version_compare(PHP_VERSION, MIN_PHP_VERSION, '<')) {
         $flag = 'PHP';
-    } elseif (version_compare($wp_version, $min_wp_version, '<')) {
+        $version = MIN_PHP_VERSION;
+    }
+
+    if (version_compare($wp_version, MIN_WP_VERSION, '<')) {
         $flag = 'WordPress';
-    } else {
+        $version = MIN_WP_VERSION;
+    }
+
+    if (isset($flag) || isset($version)) {
+        // Deactivate Plugin
+        deactivate_plugins(basename(__FILE__));
+
+        // Kill Execution
+        wp_die('<p><strong>Cloudflare</strong> plugin requires '.$flag.'  version '.$version.' or greater.</p>', 'Plugin Activation Error',  array('response' => 200, 'back_link' => true));
+
         return;
     }
-    $version = 'PHP' == $flag ? $min_php_version : $min_wp_version;
-
-    // Deactivate Plugin
-    deactivate_plugins(basename(__FILE__));
-
-    // Kill Execution
-    wp_die('<p><strong>Cloudflare</strong> plugin requires '.$flag.'  version '.$version.' or greater.</p>', 'Plugin Activation Error',  array('response' => 200, 'back_link' => true));
 }
 register_activation_hook(__FILE__, 'cloudflare_activate');
 
