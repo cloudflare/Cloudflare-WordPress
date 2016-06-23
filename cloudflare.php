@@ -36,11 +36,41 @@ use \CloudFlare\IpRewrite;
 
 $cfPostKeys = array('cloudflare_zone_name', 'cf_key', 'cf_email', 'dev_mode', 'protocol_rewrite');
 
+const MIN_PHP_VERSION = '5.3';
+const MIN_WP_VERSION = '3.1';
+
 foreach ($_POST as $key => $value) {
     if (in_array($key, $cfPostKeys)) {
         $_POST[$key] = cloudflare_filter_xss($_POST[$key]);
     }
 }
+
+// Call when the Plugin is activated in server. 
+function cloudflare_activate()
+{
+    global $wp_version;
+
+    if (version_compare(PHP_VERSION, MIN_PHP_VERSION, '<')) {
+        $flag = 'PHP';
+        $version = MIN_PHP_VERSION;
+    }
+
+    if (version_compare($wp_version, MIN_WP_VERSION, '<')) {
+        $flag = 'WordPress';
+        $version = MIN_WP_VERSION;
+    }
+
+    if (isset($flag) || isset($version)) {
+        // Deactivate Plugin
+        deactivate_plugins(basename(__FILE__));
+
+        // Kill Execution
+        wp_die('<p><strong>Cloudflare</strong> plugin requires '.$flag.'  version '.$version.' or greater.</p>', 'Plugin Activation Error',  array('response' => 200, 'back_link' => true));
+
+        return;
+    }
+}
+register_activation_hook(__FILE__, 'cloudflare_activate');
 
 function cloudflare_filter_xss($input)
 {
