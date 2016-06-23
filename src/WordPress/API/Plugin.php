@@ -1,6 +1,9 @@
 <?php
 
-namespace CF\API;
+namespace CF\WordPress\API;
+
+use CF\API\Client;
+use CF\API\Request;
 
 class Plugin extends Client
 {
@@ -30,7 +33,7 @@ class Plugin extends Client
      */
     public function callAPI(Request $request)
     {
-        $this->logger->error('CF\\API\\Plugin\\callAPI should never be called');
+        $this->logger->error('CF\\Wordpress\\API\\Plugin\\callAPI should never be called');
 
         return $this->createAPIError('The url: '.$request->getUrl().' is not a valid path.');
     }
@@ -40,6 +43,18 @@ class Plugin extends Client
         return array(
             'success' => 'true',
             'result' => $result,
-            );
+            'messages' => [],
+            'errors' => [],
+        );
+    }
+
+    public function createPluginResult($id, $value, $editable, $modified_on)
+    {
+        return array(
+            'id' => $id,
+            'value' => $value,
+            'editable' => $editable,
+            'modified_on' => $modified_on,
+        );
     }
 }

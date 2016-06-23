@@ -9,6 +9,9 @@ class DataStore implements DataStoreInterface
 {
     const API_KEY = 'cloudflare_api_key';
     const EMAIL = 'cloudflare_api_email';
+    const CLOUDFLARE_SETTING_PREFIX = 'cloudflare_';
+    const IP_REWRITE = 'ip_rewrite';
+    const PROTOCOL_REWRITE = 'protocol_rewrite';
 
     /**
      * @param LoggerInterface $logger
@@ -69,5 +72,47 @@ class DataStore implements DataStoreInterface
     public function getCloudFlareEmail()
     {
         return get_option(self::EMAIL);
+    }
+
+    /**
+     * @return (bool)
+     */
+    public function getPluginSettings($api)
+    {
+        $ip_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX + self::IP_REWRITE);
+        $protocol_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX + self::PROTOCOL_REWRITE);
+
+        $settings = [];
+        array_push($settings, $api->createPluginResult(self::IP_REWRITE, $ip_rewrite_value, true, ''));
+        array_push($settings, $api->createPluginResult(self::PROTOCOL_REWRITE, $protocol_rewrite_value, true, ''));
+
+        return $settings;
+    }
+
+    /**
+     * @param $value
+     *
+     * @return bool
+     */
+    public function setPluginSetting($settingId, $value)
+    {
+        $settingName = self::getPluginSettingName($settingId);
+        if (!$settingName) {
+            return false;
+        }
+
+        return update_option(self::CLOUDFLARE_SETTING_PREFIX + $settingName, $value);
+    }
+
+    private function getPluginSettingName($settingId)
+    {
+        switch ($settingId) {
+            case self::IP_REWRITE:
+                return self::IP_REWRITE;
+            case self::PROTOCOL_REWRITE:
+                return self::PROTOCOL_REWRITE;
+            default:
+                return false;
+        }
     }
 }

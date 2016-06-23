@@ -52,4 +52,47 @@ class PluginActions
 
         return $response;
     }
+
+    /**
+     * GET /plugin/:zonedId/settings.
+     *
+     * @return mixed
+     */
+    public function getPluginSettings()
+    {
+        // Always return true
+        $settings = $this->dataStore->getPluginSettings($this->api);
+
+        $response = $this->api->createAPISuccessResponse(
+            $settings
+        );
+
+        return $response;
+    }
+
+    /**
+     * PATCH /plugin/:zonedId/settings/:settingId.
+     *
+     * @return mixed
+     */
+    public function patchPluginSettings()
+    {
+        $path_array = explode('/', $this->request->getUrl());
+        $settingId = $path_array[3];
+
+        $value = $this->request->getBody()['value'];
+        $options = $this->dataStore->setPluginSetting($settingId, $value);
+
+        if (!isset($options)) {
+            return $this->api->createAPIError('Unable to update plugin settings');
+        }
+
+        $response = $this->api->createAPISuccessResponse(
+            array(
+                $this->api->createPluginResult($settingId, $value, true, ''),
+            )
+        );
+
+        return $response;
+    }
 }

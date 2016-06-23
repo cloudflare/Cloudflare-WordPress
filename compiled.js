@@ -74358,6 +74358,8 @@ var _zoneScan = _dereq_('./zoneScan');
 
 var _zoneSettings = _dereq_('./zoneSettings');
 
+var _ipRewrite = _dereq_('./ipRewrite');
+
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function zoneSetActiveZone(zone) {
@@ -74375,6 +74377,7 @@ function asyncZoneSetActiveZone(zone) {
             if (zone.status === 'active') {
                 dispatch((0, _zoneDnsRecords.asyncDNSRecordFetchList)(zone.id));
                 dispatch((0, _zoneRailgun.asyncZoneRailgunFetchAll)(zone.id));
+                dispatch((0, _ipRewrite.asyncPluginFetchSettings)(zone.id));
             }
             dispatch((0, _zoneSettings.asyncZoneFetchSettings)(zone.id));
             dispatch((0, _zoneAnalytics.asyncZoneFetchAnalytics)(zone.id));
@@ -74391,7 +74394,7 @@ function zoneSetActiveZoneIfEmpty(zone) {
     };
 }
 
-},{"../constants/ActionTypes":511,"./notifications":496,"./zoneAnalytics":498,"./zoneDnsRecords":499,"./zoneRailgun":502,"./zoneScan":503,"./zoneSettings":504}],493:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"./ipRewrite":496,"./notifications":497,"./zoneAnalytics":500,"./zoneDnsRecords":501,"./zoneRailgun":504,"./zoneScan":505,"./zoneSettings":506}],493:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -74409,7 +74412,7 @@ function applicationInit() {
     };
 }
 
-},{"../constants/ActionTypes":511}],494:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513}],494:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -74498,7 +74501,7 @@ function configUpdateByKey(key, value) {
     };
 }
 
-},{"../actions/user":497,"../constants/ActionTypes":511,"../reducers/config":547,"../utils/Auth/Auth":562,"./intl":495,"./notifications":496,"cf-util-http":115}],495:[function(_dereq_,module,exports){
+},{"../actions/user":499,"../constants/ActionTypes":513,"../reducers/config":551,"../utils/Auth/Auth":568,"./intl":495,"./notifications":497,"cf-util-http":115}],495:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -74560,7 +74563,106 @@ function asyncIntlFetchTranslations(locale) {
     };
 }
 
-},{"../constants/ActionTypes":511,"./app":493,"./notifications":496,"cf-util-http":115}],496:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"./app":493,"./notifications":497,"cf-util-http":115}],496:[function(_dereq_,module,exports){
+'use strict';
+
+exports.__esModule = true;
+exports.pluginFetchSettings = pluginFetchSettings;
+exports.pluginFetchSettingsSuccess = pluginFetchSettingsSuccess;
+exports.pluginFetchSettingsError = pluginFetchSettingsError;
+exports.pluginUpdateSetting = pluginUpdateSetting;
+exports.pluginUpdateSettingSuccess = pluginUpdateSettingSuccess;
+exports.pluginUpdateSettingError = pluginUpdateSettingError;
+exports.asyncPluginFetchSettings = asyncPluginFetchSettings;
+exports.asyncPluginUpdateSetting = asyncPluginUpdateSetting;
+
+var _PluginAPI = _dereq_('../utils/PluginAPI/PluginAPI');
+
+var _notifications = _dereq_('./notifications');
+
+var _ActionTypes = _dereq_('../constants/ActionTypes');
+
+var ActionTypes = _interopRequireWildcard(_ActionTypes);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function pluginFetchSettings() {
+    return {
+        type: ActionTypes.PLUGIN_SETTINGS_FETCH
+    };
+}
+
+function pluginFetchSettingsSuccess(zoneId, setting) {
+    return {
+        type: ActionTypes.PLUGIN_SETTINGS_FETCH_SUCCESS,
+        zoneId: zoneId,
+        setting: setting
+    };
+}
+
+function pluginFetchSettingsError() {
+    return {
+        type: ActionTypes.PLUGIN_SETTINGS_FETCH_ERROR
+    };
+}
+
+function pluginUpdateSetting(zoneId, setting) {
+    return {
+        type: ActionTypes.PLUGIN_SETTING_UPDATE,
+        zoneId: zoneId,
+        setting: setting
+    };
+}
+
+function pluginUpdateSettingSuccess(zoneId, setting) {
+    return {
+        type: ActionTypes.PLUGIN_SETTING_UPDATE_SUCCESS,
+        zoneId: zoneId,
+        setting: setting
+    };
+}
+
+function pluginUpdateSettingError(zoneId, setting) {
+    return {
+        type: ActionTypes.PLUGIN_SETTING_UPDATE_ERROR,
+        zoneId: zoneId,
+        setting: setting
+    };
+}
+
+function asyncPluginFetchSettings(zoneId) {
+    return function (dispatch) {
+        dispatch(pluginFetchSettings());
+        (0, _PluginAPI.pluginSettingListGet)({ zoneId: zoneId }, function (response) {
+            if ((0, _PluginAPI.pluginResponseOk)(response)) {
+                dispatch(pluginFetchSettingsSuccess(zoneId, response.body.result));
+            } else {
+                dispatch((0, _notifications.notificationAddClientAPIError)(pluginFetchSettingsError(), response));
+            }
+        }, function (error) {
+            dispatch((0, _notifications.notificationAddClientAPIError)(pluginFetchSettingsError(), error));
+        });
+    };
+}
+
+function asyncPluginUpdateSetting(settingName, zoneId, value) {
+    return function (dispatch, getState) {
+        var oldSetting = getState().pluginSettings.entities[zoneId][settingName];
+
+        dispatch(pluginUpdateSetting(zoneId, { 'id': settingName, 'value': value }));
+        (0, _PluginAPI.pluginSettingPatch)(zoneId, settingName, value, function (response) {
+            if ((0, _PluginAPI.pluginResponseOk)(response)) {
+                dispatch(pluginUpdateSettingSuccess(zoneId, response.body.result));
+            } else {
+                dispatch((0, _notifications.notificationAddClientAPIError)(pluginUpdateSettingError(zoneId, oldSetting), response));
+            }
+        }, function (error) {
+            dispatch((0, _notifications.notificationAddClientAPIError)(pluginUpdateSettingError(zoneId, oldSetting), error));
+        });
+    };
+}
+
+},{"../constants/ActionTypes":513,"../utils/PluginAPI/PluginAPI":571,"./notifications":497}],497:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -74633,7 +74735,106 @@ function notificationAddClientAPIError(errorAction, errorMessage) {
     };
 }
 
-},{"../constants/ActionTypes":511}],497:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513}],498:[function(_dereq_,module,exports){
+'use strict';
+
+exports.__esModule = true;
+exports.pluginFetchSettings = pluginFetchSettings;
+exports.pluginFetchSettingsSuccess = pluginFetchSettingsSuccess;
+exports.pluginFetchSettingsError = pluginFetchSettingsError;
+exports.pluginUpdateSetting = pluginUpdateSetting;
+exports.pluginUpdateSettingSuccess = pluginUpdateSettingSuccess;
+exports.pluginUpdateSettingError = pluginUpdateSettingError;
+exports.asyncPluginFetchSettings = asyncPluginFetchSettings;
+exports.asyncPluginUpdateSetting = asyncPluginUpdateSetting;
+
+var _PluginAPI = _dereq_('../utils/PluginAPI/PluginAPI');
+
+var _notifications = _dereq_('./notifications');
+
+var _ActionTypes = _dereq_('../constants/ActionTypes');
+
+var ActionTypes = _interopRequireWildcard(_ActionTypes);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function pluginFetchSettings() {
+    return {
+        type: ActionTypes.PLUGIN_SETTINGS_FETCH
+    };
+}
+
+function pluginFetchSettingsSuccess(zoneId, setting) {
+    return {
+        type: ActionTypes.PLUGIN_SETTINGS_FETCH_SUCCESS,
+        zoneId: zoneId,
+        setting: setting
+    };
+}
+
+function pluginFetchSettingsError() {
+    return {
+        type: ActionTypes.PLUGIN_SETTINGS_FETCH_ERROR
+    };
+}
+
+function pluginUpdateSetting(zoneId, setting) {
+    return {
+        type: ActionTypes.PLUGIN_SETTING_UPDATE,
+        zoneId: zoneId,
+        setting: setting
+    };
+}
+
+function pluginUpdateSettingSuccess(zoneId, setting) {
+    return {
+        type: ActionTypes.PLUGIN_SETTING_UPDATE_SUCCESS,
+        zoneId: zoneId,
+        setting: setting
+    };
+}
+
+function pluginUpdateSettingError(zoneId, setting) {
+    return {
+        type: ActionTypes.PLUGIN_SETTING_UPDATE_ERROR,
+        zoneId: zoneId,
+        setting: setting
+    };
+}
+
+function asyncPluginFetchSettings(zoneId) {
+    return function (dispatch) {
+        dispatch(pluginFetchSettings());
+        (0, _PluginAPI.pluginSettingListGet)({ zoneId: zoneId }, function (response) {
+            if ((0, _PluginAPI.pluginResponseOk)(response)) {
+                dispatch(pluginFetchSettingsSuccess(zoneId, response.body.result));
+            } else {
+                dispatch((0, _notifications.notificationAddClientAPIError)(pluginFetchSettingsError(), response));
+            }
+        }, function (error) {
+            dispatch((0, _notifications.notificationAddClientAPIError)(pluginFetchSettingsError(), error));
+        });
+    };
+}
+
+function asyncPluginUpdateSetting(settingName, zoneId, value) {
+    return function (dispatch, getState) {
+        var oldSetting = getState().pluginSettings.entities[zoneId][settingName];
+
+        dispatch(pluginUpdateSetting(zoneId, { 'id': settingName, 'value': value }));
+        (0, _PluginAPI.pluginSettingPatch)(zoneId, settingName, value, function (response) {
+            if ((0, _PluginAPI.pluginResponseOk)(response)) {
+                dispatch(pluginUpdateSettingSuccess(zoneId, response.body.result));
+            } else {
+                dispatch((0, _notifications.notificationAddClientAPIError)(pluginUpdateSettingError(zoneId, oldSetting), response));
+            }
+        }, function (error) {
+            dispatch((0, _notifications.notificationAddClientAPIError)(pluginUpdateSettingError(zoneId, oldSetting), error));
+        });
+    };
+}
+
+},{"../constants/ActionTypes":513,"../utils/PluginAPI/PluginAPI":571,"./notifications":497}],499:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -74776,7 +74977,7 @@ function asyncUserSignup(email, password) {
     };
 }
 
-},{"../constants/ActionTypes":511,"../constants/UrlPaths":513,"../utils/CFHostAPI/CFHostAPI":564,"../utils/PluginAPI/PluginAPI":565,"./notifications":496,"./zones":505,"redux-simple-router":477}],498:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"../constants/UrlPaths":515,"../utils/CFHostAPI/CFHostAPI":570,"../utils/PluginAPI/PluginAPI":571,"./notifications":497,"./zones":507,"redux-simple-router":477}],500:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -74830,7 +75031,7 @@ function asyncZoneFetchAnalytics(zoneId) {
     };
 }
 
-},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":563,"./notifications":496}],499:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"../utils/CFClientV4API/CFClientV4API":569,"./notifications":497}],501:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -74974,7 +75175,7 @@ function asyncDNSRecordUpdate(zoneId, dnsRecord, proxied) {
     };
 }
 
-},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":563,"./notifications":496}],500:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"../utils/CFClientV4API/CFClientV4API":569,"./notifications":497}],502:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75152,7 +75353,7 @@ function asyncSetHostAPIProvisionedDomainActive(domainName) {
     };
 }
 
-},{"../constants/ActionTypes":511,"../constants/Schemas":512,"../utils/CFClientV4API/CFClientV4API":563,"../utils/CFHostAPI/CFHostAPI":564,"./activeZone":492,"./notifications":496,"./zones":505}],501:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"../constants/Schemas":514,"../utils/CFClientV4API/CFClientV4API":569,"../utils/CFHostAPI/CFHostAPI":570,"./activeZone":492,"./notifications":497,"./zones":507}],503:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75205,7 +75406,7 @@ function asyncZonePurgeCache(zoneId) {
     };
 }
 
-},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":563,"./notifications":496}],502:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"../utils/CFClientV4API/CFClientV4API":569,"./notifications":497}],504:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75306,7 +75507,7 @@ function asyncZoneRailgunConnectionUpdate(zoneId, railgun, isConnected) {
     };
 }
 
-},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":563,"./notifications":496}],503:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"../utils/CFClientV4API/CFClientV4API":569,"./notifications":497}],505:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75403,7 +75604,7 @@ function asyncZoneUpdateScan(zoneId, showInterstitial) {
     };
 }
 
-},{"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":563,"./notifications":496}],504:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"../utils/CFClientV4API/CFClientV4API":569,"./notifications":497}],506:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75506,7 +75707,7 @@ function asyncZoneUpdateSetting(settingName, zoneId, value) {
     };
 }
 
-},{"../actions/zoneDnsRecords":499,"../constants/ActionTypes":511,"../utils/CFClientV4API/CFClientV4API":563,"../utils/CFHostAPI/CFHostAPI":564,"./notifications":496}],505:[function(_dereq_,module,exports){
+},{"../actions/zoneDnsRecords":501,"../constants/ActionTypes":513,"../utils/CFClientV4API/CFClientV4API":569,"../utils/CFHostAPI/CFHostAPI":570,"./notifications":497}],507:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75530,8 +75731,6 @@ var _ActionTypes = _dereq_('../constants/ActionTypes');
 var ActionTypes = _interopRequireWildcard(_ActionTypes);
 
 var _activeZone = _dereq_('./activeZone');
-
-var _Schemas = _dereq_('../constants/Schemas');
 
 var _zoneDnsRecords = _dereq_('./zoneDnsRecords');
 
@@ -75622,7 +75821,7 @@ function asyncFetchZones() {
     };
 }
 
-},{"../constants/ActionTypes":511,"../constants/Schemas":512,"../utils/CFClientV4API/CFClientV4API":563,"../utils/CFHostAPI/CFHostAPI":564,"./activeZone":492,"./notifications":496,"./zoneDnsRecords":499}],506:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"../utils/CFClientV4API/CFClientV4API":569,"../utils/CFHostAPI/CFHostAPI":570,"./activeZone":492,"./notifications":497,"./zoneDnsRecords":501}],508:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75701,7 +75900,7 @@ CloudToggle.propTypes = {
 };
 exports.default = CloudToggle;
 
-},{"react":475}],507:[function(_dereq_,module,exports){
+},{"react":475}],509:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75745,7 +75944,7 @@ FeatureManager.propTypes = {
 };
 exports.default = FeatureManager;
 
-},{"react":475}],508:[function(_dereq_,module,exports){
+},{"react":475}],510:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75790,7 +75989,7 @@ var Loading = function (_Component) {
 
 exports.default = Loading;
 
-},{"react":475,"react-intl":255}],509:[function(_dereq_,module,exports){
+},{"react":475,"react-intl":255}],511:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75852,7 +76051,7 @@ MarketingFeature.propTypes = {
 };
 exports.default = MarketingFeature;
 
-},{"react":475,"react-intl":255}],510:[function(_dereq_,module,exports){
+},{"react":475,"react-intl":255}],512:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75933,7 +76132,7 @@ var Notification = function (_Component) {
 
 exports.default = Notification;
 
-},{"../../actions/notifications":496,"react":475,"react-intl":255}],511:[function(_dereq_,module,exports){
+},{"../../actions/notifications":497,"react":475,"react-intl":255}],513:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75969,6 +76168,15 @@ var INTL_FETCH_TRANSLATIONS_ERROR = exports.INTL_FETCH_TRANSLATIONS_ERROR = 'INT
 //notifications
 var NOTIFICATION_ADD = exports.NOTIFICATION_ADD = 'NOTIFICATION_ADD';
 var NOTIFICATION_REMOVE = exports.NOTIFICATION_REMOVE = 'NOTIFICATION_REMOVE';
+
+//plugins
+var PLUGIN_SETTINGS_FETCH = exports.PLUGIN_SETTINGS_FETCH = "PLUGIN_SETTINGS_FETCH";
+var PLUGIN_SETTINGS_FETCH_SUCCESS = exports.PLUGIN_SETTINGS_FETCH_SUCCESS = "PLUGIN_SETTINGS_FETCH_SUCCESS";
+var PLUGIN_SETTINGS_FETCH_ERROR = exports.PLUGIN_SETTINGS_FETCH_ERROR = "PLUGIN_SETTINGS_FETCH_ERROR";
+
+var PLUGIN_SETTING_UPDATE = exports.PLUGIN_SETTING_UPDATE = "PLUGIN_SETTING_UPDATE";
+var PLUGIN_SETTING_UPDATE_SUCCESS = exports.PLUGIN_SETTING_UPDATE_SUCCESS = "PLUGIN_SETTING_UPDATE_SUCCESS";
+var PLUGIN_SETTING_UPDATE_ERROR = exports.PLUGIN_SETTING_UPDATE_ERROR = "PLUGIN_SETTING_UPDATE_ERROR";
 
 //user
 var USER_LOGIN = exports.USER_LOGIN = 'USER_LOGIN';
@@ -76040,11 +76248,12 @@ var ZONE_RAILGUNS_CONNECTION_UPDATE = exports.ZONE_RAILGUNS_CONNECTION_UPDATE = 
 var ZONE_RAILGUNS_CONNECTION_UPDATE_SUCCESSS = exports.ZONE_RAILGUNS_CONNECTION_UPDATE_SUCCESSS = "ZONES_RAILGUNS_CONNECTION_UPDATE__SUCCESS";
 var ZONE_RAILGUNS_CONNECTION_UPDATE_ERROR = exports.ZONE_RAILGUNS_CONNECTION_UPDATE_ERROR = "ZONES_RAILGUNS_CONNECTION_UPDATE_ERROR";
 
-},{}],512:[function(_dereq_,module,exports){
+},{}],514:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
 exports.zoneRailgunSchema = exports.zoneSchema = undefined;
+exports.normalizeZoneByIdGetAll = normalizeZoneByIdGetAll;
 exports.normalizeZoneGetAll = normalizeZoneGetAll;
 exports.normalizeZoneRailgunGetAll = normalizeZoneRailgunGetAll;
 
@@ -76052,6 +76261,10 @@ var _normalizr = _dereq_('normalizr');
 
 var zoneSchema = exports.zoneSchema = new _normalizr.Schema('zones', { idAttribute: 'name' });
 var zoneRailgunSchema = exports.zoneRailgunSchema = new _normalizr.Schema('railguns', { idAttribute: 'id' });
+function normalizeZoneByIdGetAll(zoneId, result) {
+    var zoneSchemaById = new _normalizr.Schema(zoneId, { idAttribute: 'id' });
+    return (0, _normalizr.normalize)(result, (0, _normalizr.arrayOf)(zoneSchemaById));
+}
 
 function normalizeZoneGetAll(result) {
     return (0, _normalizr.normalize)(result, (0, _normalizr.arrayOf)(zoneSchema));
@@ -76061,7 +76274,7 @@ function normalizeZoneRailgunGetAll(result) {
     return (0, _normalizr.normalize)(result, (0, _normalizr.arrayOf)(zoneRailgunSchema));
 }
 
-},{"normalizr":156}],513:[function(_dereq_,module,exports){
+},{"normalizr":156}],515:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -76079,7 +76292,7 @@ var SUPPORT_PAGE = exports.SUPPORT_PAGE = "https://support.cloudflare.com/hc/en-
 var TERMS_AND_CONDITIONS_PAGE = exports.TERMS_AND_CONDITIONS_PAGE = "https://www.cloudflare.com/terms";
 var PRIVACY_POLICY_PAGE = exports.PRIVACY_POLICY_PAGE = "https://www.cloudflare.com/security-policy";
 
-},{}],514:[function(_dereq_,module,exports){
+},{}],516:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -76194,7 +76407,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ActivationCheckCard));
 
-},{"../../actions/zoneProvision":500,"cf-component-button":5,"cf-component-card":15,"cf-component-list":64,"react":475,"react-intl":255,"react-redux":277}],515:[function(_dereq_,module,exports){
+},{"../../actions/zoneProvision":502,"cf-component-button":5,"cf-component-card":15,"cf-component-list":64,"react":475,"react-intl":255,"react-redux":277}],517:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -76280,7 +76493,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ActiveZoneSelector));
 
-},{"../../actions/activeZone":492,"cf-component-select":84,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],516:[function(_dereq_,module,exports){
+},{"../../actions/activeZone":492,"cf-component-select":84,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],518:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -76374,7 +76587,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(AlwaysOnlineCard));
 
-},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],517:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],519:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -76564,7 +76777,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(AnaltyicsPage));
 
-},{"cf-component-heading":54,"cf-component-tabs":101,"lodash":152,"react":475,"react-c3-wrapper":236,"react-intl":255,"react-redux":277}],518:[function(_dereq_,module,exports){
+},{"cf-component-heading":54,"cf-component-tabs":101,"lodash":152,"react":475,"react-c3-wrapper":236,"react-intl":255,"react-redux":277}],520:[function(_dereq_,module,exports){
 (function (global){
 'use strict';
 
@@ -76766,7 +76979,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps)(AppWrapper);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"../../actions/config":494,"../../containers/ActiveZoneSelector/ActiveZoneSelector":515,"../../containers/AppNavigation/AppNavigation":519,"../../containers/NotificationList/NotificationList":533,"../../containers/UnderAttackButton/UnderAttackButton":542,"../../selectors/config":560,"../../utils/Auth/Auth":562,"cf-component-layout":58,"intl":150,"react":475,"react-gateway":244,"react-intl":255,"react-redux":277}],519:[function(_dereq_,module,exports){
+},{"../../actions/config":494,"../../containers/ActiveZoneSelector/ActiveZoneSelector":517,"../../containers/AppNavigation/AppNavigation":521,"../../containers/NotificationList/NotificationList":536,"../../containers/UnderAttackButton/UnderAttackButton":546,"../../selectors/config":565,"../../utils/Auth/Auth":568,"cf-component-layout":58,"intl":150,"react":475,"react-gateway":244,"react-intl":255,"react-redux":277}],521:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -76950,7 +77163,7 @@ AppNavigation.propTypes = {
 };
 exports.default = AppNavigation;
 
-},{"../../constants/UrlPaths":513,"../../utils/Auth/Auth":562,"cf-component-link":60,"react":475,"react-intl":255,"redux-simple-router":477}],520:[function(_dereq_,module,exports){
+},{"../../constants/UrlPaths":515,"../../utils/Auth/Auth":568,"cf-component-link":60,"react":475,"react-intl":255,"redux-simple-router":477}],522:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77042,7 +77255,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(BrowserCacheTTLCard));
 
-},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],521:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],523:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77136,7 +77349,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(BrowserIntegrityCheckCard));
 
-},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],522:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],524:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77227,7 +77440,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(CacheLevelCard));
 
-},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-radio":82,"react":475,"react-intl":255,"react-redux":277}],523:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-radio":82,"react":475,"react-intl":255,"react-redux":277}],525:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77320,7 +77533,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ChallengePassageCard));
 
-},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],524:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],526:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77500,7 +77713,7 @@ var ClientLoginPage = function (_Component) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)()(ClientLoginPage));
 
-},{"../../actions/user":497,"../../constants/UrlPaths.js":513,"../../containers/MarketingFeatureCollection/MarketingFeatureCollection":531,"react":475,"react-intl":255,"react-redux":277,"react-router":307,"redux-simple-router":477}],525:[function(_dereq_,module,exports){
+},{"../../actions/user":499,"../../constants/UrlPaths.js":515,"../../containers/MarketingFeatureCollection/MarketingFeatureCollection":534,"react":475,"react-intl":255,"react-redux":277,"react-router":307,"redux-simple-router":477}],527:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77679,7 +77892,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(DNSManagementPage));
 
-},{"../../constants/UrlPaths.js":513,"../../containers/ActivationCheckCard/ActivationCheckCard":514,"../../containers/DNSRecordEditor/DNSRecordEditor":526,"../../containers/ZoneProvisionContainer/ZoneProvisionContainer":543,"cf-component-button":5,"cf-component-heading":54,"cf-component-table":98,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],526:[function(_dereq_,module,exports){
+},{"../../constants/UrlPaths.js":515,"../../containers/ActivationCheckCard/ActivationCheckCard":516,"../../containers/DNSRecordEditor/DNSRecordEditor":528,"../../containers/ZoneProvisionContainer/ZoneProvisionContainer":547,"cf-component-button":5,"cf-component-heading":54,"cf-component-table":98,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],528:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77836,7 +78049,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(DNSRecordEditor));
 
-},{"../../actions/zoneDnsRecords":499,"../../components/CloudToggle/CloudToggle":506,"../../components/Loading/Loading":508,"cf-component-table":98,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],527:[function(_dereq_,module,exports){
+},{"../../actions/zoneDnsRecords":501,"../../components/CloudToggle/CloudToggle":508,"../../components/Loading/Loading":510,"cf-component-table":98,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],529:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77930,7 +78143,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(DevelopmentModeCard));
 
-},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],528:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],530:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78118,7 +78331,7 @@ var HostLoginPage = function (_Component) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)()(HostLoginPage));
 
-},{"../../actions/user":497,"../../constants/UrlPaths.js":513,"../../containers/MarketingFeatureCollection/MarketingFeatureCollection":531,"react":475,"react-intl":255,"react-redux":277,"react-router":307,"redux-simple-router":477}],529:[function(_dereq_,module,exports){
+},{"../../actions/user":499,"../../constants/UrlPaths.js":515,"../../containers/MarketingFeatureCollection/MarketingFeatureCollection":534,"react":475,"react-intl":255,"react-redux":277,"react-router":307,"redux-simple-router":477}],531:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78212,7 +78425,102 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(IPV6Card));
 
-},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],530:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],532:[function(_dereq_,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _react = _dereq_('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = _dereq_('react-redux');
+
+var _reactIntl = _dereq_('react-intl');
+
+var _pluginSettings = _dereq_('../../actions/pluginSettings');
+
+var _pluginSettings2 = _dereq_('../../selectors/pluginSettings');
+
+var _cfComponentCard = _dereq_('cf-component-card');
+
+var _cfComponentToggle = _dereq_('cf-component-toggle');
+
+var _cfComponentToggle2 = _interopRequireDefault(_cfComponentToggle);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SETTING_NAME = "ip_rewrite";
+
+var IpRewriteCard = function (_Component) {
+    _inherits(IpRewriteCard, _Component);
+
+    function IpRewriteCard() {
+        _classCallCheck(this, IpRewriteCard);
+
+        return _possibleConstructorReturn(this, _Component.apply(this, arguments));
+    }
+
+    IpRewriteCard.prototype.handleChange = function handleChange(value) {
+        var _props = this.props;
+        var activeZoneId = _props.activeZoneId;
+        var dispatch = _props.dispatch;
+
+        dispatch((0, _pluginSettings.asyncPluginUpdateSetting)(SETTING_NAME, activeZoneId, value));
+    };
+
+    IpRewriteCard.prototype.render = function render() {
+        var formatMessage = this.props.intl.formatMessage;
+
+        return _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+                _cfComponentCard.Card,
+                null,
+                _react2.default.createElement(
+                    _cfComponentCard.CardSection,
+                    null,
+                    _react2.default.createElement(
+                        _cfComponentCard.CardContent,
+                        { title: formatMessage({ id: 'container.ipRewrite.title' }) },
+                        _react2.default.createElement(
+                            'p',
+                            null,
+                            _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'container.ipRewrite.description' })
+                        )
+                    ),
+                    _react2.default.createElement(
+                        _cfComponentCard.CardControl,
+                        null,
+                        _react2.default.createElement(_cfComponentToggle2.default, {
+                            label: '',
+                            value: this.props.ipRewriteValue,
+                            onChange: this.handleChange.bind(this) })
+                    )
+                )
+            )
+        );
+    };
+
+    return IpRewriteCard;
+}(_react.Component);
+
+function mapStateToProps(state) {
+    return {
+        activeZoneId: state.activeZone.id,
+        ipRewriteValue: (0, _pluginSettings2.getPluginSettingsValueForZoneId)(state.activeZone.id, SETTING_NAME, state)
+    };
+}
+exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(IpRewriteCard));
+
+},{"../../actions/pluginSettings":498,"../../selectors/pluginSettings":566,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],533:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78284,7 +78592,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(LoginPage);
 
-},{"../../constants/UrlPaths.js":513,"../../containers/ClientLoginPage/ClientLoginPage":524,"../../containers/HostLoginPage/HostLoginPage":528,"../../selectors/config":560,"../../utils/Auth/Auth":562,"react":475,"react-redux":277,"redux-simple-router":477}],531:[function(_dereq_,module,exports){
+},{"../../constants/UrlPaths.js":515,"../../containers/ClientLoginPage/ClientLoginPage":526,"../../containers/HostLoginPage/HostLoginPage":530,"../../selectors/config":565,"../../utils/Auth/Auth":568,"react":475,"react-redux":277,"redux-simple-router":477}],534:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78357,7 +78665,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(MarketingFeatureCollection);
 
-},{"../../components/MarketingFeature/MarketingFeature":509,"../../selectors/config":560,"react":475,"react-redux":277}],532:[function(_dereq_,module,exports){
+},{"../../components/MarketingFeature/MarketingFeature":511,"../../selectors/config":565,"react":475,"react-redux":277}],535:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78477,7 +78785,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(MinifyCard));
 
-},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-checkbox":22,"react":475,"react-intl":255,"react-redux":277}],533:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-checkbox":22,"react":475,"react-intl":255,"react-redux":277}],536:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78542,7 +78850,7 @@ var NotificationList = function (_Component) {
 
 exports.default = NotificationList;
 
-},{"../../actions/notifications":496,"../../components/Notification/Notification":510,"react":475,"react-addons-css-transition-group":235}],534:[function(_dereq_,module,exports){
+},{"../../actions/notifications":497,"../../components/Notification/Notification":512,"react":475,"react-addons-css-transition-group":235}],537:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78560,6 +78868,8 @@ var _lodash = _dereq_('lodash');
 var _lodash2 = _interopRequireDefault(_lodash);
 
 var _cfComponentHeading = _dereq_('cf-component-heading');
+
+var _pluginSettings = _dereq_('../../selectors/pluginSettings');
 
 var _AlwaysOnlineCard = _dereq_('../../containers/AlwaysOnlineCard/AlwaysOnlineCard');
 
@@ -78585,6 +78895,10 @@ var _IPV6Card = _dereq_('../../containers/IPV6Card/IPV6Card');
 
 var _IPV6Card2 = _interopRequireDefault(_IPV6Card);
 
+var _IpRewriteCard = _dereq_('../../containers/IpRewriteCard/IpRewriteCard');
+
+var _IpRewriteCard2 = _interopRequireDefault(_IpRewriteCard);
+
 var _MinifyCard = _dereq_('../../containers/MinifyCard/MinifyCard');
 
 var _MinifyCard2 = _interopRequireDefault(_MinifyCard);
@@ -78592,6 +78906,10 @@ var _MinifyCard2 = _interopRequireDefault(_MinifyCard);
 var _PurgeCacheCard = _dereq_('../../containers/PurgeCacheCard/PurgeCacheCard');
 
 var _PurgeCacheCard2 = _interopRequireDefault(_PurgeCacheCard);
+
+var _ProtocolRewriteCard = _dereq_('../../containers/ProtocolRewriteCard/ProtocolRewriteCard');
+
+var _ProtocolRewriteCard2 = _interopRequireDefault(_ProtocolRewriteCard);
 
 var _RailgunCard = _dereq_('../../containers/RailgunCard/RailgunCard');
 
@@ -78620,7 +78938,8 @@ var PerformancePage = function (_Component) {
         var config = _props.config;
         var zoneSettings = _props.zoneSettings;
 
-        var isEmpty = _lodash2.default.isEmpty(zoneSettings[activeZoneId]);
+
+        var isEmpty = _lodash2.default.isEmpty(zoneSettings[activeZoneId]) && _lodash2.default.isEmpty((0, _pluginSettings.getPluginSettingsForZoneId)(activeZoneId, this.state));
 
         return _react2.default.createElement(
             'div',
@@ -78643,6 +78962,16 @@ var PerformancePage = function (_Component) {
                     _FeatureManager2.default,
                     { isEnabled: config.featureManagerIsIpv6Enabled },
                     _react2.default.createElement(_IPV6Card2.default, null)
+                ),
+                _react2.default.createElement(
+                    _FeatureManager2.default,
+                    { isEnabled: config.featureManagerIsIpRewriteEnabled },
+                    _react2.default.createElement(_IpRewriteCard2.default, null)
+                ),
+                _react2.default.createElement(
+                    _FeatureManager2.default,
+                    { isEnabled: config.featureManagerIsProtocolRewriteEnabled },
+                    _react2.default.createElement(_ProtocolRewriteCard2.default, null)
                 ),
                 _react2.default.createElement(
                     _FeatureManager2.default,
@@ -78690,7 +79019,102 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(PerformancePage));
 
-},{"../../components/FeatureManager/FeatureManager":507,"../../containers/AlwaysOnlineCard/AlwaysOnlineCard":516,"../../containers/BrowserCacheTTLCard/BrowserCacheTTLCard":520,"../../containers/CacheLevelCard/CacheLevelCard":522,"../../containers/DevelopmentModeCard/DevelopmentModeCard":527,"../../containers/IPV6Card/IPV6Card":529,"../../containers/MinifyCard/MinifyCard":532,"../../containers/PurgeCacheCard/PurgeCacheCard":535,"../../containers/RailgunCard/RailgunCard":536,"cf-component-heading":54,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],535:[function(_dereq_,module,exports){
+},{"../../components/FeatureManager/FeatureManager":509,"../../containers/AlwaysOnlineCard/AlwaysOnlineCard":518,"../../containers/BrowserCacheTTLCard/BrowserCacheTTLCard":522,"../../containers/CacheLevelCard/CacheLevelCard":524,"../../containers/DevelopmentModeCard/DevelopmentModeCard":529,"../../containers/IPV6Card/IPV6Card":531,"../../containers/IpRewriteCard/IpRewriteCard":532,"../../containers/MinifyCard/MinifyCard":535,"../../containers/ProtocolRewriteCard/ProtocolRewriteCard":538,"../../containers/PurgeCacheCard/PurgeCacheCard":539,"../../containers/RailgunCard/RailgunCard":540,"../../selectors/pluginSettings":566,"cf-component-heading":54,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],538:[function(_dereq_,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _react = _dereq_('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = _dereq_('react-redux');
+
+var _reactIntl = _dereq_('react-intl');
+
+var _pluginSettings = _dereq_('../../actions/pluginSettings');
+
+var _pluginSettings2 = _dereq_('../../selectors/pluginSettings');
+
+var _cfComponentCard = _dereq_('cf-component-card');
+
+var _cfComponentToggle = _dereq_('cf-component-toggle');
+
+var _cfComponentToggle2 = _interopRequireDefault(_cfComponentToggle);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SETTING_NAME = "protocol_rewrite";
+
+var ProtocolRewriteCard = function (_Component) {
+    _inherits(ProtocolRewriteCard, _Component);
+
+    function ProtocolRewriteCard() {
+        _classCallCheck(this, ProtocolRewriteCard);
+
+        return _possibleConstructorReturn(this, _Component.apply(this, arguments));
+    }
+
+    ProtocolRewriteCard.prototype.handleChange = function handleChange(value) {
+        var _props = this.props;
+        var activeZoneId = _props.activeZoneId;
+        var dispatch = _props.dispatch;
+
+        dispatch((0, _pluginSettings.asyncPluginUpdateSetting)(SETTING_NAME, activeZoneId, value));
+    };
+
+    ProtocolRewriteCard.prototype.render = function render() {
+        var formatMessage = this.props.intl.formatMessage;
+
+        return _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+                _cfComponentCard.Card,
+                null,
+                _react2.default.createElement(
+                    _cfComponentCard.CardSection,
+                    null,
+                    _react2.default.createElement(
+                        _cfComponentCard.CardContent,
+                        { title: formatMessage({ id: 'container.protocolRewrite.title' }) },
+                        _react2.default.createElement(
+                            'p',
+                            null,
+                            _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'container.protocolRewrite.description' })
+                        )
+                    ),
+                    _react2.default.createElement(
+                        _cfComponentCard.CardControl,
+                        null,
+                        _react2.default.createElement(_cfComponentToggle2.default, {
+                            label: '',
+                            value: this.props.protocolRewriteValue,
+                            onChange: this.handleChange.bind(this) })
+                    )
+                )
+            )
+        );
+    };
+
+    return ProtocolRewriteCard;
+}(_react.Component);
+
+function mapStateToProps(state) {
+    return {
+        activeZoneId: state.activeZone.id,
+        protocolRewriteValue: (0, _pluginSettings2.getPluginSettingsValueForZoneId)(state.activeZone.id, SETTING_NAME, state)
+    };
+}
+exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ProtocolRewriteCard));
+
+},{"../../actions/pluginSettings":498,"../../selectors/pluginSettings":566,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],539:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78842,7 +79266,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(PurgeCacheCard));
 
-},{"../../actions/zonePurgeCache":501,"cf-component-button":5,"cf-component-card":15,"cf-component-modal":72,"react":475,"react-intl":255,"react-redux":277}],536:[function(_dereq_,module,exports){
+},{"../../actions/zonePurgeCache":503,"cf-component-button":5,"cf-component-card":15,"cf-component-modal":72,"react":475,"react-intl":255,"react-redux":277}],540:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78974,7 +79398,7 @@ var RailgunCard = function (_Component) {
                                     _react2.default.createElement(
                                         _cfComponentTable.TableCell,
                                         null,
-                                        railgun.active ? _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'container.railgunCard.table.active' }) : _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'container.railgunCard.table.inactive' })
+                                        railgun.enabled ? _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'container.railgunCard.table.active' }) : _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'container.railgunCard.table.inactive' })
                                     ),
                                     _react2.default.createElement(
                                         _cfComponentTable.TableCell,
@@ -79007,7 +79431,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(RailgunCard));
 
-},{"../../actions/zoneRailgun":502,"cf-component-button":5,"cf-component-card":15,"cf-component-table":98,"cf-component-toggle":113,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],537:[function(_dereq_,module,exports){
+},{"../../actions/zoneRailgun":504,"cf-component-button":5,"cf-component-card":15,"cf-component-table":98,"cf-component-toggle":113,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],541:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79100,7 +79524,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(SSLCard));
 
-},{"../../actions/zoneSettings":504,"../../components/FeatureManager/FeatureManager":507,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],538:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":506,"../../components/FeatureManager/FeatureManager":509,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],542:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79192,7 +79616,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ScanCard));
 
-},{"../../actions/zoneScan":503,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],539:[function(_dereq_,module,exports){
+},{"../../actions/zoneScan":505,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],543:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79283,7 +79707,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(SecurityLevelCard));
 
-},{"../../actions/zoneSettings":504,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],540:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],544:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79406,7 +79830,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(SecurityPage));
 
-},{"../../components/FeatureManager/FeatureManager":507,"../../containers/BrowserIntegrityCheckCard/BrowserIntegrityCheckCard":521,"../../containers/ChallengePassageCard/ChallengePassageCard":523,"../../containers/SSLCard/SSLCard":537,"../../containers/ScanCard/ScanCard":538,"../../containers/SecurityLevelCard/SecurityLevelCard":539,"cf-component-heading":54,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],541:[function(_dereq_,module,exports){
+},{"../../components/FeatureManager/FeatureManager":509,"../../containers/BrowserIntegrityCheckCard/BrowserIntegrityCheckCard":523,"../../containers/ChallengePassageCard/ChallengePassageCard":525,"../../containers/SSLCard/SSLCard":541,"../../containers/ScanCard/ScanCard":542,"../../containers/SecurityLevelCard/SecurityLevelCard":543,"cf-component-heading":54,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],545:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79632,7 +80056,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(SignUpPage));
 
-},{"../../actions/notifications":496,"../../actions/user":497,"../../constants/UrlPaths":513,"lodash":152,"react":475,"react-intl":255,"react-redux":277,"redux":484}],542:[function(_dereq_,module,exports){
+},{"../../actions/notifications":497,"../../actions/user":499,"../../constants/UrlPaths":515,"lodash":152,"react":475,"react-intl":255,"react-redux":277,"redux":484}],546:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79722,7 +80146,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(UnderAttackButton));
 
-},{"../../actions/zoneSettings":504,"cf-component-button":5,"react":475,"react-intl":255,"react-redux":277}],543:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":506,"cf-component-button":5,"react":475,"react-intl":255,"react-redux":277}],547:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79958,7 +80382,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ZoneProvisionContainer));
 
-},{"../../actions/zoneProvision":500,"../../actions/zones":505,"../../components/FeatureManager/FeatureManager":507,"../../components/Loading/Loading":508,"../../constants/Schemas":512,"cf-component-button":5,"cf-component-layout":58,"cf-component-modal":72,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],544:[function(_dereq_,module,exports){
+},{"../../actions/zoneProvision":502,"../../actions/zones":507,"../../components/FeatureManager/FeatureManager":509,"../../components/Loading/Loading":510,"../../constants/Schemas":514,"cf-component-button":5,"cf-component-layout":58,"cf-component-modal":72,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],548:[function(_dereq_,module,exports){
 'use strict';
 
 var _react = _dereq_('react');
@@ -80010,7 +80434,7 @@ _reactDom2.default.render(_react2.default.createElement(
     )
 ), document.getElementById('root'));
 
-},{"./routes":559,"./store/configureStore":561,"cf-util-http":115,"history/lib/createHashHistory":133,"react":475,"react-dom":239,"react-redux":277,"react-router":307}],545:[function(_dereq_,module,exports){
+},{"./routes":564,"./store/configureStore":567,"cf-util-http":115,"history/lib/createHashHistory":133,"react":475,"react-dom":239,"react-redux":277,"react-router":307}],549:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -80045,7 +80469,7 @@ function activeZoneReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511}],546:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513}],550:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80078,7 +80502,7 @@ function appReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511}],547:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513}],551:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -80130,7 +80554,7 @@ function configReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511}],548:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513}],552:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80165,6 +80589,8 @@ var _zoneSettings = _dereq_('./zoneSettings');
 
 var _zones = _dereq_('./zones');
 
+var _pluginSettings = _dereq_('./pluginSettings');
+
 var rootReducer = (0, _redux.combineReducers)({
     activeZone: _activeZone.activeZoneReducer,
     app: _app.appReducer,
@@ -80179,12 +80605,13 @@ var rootReducer = (0, _redux.combineReducers)({
     zonePurgeCache: _zonePurgeCache.zonePurgeCacheReducer,
     zoneRailguns: _zoneRailgun.zoneRailgunReducer,
     zoneScan: _zoneScan.zoneScanReducer,
-    zoneSettings: _zoneSettings.zoneSettingsReducer
+    zoneSettings: _zoneSettings.zoneSettingsReducer,
+    pluginSettings: _pluginSettings.pluginSettingsReducer
 });
 
 exports.default = rootReducer;
 
-},{"./activeZone":545,"./app":546,"./config":547,"./intl":549,"./notifications":550,"./user":551,"./zoneAnalytics":552,"./zoneDnsRecords.js":553,"./zonePurgeCache":554,"./zoneRailgun":555,"./zoneScan":556,"./zoneSettings":557,"./zones":558,"redux":484,"redux-simple-router":477}],549:[function(_dereq_,module,exports){
+},{"./activeZone":549,"./app":550,"./config":551,"./intl":553,"./notifications":554,"./pluginSettings":555,"./user":556,"./zoneAnalytics":557,"./zoneDnsRecords.js":558,"./zonePurgeCache":559,"./zoneRailgun":560,"./zoneScan":561,"./zoneSettings":562,"./zones":563,"redux":484,"redux-simple-router":477}],553:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -80229,7 +80656,7 @@ function intlReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511}],550:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513}],554:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80264,7 +80691,83 @@ function notificationsReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511}],551:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513}],555:[function(_dereq_,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports.pluginSettingsReducer = pluginSettingsReducer;
+
+var _lodash = _dereq_('lodash');
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+var _ActionTypes = _dereq_('../constants/ActionTypes');
+
+var ActionTypes = _interopRequireWildcard(_ActionTypes);
+
+var _Schemas = _dereq_('../constants/Schemas');
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var initialState = {
+    entities: {},
+    result: [],
+    isFetching: false
+};
+
+function pluginSettingsReducer() {
+    var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+    var action = arguments[1];
+
+    switch (action.type) {
+        case ActionTypes.PLUGIN_SETTINGS_FETCH:
+            return _extends({}, state, {
+                isFetching: true
+            });
+        case ActionTypes.PLUGIN_SETTINGS_FETCH_SUCCESS:
+            var normalizedPluginSettings = (0, _Schemas.normalizeZoneByIdGetAll)(action.zoneId, action.setting);
+
+            return _extends({}, state, {
+                entities: _lodash2.default.merge(state.entities, normalizedPluginSettings.entities),
+                result: _lodash2.default.merge(state.result, normalizedPluginSettings.result),
+                isFetching: false
+            });
+        case ActionTypes.PLUGIN_SETTINGS_FETCH_ERROR:
+            return _extends({}, state, {
+                isFetching: false
+            });
+        case ActionTypes.PLUGIN_SETTING_UPDATE:
+            return _extends({}, state, {
+                entities: pluginPatchSetting(action.zoneId, action.setting, state),
+                isFetching: true
+            });
+        case ActionTypes.PLUGIN_SETTING_UPDATE_SUCCESS:
+            return _extends({}, state, {
+                entities: pluginPatchSetting(action.zoneId, action.setting, state),
+                isFetching: false
+            });
+        case ActionTypes.PLUGIN_SETTING_UPDATE_ERROR:
+            return _extends({}, state, {
+                entities: pluginPatchSetting(action.zoneId, action.setting, state),
+                isFetching: false
+            });
+        default:
+            return state;
+    }
+}
+
+function pluginPatchSetting(zoneId, setting, state) {
+    var patchedEntities = _extends({}, state.entities);
+    patchedEntities[zoneId][setting.id] = setting;
+    return patchedEntities;
+}
+
+},{"../constants/ActionTypes":513,"../constants/Schemas":514,"lodash":152}],556:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80328,7 +80831,7 @@ function userReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511,"../utils/Auth/Auth":562}],552:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"../utils/Auth/Auth":568}],557:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80410,7 +80913,7 @@ function buildZoneAnalyticsData(zoneAnalyticsResponse) {
     return data;
 }
 
-},{"../constants/ActionTypes":511,"lodash":152}],553:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"lodash":152}],558:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80505,7 +81008,7 @@ function patchDnsRecord(zoneId, dnsRecordList, dnsRecord) {
     return dnsRecordList;
 }
 
-},{"../constants/ActionTypes":511,"lodash":152,"normalizr":156}],554:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"lodash":152,"normalizr":156}],559:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80552,7 +81055,7 @@ function zonePurgeCacheReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511,"lodash":152}],555:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"lodash":152}],560:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80628,7 +81131,7 @@ function getPatchedEntities(state, action) {
     return patchedEntities;
 }
 
-},{"../constants/ActionTypes":511,"../constants/Schemas":512,"lodash":152}],556:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"../constants/Schemas":514,"lodash":152}],561:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80700,7 +81203,7 @@ function patchEntity(zoneId, zoneScan, state) {
     return entities;
 }
 
-},{"../constants/ActionTypes":511,"lodash":152,"normalizr":156}],557:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"lodash":152,"normalizr":156}],562:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80709,8 +81212,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 exports.zoneSettingsReducer = zoneSettingsReducer;
 
-var _normalizr = _dereq_('normalizr');
-
 var _lodash = _dereq_('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
@@ -80718,6 +81219,8 @@ var _lodash2 = _interopRequireDefault(_lodash);
 var _ActionTypes = _dereq_('../constants/ActionTypes');
 
 var ActionTypes = _interopRequireWildcard(_ActionTypes);
+
+var _Schemas = _dereq_('../constants/Schemas');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -80739,8 +81242,7 @@ function zoneSettingsReducer() {
                 isFetching: "fetchAllSettings"
             });
         case ActionTypes.ZONE_FETCH_SETTINGS_SUCCESS:
-            var zoneSettingSchema = new _normalizr.Schema(action.zoneId, { idAttribute: 'id' });
-            var normalizedZoneSettings = (0, _normalizr.normalize)(action.zoneSettings, (0, _normalizr.arrayOf)(zoneSettingSchema));
+            var normalizedZoneSettings = (0, _Schemas.normalizeZoneByIdGetAll)(action.zoneId, action.zoneSettings);
 
             return _extends({}, state, {
                 entities: _lodash2.default.merge(state.entities, normalizedZoneSettings.entities),
@@ -80753,17 +81255,17 @@ function zoneSettingsReducer() {
             });
         case ActionTypes.ZONE_UPDATE_SETTING:
             return _extends({}, state, {
-                entities: patchSetting(action.zoneId, action.setting, state),
+                entities: zonePatchSetting(action.zoneId, action.setting, state),
                 isFetching: action.setting.id
             });
         case ActionTypes.ZONE_UPDATE_SETTING_SUCCESS:
             return _extends({}, state, {
-                entities: patchSetting(action.zoneId, action.setting, state),
+                entities: zonePatchSetting(action.zoneId, action.setting, state),
                 isFetching: ""
             });
         case ActionTypes.ZONE_UPDATE_SETTING_ERROR:
             return _extends({}, state, {
-                entities: patchSetting(action.zoneId, action.setting, state),
+                entities: zonePatchSetting(action.zoneId, action.setting, state),
                 isFetching: ""
             });
         default:
@@ -80771,13 +81273,13 @@ function zoneSettingsReducer() {
     }
 }
 
-function patchSetting(zoneId, setting, state) {
-    var patchedEntities = state.entities;
+function zonePatchSetting(zoneId, setting, state) {
+    var patchedEntities = _extends({}, state.entities);
     patchedEntities[zoneId][setting.id] = setting;
     return patchedEntities;
 }
 
-},{"../constants/ActionTypes":511,"lodash":152,"normalizr":156}],558:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"../constants/Schemas":514,"lodash":152}],563:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80871,7 +81373,7 @@ function zonesReducer() {
     }
 }
 
-},{"../constants/ActionTypes":511,"../constants/Schemas":512,"lodash":152}],559:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":513,"../constants/Schemas":514,"lodash":152}],564:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80941,7 +81443,7 @@ exports.default = _react2.default.createElement(
     _react2.default.createElement(_reactRouter.Route, { path: UrlPaths.SECURITY_PAGE, component: _SecurityPage2.default, onEnter: requireAuth })
 );
 
-},{"./constants/UrlPaths":513,"./containers/AnalyticsPage/AnaltyicsPage":517,"./containers/App/App":518,"./containers/DNSManagementPage/DNSManagementPage":525,"./containers/LoginPage/LoginPage":530,"./containers/PerformancePage/PerformancePage":534,"./containers/SecurityPage/SecurityPage":540,"./containers/SignUpPage/SignUpPage":541,"./utils/Auth/Auth":562,"react":475,"react-router":307}],560:[function(_dereq_,module,exports){
+},{"./constants/UrlPaths":515,"./containers/AnalyticsPage/AnaltyicsPage":519,"./containers/App/App":520,"./containers/DNSManagementPage/DNSManagementPage":527,"./containers/LoginPage/LoginPage":533,"./containers/PerformancePage/PerformancePage":537,"./containers/SecurityPage/SecurityPage":544,"./containers/SignUpPage/SignUpPage":545,"./utils/Auth/Auth":568,"react":475,"react-router":307}],565:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80959,7 +81461,29 @@ function getConfigValue(config, key) {
     return config.config[key];
 }
 
-},{"../reducers/config":547}],561:[function(_dereq_,module,exports){
+},{"../reducers/config":551}],566:[function(_dereq_,module,exports){
+"use strict";
+
+exports.__esModule = true;
+exports.getPluginSettingsForZoneId = getPluginSettingsForZoneId;
+exports.getPluginSettingsValueForZoneId = getPluginSettingsValueForZoneId;
+
+var _lodash = _dereq_("lodash");
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function getPluginSettingsForZoneId(zoneId, state) {
+	return _lodash2.default.get(state, ["pluginSettings", "entities", zoneId]);
+}
+
+function getPluginSettingsValueForZoneId(zoneId, settingId, state) {
+	// return false as default value
+	return _lodash2.default.get(state, ["pluginSettings", "entities", zoneId, settingId, "value"], false);
+}
+
+},{"lodash":152}],567:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80994,7 +81518,7 @@ function configureStore(history, initialState) {
     return store;
 }
 
-},{"../reducers":548,"redux":484,"redux-logger":476,"redux-simple-router":477,"redux-thunk":478}],562:[function(_dereq_,module,exports){
+},{"../reducers":552,"redux":484,"redux-logger":476,"redux-simple-router":477,"redux-thunk":478}],568:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81023,7 +81547,7 @@ function setEmail(email) {
     localStorage.cfEmail = email;
 }
 
-},{"lodash":152}],563:[function(_dereq_,module,exports){
+},{"lodash":152}],569:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81393,7 +81917,7 @@ function zoneScanPut(zoneId, showInterstitial, onSuccess, onError) {
     return _cfUtilHttp2.default.put(ENDPOINT + "/zones/" + zoneId + "/scan", opts, onSuccess, onError);
 }
 
-},{"cf-util-http":115}],564:[function(_dereq_,module,exports){
+},{"cf-util-http":115}],570:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81574,12 +82098,14 @@ function send(method, opts, onSuccess, onError) {
     return _cfUtilHttp2.default.request(method, ENDPOINT, opts, onSuccess, onError);
 }
 
-},{"cf-util-http":115}],565:[function(_dereq_,module,exports){
+},{"cf-util-http":115}],571:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
 exports.pluginResponseOk = pluginResponseOk;
 exports.pluginAccountPost = pluginAccountPost;
+exports.pluginSettingListGet = pluginSettingListGet;
+exports.pluginSettingPatch = pluginSettingPatch;
 
 var _cfUtilHttp = _dereq_('cf-util-http');
 
@@ -81617,7 +82143,23 @@ function pluginAccountPost(email, apiKey, onSuccess, onError) {
     return _cfUtilHttp2.default.post(ENDPOINT + "/account/", opts, onSuccess, onError);
 }
 
-},{"../../utils/CFClientV4API/CFClientV4API":563,"cf-util-http":115}]},{},[544])
+function pluginSettingListGet(zoneId, onSuccess, onError) {
+    var opts = {};
+
+    return _cfUtilHttp2.default.get(ENDPOINT + "/plugin/" + zoneId['zoneId'] + "/settings/", opts, onSuccess, onError);
+}
+
+function pluginSettingPatch(zoneId, settingName, value, onSuccess, onError) {
+    var opts = {
+        body: {
+            value: value
+        }
+    };
+
+    return _cfUtilHttp2.default.patch(ENDPOINT + "/plugin/" + zoneId + "/settings/" + settingName, opts, onSuccess, onError);
+}
+
+},{"../../utils/CFClientV4API/CFClientV4API":569,"cf-util-http":115}]},{},[548])
 
  })();
 //# sourceMappingURL=compiled.js.map

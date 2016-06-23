@@ -111,6 +111,8 @@
     "container.minifyCard.html": "HTML",
     "container.minifyCard.javascript": "JavaScript",
     "container.performancePage.title": "Performance",
+    "container.protocolRewrite.title": "Protocol Rewriting",
+    "container.protocolRewrite.description": "Protocol rewriting in this context convert links within your WordPress site to images, stylesheets, and scripts from using either \"http://\" or \"https://\" to using just \"//\". This rewrite tells your browser to load all of these assets using the same protocol as the base page loaded.",
     "container.purgeCacheCard.button": "Purge Everything",
     "container.purgeCacheCard.title": "Purge Cache",
     "container.purgeCacheCard.description": "Clear cached files to force CloudFlare to fetch a fresh version of those files from your web server.",
@@ -167,5 +169,7 @@
     "container.zoneProvision.modal.title": "Delete Website",
     "container.zoneProvision.modal.description": "Are you sure you want to delete {zoneName}? To temporarily disable CloudFlare service and save your website settings, pause your website instead.",
     "container.zoneProvision.modal.buttonCancel": "Cancel",
+    "container.ipRewrite.title": "IP Rewrite",
+    "container.ipRewrite.description": "Rewrite CloudFlare IP Addresses for actual end-user IP Addresses at the application layer.",
     "errors.noActiveZoneSelected": "Please select a domain that is provisioned with CloudFlare."
 }
