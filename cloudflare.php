@@ -76,7 +76,7 @@ register_activation_hook(__FILE__, 'cloudflare_activate');
 
 function set_default_keys()
 {
-    update_option(CF\WordPress\DataStore::CLOUDFLARE_SETTING_PREFIX + CF\WordPress\DataStore::PROTOCOL_REWRITE, true);
+    update_option(CF\WordPress\DataStore::CLOUDFLARE_SETTING_PREFIX.CF\WordPress\DataStore::PROTOCOL_REWRITE, true);
 }
 
 function cloudflare_filter_xss($input)
@@ -92,7 +92,8 @@ if (!function_exists('add_action')) {
 
 function cloudflare_init()
 {
-    if (get_option(CF\WordPress\DataStore::CLOUDFLARE_SETTING_PREFIX.CF\WordPress\DataStore::IP_REWRITE)) {
+    $cloudflare_ip_rewrite = load_ip_rewrite();
+    if ($cloudflare_ip_rewrite) {
         // As side a side effect rewrites $_SERVER["REMOTE_ADDR"] if the site is on CloudFlare
         // For more info visit https://github.com/cloudflare/cf-ip-rewrite
         IpRewrite::isCloudFlare();
@@ -125,7 +126,12 @@ function cloudflare_config_page()
 
 function load_protocol_rewrite()
 {
-    return get_option(CF\WordPress\DataStore::CLOUDFLARE_SETTING_PREFIX.CF\WordPress\DataStore::PROTOCOL_REWRITE);
+    return CF\WordPress\DataStore::getPluginSetting(CF\WordPress\DataStore::PROTOCOL_REWRITE);
+}
+
+function load_ip_rewrite()
+{
+    return CF\WordPress\DataStore::getPluginSetting(CF\WordPress\DataStore::IP_REWRITE);
 }
 
 function cloudflare_conf2()
@@ -349,7 +355,6 @@ function cloudflare_curl($url, $fields = array(), $json = true)
 function cloudflare_buffer_wrapup($buffer)
 {
     $cloudflare_protocol_rewrite = load_protocol_rewrite();
-
     if ($cloudflare_protocol_rewrite) {
         // Check for a Content-Type header. Currently only apply rewriting to "text/html" or undefined
         $headers = headers_list();

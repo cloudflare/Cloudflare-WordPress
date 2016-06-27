@@ -72,6 +72,19 @@ class DataStore implements DataStoreInterface
     public function getCloudFlareEmail()
     {
         return get_option(self::EMAIL);
+    /**
+     * @param  $settingId DataStore::[PluginSettingName]
+     * 
+     * @return (bool)
+     */
+    public static function getPluginSetting($settingId)
+    {
+        $settingName = self::getPluginSettingName($settingId);
+        if (!$settingName) {
+            return false;
+        }
+
+        return get_option(self::CLOUDFLARE_SETTING_PREFIX.$settingName);
     }
 
     /**
@@ -104,7 +117,7 @@ class DataStore implements DataStoreInterface
         return update_option(self::CLOUDFLARE_SETTING_PREFIX.$settingName, $value);
     }
 
-    private function getPluginSettingName($settingId)
+    private static function getPluginSettingName($settingId)
     {
         switch ($settingId) {
             case self::IP_REWRITE:
