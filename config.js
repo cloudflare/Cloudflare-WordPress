@@ -15,7 +15,7 @@
     "featureManagerIsRailgunEnabled": true,
     "featureManagerIsScanEnabled": false,
     "featureManagerIsSecurityLevelEnabled": true,
-    "featureManagerIsSSLEnabled": false,
+    "featureManagerIsSSLEnabled": true,
     "locale": "en",
     "integrationName": "wordpress",
     "useHostAPILogin": false,
