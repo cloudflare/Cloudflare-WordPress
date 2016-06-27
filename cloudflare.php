@@ -92,9 +92,11 @@ if (!function_exists('add_action')) {
 
 function cloudflare_init()
 {
-    global $is_cf;
-
-    $is_cf = IpRewrite::isCloudFlare();
+    if (get_option(CF\WordPress\DataStore::CLOUDFLARE_SETTING_PREFIX.CF\WordPress\DataStore::IP_REWRITE)) {
+        // As side a side effect rewrites $_SERVER["REMOTE_ADDR"] if the site is on CloudFlare
+        // For more info visit https://github.com/cloudflare/cf-ip-rewrite
+        IpRewrite::isCloudFlare();
+    }
 
     add_action('admin_menu', 'cloudflare_config_page');
 }
