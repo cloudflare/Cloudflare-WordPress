@@ -72,6 +72,19 @@ class DataStore implements DataStoreInterface
     public function getCloudFlareEmail()
     {
         return get_option(self::EMAIL);
+    /**
+     * @param  $settingId DataStore::[PluginSettingName]
+     * 
+     * @return (bool)
+     */
+    public static function getPluginSetting($settingId)
+    {
+        $settingName = self::getPluginSettingName($settingId);
+        if (!$settingName) {
+            return false;
+        }
+
+        return get_option(self::CLOUDFLARE_SETTING_PREFIX.$settingName);
     }
 
     /**
@@ -79,8 +92,8 @@ class DataStore implements DataStoreInterface
      */
     public function getPluginSettings($api)
     {
-        $ip_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX + self::IP_REWRITE);
-        $protocol_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX + self::PROTOCOL_REWRITE);
+        $ip_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX.self::IP_REWRITE);
+        $protocol_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX.self::PROTOCOL_REWRITE);
 
         $settings = [];
         array_push($settings, $api->createPluginResult(self::IP_REWRITE, $ip_rewrite_value, true, ''));
@@ -101,10 +114,10 @@ class DataStore implements DataStoreInterface
             return false;
         }
 
-        return update_option(self::CLOUDFLARE_SETTING_PREFIX + $settingName, $value);
+        return update_option(self::CLOUDFLARE_SETTING_PREFIX.$settingName, $value);
     }
 
-    private function getPluginSettingName($settingId)
+    private static function getPluginSettingName($settingId)
     {
         switch ($settingId) {
             case self::IP_REWRITE:

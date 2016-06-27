@@ -74358,7 +74358,7 @@ var _zoneScan = _dereq_('./zoneScan');
 
 var _zoneSettings = _dereq_('./zoneSettings');
 
-var _ipRewrite = _dereq_('./ipRewrite');
+var _pluginSettings = _dereq_('./pluginSettings');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -74377,7 +74377,7 @@ function asyncZoneSetActiveZone(zone) {
             if (zone.status === 'active') {
                 dispatch((0, _zoneDnsRecords.asyncDNSRecordFetchList)(zone.id));
                 dispatch((0, _zoneRailgun.asyncZoneRailgunFetchAll)(zone.id));
-                dispatch((0, _ipRewrite.asyncPluginFetchSettings)(zone.id));
+                dispatch((0, _pluginSettings.asyncPluginFetchSettings)(zone.id));
             }
             dispatch((0, _zoneSettings.asyncZoneFetchSettings)(zone.id));
             dispatch((0, _zoneAnalytics.asyncZoneFetchAnalytics)(zone.id));
@@ -74394,7 +74394,7 @@ function zoneSetActiveZoneIfEmpty(zone) {
     };
 }
 
-},{"../constants/ActionTypes":513,"./ipRewrite":496,"./notifications":497,"./zoneAnalytics":500,"./zoneDnsRecords":501,"./zoneRailgun":504,"./zoneScan":505,"./zoneSettings":506}],493:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"./notifications":496,"./pluginSettings":497,"./zoneAnalytics":499,"./zoneDnsRecords":500,"./zoneRailgun":503,"./zoneScan":504,"./zoneSettings":505}],493:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -74412,7 +74412,7 @@ function applicationInit() {
     };
 }
 
-},{"../constants/ActionTypes":513}],494:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512}],494:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -74501,7 +74501,7 @@ function configUpdateByKey(key, value) {
     };
 }
 
-},{"../actions/user":499,"../constants/ActionTypes":513,"../reducers/config":551,"../utils/Auth/Auth":568,"./intl":495,"./notifications":497,"cf-util-http":115}],495:[function(_dereq_,module,exports){
+},{"../actions/user":498,"../constants/ActionTypes":512,"../reducers/config":550,"../utils/Auth/Auth":567,"./intl":495,"./notifications":496,"cf-util-http":115}],495:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -74563,106 +74563,7 @@ function asyncIntlFetchTranslations(locale) {
     };
 }
 
-},{"../constants/ActionTypes":513,"./app":493,"./notifications":497,"cf-util-http":115}],496:[function(_dereq_,module,exports){
-'use strict';
-
-exports.__esModule = true;
-exports.pluginFetchSettings = pluginFetchSettings;
-exports.pluginFetchSettingsSuccess = pluginFetchSettingsSuccess;
-exports.pluginFetchSettingsError = pluginFetchSettingsError;
-exports.pluginUpdateSetting = pluginUpdateSetting;
-exports.pluginUpdateSettingSuccess = pluginUpdateSettingSuccess;
-exports.pluginUpdateSettingError = pluginUpdateSettingError;
-exports.asyncPluginFetchSettings = asyncPluginFetchSettings;
-exports.asyncPluginUpdateSetting = asyncPluginUpdateSetting;
-
-var _PluginAPI = _dereq_('../utils/PluginAPI/PluginAPI');
-
-var _notifications = _dereq_('./notifications');
-
-var _ActionTypes = _dereq_('../constants/ActionTypes');
-
-var ActionTypes = _interopRequireWildcard(_ActionTypes);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
-
-function pluginFetchSettings() {
-    return {
-        type: ActionTypes.PLUGIN_SETTINGS_FETCH
-    };
-}
-
-function pluginFetchSettingsSuccess(zoneId, setting) {
-    return {
-        type: ActionTypes.PLUGIN_SETTINGS_FETCH_SUCCESS,
-        zoneId: zoneId,
-        setting: setting
-    };
-}
-
-function pluginFetchSettingsError() {
-    return {
-        type: ActionTypes.PLUGIN_SETTINGS_FETCH_ERROR
-    };
-}
-
-function pluginUpdateSetting(zoneId, setting) {
-    return {
-        type: ActionTypes.PLUGIN_SETTING_UPDATE,
-        zoneId: zoneId,
-        setting: setting
-    };
-}
-
-function pluginUpdateSettingSuccess(zoneId, setting) {
-    return {
-        type: ActionTypes.PLUGIN_SETTING_UPDATE_SUCCESS,
-        zoneId: zoneId,
-        setting: setting
-    };
-}
-
-function pluginUpdateSettingError(zoneId, setting) {
-    return {
-        type: ActionTypes.PLUGIN_SETTING_UPDATE_ERROR,
-        zoneId: zoneId,
-        setting: setting
-    };
-}
-
-function asyncPluginFetchSettings(zoneId) {
-    return function (dispatch) {
-        dispatch(pluginFetchSettings());
-        (0, _PluginAPI.pluginSettingListGet)({ zoneId: zoneId }, function (response) {
-            if ((0, _PluginAPI.pluginResponseOk)(response)) {
-                dispatch(pluginFetchSettingsSuccess(zoneId, response.body.result));
-            } else {
-                dispatch((0, _notifications.notificationAddClientAPIError)(pluginFetchSettingsError(), response));
-            }
-        }, function (error) {
-            dispatch((0, _notifications.notificationAddClientAPIError)(pluginFetchSettingsError(), error));
-        });
-    };
-}
-
-function asyncPluginUpdateSetting(settingName, zoneId, value) {
-    return function (dispatch, getState) {
-        var oldSetting = getState().pluginSettings.entities[zoneId][settingName];
-
-        dispatch(pluginUpdateSetting(zoneId, { 'id': settingName, 'value': value }));
-        (0, _PluginAPI.pluginSettingPatch)(zoneId, settingName, value, function (response) {
-            if ((0, _PluginAPI.pluginResponseOk)(response)) {
-                dispatch(pluginUpdateSettingSuccess(zoneId, response.body.result));
-            } else {
-                dispatch((0, _notifications.notificationAddClientAPIError)(pluginUpdateSettingError(zoneId, oldSetting), response));
-            }
-        }, function (error) {
-            dispatch((0, _notifications.notificationAddClientAPIError)(pluginUpdateSettingError(zoneId, oldSetting), error));
-        });
-    };
-}
-
-},{"../constants/ActionTypes":513,"../utils/PluginAPI/PluginAPI":571,"./notifications":497}],497:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"./app":493,"./notifications":496,"cf-util-http":115}],496:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -74735,7 +74636,7 @@ function notificationAddClientAPIError(errorAction, errorMessage) {
     };
 }
 
-},{"../constants/ActionTypes":513}],498:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512}],497:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -74834,7 +74735,7 @@ function asyncPluginUpdateSetting(settingName, zoneId, value) {
     };
 }
 
-},{"../constants/ActionTypes":513,"../utils/PluginAPI/PluginAPI":571,"./notifications":497}],499:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"../utils/PluginAPI/PluginAPI":570,"./notifications":496}],498:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -74977,7 +74878,7 @@ function asyncUserSignup(email, password) {
     };
 }
 
-},{"../constants/ActionTypes":513,"../constants/UrlPaths":515,"../utils/CFHostAPI/CFHostAPI":570,"../utils/PluginAPI/PluginAPI":571,"./notifications":497,"./zones":507,"redux-simple-router":477}],500:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"../constants/UrlPaths":514,"../utils/CFHostAPI/CFHostAPI":569,"../utils/PluginAPI/PluginAPI":570,"./notifications":496,"./zones":506,"redux-simple-router":477}],499:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75031,7 +74932,7 @@ function asyncZoneFetchAnalytics(zoneId) {
     };
 }
 
-},{"../constants/ActionTypes":513,"../utils/CFClientV4API/CFClientV4API":569,"./notifications":497}],501:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"../utils/CFClientV4API/CFClientV4API":568,"./notifications":496}],500:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75175,7 +75076,7 @@ function asyncDNSRecordUpdate(zoneId, dnsRecord, proxied) {
     };
 }
 
-},{"../constants/ActionTypes":513,"../utils/CFClientV4API/CFClientV4API":569,"./notifications":497}],502:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"../utils/CFClientV4API/CFClientV4API":568,"./notifications":496}],501:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75353,7 +75254,7 @@ function asyncSetHostAPIProvisionedDomainActive(domainName) {
     };
 }
 
-},{"../constants/ActionTypes":513,"../constants/Schemas":514,"../utils/CFClientV4API/CFClientV4API":569,"../utils/CFHostAPI/CFHostAPI":570,"./activeZone":492,"./notifications":497,"./zones":507}],503:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"../constants/Schemas":513,"../utils/CFClientV4API/CFClientV4API":568,"../utils/CFHostAPI/CFHostAPI":569,"./activeZone":492,"./notifications":496,"./zones":506}],502:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75406,7 +75307,7 @@ function asyncZonePurgeCache(zoneId) {
     };
 }
 
-},{"../constants/ActionTypes":513,"../utils/CFClientV4API/CFClientV4API":569,"./notifications":497}],504:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"../utils/CFClientV4API/CFClientV4API":568,"./notifications":496}],503:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75507,7 +75408,7 @@ function asyncZoneRailgunConnectionUpdate(zoneId, railgun, isConnected) {
     };
 }
 
-},{"../constants/ActionTypes":513,"../utils/CFClientV4API/CFClientV4API":569,"./notifications":497}],505:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"../utils/CFClientV4API/CFClientV4API":568,"./notifications":496}],504:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75604,7 +75505,7 @@ function asyncZoneUpdateScan(zoneId, showInterstitial) {
     };
 }
 
-},{"../constants/ActionTypes":513,"../utils/CFClientV4API/CFClientV4API":569,"./notifications":497}],506:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"../utils/CFClientV4API/CFClientV4API":568,"./notifications":496}],505:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75707,7 +75608,7 @@ function asyncZoneUpdateSetting(settingName, zoneId, value) {
     };
 }
 
-},{"../actions/zoneDnsRecords":501,"../constants/ActionTypes":513,"../utils/CFClientV4API/CFClientV4API":569,"../utils/CFHostAPI/CFHostAPI":570,"./notifications":497}],507:[function(_dereq_,module,exports){
+},{"../actions/zoneDnsRecords":500,"../constants/ActionTypes":512,"../utils/CFClientV4API/CFClientV4API":568,"../utils/CFHostAPI/CFHostAPI":569,"./notifications":496}],506:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75821,7 +75722,7 @@ function asyncFetchZones() {
     };
 }
 
-},{"../constants/ActionTypes":513,"../utils/CFClientV4API/CFClientV4API":569,"../utils/CFHostAPI/CFHostAPI":570,"./activeZone":492,"./notifications":497,"./zoneDnsRecords":501}],508:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"../utils/CFClientV4API/CFClientV4API":568,"../utils/CFHostAPI/CFHostAPI":569,"./activeZone":492,"./notifications":496,"./zoneDnsRecords":500}],507:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75900,7 +75801,7 @@ CloudToggle.propTypes = {
 };
 exports.default = CloudToggle;
 
-},{"react":475}],509:[function(_dereq_,module,exports){
+},{"react":475}],508:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75944,7 +75845,7 @@ FeatureManager.propTypes = {
 };
 exports.default = FeatureManager;
 
-},{"react":475}],510:[function(_dereq_,module,exports){
+},{"react":475}],509:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -75989,7 +75890,7 @@ var Loading = function (_Component) {
 
 exports.default = Loading;
 
-},{"react":475,"react-intl":255}],511:[function(_dereq_,module,exports){
+},{"react":475,"react-intl":255}],510:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -76051,7 +75952,7 @@ MarketingFeature.propTypes = {
 };
 exports.default = MarketingFeature;
 
-},{"react":475,"react-intl":255}],512:[function(_dereq_,module,exports){
+},{"react":475,"react-intl":255}],511:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -76132,7 +76033,7 @@ var Notification = function (_Component) {
 
 exports.default = Notification;
 
-},{"../../actions/notifications":497,"react":475,"react-intl":255}],513:[function(_dereq_,module,exports){
+},{"../../actions/notifications":496,"react":475,"react-intl":255}],512:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -76248,19 +76149,19 @@ var ZONE_RAILGUNS_CONNECTION_UPDATE = exports.ZONE_RAILGUNS_CONNECTION_UPDATE = 
 var ZONE_RAILGUNS_CONNECTION_UPDATE_SUCCESSS = exports.ZONE_RAILGUNS_CONNECTION_UPDATE_SUCCESSS = "ZONES_RAILGUNS_CONNECTION_UPDATE__SUCCESS";
 var ZONE_RAILGUNS_CONNECTION_UPDATE_ERROR = exports.ZONE_RAILGUNS_CONNECTION_UPDATE_ERROR = "ZONES_RAILGUNS_CONNECTION_UPDATE_ERROR";
 
-},{}],514:[function(_dereq_,module,exports){
+},{}],513:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
-exports.zoneRailgunSchema = exports.zoneSchema = undefined;
 exports.normalizeZoneByIdGetAll = normalizeZoneByIdGetAll;
 exports.normalizeZoneGetAll = normalizeZoneGetAll;
 exports.normalizeZoneRailgunGetAll = normalizeZoneRailgunGetAll;
 
 var _normalizr = _dereq_('normalizr');
 
-var zoneSchema = exports.zoneSchema = new _normalizr.Schema('zones', { idAttribute: 'name' });
-var zoneRailgunSchema = exports.zoneRailgunSchema = new _normalizr.Schema('railguns', { idAttribute: 'id' });
+var zoneSchema = new _normalizr.Schema('zones', { idAttribute: 'name' });
+var zoneRailgunSchema = new _normalizr.Schema('railguns', { idAttribute: 'id' });
+
 function normalizeZoneByIdGetAll(zoneId, result) {
     var zoneSchemaById = new _normalizr.Schema(zoneId, { idAttribute: 'id' });
     return (0, _normalizr.normalize)(result, (0, _normalizr.arrayOf)(zoneSchemaById));
@@ -76274,7 +76175,7 @@ function normalizeZoneRailgunGetAll(result) {
     return (0, _normalizr.normalize)(result, (0, _normalizr.arrayOf)(zoneRailgunSchema));
 }
 
-},{"normalizr":156}],515:[function(_dereq_,module,exports){
+},{"normalizr":156}],514:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -76292,7 +76193,7 @@ var SUPPORT_PAGE = exports.SUPPORT_PAGE = "https://support.cloudflare.com/hc/en-
 var TERMS_AND_CONDITIONS_PAGE = exports.TERMS_AND_CONDITIONS_PAGE = "https://www.cloudflare.com/terms";
 var PRIVACY_POLICY_PAGE = exports.PRIVACY_POLICY_PAGE = "https://www.cloudflare.com/security-policy";
 
-},{}],516:[function(_dereq_,module,exports){
+},{}],515:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -76407,7 +76308,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ActivationCheckCard));
 
-},{"../../actions/zoneProvision":502,"cf-component-button":5,"cf-component-card":15,"cf-component-list":64,"react":475,"react-intl":255,"react-redux":277}],517:[function(_dereq_,module,exports){
+},{"../../actions/zoneProvision":501,"cf-component-button":5,"cf-component-card":15,"cf-component-list":64,"react":475,"react-intl":255,"react-redux":277}],516:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -76493,7 +76394,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ActiveZoneSelector));
 
-},{"../../actions/activeZone":492,"cf-component-select":84,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],518:[function(_dereq_,module,exports){
+},{"../../actions/activeZone":492,"cf-component-select":84,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],517:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -76587,7 +76488,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(AlwaysOnlineCard));
 
-},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],519:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":505,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],518:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -76777,7 +76678,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(AnaltyicsPage));
 
-},{"cf-component-heading":54,"cf-component-tabs":101,"lodash":152,"react":475,"react-c3-wrapper":236,"react-intl":255,"react-redux":277}],520:[function(_dereq_,module,exports){
+},{"cf-component-heading":54,"cf-component-tabs":101,"lodash":152,"react":475,"react-c3-wrapper":236,"react-intl":255,"react-redux":277}],519:[function(_dereq_,module,exports){
 (function (global){
 'use strict';
 
@@ -76979,7 +76880,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps)(AppWrapper);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"../../actions/config":494,"../../containers/ActiveZoneSelector/ActiveZoneSelector":517,"../../containers/AppNavigation/AppNavigation":521,"../../containers/NotificationList/NotificationList":536,"../../containers/UnderAttackButton/UnderAttackButton":546,"../../selectors/config":565,"../../utils/Auth/Auth":568,"cf-component-layout":58,"intl":150,"react":475,"react-gateway":244,"react-intl":255,"react-redux":277}],521:[function(_dereq_,module,exports){
+},{"../../actions/config":494,"../../containers/ActiveZoneSelector/ActiveZoneSelector":516,"../../containers/AppNavigation/AppNavigation":520,"../../containers/NotificationList/NotificationList":535,"../../containers/UnderAttackButton/UnderAttackButton":545,"../../selectors/config":564,"../../utils/Auth/Auth":567,"cf-component-layout":58,"intl":150,"react":475,"react-gateway":244,"react-intl":255,"react-redux":277}],520:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77163,7 +77064,7 @@ AppNavigation.propTypes = {
 };
 exports.default = AppNavigation;
 
-},{"../../constants/UrlPaths":515,"../../utils/Auth/Auth":568,"cf-component-link":60,"react":475,"react-intl":255,"redux-simple-router":477}],522:[function(_dereq_,module,exports){
+},{"../../constants/UrlPaths":514,"../../utils/Auth/Auth":567,"cf-component-link":60,"react":475,"react-intl":255,"redux-simple-router":477}],521:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77255,7 +77156,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(BrowserCacheTTLCard));
 
-},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],523:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":505,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],522:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77349,7 +77250,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(BrowserIntegrityCheckCard));
 
-},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],524:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":505,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],523:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77440,7 +77341,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(CacheLevelCard));
 
-},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-radio":82,"react":475,"react-intl":255,"react-redux":277}],525:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":505,"cf-component-card":15,"cf-component-radio":82,"react":475,"react-intl":255,"react-redux":277}],524:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77533,7 +77434,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ChallengePassageCard));
 
-},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],526:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":505,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],525:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77713,7 +77614,7 @@ var ClientLoginPage = function (_Component) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)()(ClientLoginPage));
 
-},{"../../actions/user":499,"../../constants/UrlPaths.js":515,"../../containers/MarketingFeatureCollection/MarketingFeatureCollection":534,"react":475,"react-intl":255,"react-redux":277,"react-router":307,"redux-simple-router":477}],527:[function(_dereq_,module,exports){
+},{"../../actions/user":498,"../../constants/UrlPaths.js":514,"../../containers/MarketingFeatureCollection/MarketingFeatureCollection":533,"react":475,"react-intl":255,"react-redux":277,"react-router":307,"redux-simple-router":477}],526:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -77892,7 +77793,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(DNSManagementPage));
 
-},{"../../constants/UrlPaths.js":515,"../../containers/ActivationCheckCard/ActivationCheckCard":516,"../../containers/DNSRecordEditor/DNSRecordEditor":528,"../../containers/ZoneProvisionContainer/ZoneProvisionContainer":547,"cf-component-button":5,"cf-component-heading":54,"cf-component-table":98,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],528:[function(_dereq_,module,exports){
+},{"../../constants/UrlPaths.js":514,"../../containers/ActivationCheckCard/ActivationCheckCard":515,"../../containers/DNSRecordEditor/DNSRecordEditor":527,"../../containers/ZoneProvisionContainer/ZoneProvisionContainer":546,"cf-component-button":5,"cf-component-heading":54,"cf-component-table":98,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],527:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78049,7 +77950,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(DNSRecordEditor));
 
-},{"../../actions/zoneDnsRecords":501,"../../components/CloudToggle/CloudToggle":508,"../../components/Loading/Loading":510,"cf-component-table":98,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],529:[function(_dereq_,module,exports){
+},{"../../actions/zoneDnsRecords":500,"../../components/CloudToggle/CloudToggle":507,"../../components/Loading/Loading":509,"cf-component-table":98,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],528:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78143,7 +78044,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(DevelopmentModeCard));
 
-},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],530:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":505,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],529:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78331,7 +78232,7 @@ var HostLoginPage = function (_Component) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)()(HostLoginPage));
 
-},{"../../actions/user":499,"../../constants/UrlPaths.js":515,"../../containers/MarketingFeatureCollection/MarketingFeatureCollection":534,"react":475,"react-intl":255,"react-redux":277,"react-router":307,"redux-simple-router":477}],531:[function(_dereq_,module,exports){
+},{"../../actions/user":498,"../../constants/UrlPaths.js":514,"../../containers/MarketingFeatureCollection/MarketingFeatureCollection":533,"react":475,"react-intl":255,"react-redux":277,"react-router":307,"redux-simple-router":477}],530:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78425,7 +78326,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(IPV6Card));
 
-},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],532:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":505,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],531:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78471,12 +78372,17 @@ var IpRewriteCard = function (_Component) {
         var _props = this.props;
         var activeZoneId = _props.activeZoneId;
         var dispatch = _props.dispatch;
+        // value = (value === true ? "on" : "off");
 
         dispatch((0, _pluginSettings.asyncPluginUpdateSetting)(SETTING_NAME, activeZoneId, value));
     };
 
     IpRewriteCard.prototype.render = function render() {
         var formatMessage = this.props.intl.formatMessage;
+
+
+        console.log("HEREE!! " + this.props.ipRewriteValue);
+        console.log("type!! " + typeof this.props.ipRewriteValue);
 
         return _react2.default.createElement(
             'div',
@@ -78501,7 +78407,7 @@ var IpRewriteCard = function (_Component) {
                         null,
                         _react2.default.createElement(_cfComponentToggle2.default, {
                             label: '',
-                            value: this.props.ipRewriteValue,
+                            value: this.props.ipRewriteValue == true,
                             onChange: this.handleChange.bind(this) })
                     )
                 )
@@ -78520,7 +78426,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(IpRewriteCard));
 
-},{"../../actions/pluginSettings":498,"../../selectors/pluginSettings":566,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],533:[function(_dereq_,module,exports){
+},{"../../actions/pluginSettings":497,"../../selectors/pluginSettings":565,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],532:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78592,7 +78498,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(LoginPage);
 
-},{"../../constants/UrlPaths.js":515,"../../containers/ClientLoginPage/ClientLoginPage":526,"../../containers/HostLoginPage/HostLoginPage":530,"../../selectors/config":565,"../../utils/Auth/Auth":568,"react":475,"react-redux":277,"redux-simple-router":477}],534:[function(_dereq_,module,exports){
+},{"../../constants/UrlPaths.js":514,"../../containers/ClientLoginPage/ClientLoginPage":525,"../../containers/HostLoginPage/HostLoginPage":529,"../../selectors/config":564,"../../utils/Auth/Auth":567,"react":475,"react-redux":277,"redux-simple-router":477}],533:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78665,7 +78571,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(MarketingFeatureCollection);
 
-},{"../../components/MarketingFeature/MarketingFeature":511,"../../selectors/config":565,"react":475,"react-redux":277}],535:[function(_dereq_,module,exports){
+},{"../../components/MarketingFeature/MarketingFeature":510,"../../selectors/config":564,"react":475,"react-redux":277}],534:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78785,7 +78691,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(MinifyCard));
 
-},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-checkbox":22,"react":475,"react-intl":255,"react-redux":277}],536:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":505,"cf-component-card":15,"cf-component-checkbox":22,"react":475,"react-intl":255,"react-redux":277}],535:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -78850,7 +78756,7 @@ var NotificationList = function (_Component) {
 
 exports.default = NotificationList;
 
-},{"../../actions/notifications":497,"../../components/Notification/Notification":512,"react":475,"react-addons-css-transition-group":235}],537:[function(_dereq_,module,exports){
+},{"../../actions/notifications":496,"../../components/Notification/Notification":511,"react":475,"react-addons-css-transition-group":235}],536:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79019,7 +78925,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(PerformancePage));
 
-},{"../../components/FeatureManager/FeatureManager":509,"../../containers/AlwaysOnlineCard/AlwaysOnlineCard":518,"../../containers/BrowserCacheTTLCard/BrowserCacheTTLCard":522,"../../containers/CacheLevelCard/CacheLevelCard":524,"../../containers/DevelopmentModeCard/DevelopmentModeCard":529,"../../containers/IPV6Card/IPV6Card":531,"../../containers/IpRewriteCard/IpRewriteCard":532,"../../containers/MinifyCard/MinifyCard":535,"../../containers/ProtocolRewriteCard/ProtocolRewriteCard":538,"../../containers/PurgeCacheCard/PurgeCacheCard":539,"../../containers/RailgunCard/RailgunCard":540,"../../selectors/pluginSettings":566,"cf-component-heading":54,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],538:[function(_dereq_,module,exports){
+},{"../../components/FeatureManager/FeatureManager":508,"../../containers/AlwaysOnlineCard/AlwaysOnlineCard":517,"../../containers/BrowserCacheTTLCard/BrowserCacheTTLCard":521,"../../containers/CacheLevelCard/CacheLevelCard":523,"../../containers/DevelopmentModeCard/DevelopmentModeCard":528,"../../containers/IPV6Card/IPV6Card":530,"../../containers/IpRewriteCard/IpRewriteCard":531,"../../containers/MinifyCard/MinifyCard":534,"../../containers/ProtocolRewriteCard/ProtocolRewriteCard":537,"../../containers/PurgeCacheCard/PurgeCacheCard":538,"../../containers/RailgunCard/RailgunCard":539,"../../selectors/pluginSettings":565,"cf-component-heading":54,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],537:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79065,6 +78971,7 @@ var ProtocolRewriteCard = function (_Component) {
         var _props = this.props;
         var activeZoneId = _props.activeZoneId;
         var dispatch = _props.dispatch;
+        // value = (value === true ? "on" : "off");
 
         dispatch((0, _pluginSettings.asyncPluginUpdateSetting)(SETTING_NAME, activeZoneId, value));
     };
@@ -79095,7 +79002,7 @@ var ProtocolRewriteCard = function (_Component) {
                         null,
                         _react2.default.createElement(_cfComponentToggle2.default, {
                             label: '',
-                            value: this.props.protocolRewriteValue,
+                            value: this.props.protocolRewriteValue == true,
                             onChange: this.handleChange.bind(this) })
                     )
                 )
@@ -79114,7 +79021,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ProtocolRewriteCard));
 
-},{"../../actions/pluginSettings":498,"../../selectors/pluginSettings":566,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],539:[function(_dereq_,module,exports){
+},{"../../actions/pluginSettings":497,"../../selectors/pluginSettings":565,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],538:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79266,7 +79173,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(PurgeCacheCard));
 
-},{"../../actions/zonePurgeCache":503,"cf-component-button":5,"cf-component-card":15,"cf-component-modal":72,"react":475,"react-intl":255,"react-redux":277}],540:[function(_dereq_,module,exports){
+},{"../../actions/zonePurgeCache":502,"cf-component-button":5,"cf-component-card":15,"cf-component-modal":72,"react":475,"react-intl":255,"react-redux":277}],539:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79431,7 +79338,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(RailgunCard));
 
-},{"../../actions/zoneRailgun":504,"cf-component-button":5,"cf-component-card":15,"cf-component-table":98,"cf-component-toggle":113,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],541:[function(_dereq_,module,exports){
+},{"../../actions/zoneRailgun":503,"cf-component-button":5,"cf-component-card":15,"cf-component-table":98,"cf-component-toggle":113,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],540:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79524,7 +79431,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(SSLCard));
 
-},{"../../actions/zoneSettings":506,"../../components/FeatureManager/FeatureManager":509,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],542:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":505,"../../components/FeatureManager/FeatureManager":508,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],541:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79616,7 +79523,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ScanCard));
 
-},{"../../actions/zoneScan":505,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],543:[function(_dereq_,module,exports){
+},{"../../actions/zoneScan":504,"cf-component-card":15,"cf-component-toggle":113,"react":475,"react-intl":255,"react-redux":277}],542:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79707,7 +79614,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(SecurityLevelCard));
 
-},{"../../actions/zoneSettings":506,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],544:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":505,"cf-component-card":15,"cf-component-select":84,"react":475,"react-intl":255,"react-redux":277}],543:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79830,7 +79737,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(SecurityPage));
 
-},{"../../components/FeatureManager/FeatureManager":509,"../../containers/BrowserIntegrityCheckCard/BrowserIntegrityCheckCard":523,"../../containers/ChallengePassageCard/ChallengePassageCard":525,"../../containers/SSLCard/SSLCard":541,"../../containers/ScanCard/ScanCard":542,"../../containers/SecurityLevelCard/SecurityLevelCard":543,"cf-component-heading":54,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],545:[function(_dereq_,module,exports){
+},{"../../components/FeatureManager/FeatureManager":508,"../../containers/BrowserIntegrityCheckCard/BrowserIntegrityCheckCard":522,"../../containers/ChallengePassageCard/ChallengePassageCard":524,"../../containers/SSLCard/SSLCard":540,"../../containers/ScanCard/ScanCard":541,"../../containers/SecurityLevelCard/SecurityLevelCard":542,"cf-component-heading":54,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],544:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80056,7 +79963,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(SignUpPage));
 
-},{"../../actions/notifications":497,"../../actions/user":499,"../../constants/UrlPaths":515,"lodash":152,"react":475,"react-intl":255,"react-redux":277,"redux":484}],546:[function(_dereq_,module,exports){
+},{"../../actions/notifications":496,"../../actions/user":498,"../../constants/UrlPaths":514,"lodash":152,"react":475,"react-intl":255,"react-redux":277,"redux":484}],545:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80146,7 +80053,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(UnderAttackButton));
 
-},{"../../actions/zoneSettings":506,"cf-component-button":5,"react":475,"react-intl":255,"react-redux":277}],547:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":505,"cf-component-button":5,"react":475,"react-intl":255,"react-redux":277}],546:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80382,7 +80289,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ZoneProvisionContainer));
 
-},{"../../actions/zoneProvision":502,"../../actions/zones":507,"../../components/FeatureManager/FeatureManager":509,"../../components/Loading/Loading":510,"../../constants/Schemas":514,"cf-component-button":5,"cf-component-layout":58,"cf-component-modal":72,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],548:[function(_dereq_,module,exports){
+},{"../../actions/zoneProvision":501,"../../actions/zones":506,"../../components/FeatureManager/FeatureManager":508,"../../components/Loading/Loading":509,"../../constants/Schemas":513,"cf-component-button":5,"cf-component-layout":58,"cf-component-modal":72,"lodash":152,"react":475,"react-intl":255,"react-redux":277}],547:[function(_dereq_,module,exports){
 'use strict';
 
 var _react = _dereq_('react');
@@ -80434,7 +80341,7 @@ _reactDom2.default.render(_react2.default.createElement(
     )
 ), document.getElementById('root'));
 
-},{"./routes":564,"./store/configureStore":567,"cf-util-http":115,"history/lib/createHashHistory":133,"react":475,"react-dom":239,"react-redux":277,"react-router":307}],549:[function(_dereq_,module,exports){
+},{"./routes":563,"./store/configureStore":566,"cf-util-http":115,"history/lib/createHashHistory":133,"react":475,"react-dom":239,"react-redux":277,"react-router":307}],548:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -80469,7 +80376,7 @@ function activeZoneReducer() {
     }
 }
 
-},{"../constants/ActionTypes":513}],550:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512}],549:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80502,7 +80409,7 @@ function appReducer() {
     }
 }
 
-},{"../constants/ActionTypes":513}],551:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512}],550:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -80554,7 +80461,7 @@ function configReducer() {
     }
 }
 
-},{"../constants/ActionTypes":513}],552:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512}],551:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80611,7 +80518,7 @@ var rootReducer = (0, _redux.combineReducers)({
 
 exports.default = rootReducer;
 
-},{"./activeZone":549,"./app":550,"./config":551,"./intl":553,"./notifications":554,"./pluginSettings":555,"./user":556,"./zoneAnalytics":557,"./zoneDnsRecords.js":558,"./zonePurgeCache":559,"./zoneRailgun":560,"./zoneScan":561,"./zoneSettings":562,"./zones":563,"redux":484,"redux-simple-router":477}],553:[function(_dereq_,module,exports){
+},{"./activeZone":548,"./app":549,"./config":550,"./intl":552,"./notifications":553,"./pluginSettings":554,"./user":555,"./zoneAnalytics":556,"./zoneDnsRecords.js":557,"./zonePurgeCache":558,"./zoneRailgun":559,"./zoneScan":560,"./zoneSettings":561,"./zones":562,"redux":484,"redux-simple-router":477}],552:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -80656,7 +80563,7 @@ function intlReducer() {
     }
 }
 
-},{"../constants/ActionTypes":513}],554:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512}],553:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80691,7 +80598,7 @@ function notificationsReducer() {
     }
 }
 
-},{"../constants/ActionTypes":513}],555:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512}],554:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80767,7 +80674,7 @@ function pluginPatchSetting(zoneId, setting, state) {
     return patchedEntities;
 }
 
-},{"../constants/ActionTypes":513,"../constants/Schemas":514,"lodash":152}],556:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"../constants/Schemas":513,"lodash":152}],555:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80831,7 +80738,7 @@ function userReducer() {
     }
 }
 
-},{"../constants/ActionTypes":513,"../utils/Auth/Auth":568}],557:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"../utils/Auth/Auth":567}],556:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80913,7 +80820,7 @@ function buildZoneAnalyticsData(zoneAnalyticsResponse) {
     return data;
 }
 
-},{"../constants/ActionTypes":513,"lodash":152}],558:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"lodash":152}],557:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81008,7 +80915,7 @@ function patchDnsRecord(zoneId, dnsRecordList, dnsRecord) {
     return dnsRecordList;
 }
 
-},{"../constants/ActionTypes":513,"lodash":152,"normalizr":156}],559:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"lodash":152,"normalizr":156}],558:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81055,7 +80962,7 @@ function zonePurgeCacheReducer() {
     }
 }
 
-},{"../constants/ActionTypes":513,"lodash":152}],560:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"lodash":152}],559:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81131,7 +81038,7 @@ function getPatchedEntities(state, action) {
     return patchedEntities;
 }
 
-},{"../constants/ActionTypes":513,"../constants/Schemas":514,"lodash":152}],561:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"../constants/Schemas":513,"lodash":152}],560:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81203,7 +81110,7 @@ function patchEntity(zoneId, zoneScan, state) {
     return entities;
 }
 
-},{"../constants/ActionTypes":513,"lodash":152,"normalizr":156}],562:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"lodash":152,"normalizr":156}],561:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81279,7 +81186,7 @@ function zonePatchSetting(zoneId, setting, state) {
     return patchedEntities;
 }
 
-},{"../constants/ActionTypes":513,"../constants/Schemas":514,"lodash":152}],563:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"../constants/Schemas":513,"lodash":152}],562:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81373,7 +81280,7 @@ function zonesReducer() {
     }
 }
 
-},{"../constants/ActionTypes":513,"../constants/Schemas":514,"lodash":152}],564:[function(_dereq_,module,exports){
+},{"../constants/ActionTypes":512,"../constants/Schemas":513,"lodash":152}],563:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81443,7 +81350,7 @@ exports.default = _react2.default.createElement(
     _react2.default.createElement(_reactRouter.Route, { path: UrlPaths.SECURITY_PAGE, component: _SecurityPage2.default, onEnter: requireAuth })
 );
 
-},{"./constants/UrlPaths":515,"./containers/AnalyticsPage/AnaltyicsPage":519,"./containers/App/App":520,"./containers/DNSManagementPage/DNSManagementPage":527,"./containers/LoginPage/LoginPage":533,"./containers/PerformancePage/PerformancePage":537,"./containers/SecurityPage/SecurityPage":544,"./containers/SignUpPage/SignUpPage":545,"./utils/Auth/Auth":568,"react":475,"react-router":307}],565:[function(_dereq_,module,exports){
+},{"./constants/UrlPaths":514,"./containers/AnalyticsPage/AnaltyicsPage":518,"./containers/App/App":519,"./containers/DNSManagementPage/DNSManagementPage":526,"./containers/LoginPage/LoginPage":532,"./containers/PerformancePage/PerformancePage":536,"./containers/SecurityPage/SecurityPage":543,"./containers/SignUpPage/SignUpPage":544,"./utils/Auth/Auth":567,"react":475,"react-router":307}],564:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81461,7 +81368,7 @@ function getConfigValue(config, key) {
     return config.config[key];
 }
 
-},{"../reducers/config":551}],566:[function(_dereq_,module,exports){
+},{"../reducers/config":550}],565:[function(_dereq_,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -81480,10 +81387,11 @@ function getPluginSettingsForZoneId(zoneId, state) {
 
 function getPluginSettingsValueForZoneId(zoneId, settingId, state) {
 	// return false as default value
+	console.log("PPPP " + JSON.stringify(_lodash2.default.get(state, ["pluginSettings", "entities", zoneId], false)));
 	return _lodash2.default.get(state, ["pluginSettings", "entities", zoneId, settingId, "value"], false);
 }
 
-},{"lodash":152}],567:[function(_dereq_,module,exports){
+},{"lodash":152}],566:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81518,7 +81426,7 @@ function configureStore(history, initialState) {
     return store;
 }
 
-},{"../reducers":552,"redux":484,"redux-logger":476,"redux-simple-router":477,"redux-thunk":478}],568:[function(_dereq_,module,exports){
+},{"../reducers":551,"redux":484,"redux-logger":476,"redux-simple-router":477,"redux-thunk":478}],567:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81547,7 +81455,7 @@ function setEmail(email) {
     localStorage.cfEmail = email;
 }
 
-},{"lodash":152}],569:[function(_dereq_,module,exports){
+},{"lodash":152}],568:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81917,7 +81825,7 @@ function zoneScanPut(zoneId, showInterstitial, onSuccess, onError) {
     return _cfUtilHttp2.default.put(ENDPOINT + "/zones/" + zoneId + "/scan", opts, onSuccess, onError);
 }
 
-},{"cf-util-http":115}],570:[function(_dereq_,module,exports){
+},{"cf-util-http":115}],569:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -82098,7 +82006,7 @@ function send(method, opts, onSuccess, onError) {
     return _cfUtilHttp2.default.request(method, ENDPOINT, opts, onSuccess, onError);
 }
 
-},{"cf-util-http":115}],571:[function(_dereq_,module,exports){
+},{"cf-util-http":115}],570:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -82159,7 +82067,7 @@ function pluginSettingPatch(zoneId, settingName, value, onSuccess, onError) {
     return _cfUtilHttp2.default.patch(ENDPOINT + "/plugin/" + zoneId + "/settings/" + settingName, opts, onSuccess, onError);
 }
 
-},{"../../utils/CFClientV4API/CFClientV4API":569,"cf-util-http":115}]},{},[548])
+},{"../../utils/CFClientV4API/CFClientV4API":568,"cf-util-http":115}]},{},[547])
 
  })();
 //# sourceMappingURL=compiled.js.map

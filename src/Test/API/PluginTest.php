@@ -45,8 +45,8 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $firstResponse = $pluginAPI->createAPISuccessResponse($resultString);
         $secondResponse = $pluginAPI->createAPISuccessResponse($resultArray);
 
-        $this->assertEquals('true', $firstResponse['success']);
-        $this->assertEquals('true', $secondResponse['success']);
+        $this->assertEquals(true, $firstResponse['success']);
+        $this->assertEquals(true, $secondResponse['success']);
         $this->assertEquals($resultString, $firstResponse['result']);
         $this->assertEquals($resultArray, $secondResponse['result']);
     }

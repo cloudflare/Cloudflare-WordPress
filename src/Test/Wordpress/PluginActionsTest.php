@@ -47,7 +47,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         $response = $pluginActions->loginWordPress();
 
         $this->assertEquals($email, $response['result']['email']);
-        $this->assertEquals('true', $response['success']);
+        $this->assertEquals(true, $response['success']);
     }
 
     public function testLoginWordPressFail()
@@ -68,12 +68,12 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
 
         $request = new Request(null, "plugin/:zonedId/settings/$settingId", null, array('value' => $value));
 
-        $this->mockDataStore->method('setIpRewrite')->willReturn(true);
+        $this->mockDataStore->method('setPluginSetting')->willReturn(true);
 
         $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->pluginAPI, $request);
         $response = $pluginActions->patchPluginSettings();
 
-        $this->assertEquals('true', $response['success']);
+        $this->assertEquals(true, $response['success']);
         $this->assertEquals($settingId, $response['result'][0]['id']);
         $this->assertEquals($value, $response['result'][0]['value']);
     }
@@ -85,12 +85,19 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
 
         $request = new Request(null, 'plugin/:zonedId/settings', null, null);
 
-        $this->mockDataStore->method('getIpRewrite')->willReturn(true);
+        $this->mockDataStore->method('getPluginSettings')->willReturn(
+            array(
+                array(
+                    'id' => 'ip_rewrite',
+                    'value' => $value,
+                ),
+            )
+        );
 
         $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->pluginAPI, $request);
         $response = $pluginActions->getPluginSettings();
 
-        $this->assertEquals('true', $response['success']);
+        $this->assertEquals(true, $response['success']);
         $this->assertEquals($settingId, $response['result'][0]['id']);
         $this->assertEquals($value, $response['result'][0]['value']);
     }
