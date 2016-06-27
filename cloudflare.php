@@ -69,8 +69,15 @@ function cloudflare_activate()
 
         return;
     }
+
+    set_default_keys();
 }
 register_activation_hook(__FILE__, 'cloudflare_activate');
+
+function set_default_keys()
+{
+    update_option(CF\WordPress\DataStore::CLOUDFLARE_SETTING_PREFIX + CF\WordPress\DataStore::PROTOCOL_REWRITE, true);
+}
 
 function cloudflare_filter_xss($input)
 {
@@ -96,7 +103,6 @@ add_action('init', 'cloudflare_init', 1);
 function cloudflare_admin_init()
 {
 }
-
 add_action('admin_init', 'cloudflare_admin_init');
 
 function cloudflare_plugin_action_links($links)
