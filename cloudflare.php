@@ -125,7 +125,7 @@ function cloudflare_config_page()
 
 function load_protocol_rewrite()
 {
-    return get_option('cloudflare_protocol_rewrite', 1);
+    return get_option(CF\WordPress\DataStore::CLOUDFLARE_SETTING_PREFIX.CF\WordPress\DataStore::PROTOCOL_REWRITE);
 }
 
 function cloudflare_conf2()
@@ -348,27 +348,31 @@ function cloudflare_curl($url, $fields = array(), $json = true)
 
 function cloudflare_buffer_wrapup($buffer)
 {
-    // Check for a Content-Type header. Currently only apply rewriting to "text/html" or undefined
-    $headers = headers_list();
-    $content_type = null;
+    $cloudflare_protocol_rewrite = load_protocol_rewrite();
 
-    foreach ($headers as $header) {
-        if (strpos(strtolower($header), 'content-type:') === 0) {
-            $pieces = explode(':', strtolower($header));
-            $content_type = trim($pieces[1]);
-            break;
+    if ($cloudflare_protocol_rewrite) {
+        // Check for a Content-Type header. Currently only apply rewriting to "text/html" or undefined
+        $headers = headers_list();
+        $content_type = null;
+
+        foreach ($headers as $header) {
+            if (strpos(strtolower($header), 'content-type:') === 0) {
+                $pieces = explode(':', strtolower($header));
+                $content_type = trim($pieces[1]);
+                break;
+            }
         }
-    }
 
-    if (is_null($content_type) || substr($content_type, 0, 9) === 'text/html') {
-        // replace href or src attributes within script, link, base, and img tags with just "//" for protocol
-        $re = "/(<(script|link|base|img|form)([^>]*)(href|src|action)=[\"'])https?:\\/\\//i";
-        $subst = '$1//';
-        $return = preg_replace($re, $subst, $buffer);
+        if (is_null($content_type) || substr($content_type, 0, 9) === 'text/html') {
+            // replace href or src attributes within script, link, base, and img tags with just "//" for protocol
+            $re = "/(<(script|link|base|img|form)([^>]*)(href|src|action)=[\"'])https?:\\/\\//i";
+            $subst = '$1//';
+            $return = preg_replace($re, $subst, $buffer);
 
-        // on regex error, skip overwriting buffer
-        if ($return) {
-            $buffer = $return;
+            // on regex error, skip overwriting buffer
+            if ($return) {
+                $buffer = $return;
+            }
         }
     }
 
@@ -377,12 +381,7 @@ function cloudflare_buffer_wrapup($buffer)
 
 function cloudflare_buffer_init()
 {
-    // load just the single option, defaulting to on
-    $cloudflare_protocol_rewrite = load_protocol_rewrite();
-
-    if ($cloudflare_protocol_rewrite == 1) {
-        ob_start('cloudflare_buffer_wrapup');
-    }
+    ob_start('cloudflare_buffer_wrapup');
 }
 
 add_action('plugins_loaded', 'cloudflare_buffer_init');
@@ -393,7 +392,7 @@ function cloudflare_ssl_srcset($sources)
 {
     $cloudflare_protocol_rewrite = load_protocol_rewrite();
 
-    if ($cloudflare_protocol_rewrite == 1) {
+    if ($cloudflare_protocol_rewrite) {
         foreach ($sources as &$source) {
             $re = '/https?:\\/\\//i';
             $subst = '//';
