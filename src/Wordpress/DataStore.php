@@ -79,8 +79,8 @@ class DataStore implements DataStoreInterface
      */
     public function getPluginSettings($api)
     {
-        $ip_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX + self::IP_REWRITE);
-        $protocol_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX + self::PROTOCOL_REWRITE);
+        $ip_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX.self::IP_REWRITE);
+        $protocol_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX.self::PROTOCOL_REWRITE);
 
         $settings = [];
         array_push($settings, $api->createPluginResult(self::IP_REWRITE, $ip_rewrite_value, true, ''));
@@ -101,7 +101,7 @@ class DataStore implements DataStoreInterface
             return false;
         }
 
-        return update_option(self::CLOUDFLARE_SETTING_PREFIX + $settingName, $value);
+        return update_option(self::CLOUDFLARE_SETTING_PREFIX.$settingName, $value);
     }
 
     private function getPluginSettingName($settingId)
