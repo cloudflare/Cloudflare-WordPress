@@ -41,7 +41,7 @@ class Plugin extends Client
     public function createAPISuccessResponse($result)
     {
         return array(
-            'success' => 'true',
+            'success' => true,
             'result' => $result,
             'messages' => [],
             'errors' => [],
