@@ -3,6 +3,7 @@ namespace CF\Integration;
 
 use \Psr\Log\AbstractLogger;
 use \Psr\Log\LogLevel;
+use \Psr\Log\LoggerInterface;
 
 class DefaultLogger extends AbstractLogger implements LoggerInterface
 {
@@ -45,20 +46,5 @@ class DefaultLogger extends AbstractLogger implements LoggerInterface
         if($this->debug) {
            return $this->log(LogLevel::DEBUG, $message, $context);
         }
-    }
-
-    public function logAPICall($api, $message, $is_debug)
-    {
-
-        $log_level = "error";
-        if ($is_debug) {
-            $log_level = "debug";
-        }
-
-        if (!is_string($message)) {
-            $message = print_r($message, true);
-        }
-
-        $this->$log_level("[" . $api . "] " . $message);
     }
 }

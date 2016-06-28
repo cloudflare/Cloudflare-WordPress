@@ -16,22 +16,23 @@ class DefaultRestAPIRouter implements RouterInterface
     private $logger;
     private $routes;
 
-    const ENDPOINT = 'https://api.cloudflare.com/client/v4/';
+    const ENDPOINT = "https://api.cloudflare.com/client/v4/";
 
     // Placeholders you can use to pattern match part of a URI
     public static $API_ROUTING_PLACEHOLDERS = array(
-        ':id' => '[0-9a-z]{32}',
-        ':bigint_id' => '[0-9]{1,19}',
-        ':human_readable_id' => '[-0-9a-z_]{1,120}',
-        ':rayid' => '[0-9a-z]{16}',
-        ':firewall_rule_id' => '[0-9a-zA-Z\\-_]{1,160}',
-        ':file_name' => '[0-9A-Za-z_\\.\\-]{1,120}',
-        ':uuid' => '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}',
+        ":id"                   => "[0-9a-z]{32}",
+        ":bigint_id"            => "[0-9]{1,19}",
+        ":human_readable_id"    => "[-0-9a-z_]{1,120}",
+        ":rayid"                => "[0-9a-z]{16}",
+        ":firewall_rule_id"     => "[0-9a-zA-Z\\-_]{1,160}",
+        ":file_name"            => "[0-9A-Za-z_\\.\\-]{1,120}",
+        ":uuid"                 => "[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12}"
     );
+
 
     /**
      * @param IntegrationInterface $integration
-     * @param APIInterface         $api
+     * @param APIInterface $api
      * @param $routes
      */
     public function __construct(IntegrationInterface $integration, APIInterface $api, $routes)
@@ -44,9 +45,9 @@ class DefaultRestAPIRouter implements RouterInterface
         $this->routes = $routes;
     }
 
+
     /**
      * @param Request $request
-     *
      * @return mixed
      */
     public function route(Request $request)
@@ -58,7 +59,6 @@ class DefaultRestAPIRouter implements RouterInterface
             $class = $routeParameters['class'];
             $function = $routeParameters['function'];
             $routeClass = new $class($this->integration, $this->api, $request);
-
             return $routeClass->$function();
         } else {
             return $this->api->callAPI($request);
@@ -67,7 +67,6 @@ class DefaultRestAPIRouter implements RouterInterface
 
     /**
      * @param Request $request
-     *
      * @return string
      */
     public function getPath(Request $request)
@@ -76,9 +75,9 @@ class DefaultRestAPIRouter implements RouterInterface
         return substr($request->getUrl(), strpos($request->getUrl(), $this->api->getEndpoint()) + strlen($this->api->getEndpoint()));
     }
 
+
     /**
      * @param Request $request
-     *
      * @return array|bool
      */
     public function getRoute(Request $request)
@@ -98,17 +97,16 @@ class DefaultRestAPIRouter implements RouterInterface
             );
 
             //Check to see if this is our route
-            if (preg_match('#^'.$regex.'/?$#', $request->getUrl())) {
-                if (in_array($request->getMethod(), $route_details_array['methods']) || array_key_exists(
+            if (preg_match('#^' . $regex . '/?$#', $request->getUrl())) {
+                if (in_array($request->getMethod(), $route_details_array["methods"]) || array_key_exists(
                     $request->getMethod(),
-                    $route_details_array['methods']
+                    $route_details_array["methods"]
                 )
                 ) {
-                    $this->logger->debug('Route matched for '.$request->getMethod().$request->getUrl().' now using '.$route_details_array['methods'][$request->getMethod()]['function']);
-
+                    $this->logger->debug("Route matched for " . $request->getMethod() . $request->getUrl() . " now using " . $route_details_array["methods"][$request->getMethod()]['function']);
                     return array(
-                        'class' => $route_details_array['class'],
-                        'function' => $route_details_array['methods'][$request->getMethod()]['function'],
+                        'class' => $route_details_array["class"],
+                        'function' => $route_details_array["methods"][$request->getMethod()]['function']
                     );
                 }
             }
@@ -125,6 +123,7 @@ class DefaultRestAPIRouter implements RouterInterface
     {
         return $this->api;
     }
+
 
     /**
      * @param $routes

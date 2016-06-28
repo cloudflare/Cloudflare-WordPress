@@ -2,7 +2,7 @@
 
 namespace CF\WordPress;
 
-use CF\Integration\LoggerInterface;
+use CF\Integration\DefaultLogger;
 use CF\Integration\DataStoreInterface;
 
 class DataStore implements DataStoreInterface
@@ -14,9 +14,9 @@ class DataStore implements DataStoreInterface
     const PROTOCOL_REWRITE = 'protocol_rewrite';
 
     /**
-     * @param LoggerInterface $logger
+     * @param DefaultLogger $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct(DefaultLogger $logger)
     {
         $this->logger = $logger;
     }
