@@ -72,6 +72,8 @@ class DataStore implements DataStoreInterface
     public function getCloudFlareEmail()
     {
         return get_option(self::EMAIL);
+    }
+
     /**
      * @param  $settingId DataStore::[PluginSettingName]
      * 
