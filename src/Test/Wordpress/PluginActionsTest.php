@@ -3,7 +3,7 @@
 namespace CF\Test\WordPress;
 
 use CF\API\Request;
-use CF\WordPress\API\Plugin;
+use CF\API\Plugin;
 use CF\WordPress\PluginActions;
 use CF\Integration\DefaultIntegration;
 
