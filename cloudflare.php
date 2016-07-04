@@ -415,3 +415,55 @@ function cloudflare_ssl_srcset($sources)
 }
 
 add_filter('wp_calculate_image_srcset', 'cloudflare_ssl_srcset');
+
+function purgeCache()
+{
+    // Init
+    require_once 'vendor/autoload.php';
+    $parse_uri = explode('wp-content', $_SERVER['SCRIPT_FILENAME']);
+
+    // $parse_uri is [plugin_path]/wp-admin/admin-ajax.php
+    // get plugin path
+    $path = explode('wp-admin', $parse_uri[0]);
+    require_once $path[0].'wp-load.php';
+
+    $config = new CF\Integration\DefaultConfig(file_get_contents('config.js'));
+    $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
+    $dataStore = new CF\WordPress\DataStore($logger);
+    $wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);
+    $wordpressIntegration = new CF\Integration\DefaultIntegration($config, $wordpressAPI, $dataStore, $logger);
+    $clientAPIClient = new CF\API\Client($wordpressIntegration);
+
+    error_log('PURGE CACHE IS CALLED');
+    $wp_domain = $wordpressAPI->getDomainList()[0];
+    if (count($wp_domain) > 0) {
+        $zoneTag = $clientAPIClient->getZoneTag($wp_domain);
+        if (isset($zoneTag)) {
+            $isSuc = $clientAPIClient->zonePurgeCache($zoneTag);
+            error_log("ZONE PURGE IS $isSuc");
+        }
+    }
+}
+
+// "Save and Activate" pressed
+function switch_wp_theme()
+{
+    // Purge cache when theme is switched.
+    purgeCache();
+    error_log('switch_wp_theme');
+}
+add_action('switch_theme', 'switch_wp_theme');
+
+// "Save and Publish" pressed
+function theme_save_pressed()
+{
+    purgeCache();
+    error_log('theme_save_pressed');
+}
+add_action('customize_save_after', 'theme_save_pressed');
+
+// function preview_wp_theme()
+// {
+//     error_log('preview_wp_theme');
+// }
+// add_action('customize_preview_init', 'preview_wp_theme');
