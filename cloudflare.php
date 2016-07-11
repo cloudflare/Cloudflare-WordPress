@@ -37,7 +37,7 @@ use \CloudFlare\IpRewrite;
 $cfPostKeys = array('cloudflare_zone_name', 'cf_key', 'cf_email', 'dev_mode', 'protocol_rewrite');
 
 const MIN_PHP_VERSION = '5.3';
-const MIN_WP_VERSION = '3.1';
+const MIN_WP_VERSION = '3.4';
 
 foreach ($_POST as $key => $value) {
     if (in_array($key, $cfPostKeys)) {
@@ -388,7 +388,6 @@ function cloudflare_buffer_init()
 {
     ob_start('cloudflare_buffer_wrapup');
 }
-
 add_action('plugins_loaded', 'cloudflare_buffer_init');
 
 // wordpress 4.4 srcset ssl fix
@@ -413,7 +412,6 @@ function cloudflare_ssl_srcset($sources)
 
     return $sources;
 }
-
 add_filter('wp_calculate_image_srcset', 'cloudflare_ssl_srcset');
 
 function purgeCache()
@@ -432,7 +430,7 @@ function purgeCache()
     $dataStore = new CF\WordPress\DataStore($logger);
     $wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);
     $wordpressIntegration = new CF\Integration\DefaultIntegration($config, $wordpressAPI, $dataStore, $logger);
-    $clientAPIClient = new CF\API\Client($wordpressIntegration);
+    $clientAPIClient = new CF\WordPress\WordPressClientAPI($wordpressIntegration);
 
     error_log('PURGE CACHE IS CALLED');
     $wp_domain = $wordpressAPI->getDomainList()[0];
