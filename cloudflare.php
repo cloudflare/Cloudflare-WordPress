@@ -37,7 +37,7 @@ use \CloudFlare\IpRewrite;
 $cfPostKeys = array('cloudflare_zone_name', 'cf_key', 'cf_email', 'dev_mode', 'protocol_rewrite');
 
 const MIN_PHP_VERSION = '5.3';
-const MIN_WP_VERSION = '3.1';
+const MIN_WP_VERSION = '3.4';
 
 foreach ($_POST as $key => $value) {
     if (in_array($key, $cfPostKeys)) {
@@ -388,7 +388,6 @@ function cloudflare_buffer_init()
 {
     ob_start('cloudflare_buffer_wrapup');
 }
-
 add_action('plugins_loaded', 'cloudflare_buffer_init');
 
 // wordpress 4.4 srcset ssl fix
@@ -413,5 +412,44 @@ function cloudflare_ssl_srcset($sources)
 
     return $sources;
 }
-
 add_filter('wp_calculate_image_srcset', 'cloudflare_ssl_srcset');
+
+function purgeCache()
+{
+    // Init in a hacky way
+    // $parse_uri is [plugin_path]/wp-admin/admin-ajax.php
+    // get plugin path
+    $parse_uri = explode('wp-content', $_SERVER['SCRIPT_FILENAME']);
+    $path = explode('wp-admin', $parse_uri[0]);
+    require_once $path[0].'wp-load.php';
+
+    $config = new CF\Integration\DefaultConfig('[]');
+    $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
+    $dataStore = new CF\WordPress\DataStore($logger);
+    $wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);
+    $wordpressIntegration = new CF\Integration\DefaultIntegration($config, $wordpressAPI, $dataStore, $logger);
+    $clientAPIClient = new CF\WordPress\WordPressClientAPI($wordpressIntegration);
+
+    $wp_domain = $wordpressAPI->getDomainList()[0];
+    if (count($wp_domain) > 0) {
+        $zoneTag = $clientAPIClient->getZoneTag($wp_domain);
+        if (isset($zoneTag)) {
+            $isSuc = $clientAPIClient->zonePurgeCache($zoneTag);
+        }
+    }
+}
+
+// "Save and Activate" pressed
+function switch_wp_theme()
+{
+    // Purge cache when theme is switched.
+    purgeCache();
+}
+add_action('switch_theme', 'switch_wp_theme');
+
+// "Save and Publish" pressed
+function theme_save_pressed()
+{
+    purgeCache();
+}
+add_action('customize_save_after', 'theme_save_pressed');

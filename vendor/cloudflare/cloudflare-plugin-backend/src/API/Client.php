@@ -82,4 +82,36 @@ class Client extends AbstractAPIClient
         $request = new Request("GET", "zones/" . $zone_tag, array(), array());
         return $this->callAPI($request);
     }
+
+    /**
+     * @return mixed
+     */
+    public function getZoneTag($zone_name)
+    {
+        $request = new Request('GET', 'zones/', array('name' => $zone_name), array());
+        $response = self::callAPI($request);
+
+        $zone_tag = null;
+        if (self::responseOk($response)) {
+            foreach ($response['result'] as $zone) {
+                if ($zone['name'] === $zone_name) {
+                    $zone_tag = $zone['id'];
+                    break;
+                }
+            }
+        }
+
+        return $zone_tag;
+    }
+
+    public function zonePurgeCache($zone_tag)
+    {
+        $request = new Request('DELETE', 'zones/'.$zone_tag.'/purge_cache', array(), array('purge_everything' => true));
+        $response = self::callAPI($request);
+
+        error_log('PURGE');
+        error_log(json_encode($response));
+
+        return self::responseOk($response);
+    }
 }
