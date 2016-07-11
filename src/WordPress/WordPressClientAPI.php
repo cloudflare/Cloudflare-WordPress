@@ -40,9 +40,6 @@ class WordPressClientAPI extends Client
         $request = new Request('DELETE', 'zones/'.$zone_tag.'/purge_cache', array(), array('purge_everything' => true));
         $response = self::callAPI($request);
 
-        error_log('PURGE');
-        error_log(json_encode($response));
-
         return self::responseOk($response);
     }
 }
