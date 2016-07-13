@@ -1,47 +1,5 @@
 [
     {
-        "name": "cloudflare/cf-ip-rewrite",
-        "version": "v0.5.0",
-        "version_normalized": "0.5.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/cloudflare/cf-ip-rewrite.git",
-            "reference": "a16eec5f06189dc505108626d161c1bdf9c54490"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/a16eec5f06189dc505108626d161c1bdf9c54490",
-            "reference": "a16eec5f06189dc505108626d161c1bdf9c54490",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "time": "2015-03-06 23:13:36",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "CloudFlare\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "CloudFlare",
-                "homepage": "http://www.cloudflare.com/"
-            }
-        ],
-        "description": "Library to rewrite CloudFlare IP Addresses to the end-user IP address",
-        "keywords": [
-            "cloudflare",
-            "ip rewrite"
-        ]
-    },
-    {
         "name": "react/promise",
         "version": "v2.4.1",
         "version_normalized": "2.4.1.0",
@@ -1552,6 +1510,53 @@
         "keywords": [
             "phpcs",
             "standards"
+        ]
+    },
+    {
+        "name": "cloudflare/cf-ip-rewrite",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/cloudflare/cf-ip-rewrite.git",
+            "reference": "f6dfb3cc7a9303db7d40a3e1af99d9d88d02c40e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/f6dfb3cc7a9303db7d40a3e1af99d9d88d02c40e",
+            "reference": "f6dfb3cc7a9303db7d40a3e1af99d9d88d02c40e",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.8",
+            "squizlabs/php_codesniffer": "2.*"
+        },
+        "time": "2016-07-13 14:55:18",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "CloudFlare\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "CloudFlare",
+                "homepage": "http://www.cloudflare.com/"
+            }
+        ],
+        "description": "Library to rewrite CloudFlare IP Addresses to the end-user IP address",
+        "homepage": "https://github.com/cloudflare/cf-ip-rewrite",
+        "keywords": [
+            "cloudflare",
+            "ip rewrite"
         ]
     }
 ]
