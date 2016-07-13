@@ -12,6 +12,7 @@ class DataStore implements DataStoreInterface
     const CLOUDFLARE_SETTING_PREFIX = 'cloudflare_';
     const IP_REWRITE = 'ip_rewrite';
     const PROTOCOL_REWRITE = 'protocol_rewrite';
+    const DEFAULT_SETTINGS = 'default_settings';
 
     /**
      * @param DefaultLogger $logger
@@ -96,10 +97,12 @@ class DataStore implements DataStoreInterface
     {
         $ip_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX.self::IP_REWRITE);
         $protocol_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX.self::PROTOCOL_REWRITE);
+        $default_settings_value = get_option(self::CLOUDFLARE_SETTING_PREFIX.self::DEFAULT_SETTINGS);
 
         $settings = [];
         array_push($settings, $api->createPluginResult(self::IP_REWRITE, $ip_rewrite_value, true, ''));
         array_push($settings, $api->createPluginResult(self::PROTOCOL_REWRITE, $protocol_rewrite_value, true, ''));
+        array_push($settings, $api->createPluginResult(self::DEFAULT_SETTINGS, $default_settings_value, true, ''));
 
         return $settings;
     }
@@ -126,6 +129,8 @@ class DataStore implements DataStoreInterface
                 return self::IP_REWRITE;
             case self::PROTOCOL_REWRITE:
                 return self::PROTOCOL_REWRITE;
+            case self::DEFAULT_SETTINGS:
+                return self::DEFAULT_SETTINGS;
             default:
                 return false;
         }
