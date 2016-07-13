@@ -31,8 +31,32 @@ class WordPressClientAPI extends Client
     }
 
     /**
-     * @param $zone_tag 
-     * 
+     * @param $zoneId
+     *
+     * @return bool
+     */
+    public function zonePurgeCache($zoneId)
+    {
+        $request = new Request('DELETE', 'zones/'.$zoneId.'/purge_cache', array(), array('purge_everything' => true));
+        $response = self::callAPI($request);
+
+        return self::responseOk($response);
+    }
+
+    /**
+     * @param $zoneId
+     * @param $settingName
+     * @param $params
+     *
+     * @return bool
+     */
+    public function changeZoneSettings($zoneId, $settingName, $params)
+    {
+        $request = new Request('PATCH', 'zones/'.$zoneId.'/settings/'.$settingName, array(), $params);
+        $response = self::callAPI($request);
+
+        return self::responseOk($response);
+    }
      * @return bool
      */
     public function zonePurgeCache($zone_tag)
