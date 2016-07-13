@@ -7,6 +7,7 @@
     "featureManagerIsChallengePassageEnabled": true,
     "featureManagerIsDevelopmentModeEnabled": true,
     "featureManagerIsFullZoneProvisioningEnabled": false,
+    "featureManagerIsImageOptimizationEnabled": true,
     "featureManagerIsIpv6Enabled": true,
     "featureManagerIsIpRewriteEnabled": true,
     "featureManagerIsMinifyEnabled": true,
@@ -16,6 +17,12 @@
     "featureManagerIsScanEnabled": false,
     "featureManagerIsSecurityLevelEnabled": true,
     "featureManagerIsSSLEnabled": true,
+    "featureManagerIsWAFEnabled": true,
+    "homePageCards": ["ApplyDefaultSettingsCard", "PurgeCacheCard"],
+    "moreSettingsCards": {
+        "container.moresettings.speed": ["CacheLevelCard", "AlwaysOnlineCard", "ImageOptimizationCard"],
+        "container.moresettings.security": ["SecurityLevelCard", "AdvanceDDoSCard"]
+    },
     "locale": "en",
     "integrationName": "wordpress",
     "useHostAPILogin": false,
