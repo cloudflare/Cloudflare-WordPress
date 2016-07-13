@@ -13,6 +13,7 @@ class PluginActions
     private $wordpressAPI;
     private $dataStore;
     private $logger;
+    private $integration;
     private $request;
 
     /**
@@ -27,6 +28,7 @@ class PluginActions
         $this->wordpressAPI = $defaultIntegration->getIntegrationAPI();
         $this->dataStore = $defaultIntegration->getDataStore();
         $this->logger = $defaultIntegration->getLogger();
+        $this->integration = $defaultIntegration;
         $this->request = $request;
     }
 
@@ -60,7 +62,6 @@ class PluginActions
      */
     public function getPluginSettings()
     {
-        // Always return true
         $settings = $this->dataStore->getPluginSettings($this->api);
 
         $response = $this->api->createAPISuccessResponse(
@@ -85,6 +86,127 @@ class PluginActions
 
         if (!isset($options)) {
             return $this->api->createAPIError('Unable to update plugin settings');
+        }
+
+        $response = $this->api->createAPISuccessResponse(
+            array(
+                $this->api->createPluginResult($settingId, $value, true, ''),
+            )
+        );
+
+        return $response;
+    }
+
+    /**
+     * Every API call is synchronized.
+     *
+     * @param zoneId
+     *
+     * @return bool Check every setting and return true or false.
+     */
+    private function makeAPICallsForDefaultSettings($zonedId)
+    {
+        $wordPressClientAPI = new WordPressClientAPI($this->integration);
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'security_level', array('value' => 'medium'));
+        if (!$result) {
+            return false;
+        }
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'cache_level', array('value' => 'basic'));
+        if (!$result) {
+            return false;
+        }
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'ssl', array('value' => 'flexible'));
+        if (!$result) {
+            return false;
+        }
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'minify', array('value' => array('css' => 'on', 'html' => 'on', 'js' => 'on')));
+        if (!$result) {
+            return false;
+        }
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'browser_cache_ttl', array('value' => 14400));
+        if (!$result) {
+            return false;
+        }
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'always_online', array('value' => 'off'));
+        if (!$result) {
+            return false;
+        }
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'development_mode', array('value' => 'off'));
+        if (!$result) {
+            return false;
+        }
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'development_mode', array('value' => 'off'));
+        if (!$result) {
+            return false;
+        }
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'ipv6', array('value' => 'off'));
+        if (!$result) {
+            return false;
+        }
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'websockets', array('value' => 'on'));
+        if (!$result) {
+            return false;
+        }
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'ip_geolocation', array('value' => 'on'));
+        if (!$result) {
+            return false;
+        }
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'email_obfuscation', array('value' => 'on'));
+        if (!$result) {
+            return false;
+        }
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'server_side_exclude', array('value' => 'on'));
+        if (!$result) {
+            return false;
+        }
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'hotlink_protection', array('value' => 'off'));
+        if (!$result) {
+            return false;
+        }
+
+        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'rocket_loader', array('value' => 'off'));
+        if (!$result) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * PATCH /plugin/:zonedId/settings/default_settings.
+     *
+     * @return mixed
+     */
+    public function patchPluginDefaultSettings()
+    {
+        $path_array = explode('/', $this->request->getUrl());
+        $zonedId = $path_array[1];
+        $settingId = $path_array[3];
+
+        $value = $this->request->getBody()['value'];
+        $options = $this->dataStore->setPluginSetting($settingId, true);
+
+        if (!isset($options)) {
+            return $this->api->createAPIError('Unable to set default settings');
+        }
+
+        $result = $this->makeAPICallsForDefaultSettings($zonedId);
+        if (!$result) {
+            $this->api->createAPIError('Unable to set default settings');
         }
 
         $response = $this->api->createAPISuccessResponse(

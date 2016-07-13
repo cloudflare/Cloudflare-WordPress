@@ -101,4 +101,21 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($settingId, $response['result'][0]['id']);
         $this->assertEquals($value, $response['result'][0]['value']);
     }
+
+    public function testPatchPluginSettingsDefaultSettings()
+    {
+        $settingId = 'default_settings';
+        $value = 'testValue';
+
+        $request = new Request(null, 'plugin/:zonedId/settings/default_settings', null, array('value' => $value));
+
+        $this->mockDataStore->method('setPluginSetting')->willReturn(true);
+
+        $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->pluginAPI, $request);
+        $response = $pluginActions->patchPluginDefaultSettings();
+
+        $this->assertEquals(true, $response['success']);
+        $this->assertEquals($settingId, $response['result'][0]['id']);
+        $this->assertEquals($value, $response['result'][0]['value']);
+    }
 }

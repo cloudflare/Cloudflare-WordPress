@@ -92,11 +92,11 @@ if (!function_exists('add_action')) {
 
 function cloudflare_init()
 {
-    $cloudflare_ip_rewrite = load_ip_rewrite();
-    if ($cloudflare_ip_rewrite) {
-        // As side a side effect rewrites $_SERVER["REMOTE_ADDR"] if the site is on CloudFlare
-        // For more info visit https://github.com/cloudflare/cf-ip-rewrite
-        IpRewrite::isCloudFlare();
+    $ipRewrite = new IpRewrite();
+    $is_cf = $ipRewrite->isCloudFlare();
+    if ($is_cf) {
+        // The HTTP Request is from Cloudflare. Ip is rewritten successfully.
+        // For more info: github.com/cloudflare/cf-ip-rewrite
     }
 
     add_action('admin_menu', 'cloudflare_config_page');
