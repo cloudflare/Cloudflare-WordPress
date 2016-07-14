@@ -23,16 +23,6 @@ class PluginRoutes
             ),
         ),
 
-        // Must be above "plugin/:id/settings/:human_readable_id"
-        'plugin/:id/settings/default_settings' => array(
-            'class' => 'CF\WordPress\PluginActions',
-            'methods' => array(
-                'PATCH' => array(
-                    'function' => 'patchPluginDefaultSettings',
-                ),
-            ),
-        ),
-
         'plugin/:id/settings/:human_readable_id' => array(
             'class' => 'CF\WordPress\PluginActions',
             'methods' => array(

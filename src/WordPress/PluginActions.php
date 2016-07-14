@@ -81,6 +81,26 @@ class PluginActions
         $path_array = explode('/', $this->request->getUrl());
         $settingId = $path_array[3];
 
+        $response = null;
+        if ($settingId === DataStore::DEFAULT_SETTINGS) {
+            $response = $this->patchPluginDefaultSettings();
+        } else {
+            $response = $this->patchPluginSettings2();
+        }
+
+        return $response;
+    }
+
+    /**
+     * For PATCH /plugin/:zonedId/settings/:settingId where :settingId is not predefined.
+     *
+     * @return mixed
+     */
+    private function patchPluginSettings2()
+    {
+        $path_array = explode('/', $this->request->getUrl());
+        $settingId = $path_array[3];
+
         $value = $this->request->getBody()['value'];
         $options = $this->dataStore->setPluginSetting($settingId, $value);
 
@@ -187,14 +207,14 @@ class PluginActions
     }
 
     /**
-     * PATCH /plugin/:zonedId/settings/default_settings.
+     * For PATCH /plugin/:zonedId/settings/:settingId where :settingId is DataStore:DEFAULT_SETTINGS.
      *
      * @return mixed
      */
-    public function patchPluginDefaultSettings()
+    private function patchPluginDefaultSettings()
     {
         $path_array = explode('/', $this->request->getUrl());
-        $zonedId = $path_array[1];
+        $zoneId = $path_array[1];
         $settingId = $path_array[3];
 
         $value = $this->request->getBody()['value'];
