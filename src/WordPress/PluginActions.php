@@ -63,10 +63,15 @@ class PluginActions
      */
     public function getPluginSettings()
     {
-        $settings = $this->dataStore->getPluginSettings($this->api);
+        $settings = $this->dataStore->getPluginSettings();
+
+        $formattedSettings = array();
+        foreach ($settings as $key => $value) {
+            array_push($formattedSettings, $this->api->createPluginResult($key, $value, true, ''));
+        }
 
         $response = $this->api->createAPISuccessResponse(
-            $settings
+            $formattedSettings
         );
 
         return $response;
