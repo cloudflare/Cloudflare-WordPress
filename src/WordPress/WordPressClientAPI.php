@@ -57,13 +57,4 @@ class WordPressClientAPI extends Client
 
         return self::responseOk($response);
     }
-     * @return bool
-     */
-    public function zonePurgeCache($zone_tag)
-    {
-        $request = new Request('DELETE', 'zones/'.$zone_tag.'/purge_cache', array(), array('purge_everything' => true));
-        $response = self::callAPI($request);
-
-        return self::responseOk($response);
-    }
 }
