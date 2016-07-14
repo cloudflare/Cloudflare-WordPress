@@ -47,7 +47,7 @@
     "container.applydefaultsettingscard.title": "Apply Default Settings",
     "container.applydefaultsettingscard.description": "We recommend you to use default settings",
     "container.applydefaultsettingscard.button": "Apply",
-    "container.applydefaultsettingscard.success": "Your settings has been successfully set.",
+    "container.applydefaultsettingscard.success": "Your default settings have been successfully set.",
     "container.applydefaultsettingscard.info": "This may take a while.",
     "container.applydefaultsettingscard.modal.title": "Are you sure?",
     "container.applydefaultsettingscard.modal.description": "Applying default settings will overwrite some of the settings you've set through Cloudflare Dashboard. If you have Full SSL or Strict SSL enabled we recommend applying default settings, then going to Cloudflare Dashboard and changing SSL back to your original settings.",
