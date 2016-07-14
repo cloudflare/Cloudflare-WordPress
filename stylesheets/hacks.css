@@ -9,6 +9,21 @@ span#pageHeading {
     display: block;
 }
 
+/* fix the wrapper to stick to top */
+.wrapper {
+    margin-top: 20px; /* new */
+}
+
+/* center the dot in radio button */
+input[type="radio"]:checked:before {
+    margin-top: 3px; /* new */
+    margin-left: 4px; /* new */
+    height: 6px; /* 7px */
+    left: 0px; /* 3px */
+    top: 0px; /* 7px */
+    width: 6px; /* 7px */
+}
+
 /* change bg of body, wrapper */
 body, .cloudflare-partners .wrapper {
     background-color: #ebebeb; /* new */
