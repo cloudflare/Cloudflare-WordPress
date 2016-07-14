@@ -82,7 +82,7 @@ class PluginActions
      *
      * @return mixed
      */
-    public function patchPluginSettings()
+    public function patchPluginSettingsRouter()
     {
         $path_array = explode('/', $this->request->getUrl());
         $settingId = $path_array[3];
@@ -91,7 +91,7 @@ class PluginActions
         if ($settingId === DataStore::DEFAULT_SETTINGS) {
             $response = $this->patchPluginDefaultSettings();
         } else {
-            $response = $this->patchPluginSettings2();
+            $response = $this->patchPluginSettings();
         }
 
         return $response;
@@ -102,7 +102,7 @@ class PluginActions
      *
      * @return mixed
      */
-    private function patchPluginSettings2()
+    private function patchPluginSettings()
     {
         $path_array = explode('/', $this->request->getUrl());
         $settingId = $path_array[3];
@@ -150,8 +150,6 @@ class PluginActions
 
         $this->wordPressClientAPI->changeZoneSettings($zonedId, 'ipv6', array('value' => 'off'));
 
-        // // TODO: Page Rules
-
         $this->wordPressClientAPI->changeZoneSettings($zonedId, 'websockets', array('value' => 'on'));
 
         $this->wordPressClientAPI->changeZoneSettings($zonedId, 'ip_geolocation', array('value' => 'on'));
@@ -161,18 +159,6 @@ class PluginActions
         $this->wordPressClientAPI->changeZoneSettings($zonedId, 'server_side_exclude', array('value' => 'on'));
 
         $this->wordPressClientAPI->changeZoneSettings($zonedId, 'hotlink_protection', array('value' => 'off'));
-
-        //// $result = $this->wordPressClientAPI->changeZoneSettings($zonedId, 'mirage', array('value' => 'off'));
-        //// error_log($result);
-        //// if (!$result) {
-        ////     return false;
-        //// }
-
-        //// $result = $this->wordPressClientAPI->changeZoneSettings($zonedId, 'polish', array('value' => 'off'));
-        //// error_log($result);
-        //// if (!$result) {
-        ////     return false;
-        //// }
 
         $this->wordPressClientAPI->changeZoneSettings($zonedId, 'rocket_loader', array('value' => 'off'));
     }

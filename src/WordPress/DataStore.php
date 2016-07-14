@@ -93,16 +93,17 @@ class DataStore implements DataStoreInterface
     /**
      * @return (bool)
      */
-    public function getPluginSettings($api)
+    public function getPluginSettings()
     {
         $ip_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX.self::IP_REWRITE);
         $protocol_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX.self::PROTOCOL_REWRITE);
         $default_settings_value = get_option(self::CLOUDFLARE_SETTING_PREFIX.self::DEFAULT_SETTINGS);
 
-        $settings = [];
-        array_push($settings, $api->createPluginResult(self::IP_REWRITE, $ip_rewrite_value, true, ''));
-        array_push($settings, $api->createPluginResult(self::PROTOCOL_REWRITE, $protocol_rewrite_value, true, ''));
-        array_push($settings, $api->createPluginResult(self::DEFAULT_SETTINGS, $default_settings_value, true, ''));
+        $settings = array(
+            self::IP_REWRITE => $ip_rewrite_value,
+            self::PROTOCOL_REWRITE => $protocol_rewrite_value,
+            self::DEFAULT_SETTINGS => $default_settings_value,
+        );
 
         return $settings;
     }

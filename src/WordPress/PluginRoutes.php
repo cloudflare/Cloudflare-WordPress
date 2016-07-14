@@ -27,7 +27,7 @@ class PluginRoutes
             'class' => 'CF\WordPress\PluginActions',
             'methods' => array(
                 'PATCH' => array(
-                    'function' => 'patchPluginSettings',
+                    'function' => 'patchPluginSettingsRouter',
                 ),
             ),
         ),
