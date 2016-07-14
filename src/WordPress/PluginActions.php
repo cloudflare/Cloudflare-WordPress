@@ -13,8 +13,8 @@ class PluginActions
     private $wordpressAPI;
     private $dataStore;
     private $logger;
-    private $integration;
     private $request;
+    private $wordPressClientAPI;
 
     /**
      * @param DefaultIntegration $defaultIntegration
@@ -28,8 +28,9 @@ class PluginActions
         $this->wordpressAPI = $defaultIntegration->getIntegrationAPI();
         $this->dataStore = $defaultIntegration->getDataStore();
         $this->logger = $defaultIntegration->getLogger();
-        $this->integration = $defaultIntegration;
         $this->request = $request;
+
+        $this->wordPressClientAPI = new WordPressClientAPI($defaultIntegration);
     }
 
     /**
@@ -126,84 +127,49 @@ class PluginActions
      */
     private function makeAPICallsForDefaultSettings($zonedId)
     {
-        $wordPressClientAPI = new WordPressClientAPI($this->integration);
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'security_level', array('value' => 'medium'));
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'security_level', array('value' => 'medium'));
-        if (!$result) {
-            return false;
-        }
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'cache_level', array('value' => 'basic'));
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'cache_level', array('value' => 'basic'));
-        if (!$result) {
-            return false;
-        }
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'ssl', array('value' => 'flexible'));
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'ssl', array('value' => 'flexible'));
-        if (!$result) {
-            return false;
-        }
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'minify', array('value' => array('css' => 'on', 'html' => 'on', 'js' => 'on')));
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'minify', array('value' => array('css' => 'on', 'html' => 'on', 'js' => 'on')));
-        if (!$result) {
-            return false;
-        }
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'browser_cache_ttl', array('value' => 14400));
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'browser_cache_ttl', array('value' => 14400));
-        if (!$result) {
-            return false;
-        }
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'always_online', array('value' => 'off'));
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'always_online', array('value' => 'off'));
-        if (!$result) {
-            return false;
-        }
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'development_mode', array('value' => 'off'));
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'development_mode', array('value' => 'off'));
-        if (!$result) {
-            return false;
-        }
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'development_mode', array('value' => 'off'));
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'development_mode', array('value' => 'off'));
-        if (!$result) {
-            return false;
-        }
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'ipv6', array('value' => 'off'));
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'ipv6', array('value' => 'off'));
-        if (!$result) {
-            return false;
-        }
+        // // TODO: Page Rules
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'websockets', array('value' => 'on'));
-        if (!$result) {
-            return false;
-        }
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'websockets', array('value' => 'on'));
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'ip_geolocation', array('value' => 'on'));
-        if (!$result) {
-            return false;
-        }
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'ip_geolocation', array('value' => 'on'));
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'email_obfuscation', array('value' => 'on'));
-        if (!$result) {
-            return false;
-        }
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'email_obfuscation', array('value' => 'on'));
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'server_side_exclude', array('value' => 'on'));
-        if (!$result) {
-            return false;
-        }
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'server_side_exclude', array('value' => 'on'));
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'hotlink_protection', array('value' => 'off'));
-        if (!$result) {
-            return false;
-        }
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'hotlink_protection', array('value' => 'off'));
 
-        $result = $wordPressClientAPI->changeZoneSettings($zonedId, 'rocket_loader', array('value' => 'off'));
-        if (!$result) {
-            return false;
-        }
+        //// $result = $this->wordPressClientAPI->changeZoneSettings($zonedId, 'mirage', array('value' => 'off'));
+        //// error_log($result);
+        //// if (!$result) {
+        ////     return false;
+        //// }
 
-        return true;
+        //// $result = $this->wordPressClientAPI->changeZoneSettings($zonedId, 'polish', array('value' => 'off'));
+        //// error_log($result);
+        //// if (!$result) {
+        ////     return false;
+        //// }
+
+        $this->wordPressClientAPI->changeZoneSettings($zonedId, 'rocket_loader', array('value' => 'off'));
     }
 
     /**
@@ -224,10 +190,8 @@ class PluginActions
             return $this->api->createAPIError('Unable to set default settings');
         }
 
-        $result = $this->makeAPICallsForDefaultSettings($zonedId);
-        if (!$result) {
-            $this->api->createAPIError('Unable to set default settings');
-        }
+        // We don't care if the calls fail
+        $this->makeAPICallsForDefaultSettings($zoneId);
 
         $response = $this->api->createAPISuccessResponse(
             array(
