@@ -393,7 +393,8 @@ function cloudflare_buffer_init()
 {
     ob_start('cloudflare_buffer_wrapup');
 }
-add_action('plugins_loaded', 'cloudflare_buffer_init');
+// Protocol Rewrite Hook # 1
+// add_action('plugins_loaded', 'cloudflare_buffer_init');
 
 // wordpress 4.4 srcset ssl fix
 // Shoutout to @bhubbard: https://wordpress.org/support/topic/44-https-rewritte-aint-working-with-images?replies=12
@@ -417,7 +418,8 @@ function cloudflare_ssl_srcset($sources)
 
     return $sources;
 }
-add_filter('wp_calculate_image_srcset', 'cloudflare_ssl_srcset');
+// Protocol Rewrite Hook # 2
+// add_filter('wp_calculate_image_srcset', 'cloudflare_ssl_srcset');
 
 function purgeCache()
 {
