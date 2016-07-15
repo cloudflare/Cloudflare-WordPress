@@ -76,7 +76,7 @@ register_activation_hook(__FILE__, 'cloudflare_activate');
 
 function set_default_keys()
 {
-    update_option(CF\WordPress\DataStore::CLOUDFLARE_SETTING_PREFIX.CF\WordPress\DataStore::PROTOCOL_REWRITE, true);
+    set_protocol_rewrite();
 }
 
 function cloudflare_filter_xss($input)
@@ -124,14 +124,19 @@ function cloudflare_config_page()
     }
 }
 
+function set_protocol_rewrite()
+{
+    update_option(CF\API\Plugin::SETTING_PROTOCOL_REWRITE, true);
+}
+
 function load_protocol_rewrite()
 {
-    return CF\WordPress\DataStore::getPluginSetting(CF\WordPress\DataStore::PROTOCOL_REWRITE);
+    return CF\WordPress\DataStore::getPluginSetting(CF\API\Plugin::SETTING_PROTOCOL_REWRITE);
 }
 
 function load_ip_rewrite()
 {
-    return CF\WordPress\DataStore::getPluginSetting(CF\WordPress\DataStore::IP_REWRITE);
+    return CF\WordPress\DataStore::getPluginSetting(CF\API\Plugin::SETTING_IP_REWRITE);
 }
 
 function cloudflare_conf2()

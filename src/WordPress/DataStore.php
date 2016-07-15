@@ -4,15 +4,12 @@ namespace CF\WordPress;
 
 use CF\Integration\DefaultLogger;
 use CF\Integration\DataStoreInterface;
+use CF\API\Plugin;
 
 class DataStore implements DataStoreInterface
 {
     const API_KEY = 'cloudflare_api_key';
     const EMAIL = 'cloudflare_api_email';
-    const CLOUDFLARE_SETTING_PREFIX = 'cloudflare_';
-    const IP_REWRITE = 'ip_rewrite';
-    const PROTOCOL_REWRITE = 'protocol_rewrite';
-    const DEFAULT_SETTINGS = 'default_settings';
 
     /**
      * @param DefaultLogger $logger
@@ -87,7 +84,7 @@ class DataStore implements DataStoreInterface
             return false;
         }
 
-        return get_option(self::CLOUDFLARE_SETTING_PREFIX.$settingName);
+        return get_option($settingName);
     }
 
     /**
@@ -95,14 +92,14 @@ class DataStore implements DataStoreInterface
      */
     public function getPluginSettings()
     {
-        $ip_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX.self::IP_REWRITE);
-        $protocol_rewrite_value = get_option(self::CLOUDFLARE_SETTING_PREFIX.self::PROTOCOL_REWRITE);
-        $default_settings_value = get_option(self::CLOUDFLARE_SETTING_PREFIX.self::DEFAULT_SETTINGS);
+        $ip_rewrite_value = get_option(Plugin::SETTING_IP_REWRITE);
+        $protocol_rewrite_value = get_option(Plugin::SETTING_PROTOCOL_REWRITE);
+        $default_settings_value = get_option(Plugin::SETTING_DEFAULT_SETTINGS);
 
         $settings = array(
-            self::IP_REWRITE => $ip_rewrite_value,
-            self::PROTOCOL_REWRITE => $protocol_rewrite_value,
-            self::DEFAULT_SETTINGS => $default_settings_value,
+            Plugin::SETTING_IP_REWRITE => $ip_rewrite_value,
+            Plugin::SETTING_PROTOCOL_REWRITE => $protocol_rewrite_value,
+            Plugin::SETTING_DEFAULT_SETTINGS => $default_settings_value,
         );
 
         return $settings;
@@ -120,18 +117,18 @@ class DataStore implements DataStoreInterface
             return false;
         }
 
-        return update_option(self::CLOUDFLARE_SETTING_PREFIX.$settingName, $value);
+        return update_option($settingName, $value);
     }
 
     private static function getPluginSettingName($settingId)
     {
         switch ($settingId) {
-            case self::IP_REWRITE:
-                return self::IP_REWRITE;
-            case self::PROTOCOL_REWRITE:
-                return self::PROTOCOL_REWRITE;
-            case self::DEFAULT_SETTINGS:
-                return self::DEFAULT_SETTINGS;
+            case Plugin::SETTING_IP_REWRITE:
+                return Plugin::SETTING_IP_REWRITE;
+            case Plugin::SETTING_PROTOCOL_REWRITE:
+                return Plugin::SETTING_PROTOCOL_REWRITE;
+            case Plugin::SETTING_DEFAULT_SETTINGS:
+                return Plugin::SETTING_DEFAULT_SETTINGS;
             default:
                 return false;
         }
