@@ -10,6 +10,11 @@ class Plugin extends Client
     const PLUGIN_API_NAME = 'PLUGIN API';
     const ENDPOINT = 'https://partners.cloudflare/plugins/';
 
+    //plugin/:id/settings/:human_readable_id setting names
+    const SETTING_DEFAULT_SETTINGS = "default_settings";
+    const SETTING_IP_REWRITE = "ip_rewrite";
+    const SETTING_PROTOCOL_REWRITE = "protocol_rewrite";
+
     /**
      * @return string
      */

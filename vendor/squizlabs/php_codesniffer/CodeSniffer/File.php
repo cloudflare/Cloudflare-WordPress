@@ -867,8 +867,8 @@ class PHP_CodeSniffer_File
      * @param int    $line     The line on which the error occurred.
      * @param string $code     A violation code unique to the sniff message.
      * @param array  $data     Replacements for the error message.
-     * @param int    $severity The severity level for this error. A value of 0 will be converted into the default severity level.
-     *                          will be converted into the default severity level.
+     * @param int    $severity The severity level for this error. A value of 0
+     *                         will be converted into the default severity level.
      *
      * @return boolean
      */
@@ -891,8 +891,8 @@ class PHP_CodeSniffer_File
      * @param int    $line     The line on which the warning occurred.
      * @param string $code     A violation code unique to the sniff message.
      * @param array  $data     Replacements for the warning message.
-     * @param int    $severity The severity level for this warning. A value of 0 will be converted into the default severity level.
-     *                          will be converted into the default severity level.
+     * @param int    $severity The severity level for this warning. A value of 0
+     *                         will be converted into the default severity level.
      *
      * @return boolean
      */
@@ -3398,11 +3398,12 @@ class PHP_CodeSniffer_File
     /**
      * Returns the position of the first non-whitespace token in a statement.
      *
-     * @param int $start The position to start searching from in the token stack.
+     * @param int       $start  The position to start searching from in the token stack.
+     * @param int|array $ignore Token types that should not be considered stop points.
      *
      * @return int
      */
-    public function findStartOfStatement($start)
+    public function findStartOfStatement($start, $ignore=null)
     {
         $endTokens = PHP_CodeSniffer_Tokens::$blockOpeners;
 
@@ -3413,6 +3414,15 @@ class PHP_CodeSniffer_File
         $endTokens[T_OPEN_TAG]         = true;
         $endTokens[T_CLOSE_TAG]        = true;
         $endTokens[T_OPEN_SHORT_ARRAY] = true;
+
+        if ($ignore !== null) {
+            $ignore = (array) $ignore;
+            foreach ($ignore as $code) {
+                if (isset($endTokens[$code]) === true) {
+                    unset($endTokens[$code]);
+                }
+            }
+        }
 
         $lastNotEmpty = $start;
 
@@ -3453,11 +3463,12 @@ class PHP_CodeSniffer_File
     /**
      * Returns the position of the last non-whitespace token in a statement.
      *
-     * @param int $start The position to start searching from in the token stack.
+     * @param int       $start  The position to start searching from in the token stack.
+     * @param int|array $ignore Token types that should not be considered stop points.
      *
      * @return int
      */
-    public function findEndOfStatement($start)
+    public function findEndOfStatement($start, $ignore=null)
     {
         $endTokens = array(
                       T_COLON                => true,
@@ -3471,6 +3482,15 @@ class PHP_CodeSniffer_File
                       T_OPEN_TAG             => true,
                       T_CLOSE_TAG            => true,
                      );
+
+        if ($ignore !== null) {
+            $ignore = (array) $ignore;
+            foreach ($ignore as $code) {
+                if (isset($endTokens[$code]) === true) {
+                    unset($endTokens[$code]);
+                }
+            }
+        }
 
         $lastNotEmpty = $start;
 

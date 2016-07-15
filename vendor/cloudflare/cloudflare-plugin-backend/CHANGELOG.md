@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.4](#1.0.4) - 2016-07-15
+### Added
+- Added setting name consts to CF\API\Plugin [70372ab](https://github.com/cloudflare/cloudflare-plugin-backend/commit/70372ab0d1e294e0e6b57799e31c8a22ed4dedf6)
+
+
 ## [1.0.3](#1.0.3) - 2016-06-27
 ### Added
 - Added CF\API\Plugin.php built by @thellimist to handle plugin specific API calls. [#3](https://github.com/cloudflare/cloudflare-plugin-backend/pull/3)
