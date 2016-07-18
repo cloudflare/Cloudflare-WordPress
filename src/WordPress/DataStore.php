@@ -11,6 +11,12 @@ class DataStore implements DataStoreInterface
     const API_KEY = 'cloudflare_api_key';
     const EMAIL = 'cloudflare_api_email';
 
+    private $settingsList = array(
+        Plugin::SETTING_IP_REWRITE,
+        Plugin::SETTING_PROTOCOL_REWRITE,
+        Plugin::SETTING_DEFAULT_SETTINGS,
+    );
+
     /**
      * @param DefaultLogger $logger
      */
@@ -120,17 +126,8 @@ class DataStore implements DataStoreInterface
         return update_option($settingName, $value);
     }
 
-    private static function getPluginSettingName($settingId)
+    private function getPluginSettingName($settingId)
     {
-        switch ($settingId) {
-            case Plugin::SETTING_IP_REWRITE:
-                return Plugin::SETTING_IP_REWRITE;
-            case Plugin::SETTING_PROTOCOL_REWRITE:
-                return Plugin::SETTING_PROTOCOL_REWRITE;
-            case Plugin::SETTING_DEFAULT_SETTINGS:
-                return Plugin::SETTING_DEFAULT_SETTINGS;
-            default:
-                return false;
-        }
+        return array_key_exists($settingId, $this->settingsList) ? $settingId : false;
     }
 }
