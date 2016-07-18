@@ -71,7 +71,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         $this->mockDataStore->method('setPluginSetting')->willReturn(true);
 
         $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->pluginAPI, $request);
-        $response = $pluginActions->patchPluginSettings();
+        $response = $pluginActions->patchPluginSettingsRouter();
 
         $this->assertEquals(true, $response['success']);
         $this->assertEquals($settingId, $response['result'][0]['id']);
@@ -86,12 +86,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         $request = new Request(null, 'plugin/:zonedId/settings', null, null);
 
         $this->mockDataStore->method('getPluginSettings')->willReturn(
-            array(
-                array(
-                    'id' => 'ip_rewrite',
-                    'value' => $value,
-                ),
-            )
+            array($settingId => $value)
         );
 
         $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->pluginAPI, $request);
@@ -112,7 +107,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         $this->mockDataStore->method('setPluginSetting')->willReturn(true);
 
         $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->pluginAPI, $request);
-        $response = $pluginActions->patchPluginDefaultSettings();
+        $response = $pluginActions->patchPluginSettingsRouter();
 
         $this->assertEquals(true, $response['success']);
         $this->assertEquals($settingId, $response['result'][0]['id']);
