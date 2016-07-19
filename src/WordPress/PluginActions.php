@@ -106,7 +106,7 @@ class PluginActions
      *
      * @return mixed
      */
-    private function patchPluginSettings()
+    public function patchPluginSettings()
     {
         $path_array = explode('/', $this->request->getUrl());
         $settingId = $path_array[3];
@@ -134,7 +134,7 @@ class PluginActions
      *
      * @return bool Check every setting and return true or false.
      */
-    private function makeAPICallsForDefaultSettings($zonedId)
+    protected function makeAPICallsForDefaultSettings($zonedId)
     {
         $this->wordPressClientAPI->changeZoneSettings($zonedId, 'security_level', array('value' => 'medium'));
 
@@ -172,7 +172,7 @@ class PluginActions
      *
      * @return mixed
      */
-    private function patchPluginDefaultSettings()
+    public function patchPluginDefaultSettings()
     {
         $path_array = explode('/', $this->request->getUrl());
         $zoneId = $path_array[1];
