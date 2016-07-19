@@ -61,7 +61,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $response['success']);
     }
 
-    public function testGetPluginSettings()
+    public function testGetPluginSettingsHandlesSuccess()
     {
         $settingId = 'ip_rewrite';
         $value = true;
@@ -116,7 +116,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         $pluginActions->patchPluginSettingsRouter();
     }
 
-    public function testPatchPluginSettings()
+    public function testPatchPluginSettingsHandlesSuccess()
     {
         $settingId = 'testId';
         $value = 'testValue';
@@ -133,7 +133,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $response['result'][0]['value']);
     }
 
-    public function testPatchPluginSettingsDefaultSettings()
+    public function testPatchPluginSettingsDefaultSettingsHandlesSuccess()
     {
         $settingId = 'default_settings';
         $value = 'testValue';
