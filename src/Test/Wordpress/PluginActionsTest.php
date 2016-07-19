@@ -61,24 +61,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(false, $response['success']);
     }
 
-    public function testPatchPluginSettings()
-    {
-        $settingId = 'testId';
-        $value = 'testValue';
-
-        $request = new Request(null, "plugin/:zonedId/settings/$settingId", null, array('value' => $value));
-
-        $this->mockDataStore->method('setPluginSetting')->willReturn(true);
-
-        $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->pluginAPI, $request);
-        $response = $pluginActions->patchPluginSettingsRouter();
-
-        $this->assertEquals(true, $response['success']);
-        $this->assertEquals($settingId, $response['result'][0]['id']);
-        $this->assertEquals($value, $response['result'][0]['value']);
-    }
-
-    public function testGetPluginSettings()
+    public function testGetPluginSettingsHandlesSuccess()
     {
         $settingId = 'ip_rewrite';
         $value = true;
@@ -97,16 +80,74 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $response['result'][0]['value']);
     }
 
-    public function testPatchPluginSettingsDefaultSettings()
+    public function testPatchPluginSettingsRouterRoutesGeneralSettings()
+    {
+        $settingId = 'someSettingId';
+
+        $request = new Request(null, "plugin/:zonedId/settings/$settingId", null, array());
+
+        $pluginActions = $this->getMockBuilder('CF\WordPress\PluginActions')
+        ->setMethods(array('__construct'))
+        ->setConstructorArgs(array($this->mockDefaultIntegration, $this->pluginAPI, $request))
+        ->setMethods(array('patchPluginSettings'))
+        ->getMock();
+
+        $pluginActions->expects($this->once())
+                    ->method('patchPluginSettings');
+
+        $pluginActions->patchPluginSettingsRouter();
+    }
+
+    public function testPatchPluginSettingsRouterRoutesDefaultDefaultSettings()
+    {
+        $settingId = Plugin::SETTING_DEFAULT_SETTINGS;
+
+        $request = new Request(null, "plugin/:zonedId/settings/$settingId", null, array());
+
+        $pluginActions = $this->getMockBuilder('CF\WordPress\PluginActions')
+        ->setMethods(array('__construct'))
+        ->setConstructorArgs(array($this->mockDefaultIntegration, $this->pluginAPI, $request))
+        ->setMethods(array('patchPluginDefaultSettings'))
+        ->getMock();
+
+        $pluginActions->expects($this->once())
+                    ->method('patchPluginDefaultSettings');
+
+        $pluginActions->patchPluginSettingsRouter();
+    }
+
+    public function testPatchPluginSettingsHandlesSuccess()
+    {
+        $settingId = 'testId';
+        $value = 'testValue';
+
+        $request = new Request(null, "plugin/:zonedId/settings/$settingId", null, array('value' => $value));
+
+        $this->mockDataStore->method('setPluginSetting')->willReturn(true);
+
+        $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->pluginAPI, $request);
+        $response = $pluginActions->patchPluginSettings();
+
+        $this->assertEquals(true, $response['success']);
+        $this->assertEquals($settingId, $response['result'][0]['id']);
+        $this->assertEquals($value, $response['result'][0]['value']);
+    }
+
+    public function testPatchPluginSettingsDefaultSettingsHandlesSuccess()
     {
         $settingId = 'default_settings';
         $value = 'testValue';
 
         $request = new Request(null, 'plugin/:zonedId/settings/default_settings', null, array('value' => $value));
 
+        $pluginActions = $this->getMockBuilder('CF\WordPress\PluginActions')
+        ->setMethods(array('__construct'))
+        ->setConstructorArgs(array($this->mockDefaultIntegration, $this->pluginAPI, $request))
+        ->setMethods(array('makeAPICallsForDefaultSettings'))
+        ->getMock();
+
         $this->mockDataStore->method('setPluginSetting')->willReturn(true);
 
-        $pluginActions = new PluginActions($this->mockDefaultIntegration, $this->pluginAPI, $request);
         $response = $pluginActions->patchPluginSettingsRouter();
 
         $this->assertEquals(true, $response['success']);
