@@ -11,11 +11,7 @@ class DataStore implements DataStoreInterface
     const API_KEY = 'cloudflare_api_key';
     const EMAIL = 'cloudflare_api_email';
 
-    private $settingsList = array(
-        Plugin::SETTING_IP_REWRITE,
-        Plugin::SETTING_PROTOCOL_REWRITE,
-        Plugin::SETTING_DEFAULT_SETTINGS,
-    );
+    private $pluginSettings = array();
 
     /**
      * @param DefaultLogger $logger
@@ -23,6 +19,10 @@ class DataStore implements DataStoreInterface
     public function __construct(DefaultLogger $logger)
     {
         $this->logger = $logger;
+
+		$this->pluginSettings[Plugin::SETTING_IP_REWRITE] = get_option(Plugin::SETTING_IP_REWRITE);
+		$this->pluginSettings[Plugin::SETTING_PROTOCOL_REWRITE] = get_option(Plugin::SETTING_PROTOCOL_REWRITE);
+		$this->pluginSettings[Plugin::SETTING_DEFAULT_SETTINGS] = get_option(Plugin::SETTING_DEFAULT_SETTINGS);
     }
 
     /**
@@ -78,11 +78,10 @@ class DataStore implements DataStoreInterface
         return get_option(self::EMAIL);
     }
 
-    /**
-     * @param  $settingId DataStore::[PluginSettingName]
-     * 
-     * @return (bool)
-     */
+	/**
+	 * @param  $settingId DataStore::[PluginSettingName]
+	 * @return bool (bool)
+	 */
     public static function getPluginSetting($settingId)
     {
         $settingName = self::getPluginSettingName($settingId);
@@ -93,22 +92,12 @@ class DataStore implements DataStoreInterface
         return get_option($settingName);
     }
 
-    /**
-     * @return (bool)
-     */
+	/**
+	 * @return array (bool)
+	 */
     public function getPluginSettings()
     {
-        $ip_rewrite_value = get_option(Plugin::SETTING_IP_REWRITE);
-        $protocol_rewrite_value = get_option(Plugin::SETTING_PROTOCOL_REWRITE);
-        $default_settings_value = get_option(Plugin::SETTING_DEFAULT_SETTINGS);
-
-        $settings = array(
-            Plugin::SETTING_IP_REWRITE => $ip_rewrite_value,
-            Plugin::SETTING_PROTOCOL_REWRITE => $protocol_rewrite_value,
-            Plugin::SETTING_DEFAULT_SETTINGS => $default_settings_value,
-        );
-
-        return $settings;
+        return $this->pluginSettings;
     }
 
     /**
@@ -128,6 +117,6 @@ class DataStore implements DataStoreInterface
 
     private function getPluginSettingName($settingId)
     {
-        return array_key_exists($settingId, $this->settingsList) ? $settingId : false;
+        return array_key_exists($settingId, $this->pluginSettings) ? $settingId : false;
     }
 }
