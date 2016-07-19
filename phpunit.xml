@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true">
+	<testsuites>
+		<testsuite name="Application Test Suite">
+			<directory>./src/Test/</directory>
+		</testsuite>
+	</testsuites>
+	<listeners>
+		<listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
+	</listeners>
+</phpunit>

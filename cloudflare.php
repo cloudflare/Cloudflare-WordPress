@@ -45,7 +45,7 @@ foreach ($_POST as $key => $value) {
     }
 }
 
-// Call when the Plugin is activated in server. 
+// Call when the Plugin is activated in server.
 function cloudflare_activate()
 {
     global $wp_version;
@@ -131,12 +131,21 @@ function set_protocol_rewrite()
 
 function load_protocol_rewrite()
 {
-    return CF\WordPress\DataStore::getPluginSetting(CF\API\Plugin::SETTING_PROTOCOL_REWRITE);
+	//TODO refactor so we're only initing this stuff once.
+	//also used in purgeCache()
+	$config = new CF\Integration\DefaultConfig('[]');
+	$logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
+	$dataStore = new CF\WordPress\DataStore($logger);
+	return $dataStore->getPluginSetting(CF\API\Plugin::SETTING_PROTOCOL_REWRITE);
 }
 
 function load_ip_rewrite()
 {
-    return CF\WordPress\DataStore::getPluginSetting(CF\API\Plugin::SETTING_IP_REWRITE);
+	//TODO refactor so we're only initing this stuff once.
+	$config = new CF\Integration\DefaultConfig('[]');
+	$logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
+	$dataStore = new CF\WordPress\DataStore($logger);
+    return $dataStore->getPluginSetting(CF\API\Plugin::SETTING_IP_REWRITE);
 }
 
 function cloudflare_conf2()

@@ -9,7 +9,6 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
     private $mockConfig;
     private $mockDataStore;
     private $mockLogger;
-    private $wordPressAPI;
 
     public function setup()
     {
@@ -27,6 +26,7 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
 
     public function testGetDomainList()
     {
+		$_SERVER['SERVER_NAME'] = "domainName.com";
         $domain_list = $this->wordpressAPI->getDomainList();
 
         $this->assertEquals(1, count($domain_list));
