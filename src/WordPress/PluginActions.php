@@ -4,6 +4,7 @@ namespace CF\WordPress;
 
 use CF\API\APIInterface;
 use CF\API\Request;
+use CF\API\Plugin;
 use CF\Integration\DefaultIntegration;
 
 class PluginActions
@@ -80,6 +81,9 @@ class PluginActions
     /**
      * PATCH /plugin/:zonedId/settings/:settingId.
      *
+     * Routes custom settingIds and default settingsIds
+     * to different functions
+     *
      * @return mixed
      */
     public function patchPluginSettingsRouter()
@@ -88,7 +92,7 @@ class PluginActions
         $settingId = $path_array[3];
 
         $response = null;
-        if ($settingId === DataStore::DEFAULT_SETTINGS) {
+        if ($settingId === Plugin::SETTING_DEFAULT_SETTINGS) {
             $response = $this->patchPluginDefaultSettings();
         } else {
             $response = $this->patchPluginSettings();
@@ -164,7 +168,7 @@ class PluginActions
     }
 
     /**
-     * For PATCH /plugin/:zonedId/settings/:settingId where :settingId is DataStore:DEFAULT_SETTINGS.
+     * For PATCH /plugin/:zonedId/settings/:settingId where :settingId is Plugin::SETTING_DEFAULT_SETTINGS.
      *
      * @return mixed
      */
