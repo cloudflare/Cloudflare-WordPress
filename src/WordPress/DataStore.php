@@ -51,7 +51,7 @@ class DataStore implements DataStoreInterface
      */
     public function getHostAPIUserUniqueId()
     {
-        return;
+        return null;
     }
 
     /**
@@ -67,7 +67,7 @@ class DataStore implements DataStoreInterface
      */
     public function getHostAPIUserKey()
     {
-        return;
+        return null;
     }
 
     /**
@@ -82,9 +82,9 @@ class DataStore implements DataStoreInterface
 	 * @param  $settingId DataStore::[PluginSettingName]
 	 * @return bool (bool)
 	 */
-    public static function getPluginSetting($settingId)
+    public function getPluginSetting($settingId)
     {
-        $settingName = self::getPluginSettingName($settingId);
+        $settingName = $this->getPluginSettingName($settingId);
         if (!$settingName) {
             return false;
         }
@@ -107,7 +107,7 @@ class DataStore implements DataStoreInterface
      */
     public function setPluginSetting($settingId, $value)
     {
-        $settingName = self::getPluginSettingName($settingId);
+        $settingName = $this->getPluginSettingName($settingId);
         if (!$settingName) {
             return false;
         }
