@@ -148,6 +148,16 @@ function load_ip_rewrite()
     return $dataStore->getPluginSetting(CF\API\Plugin::SETTING_IP_REWRITE);
 }
 
+function load_plugin_specific_cache()
+{
+    //TODO refactor so we're only initing this stuff once.
+    $config = new CF\Integration\DefaultConfig('[]');
+    $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
+    $dataStore = new CF\WordPress\DataStore($logger);
+
+    return $dataStore->getPluginSetting(CF\API\Plugin::PLUGIN_SPECIFIC_CACHE);
+}
+
 function cloudflare_conf2()
 {
     include 'cloudflare2.php';
@@ -432,25 +442,28 @@ function cloudflare_ssl_srcset($sources)
 
 function purgeCache()
 {
-    // Init in a hacky way
-    // $parse_uri is [plugin_path]/wp-admin/admin-ajax.php
-    // get plugin path
-    $parse_uri = explode('wp-content', $_SERVER['SCRIPT_FILENAME']);
-    $path = explode('wp-admin', $parse_uri[0]);
-    require_once $path[0].'wp-load.php';
+    if (load_plugin_specific_cache()) {
+        // Init in a hacky way
+        // $parse_uri is [plugin_path]/wp-admin/admin-ajax.php
+        // get plugin path
+        $parse_uri = explode('wp-content', $_SERVER['SCRIPT_FILENAME']);
+        $path = explode('wp-admin', $parse_uri[0]);
+        require_once $path[0].'wp-load.php';
 
-    $config = new CF\Integration\DefaultConfig('[]');
-    $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
-    $dataStore = new CF\WordPress\DataStore($logger);
-    $wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);
-    $wordpressIntegration = new CF\Integration\DefaultIntegration($config, $wordpressAPI, $dataStore, $logger);
-    $clientAPIClient = new CF\WordPress\WordPressClientAPI($wordpressIntegration);
+        $config = new CF\Integration\DefaultConfig('[]');
+        $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
+        $dataStore = new CF\WordPress\DataStore($logger);
+        $wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);
+        $wordpressIntegration = new CF\Integration\DefaultIntegration($config, $wordpressAPI, $dataStore, $logger);
+        $clientAPIClient = new CF\WordPress\WordPressClientAPI($wordpressIntegration);
 
-    $wp_domain = $wordpressAPI->getDomainList()[0];
-    if (count($wp_domain) > 0) {
-        $zoneTag = $clientAPIClient->getZoneTag($wp_domain);
-        if (isset($zoneTag)) {
-            $isSuc = $clientAPIClient->zonePurgeCache($zoneTag);
+        $wp_domain = $wordpressAPI->getDomainList()[0];
+        if (count($wp_domain) > 0) {
+            $zoneTag = $clientAPIClient->getZoneTag($wp_domain);
+            if (isset($zoneTag)) {
+                // Do not care of the return value
+                $clientAPIClient->zonePurgeCache($zoneTag);
+            }
         }
     }
 }
