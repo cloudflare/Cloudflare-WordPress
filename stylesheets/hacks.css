@@ -4,6 +4,11 @@
  * everything here.
  */
 
+/* fix WordPress AdminPanel Settings */
+#adminmenu .wp-submenu {
+    margin-left: 0em; /* new */
+}
+
 /* fix Cpanel Plugin title */
 span#pageHeading {
     display: block;
