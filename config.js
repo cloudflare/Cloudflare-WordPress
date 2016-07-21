@@ -21,7 +21,7 @@
     "homePageCards": ["ApplyDefaultSettingsCard", "PurgeCacheCard"],
     "moreSettingsCards": {
         "container.moresettings.speed": ["AlwaysOnlineCard", "ImageOptimizationCard"],
-        "container.moresettings.security": ["SecurityLevelCard", "AdvanceDDoSCard"]
+        "container.moresettings.security": ["SecurityLevelCard", "WAFCard", "AdvanceDDoSCard"]
     },
     "locale": "en",
     "integrationName": "wordpress",
