@@ -20,7 +20,7 @@
     "featureManagerIsWAFEnabled": true,
     "homePageCards": ["ApplyDefaultSettingsCard", "PurgeCacheCard"],
     "moreSettingsCards": {
-        "container.moresettings.speed": ["CacheLevelCard", "AlwaysOnlineCard", "ImageOptimizationCard"],
+        "container.moresettings.speed": ["AlwaysOnlineCard", "ImageOptimizationCard"],
         "container.moresettings.security": ["SecurityLevelCard", "AdvanceDDoSCard"]
     },
     "locale": "en",
