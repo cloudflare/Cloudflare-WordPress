@@ -18,7 +18,7 @@
     "featureManagerIsSecurityLevelEnabled": true,
     "featureManagerIsSSLEnabled": true,
     "featureManagerIsWAFEnabled": true,
-    "homePageCards": ["ApplyDefaultSettingsCard", "PurgeCacheCard"],
+    "homePageCards": ["ApplyDefaultSettingsCard", "PurgeCacheCard", "PluginSpecificCacheCard"],
     "moreSettingsCards": {
         "container.moresettings.speed": ["AlwaysOnlineCard", "ImageOptimizationCard"],
         "container.moresettings.security": ["SecurityLevelCard", "WAFCard", "AdvanceDDoSCard"]
