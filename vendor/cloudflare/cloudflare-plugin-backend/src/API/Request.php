@@ -4,7 +4,6 @@ namespace CF\API;
 
 class Request
 {
-
     private $method;
     private $url;
     private $parameters;

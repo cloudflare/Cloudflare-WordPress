@@ -2,7 +2,7 @@
 
 namespace CF\Integration;
 
-use \Psr\Log\LoggerInterface;
+use Psr\Log\LoggerInterface;
 
 class DefaultIntegration implements IntegrationInterface
 {
@@ -12,9 +12,9 @@ class DefaultIntegration implements IntegrationInterface
     private $logger;
 
     /**
-     * @param ConfigInterface $config
-     * @param IntegrationAPIInterface $integrationAPI
-     * @param DataStoreInterface $dataStore
+     * @param ConfigInterface                          $config
+     * @param IntegrationAPIInterface                  $integrationAPI
+     * @param DataStoreInterface                       $dataStore
      * @param LoggerInterface|\Psr\Log\LoggerInterface $logger
      */
     public function __construct(ConfigInterface $config, IntegrationAPIInterface $integrationAPI, DataStoreInterface $dataStore, LoggerInterface $logger)

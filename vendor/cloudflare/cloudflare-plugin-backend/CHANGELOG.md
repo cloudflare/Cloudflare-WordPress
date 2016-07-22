@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.5](#1.0.5) - 2016-07-22
+### Added
+- PI-697 added PLUGIN_SPECIFIC_CACHE consts to CF\API\Plugin [10fb134](https://github.com/cloudflare/cloudflare-plugin-backend/commit/10fb1346d81e6b7fb71abfdfb93ce12c3d55fb91)
+
 ## [1.0.4](#1.0.4) - 2016-07-15
 ### Added
 - Added setting name consts to CF\API\Plugin [70372ab](https://github.com/cloudflare/cloudflare-plugin-backend/commit/70372ab0d1e294e0e6b57799e31c8a22ed4dedf6)

@@ -4,12 +4,12 @@ namespace CF\Integration;
 
 interface DataStoreInterface
 {
-
     /**
      * @param $client_api_key
      * @param $email
      * @param $unique_id
      * @param $user_key
+     *
      * @return mixed
      */
     public function createUserDataStore($client_api_key, $email, $unique_id, $user_key);

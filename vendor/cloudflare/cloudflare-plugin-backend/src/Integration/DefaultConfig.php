@@ -1,4 +1,5 @@
 <?php
+
 namespace CF\Integration;
 
 class DefaultConfig implements ConfigInterface
@@ -15,6 +16,7 @@ class DefaultConfig implements ConfigInterface
 
     /**
      * @param $key
+     *
      * @return value or key or null
      */
     public function getValue($key)
@@ -23,6 +25,7 @@ class DefaultConfig implements ConfigInterface
         if (array_key_exists($key, $this->config)) {
             $value = $this->config[$key];
         }
+
         return $value;
     }
 }

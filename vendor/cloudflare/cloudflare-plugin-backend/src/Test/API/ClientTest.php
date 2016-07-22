@@ -32,9 +32,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->mockClientAPI = new Client($this->mockCpanelIntegration);
     }
 
-    public function testBeforeSendAddsRequestHeaders() {
-        $apiKey = "apiKey";
-        $email = "email";
+    public function testBeforeSendAddsRequestHeaders()
+    {
+        $apiKey = 'apiKey';
+        $email = 'email';
 
         $this->mockDataStore->method('getClientV4APIKey')->willReturn($apiKey);
         $this->mockDataStore->method('getCloudFlareEmail')->willReturn($email);
@@ -46,7 +47,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $expectedRequestHeaders = array(
             Client::X_AUTH_KEY => $apiKey,
             Client::X_AUTH_EMAIL => $email,
-            Client::CONTENT_TYPE_KEY => Client::APPLICATION_JSON_KEY
+            Client::CONTENT_TYPE_KEY => Client::APPLICATION_JSON_KEY,
         );
 
         $this->assertEquals($expectedRequestHeaders[Client::X_AUTH_KEY], $actualRequestHeaders[Client::X_AUTH_KEY]);
@@ -63,18 +64,18 @@ class ClientTest extends \PHPUnit_Framework_TestCase
                 array(
                     'code' => '',
                     'message' => 'Test Message',
-                )
+                ),
             ),
-            'messages' => array()
+            'messages' => array(),
         );
-        $errorResponse = $this->mockClientAPI->createAPIError("Test Message");
+        $errorResponse = $this->mockClientAPI->createAPIError('Test Message');
         $this->assertEquals($errorResponse, $expectedErrorResponse);
     }
 
     public function testResponseOkReturnsTrueForValidResponse()
     {
         $v4APIResponse = array(
-            "success" => true
+            'success' => true,
         );
 
         $this->assertTrue($this->mockClientAPI->responseOk($v4APIResponse));

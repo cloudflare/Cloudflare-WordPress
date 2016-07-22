@@ -47,10 +47,11 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($resultArray, $secondResponse['result']);
     }
 
-    public function testCreateAPIErrorReturnsError() {
-        $response = $this->pluginAPIClient->createAPIError("error Message");
+    public function testCreateAPIErrorReturnsError()
+    {
+        $response = $this->pluginAPIClient->createAPIError('error Message');
 
-        $this->assertFalse($response["success"]);
+        $this->assertFalse($response['success']);
     }
 
     public function testCallAPIReturnsError()

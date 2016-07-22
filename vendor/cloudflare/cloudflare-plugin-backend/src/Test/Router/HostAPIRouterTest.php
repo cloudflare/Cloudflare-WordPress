@@ -8,7 +8,6 @@ use CF\Router\HostAPIRouter;
 
 class HostAPIRouterTest extends \PHPUnit_Framework_TestCase
 {
-
     private $hostAPIRouter;
     private $mockConfig;
     private $mockClientAPI;
@@ -43,6 +42,6 @@ class HostAPIRouterTest extends \PHPUnit_Framework_TestCase
     {
         $request = new Request(null, null, null, array('act' => 'testAction'));
         $path = $this->hostAPIRouter->getPath($request);
-        $this->assertEquals("testAction", $path);
+        $this->assertEquals('testAction', $path);
     }
 }

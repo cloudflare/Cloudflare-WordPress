@@ -97,6 +97,13 @@ class ComposerStaticInit7d0167de9dd321ec590d9e98a7873834
                 0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
             ),
         ),
+        'J' => 
+        array (
+            'JohnKary' => 
+            array (
+                0 => __DIR__ . '/..' . '/johnkary/phpunit-speedtrap/src',
+            ),
+        ),
         'C' => 
         array (
             'CloudFlare\\' => 

@@ -4,11 +4,10 @@ namespace CF\Router\Test;
 
 use CF\API\Request;
 use CF\Integration\DefaultIntegration;
-use \CF\Router\DefaultRestAPIRouter;
+use CF\Router\DefaultRestAPIRouter;
 
 class DefaultRestAPIRouterTest extends \PHPUnit_Framework_TestCase
 {
-
     private $clientV4APIRouter;
     private $mockConfig;
     private $mockClientAPI;
@@ -46,26 +45,26 @@ class DefaultRestAPIRouterTest extends \PHPUnit_Framework_TestCase
                 'class' => 'testClass',
                 'methods' => array(
                     'GET' => array(
-                        'function' => 'testFunction'
-                    )
-                )
-            )
+                        'function' => 'testFunction',
+                    ),
+                ),
+            ),
         );
         $this->clientV4APIRouter->setRoutes($routes);
 
-        $request = new Request("GET", "zones", array(), array());
+        $request = new Request('GET', 'zones', array(), array());
 
         $response = $this->clientV4APIRouter->getRoute($request);
 
         $this->assertEquals(array(
             'class' => 'testClass',
-            'function' => 'testFunction'
+            'function' => 'testFunction',
         ), $response);
     }
 
     public function testGetRouteReturnsFalseForNoRouteFound()
     {
-        $request = new Request("GET", "zones", array(), array());
+        $request = new Request('GET', 'zones', array(), array());
         $response = $this->clientV4APIRouter->getRoute($request);
         $this->assertFalse($response);
     }

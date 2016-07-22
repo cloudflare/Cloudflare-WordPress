@@ -6,9 +6,9 @@ use CF\DNSRecord;
 
 interface IntegrationAPIInterface
 {
-
     /**
      * @param $domain_name
+     *
      * @return mixed
      */
     public function getDNSRecords($domain_name);
@@ -16,6 +16,7 @@ interface IntegrationAPIInterface
     /**
      * @param $domain_name
      * @param DNSRecord $DNSRecord
+     *
      * @return mixed
      */
     public function addDNSRecord($domain_name, DNSRecord $DNSRecord);
@@ -23,6 +24,7 @@ interface IntegrationAPIInterface
     /**
      * @param $domain_name
      * @param DNSRecord $DNSRecord
+     *
      * @return mixed
      */
     public function editDNSRecord($domain_name, DNSRecord $DNSRecord);
@@ -30,6 +32,7 @@ interface IntegrationAPIInterface
     /**
      * @param $domain_name
      * @param DNSRecord $DNSRecord
+     *
      * @return mixed
      */
     public function removeDNSRecord($domain_name, DNSRecord $DNSRecord);
@@ -41,6 +44,7 @@ interface IntegrationAPIInterface
 
     /**
      * @param null $userId
+     *
      * @return mixed
      */
     public function getDomainList($userId = null);

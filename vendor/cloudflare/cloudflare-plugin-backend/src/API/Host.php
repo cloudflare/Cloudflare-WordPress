@@ -1,22 +1,20 @@
 <?php
-namespace CF\API;
 
-use GuzzleHttp;
+namespace CF\API;
 
 class Host extends AbstractAPIClient
 {
-
-    const CF_INTEGRATION_HEADER = "CF-Integration";
-    const CF_INTEGRTATION_VERSION_HEADER = "CF-Integration-Version";
-    const HOST_API_NAME = "HOST API";
+    const CF_INTEGRATION_HEADER = 'CF-Integration';
+    const CF_INTEGRTATION_VERSION_HEADER = 'CF-Integration-Version';
+    const HOST_API_NAME = 'HOST API';
     //self::ENDPOINT_BASE_URL . self::ENDPOINT_PATH isn't a thing so you have to update it twice if it changes.
-    const ENDPOINT_BASE_URL = "https://api.cloudflare.com/";
-    const ENDPOINT_PATH = "host-gw.html";
-    const ENDPOINT = "https://api.cloudflare.com/host-gw.html";
-
+    const ENDPOINT_BASE_URL = 'https://api.cloudflare.com/';
+    const ENDPOINT_PATH = 'host-gw.html';
+    const ENDPOINT = 'https://api.cloudflare.com/host-gw.html';
 
     /**
      * @param Request $request
+     *
      * @return Request
      */
     public function beforeSend(Request $request)
@@ -25,15 +23,15 @@ class Host extends AbstractAPIClient
         $request->setUrl(self::ENDPOINT_PATH);
 
         $headers = array(
-            self::CF_INTEGRATION_HEADER => $this->config->getValue("integrationName"),
-            self::CF_INTEGRTATION_VERSION_HEADER => $this->config->getValue("version"),
+            self::CF_INTEGRATION_HEADER => $this->config->getValue('integrationName'),
+            self::CF_INTEGRTATION_VERSION_HEADER => $this->config->getValue('version'),
         );
         $request->setHeaders($headers);
 
         $body = $request->getBody();
         $user_key_actions = array('zone_set', 'full_zone_set');
         if (in_array(strtolower($body['act']), $user_key_actions)) {
-            $body["user_key"] = $this->data_store->getHostAPIUserKey();
+            $body['user_key'] = $this->data_store->getHostAPIUserKey();
         }
         $body['host_key'] = $this->integrationAPI->getHostAPIKey();
         $request->setBody($body);
@@ -43,11 +41,12 @@ class Host extends AbstractAPIClient
 
     /**
      * @param $host_api_response
+     *
      * @return bool
      */
     public function responseOk($host_api_response)
     {
-        return ($host_api_response['result'] === 'success');
+        return $host_api_response['result'] === 'success';
     }
 
     /**
@@ -68,17 +67,18 @@ class Host extends AbstractAPIClient
 
     /**
      * @param $message
+     *
      * @return array
      */
     public function createAPIError($message)
     {
         return array(
             'request' => array(
-                'act' => ''
+                'act' => '',
             ),
             'result' => 'error',
             'msg' => $message,
-            'err_code' => ''
+            'err_code' => '',
         );
     }
 }

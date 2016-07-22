@@ -6,13 +6,14 @@ use CF\Integration\DefaultLogger;
 
 class DefaultLoggerTest extends \PHPUnit_Framework_TestCase
 {
-    public function testDebugLogOnlyLogsIfDebugIsEnabled() {
+    public function testDebugLogOnlyLogsIfDebugIsEnabled()
+    {
         $logger = new DefaultLogger(true);
-        $returnValue = $logger->debug("");
+        $returnValue = $logger->debug('');
         $this->assertTrue($returnValue);
 
         $logger = new DefaultLogger(false);
-        $returnValue = $logger->debug("");
+        $returnValue = $logger->debug('');
         $this->assertNull($returnValue);
     }
 }

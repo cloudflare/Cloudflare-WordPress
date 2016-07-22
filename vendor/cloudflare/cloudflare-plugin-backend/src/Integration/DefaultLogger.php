@@ -1,15 +1,16 @@
 <?php
+
 namespace CF\Integration;
 
-use \Psr\Log\AbstractLogger;
-use \Psr\Log\LogLevel;
-use \Psr\Log\LoggerInterface;
+use Psr\Log\AbstractLogger;
+use Psr\Log\LogLevel;
+use Psr\Log\LoggerInterface;
 
 class DefaultLogger extends AbstractLogger implements LoggerInterface
 {
     private $debug;
 
-    const PREFIX = "[CloudFlare]";
+    const PREFIX = '[CloudFlare]';
 
     /**
      * @param bool|false $debug
@@ -25,12 +26,11 @@ class DefaultLogger extends AbstractLogger implements LoggerInterface
      * @param mixed  $level
      * @param string $message
      * @param array  $context
-     *
-     * @return null
      */
-    public function log($level, $message, array $context = array()) {
-        return error_log(self::PREFIX . " " . strtoupper($level) . ": " . $message . " " .
-            (!empty($context) ? print_r($context,true) : ""));
+    public function log($level, $message, array $context = array())
+    {
+        return error_log(self::PREFIX.' '.strtoupper($level).': '.$message.' '.
+            (!empty($context) ? print_r($context, true) : ''));
     }
 
     /**
@@ -38,13 +38,11 @@ class DefaultLogger extends AbstractLogger implements LoggerInterface
      *
      * @param string $message
      * @param array  $context
-     *
-     * @return null
      */
     public function debug($message, array $context = array())
     {
-        if($this->debug) {
-           return $this->log(LogLevel::DEBUG, $message, $context);
+        if ($this->debug) {
+            return $this->log(LogLevel::DEBUG, $message, $context);
         }
     }
 }

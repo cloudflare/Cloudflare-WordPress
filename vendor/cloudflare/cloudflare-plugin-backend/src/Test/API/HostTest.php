@@ -20,7 +20,7 @@ class HostTest extends \PHPUnit_Framework_TestCase
         $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockAPI= $this->getMockBuilder('CF\Integration\IntegrationAPIInterface')
+        $this->mockAPI = $this->getMockBuilder('CF\Integration\IntegrationAPIInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockDataStore = $this->getMockBuilder('CF\Integration\DataStoreInterface')
@@ -32,8 +32,6 @@ class HostTest extends \PHPUnit_Framework_TestCase
         $this->mockCpanelIntegration = new DefaultIntegration($this->mockConfig, $this->mockAPI, $this->mockDataStore, $this->mockLogger);
 
         $this->hostAPI = new Host($this->mockCpanelIntegration);
-
-
     }
 
     public function testBeforeSendSetsCorrectPath()
@@ -44,17 +42,19 @@ class HostTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Host::ENDPOINT_PATH, $request->getUrl());
     }
 
-    public function testBeforeSendSetsIntegrationHeaders() {
-        $integrationName = "integrationName";
-        $version = "version";
+    public function testBeforeSendSetsIntegrationHeaders()
+    {
+        $integrationName = 'integrationName';
+        $version = 'version';
 
         $this->mockConfig->method('getValue')->will(
             $this->returnValueMap(
                 array(
                     array($integrationName, $integrationName),
-                    array($version, $version)
+                    array($version, $version),
                 )
-        ));
+            )
+        );
 
         $request = new Request(null, null, null, null);
         $request = $this->hostAPI->beforeSend($request);
@@ -65,8 +65,9 @@ class HostTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($version, $requestHeaders[Host::CF_INTEGRTATION_VERSION_HEADER]);
     }
 
-    public function testBeforeSendSetsUserKeyforActZoneSet() {
-        $userKey = "userKey";
+    public function testBeforeSendSetsUserKeyforActZoneSet()
+    {
+        $userKey = 'userKey';
         $this->mockDataStore->method('getHostAPIUserKey')->willReturn($userKey);
 
         $request = new Request(null, null, null, array('act' => 'zone_set'));
@@ -75,11 +76,11 @@ class HostTest extends \PHPUnit_Framework_TestCase
         $requestBody = $request->getBody();
 
         $this->assertEquals($userKey, $requestBody['user_key']);
-
     }
 
-    public function testBeforeSendSetsUserKeyforActFullZoneSet() {
-        $userKey = "userKey";
+    public function testBeforeSendSetsUserKeyforActFullZoneSet()
+    {
+        $userKey = 'userKey';
         $this->mockDataStore->method('getHostAPIUserKey')->willReturn($userKey);
 
         $request = new Request(null, null, null, array('act' => 'full_zone_set'));
@@ -88,11 +89,11 @@ class HostTest extends \PHPUnit_Framework_TestCase
         $requestBody = $request->getBody();
 
         $this->assertEquals($userKey, $requestBody['user_key']);
-
     }
 
-    public function testBeforeSendSetsHostKey() {
-        $hostKey = "hostKey";
+    public function testBeforeSendSetsHostKey()
+    {
+        $hostKey = 'hostKey';
         $this->mockAPI->method('getHostAPIKey')->willReturn($hostKey);
 
         $request = new Request(null, null, null, null);
@@ -101,13 +102,12 @@ class HostTest extends \PHPUnit_Framework_TestCase
         $requestBody = $request->getBody();
 
         $this->assertEquals($hostKey, $requestBody['host_key']);
-
     }
 
     public function testResponseOkReturnsTrueForValidResponse()
     {
         $hostAPIResponse = array(
-            'result' => 'success'
+            'result' => 'success',
         );
 
         $this->assertTrue($this->hostAPI->responseOk($hostAPIResponse));
@@ -115,11 +115,11 @@ class HostTest extends \PHPUnit_Framework_TestCase
 
     public function testClientApiErrorReturnsValidStructure()
     {
-        $message = "message";
+        $message = 'message';
 
         $errorResponse = $this->hostAPI->createAPIError($message);
 
-        $this->assertEquals($message, $errorResponse["msg"]);
-        $this->assertEquals("error", $errorResponse["result"]);
+        $this->assertEquals($message, $errorResponse['msg']);
+        $this->assertEquals('error', $errorResponse['result']);
     }
 }
