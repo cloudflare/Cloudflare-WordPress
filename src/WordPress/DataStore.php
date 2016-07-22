@@ -20,9 +20,10 @@ class DataStore implements DataStoreInterface
     {
         $this->logger = $logger;
 
-		$this->pluginSettings[Plugin::SETTING_IP_REWRITE] = get_option(Plugin::SETTING_IP_REWRITE);
-		$this->pluginSettings[Plugin::SETTING_PROTOCOL_REWRITE] = get_option(Plugin::SETTING_PROTOCOL_REWRITE);
-		$this->pluginSettings[Plugin::SETTING_DEFAULT_SETTINGS] = get_option(Plugin::SETTING_DEFAULT_SETTINGS);
+        $this->pluginSettings[Plugin::SETTING_IP_REWRITE] = get_option(Plugin::SETTING_IP_REWRITE);
+        $this->pluginSettings[Plugin::SETTING_PROTOCOL_REWRITE] = get_option(Plugin::SETTING_PROTOCOL_REWRITE);
+        $this->pluginSettings[Plugin::SETTING_DEFAULT_SETTINGS] = get_option(Plugin::SETTING_DEFAULT_SETTINGS);
+        $this->pluginSettings[Plugin::PLUGIN_SPECIFIC_CACHE] = get_option(Plugin::PLUGIN_SPECIFIC_CACHE);
     }
 
     /**
