@@ -29,19 +29,20 @@ namespace CF\Test\WordPress {
 				->getMock();
 			$this->dataStore = new DataStore($this->mockLogger);
 		}
+        public function testConstructorPopulatesSettings()
+        {
+            /*
+             * mocked get_option($key) defined above returns key
+             */
+            $pluginSettings = array(
+                Plugin::SETTING_IP_REWRITE => Plugin::SETTING_IP_REWRITE,
+                Plugin::SETTING_PROTOCOL_REWRITE => Plugin::SETTING_PROTOCOL_REWRITE,
+                Plugin::SETTING_DEFAULT_SETTINGS => Plugin::SETTING_DEFAULT_SETTINGS,
+                Plugin::PLUGIN_SPECIFIC_CACHE => Plugin::PLUGIN_SPECIFIC_CACHE,
+            );
+            $this->assertEquals($pluginSettings, $this->dataStore->getPluginSettings());
+        }
 
-		public function testConstructorPopulatesSettings()
-		{
-			/*
-			 * mocked get_option($key) defined above returns key
-			 */
-			$pluginSettings = array(
-				Plugin::SETTING_IP_REWRITE => Plugin::SETTING_IP_REWRITE,
-				Plugin::SETTING_PROTOCOL_REWRITE => Plugin::SETTING_PROTOCOL_REWRITE,
-				Plugin::SETTING_DEFAULT_SETTINGS => Plugin::SETTING_DEFAULT_SETTINGS
-			);
-			$this->assertEquals($pluginSettings, $this->dataStore->getPluginSettings());
-		}
 
 		public function testGetHostAPIUserUniqueIdReturnsNull() {
 			$this->assertNull($this->dataStore->getHostAPIUserUniqueId());
