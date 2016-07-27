@@ -95,8 +95,7 @@ function cloudflare_init()
     $ipRewrite = new IpRewrite();
     $is_cf = $ipRewrite->isCloudFlare();
     if ($is_cf) {
-        // The HTTP Request is from Cloudflare. Ip is rewritten successfully.
-        // For more info: github.com/cloudflare/cf-ip-rewrite
+        sslRewrite();
     }
 
     add_action('admin_menu', 'cloudflare_config_page');
@@ -466,6 +465,16 @@ function purgeCache()
             }
         }
     }
+}
+
+function sslRewrite() {
+    if ( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ) {
+        $_SERVER['HTTPS'] = 'on';
+
+        return true;
+    }
+
+    return false;
 }
 
 // "Save and Activate" pressed
