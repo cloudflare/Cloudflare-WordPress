@@ -95,6 +95,8 @@ function cloudflare_init()
     $ipRewrite = new IpRewrite();
     $is_cf = $ipRewrite->isCloudFlare();
     if ($is_cf) {
+        // The HTTP Request is from Cloudflare. Ip is rewritten successfully.
+        // For more info: github.com/cloudflare/cf-ip-rewrite
         sslRewrite();
     }
 
