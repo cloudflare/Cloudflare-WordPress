@@ -414,6 +414,8 @@ function cloudflare_buffer_init()
     ob_start('cloudflare_buffer_wrapup');
 }
 // Protocol Rewrite Hook # 1
+// ob_start (buffer) is also being used with HTTP2ServerPush. There can
+// be conflicts between the buffers when protocol rewrite is reactivated.
 // add_action('plugins_loaded', 'cloudflare_buffer_init');
 
 // wordpress 4.4 srcset ssl fix
@@ -493,3 +495,7 @@ function theme_save_pressed()
     purgeCache();
 }
 add_action('customize_save_after', 'theme_save_pressed');
+
+// Enable HTTP2 Server Push
+require_once plugin_dir_path(__FILE__).'src/HTTP2ServerPush.php';
+add_action('init', array('HTTP2ServerPush', 'init'));
