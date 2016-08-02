@@ -65,7 +65,7 @@ function cloudflare_activate()
         deactivate_plugins(basename(__FILE__));
 
         // Kill Execution
-        wp_die('<p><strong>Cloudflare</strong> plugin requires '.$flag.'  version '.$version.' or greater.</p>', 'Plugin Activation Error',  array('response' => 200, 'back_link' => true));
+        wp_die('<p><strong>Cloudflare</strong> plugin requires '.$flag.'  version '.$version.' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
 
         return;
     }
@@ -132,20 +132,22 @@ function set_protocol_rewrite()
 
 function load_protocol_rewrite()
 {
-	//TODO refactor so we're only initing this stuff once.
-	//also used in purgeCache()
-	$config = new CF\Integration\DefaultConfig('[]');
-	$logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
-	$dataStore = new CF\WordPress\DataStore($logger);
-	return $dataStore->getPluginSetting(CF\API\Plugin::SETTING_PROTOCOL_REWRITE);
+    //TODO refactor so we're only initing this stuff once.
+    //also used in purgeCache()
+    $config = new CF\Integration\DefaultConfig('[]');
+    $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
+    $dataStore = new CF\WordPress\DataStore($logger);
+
+    return $dataStore->getPluginSetting(CF\API\Plugin::SETTING_PROTOCOL_REWRITE);
 }
 
 function load_ip_rewrite()
 {
-	//TODO refactor so we're only initing this stuff once.
-	$config = new CF\Integration\DefaultConfig('[]');
-	$logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
-	$dataStore = new CF\WordPress\DataStore($logger);
+    //TODO refactor so we're only initing this stuff once.
+    $config = new CF\Integration\DefaultConfig('[]');
+    $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
+    $dataStore = new CF\WordPress\DataStore($logger);
+
     return $dataStore->getPluginSetting(CF\API\Plugin::SETTING_IP_REWRITE);
 }
 
@@ -414,6 +416,8 @@ function cloudflare_buffer_init()
     ob_start('cloudflare_buffer_wrapup');
 }
 // Protocol Rewrite Hook # 1
+// ob_start (buffer) is also being used with HTTP2ServerPush. There can
+// be conflicts between the buffers when protocol rewrite is reactivated.
 // add_action('plugins_loaded', 'cloudflare_buffer_init');
 
 // wordpress 4.4 srcset ssl fix
@@ -469,8 +473,9 @@ function purgeCache()
     }
 }
 
-function sslRewrite() {
-    if ( isset( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' ) {
+function sslRewrite()
+{
+    if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
         $_SERVER['HTTPS'] = 'on';
 
         return true;
@@ -493,3 +498,7 @@ function theme_save_pressed()
     purgeCache();
 }
 add_action('customize_save_after', 'theme_save_pressed');
+
+// Enable HTTP2 Server Push
+require_once plugin_dir_path(__FILE__).'src/HTTP2ServerPush.php';
+add_action('init', array('HTTP2ServerPush', 'init'));
