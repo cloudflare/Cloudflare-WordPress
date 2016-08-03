@@ -80,4 +80,37 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->mockClientAPI->responseOk($v4APIResponse));
     }
+
+    public function testGetErrorMessageSuccess()
+    {
+        $errorMessage = 'I am an error message';
+
+        $error = $this->getMockBuilder('GuzzleHttp\Exception\RequestException')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getResponse', 'getBody', 'getMessage'))
+            ->getMock();
+
+        $errorJSON = json_encode(
+            array(
+                'success' => false,
+                'errors' => array(
+                    array(
+                        'message' => $errorMessage,
+                    ),
+                ),
+            )
+        );
+
+        $error->expects($this->any())
+            ->method('getMessage')
+            ->will($this->returnValue('Not this message'));
+        $error->expects($this->any())
+            ->method('getResponse')
+            ->will($this->returnSelf());
+        $error->expects($this->any())
+            ->method('getBody')
+            ->will($this->returnValue($errorJSON));
+
+        $this->assertEquals($errorMessage, $this->mockClientAPI->getErrorMessage($error));
+    }
 }

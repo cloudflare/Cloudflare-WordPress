@@ -65,6 +65,8 @@ abstract class AbstractAPIClient implements APIInterface
 
             return $response;
         } catch (RequestException $e) {
+            $errorMessage = $this->getErrorMessage($e);
+
             $this->logAPICall($this->getAPIClientName(), array(
                 'type' => 'request',
                 'method' => $request->getMethod(),
@@ -72,13 +74,28 @@ abstract class AbstractAPIClient implements APIInterface
                 'headers' => $request->getHeaders(),
                 'params' => $request->getParameters(),
                 'body' => $request->getBody(), ), true);
-            $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'code' => $e->getCode(), 'body' => $e->getMessage(), 'stacktrace' => $e->getTraceAsString()), true);
+            $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'code' => $e->getCode(), 'body' => $errorMessage, 'stacktrace' => $e->getTraceAsString()), true);
 
-            return $this->createAPIError($e->getMessage());
+            return $this->createAPIError($errorMessage);
         }
     }
 
-    public function logAPICall($api, $message, $isError)
+    /**
+     * @param RequestException $object
+     *
+     * @return string
+     */
+    public function getErrorMessage(RequestException $error)
+    {
+        return $error->getMessage();
+    }
+
+    /**
+     * @param string $apiName
+     * @param array  $message
+     * @param bool   $isError
+     */
+    public function logAPICall(string $apiName, array $message, bool $isError)
     {
         $logLevel = 'error';
         if ($isError === false) {
@@ -89,7 +106,7 @@ abstract class AbstractAPIClient implements APIInterface
             $message = print_r($message, true);
         }
 
-        $this->logger->$logLevel('['.$api.'] '.$message);
+        $this->logger->$logLevel('['.$apiName.'] '.$message);
     }
 
     /**
@@ -103,4 +120,11 @@ abstract class AbstractAPIClient implements APIInterface
      * @return mixed
      */
     abstract public function getAPIClientName();
+
+    /**
+     * @param $message
+     *
+     * @return array
+     */
+    abstract public function createAPIError($message);
 }
