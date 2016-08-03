@@ -95,7 +95,7 @@ abstract class AbstractAPIClient implements APIInterface
      * @param array  $message
      * @param bool   $isError
      */
-    public function logAPICall(string $apiName, array $message, bool $isError)
+    public function logAPICall($apiName, $message, $isError)
     {
         $logLevel = 'error';
         if ($isError === false) {

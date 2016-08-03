@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.9](#1.0.9) - 2016-08-03
+### Changed
+- Removed static type checking to support earlier php versions [ad13c1e](https://github.com/cloudflare/cloudflare-plugin-backend/commit/ad13c1ec6edeceae5a85f8912208ce2c80f4a5f2)
+
 ## [1.0.8](#1.0.8) - 2016-08-02
 ### Changed
 - Fixed error message bug [61584ca](https://github.com/cloudflare/cloudflare-plugin-backend/commit/61584ca56f8ed6ba76cb321593955e0b57f3c88d)
