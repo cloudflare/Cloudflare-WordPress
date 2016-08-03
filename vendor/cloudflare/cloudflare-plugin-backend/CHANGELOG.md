@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.0.8](#1.0.8) - 2016-08-02
+### Changed
+- Fixed error message bug [61584ca](https://github.com/cloudflare/cloudflare-plugin-backend/commit/61584ca56f8ed6ba76cb321593955e0b57f3c88d)
+
+## [1.0.7](#1.0.7) - 2016-08-02
+### Changed
+- Updated CHANGELOG [5e72177](https://github.com/cloudflare/cloudflare-plugin-backend/commit/5e72177aadf1c34cf75904b52bf017e7b6c6c672)
+
+## [1.0.6](#1.0.6) - 2016-08-02
+### Changed
+- Changed error message from always "Bad Request" to original API message [235b020](https://github.com/cloudflare/cloudflare-plugin-backend/commit/235b020ad48cf9c0d2cdcb067b34d1424f0571f6)
+
 ## [1.0.5](#1.0.5) - 2016-07-22
 ### Added
 - PI-697 added PLUGIN_SPECIFIC_CACHE consts to CF\API\Plugin [10fb134](https://github.com/cloudflare/cloudflare-plugin-backend/commit/10fb1346d81e6b7fb71abfdfb93ce12c3d55fb91)
