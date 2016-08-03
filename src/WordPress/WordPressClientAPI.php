@@ -15,10 +15,10 @@ class WordPressClientAPI extends Client
     public function getZoneTag($zone_name)
     {
         $request = new Request('GET', 'zones/', array('name' => $zone_name), array());
-        $response = self::callAPI($request);
+        $response = $this->callAPI($request);
 
         $zone_tag = null;
-        if (self::responseOk($response)) {
+        if ($this->responseOk($response)) {
             foreach ($response['result'] as $zone) {
                 if ($zone['name'] === $zone_name) {
                     $zone_tag = $zone['id'];
@@ -38,9 +38,9 @@ class WordPressClientAPI extends Client
     public function zonePurgeCache($zoneId)
     {
         $request = new Request('DELETE', 'zones/'.$zoneId.'/purge_cache', array(), array('purge_everything' => true));
-        $response = self::callAPI($request);
+        $response = $this->callAPI($request);
 
-        return self::responseOk($response);
+        return $this->responseOk($response);
     }
 
     /**
@@ -53,8 +53,52 @@ class WordPressClientAPI extends Client
     public function changeZoneSettings($zoneId, $settingName, $params)
     {
         $request = new Request('PATCH', 'zones/'.$zoneId.'/settings/'.$settingName, array(), $params);
-        $response = self::callAPI($request);
+        $response = $this->callAPI($request);
 
-        return self::responseOk($response);
+        return $this->responseOk($response);
+    }
+
+    /**
+     * @param $urlPattern
+     *
+     * @return array
+     */
+    public function createPageRule($zoneId, $urlPattern)
+    {
+        $body = $this->createPageRuleDisablePerformanceCacheBypassJsonBody($urlPattern);
+        $request = new Request('POST', 'zones/'.$zoneId.'/pagerules/', array(), $body);
+        $response = $this->callAPI($request);
+
+        return $this->responseOk($response);
+    }
+
+    /**
+     * @param $urlPattern
+     *
+     * @return array
+     */
+    public function createPageRuleDisablePerformanceCacheBypassJsonBody($urlPattern)
+    {
+        return array(
+            'targets' => array(
+                array(
+                    'target' => 'url',
+                    'constraint' => array(
+                        'operator' => 'matches',
+                        'value' => $urlPattern,
+                    ),
+                ),
+            ),
+            'actions' => array(
+                array(
+                    'id' => 'disable_performance',
+                ),
+                array(
+                    'id' => 'cache_level',
+                    'value' => 'bypass',
+                ),
+            ),
+            'status' => 'active',
+        );
     }
 }
