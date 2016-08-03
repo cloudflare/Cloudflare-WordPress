@@ -219,7 +219,7 @@ class PluginActions
         if (!Plans::PlanNeedsUpgrade($currentPlan, Plans::BIZ_PLAN)) {
             $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'mirage', array('value' => 'off'));
             if (!$result) {
-                return false;
+                throw new ZoneSettingFailException();
             }
 
             $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'polish', array('value' => 'off'));
