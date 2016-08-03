@@ -31,6 +31,19 @@ class WordPressClientAPI extends Client
     }
 
     /**
+     * @param $zone_name
+     *
+     * @return mixed
+     */
+    public function getPageRules($zoneId)
+    {
+        $request = new Request('GET', 'zones/'.$zoneId.'/pagerules/', array(), array());
+        $response = $this->callAPI($request);
+
+        return $response;
+    }
+
+    /**
      * @param $zoneId
      *
      * @return bool
@@ -56,5 +69,47 @@ class WordPressClientAPI extends Client
         $response = self::callAPI($request);
 
         return self::responseOk($response);
+    /**
+     * @param $urlPattern
+     *
+     * @return array
+     */
+    public function createPageRule($zoneId, $urlPattern)
+    {
+        $body = $this->createPageRuleDisablePerformanceCacheBypassJsonBody($urlPattern);
+        $request = new Request('POST', 'zones/'.$zoneId.'/pagerules/', array(), $body);
+        $response = $this->callAPI($request);
+
+        return $this->responseOk($response);
+    }
+
+    /**
+     * @param $urlPattern
+     *
+     * @return array
+     */
+    public function createPageRuleDisablePerformanceCacheBypassJsonBody($urlPattern)
+    {
+        return array(
+            'targets' => array(
+                array(
+                    'target' => 'url',
+                    'constraint' => array(
+                        'operator' => 'matches',
+                        'value' => $urlPattern,
+                    ),
+                ),
+            ),
+            'actions' => array(
+                array(
+                    'id' => 'disable_performance',
+                ),
+                array(
+                    'id' => 'cache_level',
+                    'value' => 'bypass',
+                ),
+            ),
+            'status' => 'active',
+        );
     }
 }
