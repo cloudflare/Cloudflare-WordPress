@@ -1,26 +1,26 @@
 {
-  "name": "cloudflare/wordpress-plugin",
-  "description": "A CloudFlare plugin for WordPress",
-  "license": "BSD-3-Clause",
-  "version": "1.0.0",
-  "scripts": {
-    "test": "vendor/bin/phpunit",
-    "format": "vendor/bin/phpcs -n --standard=PSR2 --extensions=php,live.php src/"
-  },
-  "require": {
-    "symfony/yaml": "~2.6",
-    "guzzlehttp/guzzle": "~5.3",
-    "cloudflare/cloudflare-plugin-backend": "^1.0",
-    "cloudflare/cf-ip-rewrite": "^1.0.0"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "4.8.*",
-    "squizlabs/php_codesniffer": "2.*",
-    "johnkary/phpunit-speedtrap": "^1.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "CF\\": "src/"
-    }
-}
+    "name": "cloudflare/wordpress-plugin", 
+    "license": "BSD-3-Clause", 
+    "require": {
+        "cloudflare/cloudflare-plugin-backend": "^1.0", 
+        "cloudflare/cf-ip-rewrite": "^1.0.0", 
+        "symfony/yaml": "~2.6", 
+        "guzzlehttp/guzzle": "~5.3"
+    }, 
+    "autoload": {
+        "psr-4": {
+            "CF\\": "src/"
+        }
+    }, 
+    "version": "1.0.2-beta", 
+    "scripts": {
+        "test": "vendor/bin/phpunit", 
+        "format": "vendor/bin/phpcs -n --standard=PSR2 --extensions=php,live.php src/"
+    }, 
+    "require-dev": {
+        "squizlabs/php_codesniffer": "2.*", 
+        "johnkary/phpunit-speedtrap": "^1.0", 
+        "phpunit/phpunit": "4.8.*"
+    }, 
+    "description": "A CloudFlare plugin for WordPress"
 }
