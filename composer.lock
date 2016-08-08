@@ -54,16 +54,16 @@
         },
         {
             "name": "cloudflare/cloudflare-plugin-backend",
-            "version": "1.0.8",
+            "version": "1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",
-                "reference": "6d02fe7198b10a3877fadd38d5270a90b371e9d9"
+                "reference": "fa780e8dcb0259f93c32eae89783248b287d5717"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/6d02fe7198b10a3877fadd38d5270a90b371e9d9",
-                "reference": "6d02fe7198b10a3877fadd38d5270a90b371e9d9",
+                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/fa780e8dcb0259f93c32eae89783248b287d5717",
+                "reference": "fa780e8dcb0259f93c32eae89783248b287d5717",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "BSD-3-Clause"
             ],
             "description": "A PHP backend for CloudFlare plugins.",
-            "time": "2016-08-02 14:12:53"
+            "time": "2016-08-03 16:59:06"
         },
         {
             "name": "guzzlehttp/guzzle",

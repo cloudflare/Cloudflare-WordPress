@@ -9,6 +9,13 @@
     margin-left: 0em; /* new */
 }
 
+/* fix WordPress notification z-index being lower than
+ * WordPress Admin Panel z-index level.
+ */
+#notifications {
+    z-index: 9999; /* new */
+}
+
 /* fix Cpanel Plugin title */
 span#pageHeading {
     display: block;
