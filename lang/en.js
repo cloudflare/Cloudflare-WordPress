@@ -128,7 +128,7 @@
     "container.moresettings.speed": "Speed",
     "container.moresettings.security": "Security",
     "container.performancePage.title": "Performance",
-    "container.pluginSpecificCacheCard.title": "Automatic Cache",
+    "container.pluginSpecificCacheCard.title": "Automatic Cache Management",
     "container.pluginSpecificCacheCard.description": "Purge CloudFlare cache automatically on updating site appearance.",
     "container.pluginSpecificCacheCard.button.enable": "Enable",
     "container.pluginSpecificCacheCard.button.disable": "Disable",
