@@ -24,11 +24,13 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
         $this->wordpressAPI = new WordPressAPI($this->mockDataStore);
     }
 
-    public function testGetDomainList()
+    public function testGetDomainListReturnValue()
     {
-        $_SERVER['SERVER_NAME'] = 'domainName.com';
-        $domain_list = $this->wordpressAPI->getDomainList();
+        $domainName = 'domainName.com';
+        $_SERVER['SERVER_NAME'] = $domainName;
+        $domainList = $this->wordpressAPI->getDomainList();
 
-        $this->assertEquals(1, count($domain_list));
+        $this->assertEquals(1, count($domainList));
+        $this->assertEquals($domainName, $domainList[0]);
     }
 }
