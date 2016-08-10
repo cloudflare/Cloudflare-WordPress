@@ -69,13 +69,33 @@ class WordPressAPI implements IntegrationAPIInterface
     }
 
     /**
+     * @param domain name
+     *
+     * @return string
+     */
+    private function formatDomain($domainName)
+    {
+        // Remove instances which are before the domain name:
+        // * http
+        // * https
+        // * www
+        // * user:pass@
+        preg_match_all('/^(?:https?:\/\/)?(?:[^@\/\n]+@)?(?:www\.)?([^:\/\n]+)/im', $domainName, $matches);
+        $formattedDomain = $matches[1][0];
+
+        return $formattedDomain;
+    }
+
+    /**
      * @param null $userId
      *
      * @return mixed
      */
     public function getDomainList($userId = null)
     {
-        return array($_SERVER['SERVER_NAME']);
+        $domainName = $_SERVER['SERVER_NAME'];
+
+        return array($this->formatDomain($domainName));
     }
 
     /**
