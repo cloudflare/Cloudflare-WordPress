@@ -502,3 +502,7 @@ add_action('customize_save_after', 'theme_save_pressed');
 // Enable HTTP2 Server Push
 require_once plugin_dir_path(__FILE__).'src/HTTP2ServerPush.php';
 add_action('init', array('HTTP2ServerPush', 'init'));
+
+// Display error message if user is using a subdomain
+require_once plugin_dir_path(__FILE__).'src/SubdomainChecker.php';
+add_action('init', array('SubdomainChecker', 'init'));

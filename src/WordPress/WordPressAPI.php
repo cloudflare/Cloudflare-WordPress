@@ -8,6 +8,7 @@ use CF\DNSRecord;
 class WordPressAPI implements IntegrationAPIInterface
 {
     private $dataStore;
+    private static $domainName;
 
     /**
      * @param $dataStore
@@ -93,9 +94,23 @@ class WordPressAPI implements IntegrationAPIInterface
      */
     public function getDomainList($userId = null)
     {
-        $domainName = $_SERVER['SERVER_NAME'];
+        return array(self::$domainName);
+    }
 
-        return array($this->formatDomain($domainName));
+    /**
+     * @param string $newDomainName
+     */
+    public function setDomainName($newDomainName)
+    {
+        self::$domainName = $newDomainName;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOriginalDomain()
+    {
+        return $this->formatDomain($_SERVER['SERVER_NAME']);
     }
 
     /**
