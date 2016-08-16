@@ -8,7 +8,7 @@ use CF\DNSRecord;
 class WordPressAPI implements IntegrationAPIInterface
 {
     private $dataStore;
-    private static $domainName;
+    private $wordPressClientAPI;
 
     /**
      * @param $dataStore
@@ -70,6 +70,48 @@ class WordPressAPI implements IntegrationAPIInterface
     }
 
     /**
+     * We wrap the return value with an array to be consistent between
+     * other plugins.
+     * 
+     * @param null $userId
+     *
+     * @return mixed
+     */
+    public function getDomainList($userId = null)
+    {
+        $cachedDomainName = $this->dataStore->getDomainNameCache();
+        if (empty($cachedDomainName)) {
+            return;
+        }
+
+        return array($cachedDomainName);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOriginalDomain()
+    {
+        return $this->formatDomain($_SERVER['SERVER_NAME']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function setDomainNameCache($newDomainName)
+    {
+        return $this->dataStore->setDomainNameCache($newDomainName);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserId()
+    {
+        return $this->dataStore->getCloudFlareEmail();
+    }
+
+    /**
      * @param domain name
      *
      * @return string
@@ -87,37 +129,40 @@ class WordPressAPI implements IntegrationAPIInterface
         return $formattedDomain;
     }
 
-    /**
-     * @param null $userId
-     *
-     * @return mixed
-     */
-    public function getDomainList($userId = null)
+    public function setWordPressClientAPI($wordPressClientAPI)
     {
-        return array(self::$domainName);
-    }
-
-    /**
-     * @param string $newDomainName
-     */
-    public function setDomainName($newDomainName)
-    {
-        self::$domainName = $newDomainName;
-    }
-
-    /**
-     * @return string
-     */
-    public function getOriginalDomain()
-    {
-        return $this->formatDomain($_SERVER['SERVER_NAME']);
+        return $wordPressClientAPI;
     }
 
     /**
      * @return mixed
      */
-    public function getUserId()
+    public function isSubdomainValidCloudflareDomain($wordpressIntegration, $domainName)
     {
-        return $this->dataStore->getCloudFlareEmail();
+        $this->wordPressClientAPI = $this->setWordPressClientAPI(new \CF\WordPress\WordPressClientAPI($wordpressIntegration));
+        $response = $this->wordPressClientAPI->getZones();
+        if ($this->wordPressClientAPI->responseOk($response)) {
+            foreach ($response['result'] as $zone) {
+                if (Utils::isSubdomainOf($domainName, $zone['name'])) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public function cacheWordPressDomainName($wordpressIntegration)
+    {
+        $wpDomain = $this->getOriginalDomain();
+        $cachedDomain = $this->getDomainList()[0];
+        if (Utils::getRegistrableDomain($wpDomain) != $cachedDomain) {
+            $domainName = $wpDomain;
+            if ($this->isSubdomainValidCloudflareDomain($wordpressIntegration, $wpDomain)) {
+                $domainName = Utils::getRegistrableDomain($wpDomain);
+            }
+
+            $this->setDomainNameCache($domainName);
+        }
     }
 }

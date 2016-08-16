@@ -10,6 +10,7 @@ class DataStore implements DataStoreInterface
 {
     const API_KEY = 'cloudflare_api_key';
     const EMAIL = 'cloudflare_api_email';
+    const CACHED_DOMAIN_NAME = 'cloudflare_cached_domain_name';
 
     /**
      * @param DefaultLogger $logger
@@ -62,6 +63,27 @@ class DataStore implements DataStoreInterface
     public function getHostAPIUserKey()
     {
         return;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDomainNameCache()
+    {
+        $cachedDomainName = $this->get(self::CACHED_DOMAIN_NAME);
+        if (empty($cachedDomainName)) {
+            return;
+        }
+
+        return $cachedDomainName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function setDomainNameCache($domainName)
+    {
+        return $this->set(self::CACHED_DOMAIN_NAME, $domainName);
     }
 
     /**

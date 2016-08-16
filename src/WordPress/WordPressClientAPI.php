@@ -42,38 +42,6 @@ class WordPressClientAPI extends Client
     }
 
     /**
-     * Source: http://stackoverflow.com/a/10473026/4335588.
-     *
-     * @param $haystack 
-     * @param $needle 
-     * 
-     * @return bool
-     */
-    private function endsWith($haystack, $needle)
-    {
-        // search forward starting from end minus needle length characters
-        return $needle === '' || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
-    }
-
-    /**
-     * @return mixed
-     */
-    public function isSubdomain($domainName)
-    {
-        $response = $this->getZones();
-        if ($this->responseOk($response)) {
-            foreach ($response['result'] as $zone) {
-                if (($this->endsWith($domainName, $zone['name'])) &&
-                    ($domainName !== $zone['name'])) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    /**
      * @param $zoneId
      *
      * @return bool

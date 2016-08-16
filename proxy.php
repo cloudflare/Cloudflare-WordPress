@@ -18,6 +18,8 @@ $requestRouter = new \CF\Router\RequestRouter($wordpressIntegration);
 $requestRouter->addRouter('\CF\WordPress\WordPressClientAPI', \CF\WordPress\ClientRoutes::$routes);
 $requestRouter->addRouter('\CF\API\Plugin', \CF\WordPress\PluginRoutes::getRoutes(\CF\API\PluginRoutes::$routes));
 
+$wordpressAPI->cacheWordPressDomainName($wordpressIntegration);
+
 $method = $_SERVER['REQUEST_METHOD'];
 $parameters = $_GET;
 $body = json_decode(file_get_contents('php://input'), true);
