@@ -16,7 +16,7 @@ The class exposes three methods for interaction and a constructor.
 
 Initializing `IpRewrite()` object will try to rewrite the IP. If the IP is rewritten, `$_SERVER["REMOTE_ADDR"]` will be updated to reflect the end-user's IP address.
 
-`isCloudFlare();` returns `true` if the `CF_CONNECTING_IP` header is present in the request.
+`isCloudFlare();` returns `true` if the `CF_CONNECTING_IP` header is present in the request and the request originates from a CloudFlare IP.
 
 `getRewrittenIP()` Returns the rewritten ip address if a rewrite occurs, otherwise it will return `null`. 
 
@@ -43,7 +43,7 @@ Initializing `IpRewrite()` object will try to rewrite the IP. If the IP is rewri
 ```
 
 #### Caution
- Rewrite action is triggered only once in constructor. If `getRewrittenIP()` or `getOriginalIP()` is called multiple times it'll return the first result regardless if a change happend after the first call. Since rewrite action was not triggered. 
+ Rewrite action is triggered only once in constructor. If `getRewrittenIP()` or `getOriginalIP()` is called multiple times it'll return the first result regardless if a change happened after the first call. Since rewrite action was not triggered.
 
  To get the newest changes a new `IpRewrite` object should be used.
 
