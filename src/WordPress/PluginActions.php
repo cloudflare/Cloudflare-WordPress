@@ -6,139 +6,39 @@ use CF\API\APIInterface;
 use CF\API\Request;
 use CF\API\Plugin;
 use CF\Integration\DefaultIntegration;
-use CF\WordPress\Constants\Exceptions\PageRuleLimitException;
-use CF\WordPress\Constants\Exceptions\ZoneSettingFailException;
+use CF\API\Exception\PageRuleLimitException;
+use CF\API\Exception\ZoneSettingFailException;
 use CF\WordPress\Constants\Plans;
+use CF\API\AbstractPluginActions;
 
-class PluginActions
+class PluginActions extends AbstractPluginActions
 {
-    private $api;
-    private $config;
-    private $wordpressAPI;
-    private $dataStore;
-    private $logger;
-    private $request;
+    protected $api;
+    protected $config;
+    protected $clientAPI;
+    protected $integrationAPI;
+    protected $dataStore;
+    protected $logger;
+    protected $request;
     private $wordPressClientAPI;
 
-    /**
-     * @param DefaultIntegration $defaultIntegration
-     * @param APIInterface       $api
-     * @param Request            $request
-     */
     public function __construct(DefaultIntegration $defaultIntegration, APIInterface $api, Request $request)
     {
-        $this->api = $api;
-        $this->config = $defaultIntegration->getConfig();
-        $this->wordpressAPI = $defaultIntegration->getIntegrationAPI();
-        $this->dataStore = $defaultIntegration->getDataStore();
-        $this->logger = $defaultIntegration->getLogger();
-        $this->request = $request;
+        parent::__construct($defaultIntegration, $api, $request);
 
         $this->wordPressClientAPI = new WordPressClientAPI($defaultIntegration);
     }
 
-    /**
-     * GET /zones.
+    /*
+     * PATCH /plugin/:id/settings/default_settings               
      *
-     * @return mixed
+     * Requests are syncronized
      */
-    public function loginWordPress()
-    {
-        $apiKey = $this->request->getBody()['apiKey'];
-        $email = $this->request->getBody()['email'];
-
-        $isCreated = $this->dataStore->createUserDataStore($apiKey, $email, null, null);
-
-        if (!$isCreated) {
-            $this->logger->error('Creating user data to store failed');
-
-            return $this->api->createAPIError('Unable to save user credentials');
-        }
-
-        $response = $this->api->createAPISuccessResponse(array('email' => $email));
-
-        return $response;
-    }
-
-    /**
-     * GET /plugin/:zonedId/settings.
-     *
-     * @return mixed
-     */
-    public function getPluginSettings()
-    {
-        $settings = $this->dataStore->getPluginSettings();
-
-        $formattedSettings = array();
-        foreach ($settings as $key => $value) {
-            array_push($formattedSettings, $this->api->createPluginResult($key, $value, true, ''));
-        }
-
-        $response = $this->api->createAPISuccessResponse(
-            $formattedSettings
-        );
-
-        return $response;
-    }
-
-    /**
-     * PATCH /plugin/:zonedId/settings/:settingId.
-     *
-     * Routes custom settingIds and default settingsIds
-     * to different functions
-     *
-     * @return mixed
-     */
-    public function patchPluginSettingsRouter()
+    public function applyDefaultSettings()
     {
         $path_array = explode('/', $this->request->getUrl());
-        $settingId = $path_array[3];
+        $zoneId = $path_array[1];
 
-        $response = null;
-        if ($settingId === Plugin::SETTING_DEFAULT_SETTINGS) {
-            $response = $this->patchPluginDefaultSettings();
-        } else {
-            $response = $this->patchPluginSettings();
-        }
-
-        return $response;
-    }
-
-    /**
-     * For PATCH /plugin/:zonedId/settings/:settingId where :settingId is not predefined.
-     *
-     * @return mixed
-     */
-    public function patchPluginSettings()
-    {
-        $path_array = explode('/', $this->request->getUrl());
-        $settingId = $path_array[3];
-
-        $value = $this->request->getBody()['value'];
-        $options = $this->dataStore->setPluginSetting($settingId, $value);
-
-        if (!isset($options)) {
-            return $this->api->createAPIError('Unable to update plugin settings');
-        }
-
-        $response = $this->api->createAPISuccessResponse(
-            array(
-                $this->api->createPluginResult($settingId, $value, true, ''),
-            )
-        );
-
-        return $response;
-    }
-
-    /**
-     * Every API call is synchronized.
-     *
-     * @param zoneId
-     *
-     * @return bool Check every setting and return true or false.
-     */
-    protected function makeAPICallsForDefaultSettings($zoneId)
-    {
         $result = true;
         $details = $this->wordPressClientAPI->zoneGetDetails($zoneId);
 
@@ -241,40 +141,5 @@ class PluginActions
         if (!$result) {
             throw new PageRuleLimitException();
         }
-    }
-
-    /**
-     * For PATCH /plugin/:zonedId/settings/:settingId where :settingId is Plugin::SETTING_DEFAULT_SETTINGS.
-     *
-     * @return mixed
-     */
-    public function patchPluginDefaultSettings()
-    {
-        $path_array = explode('/', $this->request->getUrl());
-        $zoneId = $path_array[1];
-        $settingId = $path_array[3];
-
-        $value = $this->request->getBody()['value'];
-        $options = $this->dataStore->setPluginSetting($settingId, true);
-
-        if (!isset($options)) {
-            return $this->api->createAPIError('Unable to set default settings');
-        }
-
-        try {
-            $this->makeAPICallsForDefaultSettings($zoneId);
-        } catch (PageRuleLimitException $e) {
-            return $this->api->createAPIError($e->getMessage());
-        } catch (ZoneSettingFailException $e) {
-            return $this->api->createAPIError($e->getMessage());
-        }
-
-        $response = $this->api->createAPISuccessResponse(
-            array(
-                $this->api->createPluginResult($settingId, $value, true, ''),
-            )
-        );
-
-        return $response;
     }
 }
