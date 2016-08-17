@@ -50,6 +50,15 @@ class Host extends AbstractAPIClient
     }
 
     /**
+     * @param Request $request
+     * @return mixed
+     */
+    public function getPath(Request $request)
+    {
+        return $request->getBody()['act'];
+    }
+
+    /**
      * @return string
      */
     public function getEndpoint()
@@ -80,5 +89,13 @@ class Host extends AbstractAPIClient
             'msg' => $message,
             'err_code' => '',
         );
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    function shouldRouteRequest(Request $request) {
+        return ($request->getUrl() === $this->getEndpoint());
     }
 }

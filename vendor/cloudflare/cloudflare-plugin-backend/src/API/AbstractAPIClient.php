@@ -111,6 +111,20 @@ abstract class AbstractAPIClient implements APIInterface
 
     /**
      * @param Request $request
+     * @return string
+     */
+    public function getPath(Request $request)
+    {
+        //substring of everything after the endpoint is the path
+        return substr($request->getUrl(), strpos($request->getUrl(), $this->getEndpoint()) + strlen($this->getEndpoint()));
+    }
+
+    function shouldRouteRequest(Request $request) {
+        return (strpos($request->getUrl(), $this->getEndpoint()) !== false);
+    }
+
+    /**
+     * @param Request $request
      *
      * @return mixed
      */
@@ -127,4 +141,9 @@ abstract class AbstractAPIClient implements APIInterface
      * @return array
      */
     abstract public function createAPIError($message);
+
+    /**
+     * @return mixed
+     */
+    abstract public function getEndpoint();
 }

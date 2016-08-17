@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "1c1741c2f681b0b4bf65e8f2be840f14",
-    "content-hash": "b98fe8f15b8aab8b4da053f0aecbd0a8",
+    "hash": "e5921fb0525d5527ee29950b5cbebd5a",
+    "content-hash": "444182437298d9e247f1964ef600ff55",
     "packages": [
         {
             "name": "cloudflare/cf-ip-rewrite",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cloudflare/cf-ip-rewrite.git",
-                "reference": "f6dfb3cc7a9303db7d40a3e1af99d9d88d02c40e"
+                "reference": "941aeaade65211b579db65df7a9d89c854e4abf8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/f6dfb3cc7a9303db7d40a3e1af99d9d88d02c40e",
-                "reference": "f6dfb3cc7a9303db7d40a3e1af99d9d88d02c40e",
+                "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/941aeaade65211b579db65df7a9d89c854e4abf8",
+                "reference": "941aeaade65211b579db65df7a9d89c854e4abf8",
                 "shasum": ""
             },
             "require": {
@@ -50,20 +50,20 @@
                 "cloudflare",
                 "ip rewrite"
             ],
-            "time": "2016-07-13 14:55:18"
+            "time": "2016-08-17 13:30:43"
         },
         {
             "name": "cloudflare/cloudflare-plugin-backend",
-            "version": "1.0.9",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",
-                "reference": "fa780e8dcb0259f93c32eae89783248b287d5717"
+                "reference": "e18b43324608a2f820d29c7ae18867538561d1d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/fa780e8dcb0259f93c32eae89783248b287d5717",
-                "reference": "fa780e8dcb0259f93c32eae89783248b287d5717",
+                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/e18b43324608a2f820d29c7ae18867538561d1d6",
+                "reference": "e18b43324608a2f820d29c7ae18867538561d1d6",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "BSD-3-Clause"
             ],
             "description": "A PHP backend for CloudFlare plugins.",
-            "time": "2016-08-03 16:59:06"
+            "time": "2016-08-16 16:55:54"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1508,28 +1508,29 @@
         },
         {
             "name": "webmozart/assert",
-            "version": "1.0.2",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webmozart/assert.git",
-                "reference": "30eed06dd6bc88410a4ff7f77b6d22f3ce13dbde"
+                "reference": "bb2d123231c095735130cc8f6d31385a44c7b308"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webmozart/assert/zipball/30eed06dd6bc88410a4ff7f77b6d22f3ce13dbde",
-                "reference": "30eed06dd6bc88410a4ff7f77b6d22f3ce13dbde",
+                "url": "https://api.github.com/repos/webmozart/assert/zipball/bb2d123231c095735130cc8f6d31385a44c7b308",
+                "reference": "bb2d123231c095735130cc8f6d31385a44c7b308",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.3"
+                "php": "^5.3.3|^7.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "^4.6"
+                "phpunit/phpunit": "^4.6",
+                "sebastian/version": "^1.0.1"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.2-dev"
                 }
             },
             "autoload": {
@@ -1553,7 +1554,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2015-08-24 13:29:44"
+            "time": "2016-08-09 15:02:57"
         }
     ],
     "aliases": [],

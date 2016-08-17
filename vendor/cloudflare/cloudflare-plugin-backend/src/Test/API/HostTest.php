@@ -122,4 +122,15 @@ class HostTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($message, $errorResponse['msg']);
         $this->assertEquals('error', $errorResponse['result']);
     }
+
+    public function testGetPathReturnsBodyActParameter() {
+        $act = "act";
+        $request = new Request(null,null,null,array($act => $act));
+        $this->assertEquals($act, $this->hostAPI->getPath($request));
+    }
+
+    public function testShouldRouteRequestReturnsTrueIfUrlsAreEqual() {
+        $request = new Request(null,Host::ENDPOINT,null,null);
+        $this->assertTrue($this->hostAPI->shouldRouteRequest($request));
+    }
 }
