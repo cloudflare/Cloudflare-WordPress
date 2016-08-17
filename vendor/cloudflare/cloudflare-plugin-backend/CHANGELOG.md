@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.2](#1.1.2) - 2016-08-17
+### Changed
+- Fixed bug in CF\API\Exception. [#13](https://github.com/cloudflare/cloudflare-plugin-backend/pull/13)
+
 ## [1.1.1](#1.1.1) - 2016-08-16
 ### Added
 - Added plugin_specific_cache_tag setting to CF\API\Plugin settings. [#12](https://github.com/cloudflare/cloudflare-plugin-backend/pull/12)
