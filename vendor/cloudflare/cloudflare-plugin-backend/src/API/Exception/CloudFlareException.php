@@ -2,7 +2,6 @@
 
 namespace CF\API\Exception;
 
-class CloudFlareException extends \Exception
+abstract class CloudFlareException extends \Exception
 {
-
 }
