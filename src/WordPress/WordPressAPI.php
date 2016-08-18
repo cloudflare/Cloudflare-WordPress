@@ -105,4 +105,12 @@ class WordPressAPI implements IntegrationAPIInterface
     {
         return $this->dataStore->getCloudFlareEmail();
     }
+
+    /**
+     * @return mixed
+     */
+    public function getNonce()
+    {
+        return wp_create_nonce('cloudflare-db-api-nonce');
+    }
 }

@@ -31,7 +31,7 @@ $request = new CF\API\Request($method, $path, $parameters, $body);
 // TODO: change $wordpressAPI->getHostAPIKey() to something appropriate
 // since it's null
 $isCSRFTokenValid = false;
-$isCSRFTokenValid = ($request->getMethod() === 'GET') ? true : CF\SecurityUtil::csrfTokenValidate($wordpressAPI->getHostAPIKey(), $wordpressAPI->getUserId(), $request->getBody()['cfCSRFToken']);
+$isCSRFTokenValid = ($request->getMethod() === 'GET') ? true : CF\SecurityUtil::csrfTokenValidate($wordpressAPI->getNonce(), $wordpressAPI->getUserId(), $request->getBody()['cfCSRFToken']);
 unset($body['cfCSRFToken']);
 $apiResponse = '';
 $apiRouter = null;
