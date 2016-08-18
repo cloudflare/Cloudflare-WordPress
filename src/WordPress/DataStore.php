@@ -75,7 +75,7 @@ class DataStore implements DataStoreInterface
     /**
      * @param  $settingId Plugin::[PluginSettingName]
      *
-     * @return bool (bool)
+     * @return mixed
      */
     public function getPluginSetting($settingId)
     {
@@ -104,7 +104,7 @@ class DataStore implements DataStoreInterface
 
     private function getPluginSettingName($settingId)
     {
-        return array_key_exists($settingId, Plugin::getPluginSettingsKeys()) ? $settingId : false;
+        return in_array($settingId, Plugin::getPluginSettingsKeys()) ? $settingId : false;
     }
 
     /**
