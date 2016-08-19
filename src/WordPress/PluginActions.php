@@ -13,20 +13,18 @@ use CF\API\AbstractPluginActions;
 
 class PluginActions extends AbstractPluginActions
 {
-    protected $api;
-    protected $config;
-    protected $clientAPI;
-    protected $integrationAPI;
-    protected $dataStore;
-    protected $logger;
-    protected $request;
+    private $defaultIntegration;
     private $wordPressClientAPI;
 
     public function __construct(DefaultIntegration $defaultIntegration, APIInterface $api, Request $request)
     {
         parent::__construct($defaultIntegration, $api, $request);
+        $this->defaultIntegration = $defaultIntegration;
+    }
 
-        $this->wordPressClientAPI = new WordPressClientAPI($defaultIntegration);
+    public function createWordPressClientAPI(DefaultIntegration $defaultIntegration)
+    {
+        return new WordPressClientAPI($defaultIntegration);
     }
 
     /*
@@ -36,6 +34,8 @@ class PluginActions extends AbstractPluginActions
      */
     public function applyDefaultSettings()
     {
+        $this->wordPressClientAPI = $this->createWordPressClientAPI($this->defaultIntegration);
+
         $path_array = explode('/', $this->request->getUrl());
         $zoneId = $path_array[1];
 

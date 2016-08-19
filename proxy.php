@@ -15,7 +15,7 @@ $wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);
 $wordpressIntegration = new CF\Integration\DefaultIntegration($config, $wordpressAPI, $dataStore, $logger);
 
 $requestRouter = new \CF\Router\RequestRouter($wordpressIntegration);
-$requestRouter->addRouter('\CF\API\Client', \CF\WordPress\ClientRoutes::$routes);
+$requestRouter->addRouter('\CF\WordPress\WordPressClientAPI', \CF\WordPress\ClientRoutes::$routes);
 $requestRouter->addRouter('\CF\API\Plugin', \CF\WordPress\PluginRoutes::getRoutes(\CF\API\PluginRoutes::$routes));
 
 $method = $_SERVER['REQUEST_METHOD'];
