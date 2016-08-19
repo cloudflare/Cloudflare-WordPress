@@ -27,6 +27,7 @@ namespace CF\WordPress\Test {
         private $mockLogger;
         private $mockDefaultIntegration;
         private $mockWordPressClientAPI;
+        private $mockPluginActions;
 
         public function setup()
         {
@@ -49,12 +50,17 @@ namespace CF\WordPress\Test {
                 ->disableOriginalConstructor()
                 ->getMock();
             $this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);
+
+            $request = new Request(null, null, null, null);
+
+            $this->mockPluginActions = $this->getMockBuilder('CF\WordPress\PluginActions')
+                ->setMethods(array('createWordPressClientAPI'))
+                 ->setConstructorArgs(array($this->mockDefaultIntegration, $this->mockClientAPI, $request))
+                ->getMock();
         }
 
         public function testReturnApplyDefaultSettingsWithZoneWithPlanBIZ()
         {
-            $request = new Request(null, null, null, null);
-
             $this->mockWordPressClientAPI->method('zoneGetDetails')->willReturn(
                 array(
                     'result' => array(
@@ -71,21 +77,14 @@ namespace CF\WordPress\Test {
             $this->mockWordPressClientAPI->expects($this->exactly(15))->method('changeZoneSettings');
             $this->mockWordPressClientAPI->expects($this->exactly(2))->method('createPageRule');
 
-            $pluginActions = $this->getMockBuilder('CF\WordPress\PluginActions')
-                ->setMethods(array('createWordPressClientAPI'))
-                 ->setConstructorArgs(array($this->mockDefaultIntegration, $this->mockClientAPI, $request))
-                ->getMock();
-
-            $pluginActions->method('createWordPressClientAPI')
+            $this->mockPluginActions->method('createWordPressClientAPI')
                 ->willReturn($this->mockWordPressClientAPI);
 
-            $pluginActions->applyDefaultSettings();
+            $this->mockPluginActions->applyDefaultSettings();
         }
 
         public function testReturnApplyDefaultSettingsWithZoneWithFreePlan()
         {
-            $request = new Request(null, null, null, null);
-
             $this->mockWordPressClientAPI->method('zoneGetDetails')->willReturn(
                 array(
                     'result' => array(
@@ -102,15 +101,10 @@ namespace CF\WordPress\Test {
             $this->mockWordPressClientAPI->expects($this->exactly(13))->method('changeZoneSettings');
             $this->mockWordPressClientAPI->expects($this->exactly(2))->method('createPageRule');
 
-            $pluginActions = $this->getMockBuilder('CF\WordPress\PluginActions')
-                ->setMethods(array('createWordPressClientAPI'))
-                 ->setConstructorArgs(array($this->mockDefaultIntegration, $this->mockClientAPI, $request))
-                ->getMock();
-
-            $pluginActions->method('createWordPressClientAPI')
+            $this->mockPluginActions->method('createWordPressClientAPI')
                 ->willReturn($this->mockWordPressClientAPI);
 
-            $pluginActions->applyDefaultSettings();
+            $this->mockPluginActions->applyDefaultSettings();
         }
 
         /**
@@ -118,19 +112,12 @@ namespace CF\WordPress\Test {
          */
         public function testReturnApplyDefaultSettingsZoneDetailsThrowsZoneSettingFailException()
         {
-            $request = new Request(null, null, null, null);
-
             $this->mockWordPressClientAPI->method('zoneGetDetails')->willReturn(false);
 
-            $pluginActions = $this->getMockBuilder('CF\WordPress\PluginActions')
-                ->setMethods(array('createWordPressClientAPI'))
-                 ->setConstructorArgs(array($this->mockDefaultIntegration, $this->mockClientAPI, $request))
-                ->getMock();
-
-            $pluginActions->method('createWordPressClientAPI')
+            $this->mockPluginActions->method('createWordPressClientAPI')
                 ->willReturn($this->mockWordPressClientAPI);
 
-            $pluginActions->applyDefaultSettings();
+            $this->mockPluginActions->applyDefaultSettings();
         }
 
         /**
@@ -138,23 +125,16 @@ namespace CF\WordPress\Test {
          */
         public function testReturnApplyDefaultSettingsChangeZoneSettingsThrowsZoneSettingFailException()
         {
-            $request = new Request(null, null, null, null);
-
             $this->mockWordPressClientAPI->method('zoneGetDetails')->willReturn(false);
-
-            $pluginActions = $this->getMockBuilder('CF\WordPress\PluginActions')
-                ->setMethods(array('createWordPressClientAPI'))
-                 ->setConstructorArgs(array($this->mockDefaultIntegration, $this->mockClientAPI, $request))
-                ->getMock();
-
-            $pluginActions->method('createWordPressClientAPI')
-                ->willReturn($this->mockWordPressClientAPI);
 
             $this->mockWordPressClientAPI->method('zoneGetDetails')->willReturn(true);
             $this->mockWordPressClientAPI->method('responseOk')->willReturn(true);
             $this->mockWordPressClientAPI->method('changeZoneSettings')->willReturn(false);
 
-            $pluginActions->applyDefaultSettings();
+            $this->mockPluginActions->method('createWordPressClientAPI')
+                ->willReturn($this->mockWordPressClientAPI);
+
+            $this->mockPluginActions->applyDefaultSettings();
         }
 
         /**
@@ -162,22 +142,15 @@ namespace CF\WordPress\Test {
          */
         public function testReturnApplyDefaultSettingsCreatePageRuleThrowsPageRuleLimitException()
         {
-            $request = new Request(null, null, null, null);
-
             $this->mockWordPressClientAPI->method('zoneGetDetails')->willReturn(true);
             $this->mockWordPressClientAPI->method('responseOk')->willReturn(true);
             $this->mockWordPressClientAPI->method('changeZoneSettings')->willReturn(true);
             $this->mockWordPressClientAPI->method('createPageRule')->willReturn(false);
 
-            $pluginActions = $this->getMockBuilder('CF\WordPress\PluginActions')
-                ->setMethods(array('createWordPressClientAPI'))
-                 ->setConstructorArgs(array($this->mockDefaultIntegration, $this->mockClientAPI, $request))
-                ->getMock();
-
-            $pluginActions->method('createWordPressClientAPI')
+            $this->mockPluginActions->method('createWordPressClientAPI')
                 ->willReturn($this->mockWordPressClientAPI);
 
-            $pluginActions->applyDefaultSettings();
+            $this->mockPluginActions->applyDefaultSettings();
         }
     }
 }
