@@ -11,19 +11,12 @@ class DataStore implements DataStoreInterface
     const API_KEY = 'cloudflare_api_key';
     const EMAIL = 'cloudflare_api_email';
 
-    private $pluginSettings = array();
-
     /**
      * @param DefaultLogger $logger
      */
     public function __construct(DefaultLogger $logger)
     {
         $this->logger = $logger;
-
-        $this->pluginSettings[Plugin::SETTING_IP_REWRITE] = get_option(Plugin::SETTING_IP_REWRITE);
-        $this->pluginSettings[Plugin::SETTING_PROTOCOL_REWRITE] = get_option(Plugin::SETTING_PROTOCOL_REWRITE);
-        $this->pluginSettings[Plugin::SETTING_DEFAULT_SETTINGS] = get_option(Plugin::SETTING_DEFAULT_SETTINGS);
-        $this->pluginSettings[Plugin::PLUGIN_SPECIFIC_CACHE] = get_option(Plugin::PLUGIN_SPECIFIC_CACHE);
     }
 
     /**
@@ -37,12 +30,12 @@ class DataStore implements DataStoreInterface
     public function createUserDataStore($client_api_key, $email, $unique_id, $user_key)
     {
         // Clear options
-        update_option(self::API_KEY, '');
-        update_option(self::EMAIL, '');
+        $this->set(self::API_KEY, '');
+        $this->set(self::EMAIL, '');
 
         // Fill options
-        $isUpdated1 = update_option(self::API_KEY, $client_api_key);
-        $isUpdated2 = update_option(self::EMAIL, $email);
+        $isUpdated1 = $this->set(self::API_KEY, $client_api_key);
+        $isUpdated2 = $this->set(self::EMAIL, $email);
 
         return $isUpdated1 && $isUpdated2;
     }
@@ -60,7 +53,7 @@ class DataStore implements DataStoreInterface
      */
     public function getClientV4APIKey()
     {
-        return get_option(self::API_KEY);
+        return $this->get(self::API_KEY);
     }
 
     /**
@@ -76,13 +69,13 @@ class DataStore implements DataStoreInterface
      */
     public function getCloudFlareEmail()
     {
-        return get_option(self::EMAIL);
+        return $this->get(self::EMAIL);
     }
 
     /**
-     * @param  $settingId DataStore::[PluginSettingName]
+     * @param  $settingId Plugin::[PluginSettingName]
      *
-     * @return bool (bool)
+     * @return mixed
      */
     public function getPluginSetting($settingId)
     {
@@ -91,15 +84,7 @@ class DataStore implements DataStoreInterface
             return false;
         }
 
-        return get_option($settingName);
-    }
-
-    /**
-     * @return array (bool)
-     */
-    public function getPluginSettings()
-    {
-        return $this->pluginSettings;
+        return $this->get($settingName);
     }
 
     /**
@@ -119,6 +104,26 @@ class DataStore implements DataStoreInterface
 
     private function getPluginSettingName($settingId)
     {
-        return array_key_exists($settingId, $this->pluginSettings) ? $settingId : false;
+        return in_array($settingId, Plugin::getPluginSettingsKeys()) ? $settingId : false;
+    }
+
+    /**
+     * @param $key
+     *
+     * @return mixed
+     */
+    public function get($key)
+    {
+        return get_option($key);
+    }
+    /**
+     * @param $key
+     * @param $value
+     *
+     * @return mixed
+     */
+    public function set($key, $value)
+    {
+        return update_option($key, $value);
     }
 }

@@ -2,34 +2,20 @@
 
 namespace CF\WordPress;
 
-class PluginRoutes
+class PluginRoutes extends \CF\API\PluginRoutes
 {
-    public static $routes = array(
-        'account' => array(
-            'class' => 'CF\WordPress\PluginActions',
-            'methods' => array(
-                'POST' => array(
-                    'function' => 'loginWordPress',
-                ),
-            ),
-        ),
+    /**
+     * @param $routeList
+     *
+     * @return mixed
+     */
+    public static function getRoutes($routeList)
+    {
+        foreach ($routeList as $routePath => $route) {
+            $route['class'] = '\CF\WordPress\PluginActions';
+            $routeList[$routePath] = $route;
+        }
 
-        'plugin/:id/settings' => array(
-            'class' => 'CF\WordPress\PluginActions',
-            'methods' => array(
-                'GET' => array(
-                    'function' => 'getPluginSettings',
-                ),
-            ),
-        ),
-
-        'plugin/:id/settings/:human_readable_id' => array(
-            'class' => 'CF\WordPress\PluginActions',
-            'methods' => array(
-                'PATCH' => array(
-                    'function' => 'patchPluginSettingsRouter',
-                ),
-            ),
-        ),
-    );
+        return $routeList;
+    }
 }

@@ -31,20 +31,6 @@ namespace CF\Test\WordPress {
             $this->dataStore = new DataStore($this->mockLogger);
         }
 
-        public function testConstructorPopulatesSettings()
-        {
-            /*
-             * mocked get_option($key) defined above returns key
-             */
-            $pluginSettings = array(
-                Plugin::SETTING_IP_REWRITE => Plugin::SETTING_IP_REWRITE,
-                Plugin::SETTING_PROTOCOL_REWRITE => Plugin::SETTING_PROTOCOL_REWRITE,
-                Plugin::SETTING_DEFAULT_SETTINGS => Plugin::SETTING_DEFAULT_SETTINGS,
-                Plugin::PLUGIN_SPECIFIC_CACHE => Plugin::PLUGIN_SPECIFIC_CACHE,
-            );
-            $this->assertEquals($pluginSettings, $this->dataStore->getPluginSettings());
-        }
-
         public function testGetHostAPIUserUniqueIdReturnsNull()
         {
             $this->assertNull($this->dataStore->getHostAPIUserUniqueId());
@@ -65,19 +51,50 @@ namespace CF\Test\WordPress {
             $this->assertEquals(DataStore::EMAIL, $this->dataStore->getCloudFlareEmail());
         }
 
-        public function testGetPluginSettingReturnsSetting()
+        public function testGetPluginSettingReturnsSettingName()
         {
-            $this->assertEquals(Plugin::SETTING_IP_REWRITE, $this->dataStore->getPluginSetting(Plugin::SETTING_IP_REWRITE));
+            $setting = Plugin::SETTING_IP_REWRITE;
+            $result = $this->dataStore->getPluginSetting($setting);
+
+            $this->assertEquals($setting, $result);
         }
 
         public function testGetPluginSettingReturnsFalseForBadSetting()
         {
-            $this->assertFalse($this->dataStore->getPluginSetting('nonExistentSetting'));
+            $setting = 'Bad Setting';
+            $result = $this->dataStore->getPluginSetting($setting);
+
+            $this->assertFalse($result);
+        }
+
+        public function testSetPluginSettingReturnsTrueForCorrectSettingName()
+        {
+            $setting = Plugin::SETTING_IP_REWRITE;
+            $value = 'justAValue';
+            $result = $this->dataStore->setPluginSetting($setting, $value);
+
+            $this->assertTrue($result);
         }
 
         public function testSetPluginSettingReturnsFalseForBadSettingName()
         {
-            $this->assertFalse($this->dataStore->setPluginSetting('nonExistentSetting', 'value'));
+            $setting = 'justASetting';
+            $value = 'justAValue';
+            $result = $this->dataStore->setPluginSetting($setting, $value);
+
+            $this->assertFalse($result);
+        }
+
+        public function testGetCallsGetOption()
+        {
+            $option = 'option';
+            $response = $this->dataStore->get($option);
+            $this->assertEquals($option, $response);
+        }
+
+        public function testSetCallsUpdateOption()
+        {
+            $this->assertTrue($this->dataStore->set('key', 'value'));
         }
     }
 }

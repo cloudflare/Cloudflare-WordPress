@@ -13,10 +13,10 @@ $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
 $dataStore = new CF\WordPress\DataStore($logger);
 $wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);
 $wordpressIntegration = new CF\Integration\DefaultIntegration($config, $wordpressAPI, $dataStore, $logger);
-$clientAPIClient = new CF\API\Client($wordpressIntegration);
-$clientAPIClientRoutes = CF\WordPress\ClientRoutes::$routes;
-$pluginAPIClient = new CF\API\Plugin($wordpressIntegration);
-$pluginAPIPluginRoutes = CF\WordPress\PluginRoutes::$routes;
+
+$requestRouter = new \CF\Router\RequestRouter($wordpressIntegration);
+$requestRouter->addRouter('\CF\WordPress\WordPressClientAPI', \CF\WordPress\ClientRoutes::$routes);
+$requestRouter->addRouter('\CF\API\Plugin', \CF\WordPress\PluginRoutes::getRoutes(\CF\API\PluginRoutes::$routes));
 
 $method = $_SERVER['REQUEST_METHOD'];
 $parameters = $_GET;
@@ -33,29 +33,22 @@ $request = new CF\API\Request($method, $path, $parameters, $body);
 $isCSRFTokenValid = false;
 $isCSRFTokenValid = ($request->getMethod() === 'GET') ? true : CF\SecurityUtil::csrfTokenValidate($wordpressAPI->getNonce(), $wordpressAPI->getUserId(), $request->getBody()['cfCSRFToken']);
 unset($body['cfCSRFToken']);
-$apiResponse = '';
-$apiRouter = null;
-
-if (isClientAPI($request->getUrl())) {
-    $apiRouter = new CF\Router\DefaultRestAPIRouter($wordpressIntegration, $clientAPIClient, $clientAPIClientRoutes);
-} else {
-    $apiRouter = new CF\Router\DefaultRestAPIRouter($wordpressIntegration, $pluginAPIClient, $pluginAPIPluginRoutes);
-}
 
 if ($isCSRFTokenValid) {
-    $apiResponse = $apiRouter->route($request);
+    $response = $requestRouter->route($request);
 } else {
-    $apiResponse = $apiRouter->getAPIClient()->createAPIError('CSRF Token not valid.');
+    $message = 'CSRF Token not valid.';
+    $response = array(
+        'result' => null,
+        'success' => false,
+        'errors' => array(
+            array(
+                'code' => '',
+                'message' => $message,
+            ),
+        ),
+        'messages' => array(),
+    );
 }
 
-echo json_encode($apiResponse);
-
-/**
- * @param $path
- *
- * @return bool
- */
-function isClientAPI($path)
-{
-    return strpos($path, CF\API\Client::ENDPOINT) !== false;
-}
+echo json_encode($response);
