@@ -7,6 +7,8 @@ use CF\DNSRecord;
 
 class WordPressAPI implements IntegrationAPIInterface
 {
+    const API_NONCE = 'cloudflare-db-api-nonce';
+
     private $dataStore;
 
     /**
@@ -104,13 +106,5 @@ class WordPressAPI implements IntegrationAPIInterface
     public function getUserId()
     {
         return $this->dataStore->getCloudFlareEmail();
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNonce()
-    {
-        return wp_create_nonce('cloudflare-db-api-nonce');
     }
 }

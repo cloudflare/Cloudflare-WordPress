@@ -19,7 +19,7 @@ var absoluteUrlBase = '<?=plugins_url('/cloudflare/');?>';
 // TODO: change $wordpressAPI->getHostAPIKey() to something appropriate
 // since it's null
 
-cfCSRFToken = '<?=CF\SecurityUtil::csrfTokenGenerate($wordpressAPI->getNonce(), $wordpressAPI->getUserId());?>';
+cfCSRFToken = '<?= wp_create_nonce(CF\WordPress\WordPressAPI::API_NONCE) ?>';
 localStorage.cfEmail = '<?=$dataStore->getCloudFlareEmail();?>';
 /*
  * A callback for cf-util-http to proxy all calls to our backend
