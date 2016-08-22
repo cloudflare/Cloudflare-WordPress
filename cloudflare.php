@@ -500,5 +500,4 @@ function theme_save_pressed()
 add_action('customize_save_after', 'theme_save_pressed');
 
 // Enable HTTP2 Server Push
-require_once plugin_dir_path(__FILE__).'src/HTTP2ServerPush.php';
-add_action('init', array('HTTP2ServerPush', 'init'));
+add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));

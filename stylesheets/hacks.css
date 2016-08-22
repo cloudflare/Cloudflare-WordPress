@@ -12,7 +12,7 @@
 /* fix WordPress notification z-index being lower than
  * WordPress Admin Panel z-index level.
  */
-#notifications {
+.cf-notifications__global_container {
     z-index: 9999; /* new */
 }
 

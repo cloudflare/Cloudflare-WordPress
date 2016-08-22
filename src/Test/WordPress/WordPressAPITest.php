@@ -6,27 +6,44 @@ use CF\WordPress\WordPressAPI;
 
 class WordPressAPITest extends \PHPUnit_Framework_TestCase
 {
+    private $mockClientAPI;
     private $mockConfig;
     private $mockDataStore;
     private $mockLogger;
+    private $mockDefaultIntegration;
+    private $mockWordPressClientAPI;
+    private $mockWordPressAPI;
 
     public function setup()
     {
+        $this->mockClientAPI = $this->getMockBuilder('CF\API\Client')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->mockWordPressClientAPI = $this->getMockBuilder('CF\WordPress\WordPressClientAPI')
+                ->disableOriginalConstructor()
+                ->getMock();
         $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
-            ->disableOriginalConstructor()
-            ->getMock();
+                ->disableOriginalConstructor()
+                ->getMock();
         $this->mockDataStore = $this->getMockBuilder('CF\WordPress\DataStore')
-            ->disableOriginalConstructor()
-            ->getMock();
+                ->disableOriginalConstructor()
+                ->getMock();
         $this->mockLogger = $this->getMockBuilder('CF\Integration\DefaultLogger')
-            ->disableOriginalConstructor()
-            ->getMock();
+                ->disableOriginalConstructor()
+                ->getMock();
+
         $this->wordpressAPI = new WordPressAPI($this->mockDataStore);
+
+        $this->mockDefaultIntegration = new \CF\Integration\DefaultIntegration($this->mockConfig, $this->wordpressAPI, $this->mockDataStore, $this->mockLogger);
+
+        $this->mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
+        ->disableOriginalConstructor()
+        ->getMock();
     }
 
     /**
      * Source: https://jtreminio.com/2013/03/unit-testing-tutorial-part-3-testing-protected-private-methods-coverage-reports-and-crap/.
-     * 
+     *
      * Call protected/private method of a class.
      *
      * @param object &$object    Instantiated object that we will run method on.
@@ -46,12 +63,44 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
 
     public function testGetDomainListReturnValue()
     {
-        $domainName = 'domainName.com';
-        $_SERVER['SERVER_NAME'] = $domainName;
-        $domainList = $this->wordpressAPI->getDomainList();
+        $domainName = 'domain.com';
+
+        $this->mockDataStore = $this->getMockBuilder('CF\WordPress\DataStore')
+                ->disableOriginalConstructor()
+                ->setMethods(array('getDomainNameCache'))
+                ->getMock();
+
+        $this->mockDataStore->method('getDomainNameCache')->willReturn($domainName);
+
+        $wordpressAPI = new WordPressAPI($this->mockDataStore);
+        $domainList = $wordpressAPI->getDomainList();
 
         $this->assertEquals(1, count($domainList));
         $this->assertEquals($domainName, $domainList[0]);
+    }
+
+    public function testGetDomainListReturnEmpty()
+    {
+        $this->mockDataStore = $this->getMockBuilder('CF\WordPress\DataStore')
+                ->disableOriginalConstructor()
+                ->setMethods(array('getDomainNameCache'))
+                ->getMock();
+
+        $this->mockDataStore->method('getDomainNameCache')->willReturn(null);
+
+        $wordpressAPI = new WordPressAPI($this->mockDataStore);
+        $domainList = $wordpressAPI->getDomainList();
+
+        $this->assertEquals(0, count($domainList));
+    }
+
+    public function testGetOriginalDomain()
+    {
+        $domainName = 'domainName.com';
+        $_SERVER['SERVER_NAME'] = $domainName;
+        $domain = $this->wordpressAPI->getOriginalDomain();
+
+        $this->assertEquals($domainName, $domain);
     }
 
     public function testFormatDomainAllCases()
@@ -99,5 +148,58 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
         foreach ($subDomains as $domain) {
             $this->assertEquals($subdomain, $this->invokeMethod($this->wordpressAPI, 'formatDomain', array($domain)));
         }
+    }
+
+    public function testGetValidCloudflareDomainReturnsDomainName()
+    {
+        $subDomainName = 'sub.domainname.com';
+        $domainName = 'domainname.com';
+
+        $zoneResponse = array(
+            'result' => array(
+                array(
+                    'name' => $domainName,
+                ),
+            ),
+        );
+
+        $result = $this->wordpressAPI->getValidCloudflareDomain($zoneResponse, $subDomainName);
+
+        $this->assertEquals($domainName, $result);
+    }
+
+    public function testGetValidCloudflareDomainReturnsFalse()
+    {
+        $subDomainName = 'sub.domainname.com';
+
+        $zoneResponse = array(
+            'result' => array(
+                array(
+                    'name' => 'notmydomain',
+                ),
+            ),
+        );
+
+        $result = $this->wordpressAPI->getValidCloudflareDomain($zoneResponse, $subDomainName);
+
+        $this->assertFalse($result);
+    }
+
+    public function testGetValidCloudflareDomainReturnsFalseWhenDomainAreEquals()
+    {
+        $subDomainName = 'domainname.com';
+        $domainName = 'domainname.com';
+
+        $zoneResponse = array(
+            'result' => array(
+                array(
+                    'name' => $domainName,
+                ),
+            ),
+        );
+
+        $result = $this->wordpressAPI->getValidCloudflareDomain($zoneResponse, $subDomainName);
+
+        $this->assertFalse($result);
     }
 }

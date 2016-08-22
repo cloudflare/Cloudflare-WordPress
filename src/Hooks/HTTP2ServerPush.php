@@ -1,6 +1,7 @@
 <?php
 
 // TODO: Get rid of $GLOBALS and use static variables
+namespace CF\Hooks;
 
 class HTTP2ServerPush
 {
@@ -9,22 +10,22 @@ class HTTP2ServerPush
     public static function init()
     {
         if (!self::$initiated) {
-            self::init_hooks();
+            self::initHooks();
         }
 
         ob_start();
     }
 
-    public static function init_hooks()
+    public static function initHooks()
     {
         self::$initiated = true;
 
-        add_action('wp_head', array('HTTP2ServerPush', 'http2_resource_hints'), 99, 1);
-        add_filter('script_loader_src', array('HTTP2ServerPush', 'http2_link_preload_header'), 99, 1);
-        add_filter('style_loader_src', array('HTTP2ServerPush', 'http2_link_preload_header'), 99, 1);
+        add_action('wp_head', array('\CF\Hooks\HTTP2ServerPush', 'http2ResourceHints'), 99, 1);
+        add_filter('script_loader_src', array('\CF\Hooks\HTTP2ServerPush', 'http2LinkPreloadHeader'), 99, 1);
+        add_filter('style_loader_src', array('\CF\Hooks\HTTP2ServerPush', 'http2LinkPreloadHeader'), 99, 1);
     }
 
-    public static function http2_link_preload_header($src)
+    public static function http2LinkPreloadHeader($src)
     {
         if (strpos($src, home_url()) !== false) {
             $preload_src = apply_filters('http2_link_preload_src', $src);
@@ -33,13 +34,13 @@ class HTTP2ServerPush
                 header(
                     sprintf(
                         'Link: <%s>; rel=preload; as=%s',
-                        esc_url(self::http2_link_url_to_relative_path($preload_src)),
-                        sanitize_html_class(self::http2_link_resource_hint_as(current_filter()))
+                        esc_url(self::http2LinkUrlToRelativePath($preload_src)),
+                        sanitize_html_class(self::http2LinkResourceHintAs(current_filter()))
                     ),
                     false
                 );
 
-                $GLOBALS['http2_'.self::http2_link_resource_hint_as(current_filter()).'_srcs'][] = self::http2_link_url_to_relative_path($preload_src);
+                $GLOBALS['http2_'.self::http2LinkResourceHintAs(current_filter()).'_srcs'][] = self::http2LinkUrlToRelativePath($preload_src);
             }
         }
 
@@ -50,7 +51,7 @@ class HTTP2ServerPush
      * Render "resource hints" in the <head> section of the page. These encourage preload/prefetch behavior
      * when HTTP/2 support is lacking.
      */
-    public static function http2_resource_hints()
+    public static function http2ResourceHints()
     {
         $resource_types = array('script', 'style');
         array_walk($resource_types, function ($resource_type) {
@@ -67,7 +68,7 @@ class HTTP2ServerPush
      *
      * @return string mixed relative path
      */
-    public static function http2_link_url_to_relative_path($src)
+    public static function http2LinkUrlToRelativePath($src)
     {
         return '//' === substr($src, 0, 2) ? preg_replace('/^\/\/([^\/]*)\//', '/', $src) : preg_replace('/^http(s)?:\/\/[^\/]*/', '', $src);
     }
@@ -79,7 +80,7 @@ class HTTP2ServerPush
      *
      * @return string 'style' or 'script'
      */
-    public static function http2_link_resource_hint_as($current_hook)
+    public static function http2LinkResourceHintAs($current_hook)
     {
         return 'style_loader_src' === $current_hook ? 'style' : 'script';
     }

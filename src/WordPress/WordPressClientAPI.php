@@ -31,6 +31,17 @@ class WordPressClientAPI extends Client
     }
 
     /**
+     * @return mixed
+     */
+    public function getZones()
+    {
+        $request = new Request('GET', 'zones/', array(), array());
+        $response = $this->callAPI($request);
+
+        return $response;
+    }
+
+    /**
      * @param $zoneId
      *
      * @return bool

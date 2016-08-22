@@ -18,6 +18,23 @@ $requestRouter = new \CF\Router\RequestRouter($wordpressIntegration);
 $requestRouter->addRouter('\CF\WordPress\WordPressClientAPI', \CF\WordPress\ClientRoutes::$routes);
 $requestRouter->addRouter('\CF\API\Plugin', \CF\WordPress\PluginRoutes::getRoutes(\CF\API\PluginRoutes::$routes));
 
+// Check if domain name needs to cached
+$wpDomain = $wordpressAPI->getOriginalDomain();
+$cachedDomain = $wordpressAPI->getDomainList()[0];
+if (CF\WordPress\Utils::getRegistrableDomain($wpDomain) != $cachedDomain) {
+    $domainName = $wpDomain;
+
+    $wordPressClientAPI = new \CF\WordPress\WordPressClientAPI($wordpressIntegration);
+    $response = $wordPressClientAPI->getZones();
+    $validDomainName = $wordpressAPI->getValidCloudflareDomain($response, $wpDomain);
+
+    if ($wordPressClientAPI->responseOK($response) && $validDomainName) {
+        $domainName = CF\WordPress\Utils::getRegistrableDomain($wpDomain);
+    }
+
+    $wordpressAPI->setDomainNameCache($domainName);
+}
+
 $method = $_SERVER['REQUEST_METHOD'];
 $parameters = $_GET;
 $body = json_decode(file_get_contents('php://input'), true);

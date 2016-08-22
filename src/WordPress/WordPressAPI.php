@@ -71,6 +71,48 @@ class WordPressAPI implements IntegrationAPIInterface
     }
 
     /**
+     * We wrap the return value with an array to be consistent between
+     * other plugins.
+     * 
+     * @param null $userId
+     *
+     * @return mixed
+     */
+    public function getDomainList($userId = null)
+    {
+        $cachedDomainName = $this->dataStore->getDomainNameCache();
+        if (empty($cachedDomainName)) {
+            return;
+        }
+
+        return array($cachedDomainName);
+    }
+
+    /**
+     * @return string
+     */
+    public function getOriginalDomain()
+    {
+        return $this->formatDomain($_SERVER['SERVER_NAME']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function setDomainNameCache($newDomainName)
+    {
+        return $this->dataStore->setDomainNameCache($newDomainName);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserId()
+    {
+        return $this->dataStore->getCloudFlareEmail();
+    }
+
+    /**
      * @param domain name
      *
      * @return string
@@ -89,22 +131,16 @@ class WordPressAPI implements IntegrationAPIInterface
     }
 
     /**
-     * @param null $userId
-     *
      * @return mixed
      */
-    public function getDomainList($userId = null)
+    public function getValidCloudflareDomain($response, $domainName)
     {
-        $domainName = $_SERVER['SERVER_NAME'];
+        foreach ($response['result'] as $zone) {
+            if (Utils::isSubdomainOf($domainName, $zone['name'])) {
+                return $zone['name'];
+            }
+        }
 
-        return array($this->formatDomain($domainName));
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUserId()
-    {
-        return $this->dataStore->getCloudFlareEmail();
+        return false;
     }
 }
