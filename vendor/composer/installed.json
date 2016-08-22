@@ -944,57 +944,6 @@
         ]
     },
     {
-        "name": "webmozart/assert",
-        "version": "1.0.2",
-        "version_normalized": "1.0.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/webmozart/assert.git",
-            "reference": "30eed06dd6bc88410a4ff7f77b6d22f3ce13dbde"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/webmozart/assert/zipball/30eed06dd6bc88410a4ff7f77b6d22f3ce13dbde",
-            "reference": "30eed06dd6bc88410a4ff7f77b6d22f3ce13dbde",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^4.6"
-        },
-        "time": "2015-08-24 13:29:44",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Webmozart\\Assert\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Bernhard Schussek",
-                "email": "bschussek@gmail.com"
-            }
-        ],
-        "description": "Assertions to validate method input/output with nice error messages.",
-        "keywords": [
-            "assert",
-            "check",
-            "validate"
-        ]
-    },
-    {
         "name": "phpdocumentor/reflection-common",
         "version": "1.0",
         "version_normalized": "1.0.0.0",
@@ -1208,53 +1157,6 @@
             "mock",
             "spy",
             "stub"
-        ]
-    },
-    {
-        "name": "cloudflare/cf-ip-rewrite",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/cloudflare/cf-ip-rewrite.git",
-            "reference": "f6dfb3cc7a9303db7d40a3e1af99d9d88d02c40e"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/f6dfb3cc7a9303db7d40a3e1af99d9d88d02c40e",
-            "reference": "f6dfb3cc7a9303db7d40a3e1af99d9d88d02c40e",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^4.8",
-            "squizlabs/php_codesniffer": "2.*"
-        },
-        "time": "2016-07-13 14:55:18",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "CloudFlare\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "CloudFlare",
-                "homepage": "http://www.cloudflare.com/"
-            }
-        ],
-        "description": "Library to rewrite CloudFlare IP Addresses to the end-user IP address",
-        "homepage": "https://github.com/cloudflare/cf-ip-rewrite",
-        "keywords": [
-            "cloudflare",
-            "ip rewrite"
         ]
     },
     {
@@ -1569,18 +1471,117 @@
         "homepage": "https://symfony.com"
     },
     {
-        "name": "cloudflare/cloudflare-plugin-backend",
-        "version": "1.0.9",
-        "version_normalized": "1.0.9.0",
+        "name": "cloudflare/cf-ip-rewrite",
+        "version": "1.0.2",
+        "version_normalized": "1.0.2.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",
-            "reference": "fa780e8dcb0259f93c32eae89783248b287d5717"
+            "url": "https://github.com/cloudflare/cf-ip-rewrite.git",
+            "reference": "941aeaade65211b579db65df7a9d89c854e4abf8"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/fa780e8dcb0259f93c32eae89783248b287d5717",
-            "reference": "fa780e8dcb0259f93c32eae89783248b287d5717",
+            "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/941aeaade65211b579db65df7a9d89c854e4abf8",
+            "reference": "941aeaade65211b579db65df7a9d89c854e4abf8",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.8",
+            "squizlabs/php_codesniffer": "2.*"
+        },
+        "time": "2016-08-17 13:30:43",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "CloudFlare\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "CloudFlare",
+                "homepage": "http://www.cloudflare.com/"
+            }
+        ],
+        "description": "Library to rewrite CloudFlare IP Addresses to the end-user IP address",
+        "homepage": "https://github.com/cloudflare/cf-ip-rewrite",
+        "keywords": [
+            "cloudflare",
+            "ip rewrite"
+        ]
+    },
+    {
+        "name": "webmozart/assert",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/webmozart/assert.git",
+            "reference": "bb2d123231c095735130cc8f6d31385a44c7b308"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/webmozart/assert/zipball/bb2d123231c095735130cc8f6d31385a44c7b308",
+            "reference": "bb2d123231c095735130cc8f6d31385a44c7b308",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.3.3|^7.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.6",
+            "sebastian/version": "^1.0.1"
+        },
+        "time": "2016-08-09 15:02:57",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.2-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Webmozart\\Assert\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Bernhard Schussek",
+                "email": "bschussek@gmail.com"
+            }
+        ],
+        "description": "Assertions to validate method input/output with nice error messages.",
+        "keywords": [
+            "assert",
+            "check",
+            "validate"
+        ]
+    },
+    {
+        "name": "cloudflare/cloudflare-plugin-backend",
+        "version": "1.1.2",
+        "version_normalized": "1.1.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",
+            "reference": "9995cd4505c4a74e69a413631226efc4bc9994ca"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/9995cd4505c4a74e69a413631226efc4bc9994ca",
+            "reference": "9995cd4505c4a74e69a413631226efc4bc9994ca",
             "shasum": ""
         },
         "require": {
@@ -1591,7 +1592,7 @@
             "phpunit/phpunit": "4.8.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2016-08-03 16:59:06",
+        "time": "2016-08-17 14:47:20",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

@@ -51,7 +51,7 @@ class DefaultRestAPIRouter implements RouterInterface
      */
     public function route(Request $request)
     {
-        $request->setUrl($this->getPath($request));
+        $request->setUrl($this->api->getPath($request));
 
         $routeParameters = $this->getRoute($request);
         if ($routeParameters) {
@@ -75,7 +75,7 @@ class DefaultRestAPIRouter implements RouterInterface
         //substring of everything after the endpoint is the path
         return substr($request->getUrl(), strpos($request->getUrl(), $this->api->getEndpoint()) + strlen($this->api->getEndpoint()));
     }
-
+    
     /**
      * @param Request $request
      *

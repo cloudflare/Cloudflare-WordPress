@@ -2,6 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.2](#1.1.2) - 2016-08-17
+### Changed
+- Fixed bug in CF\API\Exception. [#13](https://github.com/cloudflare/cloudflare-plugin-backend/pull/13)
+
+## [1.1.1](#1.1.1) - 2016-08-16
+### Added
+- Added plugin_specific_cache_tag setting to CF\API\Plugin settings. [#12](https://github.com/cloudflare/cloudflare-plugin-backend/pull/12)
+
+## [1.1.0](#1.1.0) - 2016-08-11
+### Added
+- Added CF\Router\RequestRouter to consolidate duplicate request routing logic each plugin was implementing. [#8](https://github.com/cloudflare/cloudflare-plugin-backend/pull/8)
+
+### Changed
+- PluginRoutes, PluginActions moved to CF\API to consolidate the Internal Plugin API logic across all plugins. [#10](https://github.com/cloudflare/cloudflare-plugin-backend/pull/10)
+
 ## [1.0.9](#1.0.9) - 2016-08-03
 ### Changed
 - Removed static type checking to support earlier php versions [ad13c1e](https://github.com/cloudflare/cloudflare-plugin-backend/commit/ad13c1ec6edeceae5a85f8912208ce2c80f4a5f2)
