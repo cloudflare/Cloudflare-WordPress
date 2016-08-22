@@ -12,6 +12,7 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
     private $mockLogger;
     private $mockDefaultIntegration;
     private $mockWordPressClientAPI;
+    private $mockWordPressAPI;
 
     public function setup()
     {
@@ -34,6 +35,10 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
         $this->wordpressAPI = new WordPressAPI($this->mockDataStore);
 
         $this->mockDefaultIntegration = new \CF\Integration\DefaultIntegration($this->mockConfig, $this->wordpressAPI, $this->mockDataStore, $this->mockLogger);
+
+        $this->mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
+        ->disableOriginalConstructor()
+        ->getMock();
     }
 
     /**
@@ -67,8 +72,8 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
 
         $this->mockDataStore->method('getDomainNameCache')->willReturn($domainName);
 
-        $this->wordpressAPI = new WordPressAPI($this->mockDataStore);
-        $domainList = $this->wordpressAPI->getDomainList();
+        $wordpressAPI = new WordPressAPI($this->mockDataStore);
+        $domainList = $wordpressAPI->getDomainList();
 
         $this->assertEquals(1, count($domainList));
         $this->assertEquals($domainName, $domainList[0]);
@@ -83,8 +88,8 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
 
         $this->mockDataStore->method('getDomainNameCache')->willReturn(null);
 
-        $this->wordpressAPI = new WordPressAPI($this->mockDataStore);
-        $domainList = $this->wordpressAPI->getDomainList();
+        $wordpressAPI = new WordPressAPI($this->mockDataStore);
+        $domainList = $wordpressAPI->getDomainList();
 
         $this->assertEquals(0, count($domainList));
     }
@@ -145,165 +150,56 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testIsSubdomainValidCloudflareDomainReturnsTrue()
+    public function testGetValidCloudflareDomainReturnsDomainName()
     {
         $subDomainName = 'sub.domainname.com';
         $domainName = 'domainname.com';
 
-        $mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
-                ->disableOriginalConstructor()
-                ->setMethods(array('setWordPressClientAPI'))
-                ->getMock();
-
-        $this->mockWordPressClientAPI->method('getZones')->willReturn(
-            array(
-                'result' => array(
-                    array(
-                        'name' => $domainName,
-                    ),
+        $zoneResponse = array(
+            'result' => array(
+                array(
+                    'name' => $domainName,
                 ),
-            )
+            ),
         );
-        $this->mockWordPressClientAPI->method('responseOk')->willReturn(true);
-        $mockWordPressAPI->method('setWordPressClientAPI')->willReturn($this->mockWordPressClientAPI);
 
-        $result = $mockWordPressAPI->isSubdomainValidCloudflareDomain($this->mockDefaultIntegration, $subDomainName);
+        $result = $this->wordpressAPI->getValidCloudflareDomain($zoneResponse, $subDomainName);
 
-        $this->assertTrue($result);
+        $this->assertEquals($domainName, $result);
     }
 
-    public function testIsSubdomainValidCloudflareDomainReturnsFalse()
+    public function testGetValidCloudflareDomainReturnsFalse()
     {
         $subDomainName = 'sub.domainname.com';
-        $domainName = 'notcorrectdomainname.com';
 
-        $mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
-                ->disableOriginalConstructor()
-                ->setMethods(array('setWordPressClientAPI'))
-                ->getMock();
-
-        $this->mockWordPressClientAPI->method('getZones')->willReturn(
-            array(
-                'result' => array(
-                    array(
-                        'name' => $domainName,
-                    ),
+        $zoneResponse = array(
+            'result' => array(
+                array(
+                    'name' => 'notmydomain',
                 ),
-            )
+            ),
         );
-        $this->mockWordPressClientAPI->method('responseOk')->willReturn(true);
-        $mockWordPressAPI->method('setWordPressClientAPI')->willReturn($this->mockWordPressClientAPI);
 
-        $result = $mockWordPressAPI->isSubdomainValidCloudflareDomain($this->mockDefaultIntegration, $subDomainName);
+        $result = $this->wordpressAPI->getValidCloudflareDomain($zoneResponse, $subDomainName);
 
         $this->assertFalse($result);
     }
 
-    public function testIsSubdomainValidCloudflareDomainReturnsFalseWhenDomainAreEquals()
+    public function testGetValidCloudflareDomainReturnsFalseWhenDomainAreEquals()
     {
         $subDomainName = 'domainname.com';
         $domainName = 'domainname.com';
 
-        $mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
-                ->disableOriginalConstructor()
-                ->setMethods(array('setWordPressClientAPI'))
-                ->getMock();
-
-        $this->mockWordPressClientAPI->method('getZones')->willReturn(
-            array(
-                'result' => array(
-                    array(
-                        'name' => $domainName,
-                    ),
+        $zoneResponse = array(
+            'result' => array(
+                array(
+                    'name' => $domainName,
                 ),
-            )
+            ),
         );
-        $this->mockWordPressClientAPI->method('responseOk')->willReturn(true);
-        $mockWordPressAPI->method('setWordPressClientAPI')->willReturn($this->mockWordPressClientAPI);
 
-        $result = $mockWordPressAPI->isSubdomainValidCloudflareDomain($this->mockDefaultIntegration, $subDomainName);
+        $result = $this->wordpressAPI->getValidCloudflareDomain($zoneResponse, $subDomainName);
 
         $this->assertFalse($result);
-    }
-
-    public function testCacheWordPressDomainNameWhenCachedDomainNameAndURLAreTheSame()
-    {
-        $cachedDomainName = 'domainname.com';
-        $urlDomainName = 'domainname.com';
-
-        $mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
-                ->disableOriginalConstructor()
-                ->setMethods(array('getOriginalDomain', 'getDomainList', 'isSubdomainValidCloudflareDomain', 'setDomainNameCache'))
-                ->getMock();
-
-        $mockWordPressAPI->expects($this->once())
-            ->method('getOriginalDomain')
-            ->willReturn($urlDomainName);
-
-        $mockWordPressAPI->expects($this->once())
-            ->method('getDomainList')
-            ->willReturn(array($cachedDomainName));
-
-        $mockWordPressAPI->expects($this->once())
-            ->method('isSubdomainValidCloudflareDomain');
-
-        $mockWordPressAPI->expects($this->once())
-            ->method('setDomainNameCache');
-
-        $mockWordPressAPI->cacheWordPressDomainName($this->mockDefaultIntegration);
-    }
-
-    public function testCacheWordPressDomainNameWhenCachedDomainNameAndURLAreDifferent()
-    {
-        $cachedDomainName = 'domainname.com';
-        $urlDomainName = 'sub.domainname.com';
-
-        $mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
-                ->disableOriginalConstructor()
-                ->setMethods(array('getOriginalDomain', 'getDomainList', 'isSubdomainValidCloudflareDomain', 'setDomainNameCache'))
-                ->getMock();
-
-        $mockWordPressAPI->expects($this->once())
-            ->method('getOriginalDomain')
-            ->willReturn($urlDomainName);
-
-        $mockWordPressAPI->expects($this->once())
-            ->method('getDomainList')
-            ->willReturn(array($cachedDomainName));
-
-        $mockWordPressAPI->expects($this->exactly(0))
-            ->method('isSubdomainValidCloudflareDomain');
-
-        $mockWordPressAPI->expects($this->exactly(0))
-            ->method('setDomainNameCache');
-
-        $mockWordPressAPI->cacheWordPressDomainName($this->mockDefaultIntegration);
-    }
-
-    public function testCacheWordPressDomainNameWhenCachedDomainNameIsEmpty()
-    {
-        $cachedDomainName = null;
-        $urlDomainName = 'sub.domainname.com';
-
-        $mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
-                ->disableOriginalConstructor()
-                ->setMethods(array('getOriginalDomain', 'getDomainList', 'isSubdomainValidCloudflareDomain', 'setDomainNameCache'))
-                ->getMock();
-
-        $mockWordPressAPI->expects($this->once())
-            ->method('getOriginalDomain')
-            ->willReturn($urlDomainName);
-
-        $mockWordPressAPI->expects($this->once())
-            ->method('getDomainList')
-            ->willReturn(array($cachedDomainName));
-
-        $mockWordPressAPI->expects($this->once())
-            ->method('isSubdomainValidCloudflareDomain');
-
-        $mockWordPressAPI->expects($this->once())
-            ->method('setDomainNameCache');
-
-        $mockWordPressAPI->cacheWordPressDomainName($this->mockDefaultIntegration);
     }
 }

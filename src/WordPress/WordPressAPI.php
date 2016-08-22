@@ -8,7 +8,6 @@ use CF\DNSRecord;
 class WordPressAPI implements IntegrationAPIInterface
 {
     private $dataStore;
-    private $wordPressClientAPI;
 
     /**
      * @param $dataStore
@@ -129,40 +128,17 @@ class WordPressAPI implements IntegrationAPIInterface
         return $formattedDomain;
     }
 
-    public function setWordPressClientAPI($wordPressClientAPI)
-    {
-        return $wordPressClientAPI;
-    }
-
     /**
      * @return mixed
      */
-    public function isSubdomainValidCloudflareDomain($wordpressIntegration, $domainName)
+    public function getValidCloudflareDomain($response, $domainName)
     {
-        $this->wordPressClientAPI = $this->setWordPressClientAPI(new \CF\WordPress\WordPressClientAPI($wordpressIntegration));
-        $response = $this->wordPressClientAPI->getZones();
-        if ($this->wordPressClientAPI->responseOk($response)) {
-            foreach ($response['result'] as $zone) {
-                if (Utils::isSubdomainOf($domainName, $zone['name'])) {
-                    return true;
-                }
+        foreach ($response['result'] as $zone) {
+            if (Utils::isSubdomainOf($domainName, $zone['name'])) {
+                return $zone['name'];
             }
         }
 
         return false;
-    }
-
-    public function cacheWordPressDomainName($wordpressIntegration)
-    {
-        $wpDomain = $this->getOriginalDomain();
-        $cachedDomain = $this->getDomainList()[0];
-        if (Utils::getRegistrableDomain($wpDomain) != $cachedDomain) {
-            $domainName = $wpDomain;
-            if ($this->isSubdomainValidCloudflareDomain($wordpressIntegration, $wpDomain)) {
-                $domainName = Utils::getRegistrableDomain($wpDomain);
-            }
-
-            $this->setDomainNameCache($domainName);
-        }
     }
 }
