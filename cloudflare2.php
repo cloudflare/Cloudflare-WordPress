@@ -18,7 +18,8 @@ wp_enqueue_script('cf-compiledjs', plugins_url('compiled.js', __FILE__), null, t
 var absoluteUrlBase = '<?=plugins_url('/cloudflare/');?>';
 // TODO: change $wordpressAPI->getHostAPIKey() to something appropriate
 // since it's null
-cfCSRFToken = '<?=CF\SecurityUtil::csrfTokenGenerate($wordpressAPI->getHostAPIKey(), $wordpressAPI->getUserId());?>';
+
+cfCSRFToken = '<?= wp_create_nonce(CF\WordPress\WordPressAPI::API_NONCE) ?>';
 localStorage.cfEmail = '<?=$dataStore->getCloudFlareEmail();?>';
 /*
  * A callback for cf-util-http to proxy all calls to our backend

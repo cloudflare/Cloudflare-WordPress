@@ -27,12 +27,14 @@ unset($parameters['proxyURL']);
 unset($body['proxyURL']);
 $request = new CF\API\Request($method, $path, $parameters, $body);
 
-//only check CSRF if its not a GET request
-// TODO: change $wordpressAPI->getHostAPIKey() to something appropriate
-// since it's null
-$isCSRFTokenValid = false;
-$isCSRFTokenValid = ($request->getMethod() === 'GET') ? true : CF\SecurityUtil::csrfTokenValidate($wordpressAPI->getHostAPIKey(), $wordpressAPI->getUserId(), $request->getBody()['cfCSRFToken']);
-unset($body['cfCSRFToken']);
+// Only check CSRF if its not a GET request
+if ($request->getMethod() === 'GET') {
+    $isCSRFTokenValid = true;
+} else {
+    $nonce = $request->getBody()['cfCSRFToken'];
+    $isCSRFTokenValid = wp_verify_nonce($nonce, CF\WordPress\WordPressAPI::API_NONCE);
+    unset($body['cfCSRFToken']);
+}
 
 if ($isCSRFTokenValid) {
     $response = $requestRouter->route($request);
