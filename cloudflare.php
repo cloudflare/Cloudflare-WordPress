@@ -150,40 +150,6 @@ function match_domain_to_zone($domain, $zones)
     return;
 }
 
-
-
-function cloudflare_buffer_wrapup($buffer)
-{
-    $cloudflare_protocol_rewrite = load_protocol_rewrite();
-    if ($cloudflare_protocol_rewrite) {
-        // Check for a Content-Type header. Currently only apply rewriting to "text/html" or undefined
-        $headers = headers_list();
-        $content_type = null;
-
-        foreach ($headers as $header) {
-            if (strpos(strtolower($header), 'content-type:') === 0) {
-                $pieces = explode(':', strtolower($header));
-                $content_type = trim($pieces[1]);
-                break;
-            }
-        }
-
-        if (is_null($content_type) || substr($content_type, 0, 9) === 'text/html') {
-            // replace href or src attributes within script, link, base, and img tags with just "//" for protocol
-            $re = "/(<(script|link|base|img|form)([^>]*)(href|src|action)=[\"'])https?:\\/\\//i";
-            $subst = '$1//';
-            $return = preg_replace($re, $subst, $buffer);
-
-            // on regex error, skip overwriting buffer
-            if ($return) {
-                $buffer = $return;
-            }
-        }
-    }
-
-    return $buffer;
-}
-
 function purgeCache()
 {
     if (load_plugin_specific_cache()) {
