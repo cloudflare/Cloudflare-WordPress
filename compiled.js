@@ -80271,6 +80271,7 @@ var IpRewriteCard = function (_Component) {
         var activeZoneId = _props.activeZoneId;
         var dispatch = _props.dispatch;
 
+        value = value === true ? "on" : "off";
         dispatch((0, _pluginSettings.asyncPluginUpdateSetting)(SETTING_NAME, activeZoneId, value));
     };
 
@@ -80300,7 +80301,7 @@ var IpRewriteCard = function (_Component) {
                         null,
                         _react2.default.createElement(_cfComponentToggle2.default, {
                             label: '',
-                            value: this.props.ipRewriteValue == true,
+                            value: this.props.ipRewriteValue === "on",
                             onChange: this.handleChange.bind(this) })
                     )
                 )
@@ -80940,6 +80941,7 @@ var PluginSpecificCacheCard = function (_Component) {
             var activeZoneId = _props.activeZoneId;
             var dispatch = _props.dispatch;
 
+            value = value === true ? "on" : "off";
             dispatch((0, _pluginSettings.asyncPluginUpdateSetting)(SETTING_NAME, activeZoneId, value));
         }
     };
@@ -80969,7 +80971,7 @@ var PluginSpecificCacheCard = function (_Component) {
                         _cfComponentCard.CardControl,
                         null,
                         _react2.default.createElement(_cfComponentToggle2.default, { label: '',
-                            value: this.props.cacheCardValue,
+                            value: this.props.cacheCardValue === "on",
                             onChange: this.handleChange.bind(this)
                         }),
                         _react2.default.createElement(
@@ -81088,6 +81090,7 @@ var PluginSpecificCacheTagCard = function (_Component) {
         var activeZoneId = _props.activeZoneId;
         var dispatch = _props.dispatch;
 
+        value = value === true ? "on" : "off";
         dispatch((0, _pluginSettings.asyncPluginUpdateSetting)(SETTING_NAME, activeZoneId, value));
     };
 
@@ -81116,7 +81119,7 @@ var PluginSpecificCacheTagCard = function (_Component) {
                         _CustomCardControl2.default,
                         { minimumPlan: _Plans.ENT_PLAN, currentPlan: this.props.activeZonePlan, indentifier: SETTING_NAME },
                         _react2.default.createElement(_cfComponentToggle2.default, { label: '',
-                            value: this.props.cacheTagCardValue,
+                            value: this.props.cacheTagCardValue === "on",
                             onChange: this.handleChange.bind(this)
                         })
                     )
