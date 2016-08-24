@@ -3,6 +3,8 @@
 // TODO: Get rid of $GLOBALS and use static variables
 namespace CF\Hooks;
 
+use CF\WordPress\Utils;
+
 class HTTP2ServerPush
 {
     private static $initiated = false;
@@ -29,6 +31,16 @@ class HTTP2ServerPush
     {
         if (strpos($src, home_url()) !== false) {
             $preload_src = apply_filters('http2_link_preload_src', $src);
+
+            // This code is a fix for earlier versions of Chrome version.
+            // Chrome has a bug which won't recognize charset=UTF-8
+            // "compiled.js" has UTF-8 characters so it won't work in Chrome.
+            //
+            // Server Push works with Chrome version later than 52.0.2743.115
+            // Delete this chunk after November 2016
+            if (Utils::endsWith($preload_src, 'cloudflare/compiled.js') || Utils::endsWith($preload_src, 'cloudflare/compiled.js?ver=1')) {
+                return $src;
+            }
 
             if (!empty($preload_src)) {
                 header(
