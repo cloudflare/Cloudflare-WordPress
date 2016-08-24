@@ -10,6 +10,8 @@ License: GPLv2
 
 require_once 'vendor/autoload.php';
 
+use \CloudFlare\IpRewrite;
+
 const MIN_PHP_VERSION = '5.3';
 const MIN_WP_VERSION = '3.4';
 
