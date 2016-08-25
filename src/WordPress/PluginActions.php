@@ -13,36 +13,36 @@ use CF\API\AbstractPluginActions;
 
 class PluginActions extends AbstractPluginActions
 {
-    private $defaultIntegration;
-    private $wordPressClientAPI;
+	protected $api;
+	protected $clientAPI;
+	protected $request;
 
     public function __construct(DefaultIntegration $defaultIntegration, APIInterface $api, Request $request)
     {
         parent::__construct($defaultIntegration, $api, $request);
-        $this->defaultIntegration = $defaultIntegration;
+		$this->clientAPI = new WordPressClientAPI($defaultIntegration);
+
     }
 
-    public function createWordPressClientAPI(DefaultIntegration $defaultIntegration)
-    {
-        return new WordPressClientAPI($defaultIntegration);
-    }
+	public function setClientAPI(APIInterface $clientAPI) {
+		//$this->clientAPI inheirited from AbstractPluginActions
+		$this->clientAPI = $clientAPI;
+	}
 
     /*
-     * PATCH /plugin/:id/settings/default_settings               
+     * PATCH /plugin/:id/settings/default_settings
      *
      * Requests are syncronized
      */
     public function applyDefaultSettings()
     {
-        $this->wordPressClientAPI = $this->createWordPressClientAPI($this->defaultIntegration);
-
         $path_array = explode('/', $this->request->getUrl());
         $zoneId = $path_array[1];
 
         $result = true;
-        $details = $this->wordPressClientAPI->zoneGetDetails($zoneId);
+        $details = $this->clientAPI->zoneGetDetails($zoneId);
 
-        if (!$this->wordPressClientAPI->responseOk($details)) {
+        if (!$this->clientAPI->responseOk($details)) {
             // Technically zoneGetDetails does not try to set Zone Settings
             // Can create a new exception but make things simple right?
             throw new ZoneSettingFailException();
@@ -50,79 +50,79 @@ class PluginActions extends AbstractPluginActions
 
         $currentPlan = $details['result']['plan']['legacy_id'];
 
-        $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'security_level', array('value' => 'medium'));
+        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'security_level', array('value' => 'medium'));
         if (!$result) {
             throw new ZoneSettingFailException();
         }
 
-        $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'cache_level', array('value' => 'aggressive'));
+        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'cache_level', array('value' => 'aggressive'));
         if (!$result) {
             throw new ZoneSettingFailException();
         }
 
-        $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'minify', array('value' => array('css' => 'on', 'html' => 'on', 'js' => 'on')));
+        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'minify', array('value' => array('css' => 'on', 'html' => 'on', 'js' => 'on')));
         if (!$result) {
             throw new ZoneSettingFailException();
         }
 
-        $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'browser_cache_ttl', array('value' => 14400));
+        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'browser_cache_ttl', array('value' => 14400));
         if (!$result) {
             throw new ZoneSettingFailException();
         }
 
-        $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'always_online', array('value' => 'on'));
+        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'always_online', array('value' => 'on'));
         if (!$result) {
             throw new ZoneSettingFailException();
         }
 
-        $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'development_mode', array('value' => 'off'));
+        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'development_mode', array('value' => 'off'));
         if (!$result) {
             throw new ZoneSettingFailException();
         }
 
-        $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'ipv6', array('value' => 'off'));
+        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'ipv6', array('value' => 'off'));
         if (!$result) {
             throw new ZoneSettingFailException();
         }
 
-        $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'websockets', array('value' => 'on'));
+        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'websockets', array('value' => 'on'));
         if (!$result) {
             throw new ZoneSettingFailException();
         }
 
-        $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'ip_geolocation', array('value' => 'on'));
+        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'ip_geolocation', array('value' => 'on'));
         if (!$result) {
             throw new ZoneSettingFailException();
         }
 
-        $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'email_obfuscation', array('value' => 'on'));
+        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'email_obfuscation', array('value' => 'on'));
         if (!$result) {
             throw new ZoneSettingFailException();
         }
 
-        $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'server_side_exclude', array('value' => 'on'));
+        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'server_side_exclude', array('value' => 'on'));
         if (!$result) {
             throw new ZoneSettingFailException();
         }
 
-        $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'hotlink_protection', array('value' => 'off'));
+        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'hotlink_protection', array('value' => 'off'));
         if (!$result) {
             throw new ZoneSettingFailException();
         }
 
-        $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'rocket_loader', array('value' => 'off'));
+        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'rocket_loader', array('value' => 'off'));
         if (!$result) {
             throw new ZoneSettingFailException();
         }
 
         // If plan supports  Mirage and Polish try to set them off
         if (!Plans::PlanNeedsUpgrade($currentPlan, Plans::BIZ_PLAN)) {
-            $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'mirage', array('value' => 'off'));
+            $result &= $this->clientAPI->changeZoneSettings($zoneId, 'mirage', array('value' => 'off'));
             if (!$result) {
                 throw new ZoneSettingFailException();
             }
 
-            $result &= $this->wordPressClientAPI->changeZoneSettings($zoneId, 'polish', array('value' => 'off'));
+            $result &= $this->clientAPI->changeZoneSettings($zoneId, 'polish', array('value' => 'off'));
             if (!$result) {
                 throw new ZoneSettingFailException();
             }
@@ -132,12 +132,12 @@ class PluginActions extends AbstractPluginActions
         $loginUrlPattern = wp_login_url();
         $adminUrlPattern = get_admin_url().'*';
 
-        $result &= $this->wordPressClientAPI->createPageRule($zoneId, $loginUrlPattern);
+        $result &= $this->clientAPI->createPageRule($zoneId, $loginUrlPattern);
         if (!$result) {
             throw new PageRuleLimitException();
         }
 
-        $result &= $this->wordPressClientAPI->createPageRule($zoneId, $adminUrlPattern);
+        $result &= $this->clientAPI->createPageRule($zoneId, $adminUrlPattern);
         if (!$result) {
             throw new PageRuleLimitException();
         }
