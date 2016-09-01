@@ -15,7 +15,9 @@ use \CloudFlare\IpRewrite;
 const MIN_PHP_VERSION = '5.3';
 const MIN_WP_VERSION = '3.4';
 
-if (!defined('ABSPATH')) exit; // Exit if accessed directly
+if (!defined('ABSPATH')) {
+    exit;
+} // Exit if accessed directly
 
 // Call when the Plugin is activated in server.
 function cloudflare_activate()
@@ -208,3 +210,6 @@ add_action('customize_save_after', 'theme_save_pressed');
 
 // Enable HTTP2 Server Push
 add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
+
+// Load Uninstall Script
+register_uninstall_hook(__FILE__, array('\CF\Hooks\Uninstall', 'init'));
