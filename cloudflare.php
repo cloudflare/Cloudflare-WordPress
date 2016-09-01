@@ -15,6 +15,8 @@ use \CloudFlare\IpRewrite;
 const MIN_PHP_VERSION = '5.3';
 const MIN_WP_VERSION = '3.4';
 
+if (!defined('ABSPATH')) exit; // Exit if accessed directly
+
 // Call when the Plugin is activated in server.
 function cloudflare_activate()
 {
