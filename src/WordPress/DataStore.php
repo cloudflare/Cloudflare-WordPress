@@ -121,7 +121,7 @@ class DataStore implements DataStoreInterface
             return false;
         }
 
-        return update_option($settingName, $value);
+        return $this->set($settingName, $value);
     }
 
     private function getPluginSettingName($settingId)
