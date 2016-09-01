@@ -9,7 +9,6 @@ namespace CF\WordPress {
 	 * 4. In setup() set our mock to the global instance of the class
 	 */
 	class WordPressGlobalFunctions {
-		public function esc_sql($string) {}
 		public function get_option($key) {}
 		public function update_option($key, $value) {}
 	}
@@ -33,14 +32,6 @@ namespace CF\WordPress {
 	{
 		global $wordPressGlobalFunctions;
 		return $wordPressGlobalFunctions->get_option($key);
-	}
-
-	/*
-	 * https://codex.wordpress.org/Function_Reference/esc_sql
-	 */
-	function esc_sql($string) {
-		global $wordPressGlobalFunctions;
-		return $wordPressGlobalFunctions->esc_sql($string);
 	}
 }
 
@@ -73,17 +64,6 @@ namespace CF\Test\WordPress {
 			$apiKey = "apiKey";
 			$email = "email";
 
-			$this->mockWordPressGlobalFunctions->method('esc_sql')->will(
-				$this->returnValueMap(
-					array(
-						array(DataStore::API_KEY, DataStore::API_KEY),
-						array(DataStore::EMAIL, DataStore::EMAIL),
-						array($apiKey, $apiKey),
-						array($email, $email)
-					)
-				)
-			);
-
 			$this->mockWordPressGlobalFunctions->method('update_option')->will(
 				$this->returnValueMap(
 					array(
@@ -113,21 +93,12 @@ namespace CF\Test\WordPress {
 
 		public function testGetDomainNameCacheReturnsDomainIfItExistsInCache() {
 			$cachedDomain = "cachedDomain";
-			$this->mockWordPressGlobalFunctions->method('esc_sql')->with(DataStore::CACHED_DOMAIN_NAME)->willReturn(DataStore::CACHED_DOMAIN_NAME);
 			$this->mockWordPressGlobalFunctions->method('get_option')->with(DataStore::CACHED_DOMAIN_NAME)->willReturn($cachedDomain);
 			$this->assertEquals($cachedDomain, $this->dataStore->getDomainNameCache());
 		}
 
 		public function testSetDomainNameCacheSetsDomain() {
 			$domain = "domain";
-			$this->mockWordPressGlobalFunctions->method('esc_sql')->will(
-				$this->returnValueMap(
-					array(
-						array(DataStore::CACHED_DOMAIN_NAME, DataStore::CACHED_DOMAIN_NAME),
-						array($domain, $domain)
-					)
-				)
-			);
 			$this->mockWordPressGlobalFunctions->method('update_option')->with(DataStore::CACHED_DOMAIN_NAME, $domain)->willReturn(true);
 			$this->assertTrue($this->dataStore->setDomainNameCache($domain));
 		}
@@ -151,13 +122,11 @@ namespace CF\Test\WordPress {
 
 		public function testGetCallsEscSqlAndGetOption() {
 			$this->mockWordPressGlobalFunctions->expects($this->once())->method('get_option');
-			$this->mockWordPressGlobalFunctions->expects($this->once())->method('esc_sql');
 			$this->dataStore->get("key");
 		}
 
 		public function testSetCallsEscSqlAndUpdateOption() {
 			$this->mockWordPressGlobalFunctions->expects($this->once())->method('update_option');
-			$this->mockWordPressGlobalFunctions->expects($this->exactly(2))->method('esc_sql');
 			$this->dataStore->set("key", "value");
 		}
 	}
