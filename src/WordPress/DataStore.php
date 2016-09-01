@@ -54,7 +54,7 @@ class DataStore implements DataStoreInterface
      */
     public function getClientV4APIKey()
     {
-        return $this->get(self::API_KEY);
+        return $this->get(self::API_KEY)[DataStoreInterface::VALUE_KEY];
     }
 
     /**
@@ -70,7 +70,7 @@ class DataStore implements DataStoreInterface
      */
     public function getDomainNameCache()
     {
-        $cachedDomainName = $this->get(self::CACHED_DOMAIN_NAME);
+        $cachedDomainName = $this->get(self::CACHED_DOMAIN_NAME)[DataStoreInterface::VALUE_KEY];
         if (empty($cachedDomainName)) {
             return;
         }
@@ -91,7 +91,7 @@ class DataStore implements DataStoreInterface
      */
     public function getCloudFlareEmail()
     {
-        return $this->get(self::EMAIL);
+        return $this->get(self::EMAIL)[DataStoreInterface::VALUE_KEY];
     }
 
     /**
@@ -109,21 +109,6 @@ class DataStore implements DataStoreInterface
         return $this->get($settingName);
     }
 
-    /**
-     * @param $value
-     *
-     * @return bool
-     */
-    public function setPluginSetting($settingId, $value)
-    {
-        $settingName = $this->getPluginSettingName($settingId);
-        if (!$settingName) {
-            return false;
-        }
-
-        return $this->set($settingName, $value);
-    }
-
     private function getPluginSettingName($settingId)
     {
         return in_array($settingId, Plugin::getPluginSettingsKeys()) ? $settingId : false;
@@ -136,7 +121,14 @@ class DataStore implements DataStoreInterface
      */
     public function get($key)
     {
-        return get_option($key);
+        $result = get_option($key);
+        if (!is_array($result)) {
+            // Create an empty plugin setting object. This way the frontend
+            // will know which settings exist.
+            return Plugin::createPluginSettingObject($key, '', true, null);
+        }
+
+        return $result;
     }
     /**
      * @param $key
@@ -146,6 +138,8 @@ class DataStore implements DataStoreInterface
      */
     public function set($key, $value)
     {
-        return update_option($key, $value);
+        $pluginObject = Plugin::createPluginSettingObject($key, $value, true, \CF\Utils::getCurrentDate());
+
+        return update_option($key, $pluginObject);
     }
 }
