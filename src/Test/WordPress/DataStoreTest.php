@@ -1,15 +1,28 @@
 <?php
 
 namespace CF\Wordpress {
+	/*
+	 * https://codex.wordpress.org/Function_Reference/update_option
+	 */
     function update_option($key, $value)
     {
         return true;
     }
 
+	/*
+	 * https://developer.wordpress.org/reference/functions/get_option/
+	 */
     function get_option($key)
     {
         return $key;
     }
+
+	/*
+	 * https://codex.wordpress.org/Function_Reference/esc_sql
+	 */
+	function esc_sql($string) {
+		return $string;
+	}
 }
 
 namespace CF\Test\WordPress {
