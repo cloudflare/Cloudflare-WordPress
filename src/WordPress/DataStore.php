@@ -136,7 +136,7 @@ class DataStore implements DataStoreInterface
      */
     public function get($key)
     {
-        return get_option(esc_sql($key));
+        return get_option($key);
     }
     /**
      * @param $key
@@ -146,6 +146,6 @@ class DataStore implements DataStoreInterface
      */
     public function set($key, $value)
     {
-        return update_option(esc_sql($key), esc_sql($value));
+        return update_option($key, $value);
     }
 }
