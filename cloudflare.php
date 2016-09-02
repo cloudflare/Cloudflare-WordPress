@@ -157,13 +157,6 @@ function match_domain_to_zone($domain, $zones)
 function purgeCache()
 {
     if (load_plugin_specific_cache()) {
-        // Init in a hacky way
-        // $parse_uri is [plugin_path]/wp-admin/admin-ajax.php
-        // get plugin path
-        $parse_uri = explode('wp-content', $_SERVER['SCRIPT_FILENAME']);
-        $path = explode('wp-admin', $parse_uri[0]);
-        require_once $path[0].'wp-load.php';
-
         $config = new CF\Integration\DefaultConfig('[]');
         $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
         $dataStore = new CF\WordPress\DataStore($logger);
