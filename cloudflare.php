@@ -15,9 +15,9 @@ use \CloudFlare\IpRewrite;
 const MIN_PHP_VERSION = '5.3';
 const MIN_WP_VERSION = '3.4';
 
-if (!defined('ABSPATH')) {
+if (!defined('ABSPATH')) { // Exit if accessed directly
     exit;
-} // Exit if accessed directly
+}
 
 // Call when the Plugin is activated in server.
 function cloudflare_activate()
@@ -121,7 +121,7 @@ function load_plugin_specific_cache()
     $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
     $dataStore = new CF\WordPress\DataStore($logger);
 
-    return $dataStore->getPluginSetting(CF\API\Plugin::PLUGIN_SPECIFIC_CACHE);
+    return $dataStore->getPluginSetting(CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
 }
 
 function cloudflare_conf2()
