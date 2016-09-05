@@ -2,6 +2,8 @@
 
 namespace CF\API;
 
+use CF\Integration\DataStoreInterface;
+
 class Plugin extends Client
 {
     const PLUGIN_API_NAME = 'PLUGIN API';
@@ -14,13 +16,14 @@ class Plugin extends Client
     const SETTING_PLUGIN_SPECIFIC_CACHE = 'plugin_specific_cache';
     const SETTING_PLUGIN_SPECIFIC_CACHE_TAG = 'plugin_specific_cache_tag';
 
-    public static function getPluginSettingsKeys() {
+    public static function getPluginSettingsKeys()
+    {
         return array(
             self::SETTING_DEFAULT_SETTINGS,
             self::SETTING_IP_REWRITE,
             self::SETTING_PROTOCOL_REWRITE,
             self::SETTING_PLUGIN_SPECIFIC_CACHE,
-            self::SETTING_PLUGIN_SPECIFIC_CACHE_TAG
+            self::SETTING_PLUGIN_SPECIFIC_CACHE_TAG,
         );
     }
 
@@ -62,13 +65,13 @@ class Plugin extends Client
         );
     }
 
-    public function createPluginResult($id, $value, $editable, $modified_on)
+    public static function createPluginSettingObject($pluginSettingKey, $value, $editable, $modified_on)
     {
         return array(
-            'id' => $id,
-            'value' => $value,
-            'editable' => $editable,
-            'modified_on' => $modified_on,
+            DataStoreInterface::ID_KEY => $pluginSettingKey,
+            DataStoreInterface::VALUE_KEY => $value,
+            DataStoreInterface::EDITABLE_KEY => $editable,
+            DataStoreInterface::MODIFIED_DATE_KEY => $modified_on,
         );
     }
 }

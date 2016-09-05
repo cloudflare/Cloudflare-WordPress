@@ -39,12 +39,14 @@ class RequestRouterTest extends \PHPUnit_Framework_TestCase
         $this->requestRouter = new RequestRouter($this->mockIntegration);
     }
 
-    public function testAddRouterAddsRouter() {
+    public function testAddRouterAddsRouter()
+    {
         $this->requestRouter->addRouter('CF\API\Client', null);
         $this->assertEquals('CF\Router\DefaultRestAPIRouter', get_class($this->requestRouter->getRouterList()[Client::CLIENT_API_NAME]));
     }
 
-    public function testRoutePassesValidRequestToDefaultRestAPIRouter() {
+    public function testRoutePassesValidRequestToDefaultRestAPIRouter()
+    {
         $mockDefaultRestAPIRouter = $this->getMockBuilder('CF\Router\DefaultRestAPIRouter')
             ->disableOriginalConstructor()
             ->getMock();
@@ -58,6 +60,5 @@ class RequestRouterTest extends \PHPUnit_Framework_TestCase
         $this->requestRouter->setRouterList(array($mockDefaultRestAPIRouter));
 
         $this->requestRouter->route($this->mockRequest);
-
     }
 }
