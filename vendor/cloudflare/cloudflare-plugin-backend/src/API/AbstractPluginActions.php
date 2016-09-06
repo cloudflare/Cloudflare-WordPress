@@ -4,9 +4,6 @@ namespace CF\API;
 
 use CF\Integration\DataStoreInterface;
 use CF\Integration\DefaultIntegration;
-use CF\WordPress\Constants\Exceptions\PageRuleLimitException;
-use CF\WordPress\Constants\Exceptions\ZoneSettingFailException;
-use CF\WordPress\Constants\Plans;
 
 abstract class AbstractPluginActions
 {
@@ -38,32 +35,37 @@ abstract class AbstractPluginActions
     /**
      * @param APIInterface $api
      */
-    public function setAPI(APIInterface $api) {
+    public function setAPI(APIInterface $api)
+    {
         $this->api = $api;
     }
 
     /**
      * @param Request $request
      */
-    public function setRequest(Request $request) {
+    public function setRequest(Request $request)
+    {
         $this->request = $request;
     }
 
     /**
      * @param APIInterface $clientAPI
      */
-    public function setClientAPI(APIInterface $clientAPI) {
+    public function setClientAPI(APIInterface $clientAPI)
+    {
         $this->clientAPI = $clientAPI;
     }
 
     /**
      * @param DataStoreInterface $dataStore
      */
-    public function setDataStore(DataStoreInterface $dataStore) {
+    public function setDataStore(DataStoreInterface $dataStore)
+    {
         $this->dataStore = $dataStore;
     }
 
-    public function setLogger(\Psr\Log\LoggerInterface $logger) {
+    public function setLogger(\Psr\Log\LoggerInterface $logger)
+    {
         $this->logger = $logger;
     }
 
@@ -75,22 +77,29 @@ abstract class AbstractPluginActions
     public function login()
     {
         $requestBody = $this->request->getBody();
-        if(empty($requestBody["apiKey"])) {
+        if (empty($requestBody['apiKey'])) {
             return $this->api->createAPIError("Missing required parameter: 'apiKey'.");
         }
-        if(empty($requestBody["email"])) {
+        if (empty($requestBody['email'])) {
             return $this->api->createAPIError("Missing required parameter: 'email'.");
         }
 
-        $isCreated = $this->dataStore->createUserDataStore($requestBody["apiKey"], $requestBody["email"], null, null);
-
+        $isCreated = $this->dataStore->createUserDataStore($requestBody['apiKey'], $requestBody['email'], null, null);
         if (!$isCreated) {
-            $this->logger->error('Creating user data to store failed');
-
             return $this->api->createAPIError('Unable to save user credentials');
         }
 
-        $response = $this->api->createAPISuccessResponse(array('email' => $requestBody["email"]));
+        //Make a test request to see if the API Key, email are valid
+        $testRequest = new Request('GET', 'user/', array(), array());
+        $testResponse = $this->clientAPI->callAPI($testRequest);
+        if (!$this->clientAPI->responseOk($testResponse)) {
+            //remove bad credentials
+            $this->dataStore->createUserDataStore(null, null, null, null);
+
+            return $this->api->createAPIError('Email address or API key invalid.');
+        }
+
+        $response = $this->api->createAPISuccessResponse(array('email' => $requestBody['email']));
 
         return $response;
     }
@@ -107,7 +116,7 @@ abstract class AbstractPluginActions
         $formattedSettings = array();
         foreach ($settingsList as $setting) {
             $value = $this->dataStore->get($setting);
-            array_push($formattedSettings, $this->api->createPluginResult($setting, $value, true, ''));
+            array_push($formattedSettings, $value);
         }
 
         $response = $this->api->createAPISuccessResponse(
@@ -159,7 +168,7 @@ abstract class AbstractPluginActions
 
         $response = $this->api->createAPISuccessResponse(
             array(
-                $this->api->createPluginResult($settingId, $value, true, ''),
+                $this->dataStore->get($settingId),
             )
         );
 
@@ -168,7 +177,9 @@ abstract class AbstractPluginActions
 
     /**
      * For PATCH /plugin/:zonedId/settings/:settingId where :settingId is Plugin::SETTING_DEFAULT_SETTINGS.
+     *
      * @return mixed
+     *
      * @throws \Exception
      */
     public function patchPluginDefaultSettings()
@@ -177,26 +188,25 @@ abstract class AbstractPluginActions
 
         try {
             $this->applyDefaultSettings();
-        } catch(\Exception $e) {
-            if($e instanceof Exception\CloudFlareException) {
+        } catch (\Exception $e) {
+            if ($e instanceof Exception\CloudFlareException) {
                 return $this->api->createAPIError($e->getMessage());
             } else {
                 throw $e;
             }
         }
 
-
         return $this->api->createAPISuccessResponse(
             array(
-                $this->api->createPluginResult(Plugin::SETTING_DEFAULT_SETTINGS, "on", true, ''),
+                $this->dataStore->get(Plugin::SETTING_DEFAULT_SETTINGS),
             )
         );
     }
 
     /**
-     * Children should implement this method to apply the plugin specific default settings
+     * Children should implement this method to apply the plugin specific default settings.
      *
      * @return mixed
      */
-    public abstract function applyDefaultSettings();
+    abstract public function applyDefaultSettings();
 }

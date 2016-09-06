@@ -1,0 +1,10 @@
+#!/usr/bin/env php
+
+<?php
+exec('vendor/bin/phpunit', $output, $returnCode);
+if ($returnCode !== 0) {
+  echo(implode("\n", $output));
+  echo("\nERROR: git push aborted because the tests failed. ");
+  exit(1);
+}
+exit(0);

@@ -51,6 +51,7 @@ class Host extends AbstractAPIClient
 
     /**
      * @param Request $request
+     *
      * @return mixed
      */
     public function getPath(Request $request)
@@ -93,9 +94,11 @@ class Host extends AbstractAPIClient
 
     /**
      * @param Request $request
+     *
      * @return bool
      */
-    function shouldRouteRequest(Request $request) {
-        return ($request->getUrl() === $this->getEndpoint());
+    public function shouldRouteRequest(Request $request)
+    {
+        return $request->getUrl() === $this->getEndpoint();
     }
 }

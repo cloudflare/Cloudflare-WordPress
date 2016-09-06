@@ -15,7 +15,10 @@
     "version": "2.1.0-beta", 
     "scripts": {
         "test": "vendor/bin/phpunit", 
-        "format": "vendor/bin/phpcs -n --standard=PSR2 --extensions=php,live.php src/"
+        "format": "vendor/bin/phpcs -n --standard=PSR2 --extensions=php,live.php src/",
+        "post-install-cmd": [
+          "bash git-hooks/setup.sh"
+        ]
     }, 
     "require-dev": {
         "squizlabs/php_codesniffer": "2.*", 
