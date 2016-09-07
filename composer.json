@@ -2,7 +2,7 @@
     "name": "cloudflare/wordpress-plugin", 
     "license": "BSD-3-Clause", 
     "require": {
-        "cloudflare/cloudflare-plugin-backend": "^1.1.0", 
+        "cloudflare/cloudflare-plugin-backend": "^1.1", 
         "cloudflare/cf-ip-rewrite": "^1.0.0", 
         "symfony/yaml": "~2.6", 
         "guzzlehttp/guzzle": "~5.3"

@@ -67,6 +67,7 @@ class AbstractPluginActionsTest extends \PHPUnit_Framework_TestCase
 
     public function testGetPluginSettingsReturnsArray()
     {
+        $this->mockDataStore->method('get')->willReturn(array());
         $this->mockAPIClient
             ->expects($this->once())
             ->method('createAPISuccessResponse')
@@ -89,38 +90,10 @@ class AbstractPluginActionsTest extends \PHPUnit_Framework_TestCase
          * This assertion should fail as we add new settings and should be updated to reflect
          * count(Plugin::getPluginSettingsKeys())
          */
+        $this->mockDataStore->method('get')->willReturn(array());
         $this->mockDataStore->expects($this->exactly(5))->method('get');
         $this->mockAPIClient->expects($this->once())->method('createAPISuccessResponse');
         $this->mockAbstractPluginActions->getPluginSettings();
-    }
-
-    public function testPatchPluginSettingsRouterRoutesGeneralSettings()
-    {
-        //mock patchPluginSettings so we can tell if its being called.
-        $this->mockAbstractPluginActions = $this->getMockBuilder('CF\API\AbstractPluginActions')
-            ->disableOriginalConstructor()
-            ->setMethods(array('patchPluginSettings'))
-            ->getMockForAbstractClass();
-        $this->mockAbstractPluginActions->setRequest($this->mockRequest);
-
-        $settingId = 'someSettingId';
-        $this->mockRequest->method('getUrl')->willReturn('plugin/:zonedId/settings/'.$settingId);
-        $this->mockAbstractPluginActions->expects($this->once())->method('patchPluginSettings');
-        $this->mockAbstractPluginActions->patchPluginSettingsRouter();
-    }
-
-    public function testPatchPluginSettingsRouterRoutesDefaultSettings()
-    {
-        //mock patchPluginDefaultSettings so we can tell if its being called.
-        $this->mockAbstractPluginActions = $this->getMockBuilder('CF\API\AbstractPluginActions')
-            ->disableOriginalConstructor()
-            ->setMethods(array('patchPluginDefaultSettings'))
-            ->getMockForAbstractClass();
-        $this->mockAbstractPluginActions->setRequest($this->mockRequest);
-
-        $this->mockRequest->method('getUrl')->willReturn('plugin/:zonedId/settings/'.Plugin::SETTING_DEFAULT_SETTINGS);
-        $this->mockAbstractPluginActions->expects($this->once())->method('patchPluginDefaultSettings');
-        $this->mockAbstractPluginActions->patchPluginSettingsRouter();
     }
 
     public function testPatchPluginSettingsUpdatesSetting()
@@ -130,7 +103,7 @@ class AbstractPluginActionsTest extends \PHPUnit_Framework_TestCase
         $this->mockRequest->method('getUrl')->willReturn('plugin/:zonedId/settings/'.$settingId);
         $this->mockRequest->method('getBody')->willReturn(array($value => $value));
         $this->mockDataStore->method('set')->willReturn(true);
-        $this->mockDataStore->expects($this->once())->method('set')->with($settingId, $value);
+        $this->mockDataStore->expects($this->once())->method('set');
         $this->mockAPIClient->expects($this->once())->method('createAPISuccessResponse');
         $this->mockAbstractPluginActions->patchPluginSettings();
     }
@@ -142,28 +115,9 @@ class AbstractPluginActionsTest extends \PHPUnit_Framework_TestCase
         $this->mockRequest->method('getUrl')->willReturn('plugin/:zonedId/settings/'.$settingId);
         $this->mockRequest->method('getBody')->willReturn(array($value => $value));
         $this->mockDataStore->method('set')->willReturn(null);
-        $this->mockDataStore->expects($this->once())->method('set')->with($settingId, $value);
+        $this->mockDataStore->expects($this->once())->method('set');
         $this->mockAPIClient->expects($this->once())->method('createAPIError');
         $this->mockAbstractPluginActions->patchPluginSettings();
-    }
-
-    public function testPatchPluginDefaultSettingsUpdatesDefaultSettings()
-    {
-        $value = true;
-        $settingId = Plugin::SETTING_DEFAULT_SETTINGS;
-        $this->mockRequest->method('getUrl')->willReturn('plugin/:zonedId/settings/'.$settingId);
-        $this->mockRequest->method('getBody')->willReturn(array('value' => $value));
-        $this->mockDataStore->expects($this->once())->method('set')->with($settingId, $value);
-        $this->mockAbstractPluginActions->expects($this->once())->method('applyDefaultSettings');
-        $this->mockAPIClient->expects($this->once())->method('createAPISuccessResponse');
-        $this->mockAbstractPluginActions->patchPluginDefaultSettings();
-    }
-
-    public function testPatchPluginDefaultSettingsHandlesCloudFlareException()
-    {
-        $this->mockAbstractPluginActions->method('applyDefaultSettings')->will($this->throwException(new \CF\API\Exception\ZoneSettingFailException()));
-        $this->mockAPIClient->expects($this->once())->method('createAPIError');
-        $this->mockAbstractPluginActions->patchPluginDefaultSettings();
     }
 
     public function testLoginReturnsErrorIfAPIKeyOrEmailAreInvalid()
@@ -178,5 +132,19 @@ class AbstractPluginActionsTest extends \PHPUnit_Framework_TestCase
         $this->mockClientAPI->method('responseOk')->willReturn(false);
         $this->mockAPIClient->expects($this->once())->method('createAPIError');
         $this->mockAbstractPluginActions->login();
+    }
+
+    public function testGetPluginSettingsCallsCreatePluginSettingObjectIfDataStoreGetIsNull() {
+        $this->mockDataStore->method('get')->willReturn(null);
+        $this->mockAPIClient->expects($this->atLeastOnce())->method('createPluginSettingObject');
+        $this->mockAbstractPluginActions->getPluginSettings();
+    }
+
+    public function testPatchPluginSettingsCallsApplyDefaultSettingsIfSettingIsDefaultSettings() {
+        $settingId = 'default_settings';
+        $this->mockRequest->method('getUrl')->willReturn('plugin/:zonedId/settings/'.$settingId);
+        $this->mockDataStore->method('set')->willReturn(true);
+        $this->mockAbstractPluginActions->expects($this->once())->method('applyDefaultSettings');
+        $this->mockAbstractPluginActions->patchPluginSettings();
     }
 }

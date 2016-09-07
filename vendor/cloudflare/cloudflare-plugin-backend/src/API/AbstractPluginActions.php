@@ -116,6 +116,10 @@ abstract class AbstractPluginActions
         $formattedSettings = array();
         foreach ($settingsList as $setting) {
             $value = $this->dataStore->get($setting);
+            if($value === null) {
+                //setting hasn't been set yet.
+                $value = $this->api->createPluginSettingObject($setting, null, true, null);
+            }
             array_push($formattedSettings, $value);
         }
 
@@ -127,80 +131,38 @@ abstract class AbstractPluginActions
     }
 
     /**
-     * PATCH /plugin/:zonedId/settings/:settingId.
-     *
-     * Routes custom settingIds and default settingsIds
-     * to different functions
-     *
+     * For PATCH /plugin/:zonedId/settings/:settingId
      * @return mixed
-     */
-    public function patchPluginSettingsRouter()
-    {
-        $path_array = explode('/', $this->request->getUrl());
-        $settingId = $path_array[3];
-
-        $response = null;
-        if ($settingId === Plugin::SETTING_DEFAULT_SETTINGS) {
-            $response = $this->patchPluginDefaultSettings();
-        } else {
-            $response = $this->patchPluginSettings();
-        }
-
-        return $response;
-    }
-
-    /**
-     * For PATCH /plugin/:zonedId/settings/:settingId where :settingId is not predefined.
-     *
-     * @return mixed
+     * @throws \Exception
      */
     public function patchPluginSettings()
     {
         $path_array = explode('/', $this->request->getUrl());
         $settingId = $path_array[3];
 
-        $value = $this->request->getBody()['value'];
-        $options = $this->dataStore->set($settingId, $value);
+        $body = $this->request->getBody();
+        $value = $body['value'];
+        $options = $this->dataStore->set($settingId, $this->api->createPluginSettingObject($settingId, $value, true, true));
 
         if (!isset($options)) {
             return $this->api->createAPIError('Unable to update plugin settings');
         }
 
-        $response = $this->api->createAPISuccessResponse(
-            array(
-                $this->dataStore->get($settingId),
-            )
-        );
-
-        return $response;
-    }
-
-    /**
-     * For PATCH /plugin/:zonedId/settings/:settingId where :settingId is Plugin::SETTING_DEFAULT_SETTINGS.
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     */
-    public function patchPluginDefaultSettings()
-    {
-        $this->dataStore->set(Plugin::SETTING_DEFAULT_SETTINGS, true);
-
-        try {
-            $this->applyDefaultSettings();
-        } catch (\Exception $e) {
-            if ($e instanceof Exception\CloudFlareException) {
-                return $this->api->createAPIError($e->getMessage());
-            } else {
-                throw $e;
+        if($settingId === Plugin::SETTING_DEFAULT_SETTINGS) {
+            try {
+                $this->applyDefaultSettings();
+            } catch (\Exception $e) {
+                if ($e instanceof Exception\CloudFlareException) {
+                    return $this->api->createAPIError($e->getMessage());
+                } else {
+                    throw $e;
+                }
             }
         }
 
-        return $this->api->createAPISuccessResponse(
-            array(
-                $this->dataStore->get(Plugin::SETTING_DEFAULT_SETTINGS),
-            )
-        );
+        $response = $this->api->createAPISuccessResponse($this->dataStore->get($settingId));
+
+        return $response;
     }
 
     /**

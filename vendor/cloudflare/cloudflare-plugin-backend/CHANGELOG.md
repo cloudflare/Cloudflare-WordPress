@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.7](#1.1.7) - 2016-09-6
+### Changed
+- Moved plugin settings consts from DataStore to Plugin API. [#18](https://github.com/cloudflare/cloudflare-plugin-backend/pull/18)
+- createPluginSettingObject() is no longer static. [#18](https://github.com/cloudflare/cloudflare-plugin-backend/pull/18)
+
+### Fixed
+- Fixed patchPluginSettings() to return correct JSON structure. [#19](https://github.com/cloudflare/cloudflare-plugin-backend/pull/19)
+- Fixed bug where getPluginSettings was returning incorrect JSON structure. [#18](https://github.com/cloudflare/cloudflare-plugin-backend/pull/18)
+
+
 ## [1.1.6](#1.1.6) - 2016-09-5
 ### Fixed
 - Fixed where DataStoreInterface was not included [c3502d](https://github.com/cloudflare/cloudflare-plugin-backend/commit/c3502db2904be385e2ad0e37287085fcecbfba5f)

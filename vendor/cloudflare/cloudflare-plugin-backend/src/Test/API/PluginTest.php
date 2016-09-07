@@ -2,7 +2,6 @@
 
 namespace CF\Test\API;
 
-use CF\API\Request;
 use CF\Integration\DefaultIntegration;
 use CF\API\Plugin;
 
@@ -13,6 +12,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     private $mockDataStore;
     private $mockLogger;
     private $mockDefaultIntegration;
+    private $mockRequest;
     private $pluginAPIClient;
 
     public function setup()
@@ -27,6 +27,9 @@ class PluginTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockLogger = $this->getMockBuilder('CF\Integration\DefaultLogger')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->mockRequest = $this->getMockBuilder('CF\API\Request')
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);
@@ -56,10 +59,33 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     public function testCallAPIReturnsError()
     {
-        $request = new Request(null, null, null, null);
-
-        $response = $this->pluginAPIClient->callAPI($request);
+        $response = $this->pluginAPIClient->callAPI($this->mockRequest);
 
         $this->assertFalse($response['success']);
+    }
+
+    public function testCreatePluginSettingObject()
+    {
+        $pluginSettingKey = 'key';
+        $value = 'value';
+        $editable = false;
+        $modifiedOn = null;
+
+        $expected = array(
+            Plugin::SETTING_ID_KEY => $pluginSettingKey,
+            Plugin::SETTING_VALUE_KEY => $value,
+            Plugin::SETTING_EDITABLE_KEY => $editable,
+            Plugin::SETTING_MODIFIED_DATE_KEY => $modifiedOn,
+        );
+
+        $result = $this->pluginAPIClient->createPluginSettingObject($pluginSettingKey, $value, $editable, $modifiedOn);
+
+        $this->assertEquals($expected, $result);
+    }
+
+    public function testCreatePluginSettingObjectReturnsISO8061DateForNonNullValue() {
+        $result = $this->pluginAPIClient->createPluginSettingObject(null, null, null, true);
+        //DateTime() will throw an exception if $result['modified_on'] isn't a valid date
+        $this->assertInstanceOf('\DateTime', new \DateTime($result['modified_on']));
     }
 }
