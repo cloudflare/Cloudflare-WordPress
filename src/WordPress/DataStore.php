@@ -125,6 +125,7 @@ class DataStore implements DataStoreInterface
 
         return $result;
     }
+
     /**
      * @param $key
      * @param $value
@@ -134,5 +135,13 @@ class DataStore implements DataStoreInterface
     public function set($key, $value)
     {
         return update_option($key, $value);
+    }
+
+    /**
+     * @param $key
+     */
+    public function clear($key)
+    {
+        delete_option($key);
     }
 }

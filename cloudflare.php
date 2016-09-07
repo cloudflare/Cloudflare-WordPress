@@ -206,3 +206,6 @@ add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
 
 // Load Uninstall Script
 register_uninstall_hook(__FILE__, array('\CF\Hooks\Uninstall', 'init'));
+
+// Load Deactivation Script
+register_deactivation_hook(__FILE__, array('\CF\Hooks\Deactivation', 'init'));

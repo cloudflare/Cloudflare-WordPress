@@ -143,4 +143,19 @@ class WordPressAPI implements IntegrationAPIInterface
 
         return false;
     }
+
+    public function clearDataStore()
+    {
+        $pluginKeys = \CF\API\Plugin::getPluginSettingsKeys();
+
+        // Delete Plugin Setting Options
+        foreach ($pluginKeys as $optionName) {
+            $this->dataStore->clear($optionName);
+        }
+
+        // Delete DataStore Options
+        $this->dataStore->clear(DataStore::API_KEY);
+        $this->dataStore->clear(DataStore::EMAIL);
+        $this->dataStore->clear(DataStore::CACHED_DOMAIN_NAME);
+    }
 }
