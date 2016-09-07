@@ -16,6 +16,11 @@ class Plugin extends Client
     const SETTING_PLUGIN_SPECIFIC_CACHE = 'plugin_specific_cache';
     const SETTING_PLUGIN_SPECIFIC_CACHE_TAG = 'plugin_specific_cache_tag';
 
+    const SETTING_ID_KEY = 'id';
+    const SETTING_VALUE_KEY = 'value';
+    const SETTING_EDITABLE_KEY = 'editable';
+    const SETTING_MODIFIED_DATE_KEY = 'modified_on';
+
     public static function getPluginSettingsKeys()
     {
         return array(
@@ -50,8 +55,6 @@ class Plugin extends Client
      */
     public function callAPI(Request $request)
     {
-        $this->logger->error('CF\\Wordpress\\API\\Plugin\\callAPI should never be called');
-
         return $this->createAPIError('The url: '.$request->getUrl().' is not a valid path.');
     }
 
@@ -65,13 +68,26 @@ class Plugin extends Client
         );
     }
 
-    public static function createPluginSettingObject($pluginSettingKey, $value, $editable, $modified_on)
+    /**
+     * @param $pluginSettingKey
+     * @param $value
+     * @param $editable
+     * @param $modified_on
+     * @return array
+     */
+    public function createPluginSettingObject($pluginSettingKey, $value, $editable, $modified_on)
     {
+        //allow null for settings that have never been set
+        if($modified_on !== null) {
+            // Format ISO 8601
+            $modified_on = date('c');
+        }
+
         return array(
-            DataStoreInterface::ID_KEY => $pluginSettingKey,
-            DataStoreInterface::VALUE_KEY => $value,
-            DataStoreInterface::EDITABLE_KEY => $editable,
-            DataStoreInterface::MODIFIED_DATE_KEY => $modified_on,
+            self::SETTING_ID_KEY => $pluginSettingKey,
+            self::SETTING_VALUE_KEY => $value,
+            self::SETTING_EDITABLE_KEY => $editable,
+            self::SETTING_MODIFIED_DATE_KEY => $modified_on,
         );
     }
 }
