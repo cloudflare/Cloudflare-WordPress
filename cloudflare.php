@@ -121,7 +121,7 @@ function load_plugin_specific_cache()
     $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
     $dataStore = new CF\WordPress\DataStore($logger);
 
-    return $dataStore->getPluginSetting(CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE)[\CF\Integration\DataStoreInterface::VALUE_KEY];
+    return $dataStore->getPluginSetting(CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE)[\CF\API\Plugin::SETTING_VALUE_KEY];
 }
 
 function cloudflare_conf2()
