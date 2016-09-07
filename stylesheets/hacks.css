@@ -9,6 +9,36 @@
     margin-left: 0em; /* new */
 }
 
+/* Fix login Page */
+#cf-login-page {
+    max-width: 400px;
+    margin: 0 auto;
+}
+#cf-login-page form {
+    margin-bottom: 20px;
+}
+
+#cf-login-page h3 {
+    text-align: center;
+}
+
+#cf-login-page .cf-form__fieldset_content {
+    background-color: #FFF;
+    border-color: #FFF;
+}
+
+#cf-login-page legend {
+    display: none;
+}
+
+#cf-login-page .cf-layout__row {
+    margin-top:15px;
+}
+
+#cf-login-page .cf-layout__column {
+    text-align: center;
+}
+
 /* fix WordPress notification z-index being lower than
  * WordPress Admin Panel z-index level.
  */
