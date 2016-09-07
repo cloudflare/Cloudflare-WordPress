@@ -130,6 +130,7 @@ class DataStore implements DataStoreInterface
 
         return $result;
     }
+
     /**
      * @param $key
      * @param $value
@@ -141,5 +142,13 @@ class DataStore implements DataStoreInterface
         $pluginObject = Plugin::createPluginSettingObject($key, $value, true, \CF\Utils::getCurrentDate());
 
         return update_option($key, $pluginObject);
+    }
+
+    /**
+     * @param $key
+     */
+    public function clear($key)
+    {
+        delete_option($key);
     }
 }
