@@ -5,6 +5,8 @@ namespace CF\WordPress;
 use CF\Integration\DefaultLogger;
 use CF\Integration\DataStoreInterface;
 use CF\API\Plugin;
+use CF\Integration\DefaultIntegration;
+use CF\Integration\DefaultConfig;
 
 class DataStore implements DataStoreInterface
 {
@@ -18,6 +20,13 @@ class DataStore implements DataStoreInterface
     public function __construct(DefaultLogger $logger)
     {
         $this->logger = $logger;
+
+        // Create temp object to be able to call createPluginSettingObject
+        $config = new DefaultConfig('[]');
+        $wordpressAPI = new WordPressAPI($this);
+        $wordpressIntegration = new DefaultIntegration($config, $wordpressAPI, $this, $logger);
+
+        $this->tempPlugin = new Plugin($wordpressIntegration);
     }
 
     /**
@@ -54,7 +63,7 @@ class DataStore implements DataStoreInterface
      */
     public function getClientV4APIKey()
     {
-        return $this->get(self::API_KEY)[DataStoreInterface::VALUE_KEY];
+        return $this->get(self::API_KEY)[Plugin::SETTING_VALUE_KEY];
     }
 
     /**
@@ -70,7 +79,7 @@ class DataStore implements DataStoreInterface
      */
     public function getDomainNameCache()
     {
-        $cachedDomainName = $this->get(self::CACHED_DOMAIN_NAME)[DataStoreInterface::VALUE_KEY];
+        $cachedDomainName = $this->get(self::CACHED_DOMAIN_NAME)[Plugin::SETTING_VALUE_KEY];
         if (empty($cachedDomainName)) {
             return;
         }
@@ -91,7 +100,7 @@ class DataStore implements DataStoreInterface
      */
     public function getCloudFlareEmail()
     {
-        return $this->get(self::EMAIL)[DataStoreInterface::VALUE_KEY];
+        return $this->get(self::EMAIL)[Plugin::SETTING_VALUE_KEY];
     }
 
     /**
@@ -122,10 +131,11 @@ class DataStore implements DataStoreInterface
     public function get($key)
     {
         $result = get_option($key);
+
         if (!is_array($result)) {
             // Create an empty plugin setting object. This way the frontend
             // will know which settings exist.
-            return Plugin::createPluginSettingObject($key, '', true, null);
+            return $this->tempPlugin->createPluginSettingObject($key, '', true, null);
         }
 
         return $result;
@@ -138,7 +148,7 @@ class DataStore implements DataStoreInterface
      */
     public function set($key, $value)
     {
-        $pluginObject = Plugin::createPluginSettingObject($key, $value, true, \CF\Utils::getCurrentDate());
+        $pluginObject = $this->tempPlugin->createPluginSettingObject($key, $value, true, true);
 
         return update_option($key, $pluginObject);
     }
