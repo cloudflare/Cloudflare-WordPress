@@ -2,7 +2,7 @@
 
 namespace CF\Hooks;
 
-class Uninstall
+class Deactivation
 {
     public static function init()
     {
