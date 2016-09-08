@@ -17,6 +17,9 @@ namespace CF\WordPress {
         public function update_option($key, $value)
         {
         }
+        public function delete_option($key)
+        {
+        }
     }
 
     global $wordPressGlobalFunctions;
@@ -40,6 +43,13 @@ namespace CF\WordPress {
         global $wordPressGlobalFunctions;
 
         return $wordPressGlobalFunctions->get_option($key);
+    }
+
+    function delete_option($key)
+    {
+        global $wordPressGlobalFunctions;
+
+        return $wordPressGlobalFunctions->delete_option($key);
     }
 }
 
@@ -137,6 +147,12 @@ namespace CF\Test\WordPress {
         {
             $this->mockWordPressGlobalFunctions->expects($this->once())->method('update_option');
             $this->dataStore->set('key', 'value');
+        }
+
+        public function testClearCallsSqlAndDeleteToption()
+        {
+            $this->mockWordPressGlobalFunctions->expects($this->once())->method('delete_option');
+            $this->dataStore->clear('key');
         }
     }
 }
