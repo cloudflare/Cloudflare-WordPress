@@ -81,41 +81,9 @@ function cloudflare_config_page()
     }
 }
 
-function load_plugin_specific_cache()
-{
-    //TODO refactor so we're only initing this stuff once.
-    $config = new CF\Integration\DefaultConfig('[]');
-    $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
-    $dataStore = new CF\WordPress\DataStore($logger);
-
-    return $dataStore->getPluginSetting(CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE)[\CF\API\Plugin::SETTING_VALUE_KEY];
-}
-
 function cloudflare_conf2()
 {
     include 'cloudflare2.php';
-}
-
-
-function purgeCache()
-{
-    if (load_plugin_specific_cache()) {
-        $config = new CF\Integration\DefaultConfig('[]');
-        $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
-        $dataStore = new CF\WordPress\DataStore($logger);
-        $wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);
-        $wordpressIntegration = new CF\Integration\DefaultIntegration($config, $wordpressAPI, $dataStore, $logger);
-        $clientAPIClient = new CF\WordPress\WordPressClientAPI($wordpressIntegration);
-
-        $wp_domain = $wordpressAPI->getDomainList()[0];
-        if (count($wp_domain) > 0) {
-            $zoneTag = $clientAPIClient->getZoneTag($wp_domain);
-            if (isset($zoneTag)) {
-                // Do not care of the return value
-                $clientAPIClient->zonePurgeCache($zoneTag);
-            }
-        }
-    }
 }
 
 function sslRewrite()
@@ -129,20 +97,8 @@ function sslRewrite()
     return false;
 }
 
-// "Save and Activate" pressed
-function switch_wp_theme()
-{
-    // Purge cache when theme is switched.
-    purgeCache();
-}
-add_action('switch_theme', 'switch_wp_theme');
-
-// "Save and Publish" pressed
-function theme_save_pressed()
-{
-    purgeCache();
-}
-add_action('customize_save_after', 'theme_save_pressed');
+// Load AutomaticCache
+add_action('init', array('\CF\Hooks\AutomaticCache', 'init'));
 
 // Enable HTTP2 Server Push
 add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
