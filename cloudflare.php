@@ -19,33 +19,6 @@ if (!defined('ABSPATH')) { // Exit if accessed directly
     exit;
 }
 
-// Call when the Plugin is activated in server.
-function cloudflare_activate()
-{
-    global $wp_version;
-
-    if (version_compare(PHP_VERSION, MIN_PHP_VERSION, '<')) {
-        $flag = 'PHP';
-        $version = MIN_PHP_VERSION;
-    }
-
-    if (version_compare($wp_version, MIN_WP_VERSION, '<')) {
-        $flag = 'WordPress';
-        $version = MIN_WP_VERSION;
-    }
-
-    if (isset($flag) || isset($version)) {
-        // Deactivate Plugin
-        deactivate_plugins(basename(__FILE__));
-
-        // Kill Execution
-        wp_die('<p><strong>Cloudflare</strong> plugin requires '.$flag.'  version '.$version.' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
-
-        return;
-    }
-}
-register_activation_hook(__FILE__, 'cloudflare_activate');
-
 function cloudflare_init()
 {
     $ipRewrite = new IpRewrite();
@@ -97,14 +70,17 @@ function sslRewrite()
     return false;
 }
 
+// Load Activation Script
+register_activation_hook(__FILE__, array('\CF\Hooks\Activation', 'init'));
+
+// Load Deactivation Script
+register_deactivation_hook(__FILE__, array('\CF\Hooks\Deactivation', 'init'));
+
+// Load Uninstall Script
+register_uninstall_hook(__FILE__, array('\CF\Hooks\Uninstall', 'init'));
+
 // Load AutomaticCache
 add_action('init', array('\CF\Hooks\AutomaticCache', 'init'));
 
 // Enable HTTP2 Server Push
 add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
-
-// Load Uninstall Script
-register_uninstall_hook(__FILE__, array('\CF\Hooks\Uninstall', 'init'));
-
-// Load Deactivation Script
-register_deactivation_hook(__FILE__, array('\CF\Hooks\Deactivation', 'init'));
