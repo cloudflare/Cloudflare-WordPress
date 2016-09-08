@@ -144,4 +144,12 @@ class DataStore implements DataStoreInterface
     {
         delete_option($key);
     }
+
+    /**
+     * @param $key
+     */
+    public function clear($key)
+    {
+        delete_option($key);
+    }
 }
