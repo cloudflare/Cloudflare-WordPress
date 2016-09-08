@@ -96,30 +96,6 @@ function cloudflare_conf2()
     include 'cloudflare2.php';
 }
 
-/**
- * @param $domain        string      the domain portion of the WP URL
- * @param $zone_names    array       an array of zone_names to compare against
- *
- * @returns null|string null in the case of a failure, string in the case of a match
- */
-function match_domain_to_zone($domain, $zones)
-{
-    $splitDomain = explode('.', $domain);
-    $totalParts = count($splitDomain);
-
-    // minimum parts for a complete zone match will be 2, e.g. blah.com
-    for ($i = 0; $i <= ($totalParts - 2); ++$i) {
-        $copy = $splitDomain;
-        $currentDomain = implode('.', array_splice($copy, $i));
-        foreach ($zones as $zone_name) {
-            if (strtolower($currentDomain) == strtolower($zone_name)) {
-                return $zone_name;
-            }
-        }
-    }
-
-    return;
-}
 
 function purgeCache()
 {
