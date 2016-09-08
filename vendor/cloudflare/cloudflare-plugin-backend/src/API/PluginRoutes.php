@@ -27,7 +27,7 @@ class PluginRoutes
             'class' => 'CF\API\AbstractPluginActions',
             'methods' => array(
                 'PATCH' => array(
-                    'function' => 'patchPluginSettingsRouter',
+                    'function' => 'patchPluginSettings',
                 ),
             ),
         ),
