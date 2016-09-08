@@ -43,15 +43,8 @@ function cloudflare_activate()
 
         return;
     }
-
-    set_default_keys();
 }
 register_activation_hook(__FILE__, 'cloudflare_activate');
-
-function set_default_keys()
-{
-    set_protocol_rewrite();
-}
 
 function cloudflare_init()
 {
@@ -86,32 +79,6 @@ function cloudflare_config_page()
     if (function_exists('add_options_page')) {
         add_options_page(__('CloudFlare Configuration'), __('CloudFlare'), 'manage_options', 'cloudflare', 'cloudflare_conf2');
     }
-}
-
-function set_protocol_rewrite()
-{
-    update_option(CF\API\Plugin::SETTING_PROTOCOL_REWRITE, true);
-}
-
-function load_protocol_rewrite()
-{
-    //TODO refactor so we're only initing this stuff once.
-    //also used in purgeCache()
-    $config = new CF\Integration\DefaultConfig('[]');
-    $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
-    $dataStore = new CF\WordPress\DataStore($logger);
-
-    return $dataStore->getPluginSetting(CF\API\Plugin::SETTING_PROTOCOL_REWRITE);
-}
-
-function load_ip_rewrite()
-{
-    //TODO refactor so we're only initing this stuff once.
-    $config = new CF\Integration\DefaultConfig('[]');
-    $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
-    $dataStore = new CF\WordPress\DataStore($logger);
-
-    return $dataStore->getPluginSetting(CF\API\Plugin::SETTING_IP_REWRITE);
 }
 
 function load_plugin_specific_cache()
