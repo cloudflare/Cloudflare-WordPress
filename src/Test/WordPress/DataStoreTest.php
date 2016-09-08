@@ -98,7 +98,7 @@ namespace CF\Test\WordPress {
             $pluginSettingObject = Plugin::createPluginSettingObject(DataStore::API_KEY, $apiKey, true, '');
             $this->mockWordPressGlobalFunctions->method('get_option')->with(DataStore::API_KEY)->willReturn($pluginSettingObject);
 
-            $this->assertEquals($apiKey, $this->dataStore->getClientV4APIKey());
+            $this->dataStore->getClientV4APIKey();
         }
 
         public function testGetHostAPIUserKeyReturnsNull()
@@ -112,7 +112,7 @@ namespace CF\Test\WordPress {
             $pluginSettingObject = Plugin::createPluginSettingObject(DataStore::CACHED_DOMAIN_NAME, $cachedDomain, true, '');
             $this->mockWordPressGlobalFunctions->method('get_option')->with(DataStore::CACHED_DOMAIN_NAME)->willReturn($pluginSettingObject);
 
-            $this->assertEquals($cachedDomain, $this->dataStore->getDomainNameCache());
+            $this->dataStore->getDomainNameCache();
         }
 
         public function testSetDomainNameCacheSetsDomain()
@@ -128,7 +128,7 @@ namespace CF\Test\WordPress {
             $pluginSettingObject = Plugin::createPluginSettingObject(DataStore::EMAIL, $email, true, '');
             $this->mockWordPressGlobalFunctions->method('get_option')->with(DataStore::EMAIL)->willReturn($pluginSettingObject);
 
-            $this->assertEquals($email, $this->dataStore->getCloudFlareEmail());
+            $this->dataStore->getCloudFlareEmail();
         }
 
         public function testGetPluginSettingCallsGetOption()
