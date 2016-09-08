@@ -6,10 +6,10 @@ class Activation
 {
     public static function init()
     {
-        self::checkVersionCompatiblity();
+        self::checkVersionCompatibility();
     }
 
-    public static function checkVersionCompatiblity()
+    public static function checkVersionCompatibility()
     {
         global $wp_version;
 
