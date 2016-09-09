@@ -29,6 +29,9 @@ register_deactivation_hook(__FILE__, array('\CF\Hooks\Deactivation', 'init'));
 // Load Uninstall Script
 register_uninstall_hook(__FILE__, array('\CF\Hooks\Uninstall', 'init'));
 
+//Register proxy AJAX endpoint
+add_action('wp_ajax_cloudflare_proxy', array('\CF\Hooks\Init', 'initProxy'));
+
 // Load AutomaticCache
 add_action('init', array('\CF\Hooks\AutomaticCache', 'init'));
 

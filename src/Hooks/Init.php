@@ -72,4 +72,9 @@ class Init
     {
         // NARNIA!!
     }
+
+	public static function initProxy()
+	{
+		include WP_PLUGIN_DIR.'/cloudflare/proxy.php';
+	}
 }

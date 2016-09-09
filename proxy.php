@@ -1,10 +1,8 @@
 <?php
-
+if (!defined('ABSPATH')) { // Exit if accessed directly
+	exit;
+}
 require_once 'vendor/autoload.php';
-
-// include wp-load.php, directs logs to debug.log
-$parse_uri = explode('wp-content', $_SERVER['SCRIPT_FILENAME']);
-require_once $parse_uri[0].'wp-load.php';
 
 header('Content-Type: application/json');
 
@@ -70,4 +68,5 @@ if ($isCSRFTokenValid) {
     );
 }
 
-echo json_encode($response);
+//die is how wordpress ajax keeps the rest of the app from loading during an ajax request
+die(json_encode($response));

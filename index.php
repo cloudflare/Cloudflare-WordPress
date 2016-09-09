@@ -37,6 +37,11 @@ localStorage.cfEmail = '<?=$dataStore->getCloudFlareEmail();?>';
 function RestProxyCallback(opts) {
     //only proxy external REST calls
     if(opts.url.lastIndexOf("http", 0) === 0) {
+		if(!opts.parameters) {
+			opts.parameters = {};
+		}
+		opts.parameters['action'] = 'cloudflare_proxy'; //wordpress ajax action
+
         if(opts.method.toUpperCase() !== "GET") {
             if(!opts.body) {
                 opts.body = {};
@@ -44,13 +49,10 @@ function RestProxyCallback(opts) {
             opts.body['cfCSRFToken'] = cfCSRFToken;
             opts.body['proxyURL'] = opts.url;
         } else {
-            if(!opts.parameters) {
-                opts.parameters = {};
-            }
             opts.parameters['proxyURL'] = opts.url;
         }
 
-        opts.url = absoluteUrlBase + "./proxy.php";
+        opts.url = ajaxurl; //wordpress ajax global
     } else {
     	opts.url = absoluteUrlBase + opts.url;
     }
