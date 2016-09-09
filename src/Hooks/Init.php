@@ -41,13 +41,13 @@ class Init
     public static function cloudflareConfigPage()
     {
         if (function_exists('add_options_page')) {
-            add_options_page(__('CloudFlare Configuration'), __('CloudFlare'), 'manage_options', 'cloudflare', array('\CF\Hooks\Init', 'cloudflareConfigPage2'));
+            add_options_page(__('CloudFlare Configuration'), __('CloudFlare'), 'manage_options', 'cloudflare', array('\CF\Hooks\Init', 'cloudflareIndexPage'));
         }
     }
 
-    public static function cloudflareConfigPage2()
+    public static function cloudflareIndexPage()
     {
-        include WP_PLUGIN_DIR.'/cloudflare/cloudflare2.php';
+        include WP_PLUGIN_DIR.'/cloudflare/index.php';
     }
 
     public static function sslRewrite()
@@ -72,4 +72,9 @@ class Init
     {
         // NARNIA!!
     }
+
+	public static function initProxy()
+	{
+		include WP_PLUGIN_DIR.'/cloudflare/proxy.php';
+	}
 }
