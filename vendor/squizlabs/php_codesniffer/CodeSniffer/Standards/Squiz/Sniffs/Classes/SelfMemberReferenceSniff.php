@@ -66,20 +66,30 @@ class Squiz_Sniffs_Classes_SelfMemberReferenceSniff extends PHP_CodeSniffer_Stan
 
         $calledClassName = ($stackPtr - 1);
         if ($tokens[$calledClassName]['code'] === T_SELF) {
-            if (strtolower($tokens[$calledClassName]['content']) !== $tokens[$calledClassName]['content']) {
+            if ($tokens[$calledClassName]['content'] !== 'self') {
                 $error = 'Must use "self::" for local static member reference; found "%s::"';
                 $data  = array($tokens[$calledClassName]['content']);
-                $phpcsFile->addError($error, $calledClassName, 'IncorrectCase', $data);
+                $fix   = $phpcsFile->addFixableError($error, $calledClassName, 'IncorrectCase', $data);
+                if ($fix === true) {
+                    $phpcsFile->fixer->replaceToken($calledClassName, 'self');
+                }
+
                 return;
             }
         } else if ($tokens[$calledClassName]['code'] === T_STRING) {
             // If the class is called with a namespace prefix, build fully qualified
             // namespace calls for both current scope class and requested class.
             if ($tokens[($calledClassName - 1)]['code'] === T_NS_SEPARATOR) {
-                $declarationName         = $this->getDeclarationNameWithNamespace($tokens, $calledClassName);
-                $declarationName         = substr($declarationName, 1);
-                $fullQualifiedClassName  = $this->getNamespaceOfScope($phpcsFile, $currScope);
-                $fullQualifiedClassName .= '\\'.$phpcsFile->getDeclarationName($currScope);
+                $declarationName        = $this->getDeclarationNameWithNamespace($tokens, $calledClassName);
+                $declarationName        = substr($declarationName, 1);
+                $fullQualifiedClassName = $this->getNamespaceOfScope($phpcsFile, $currScope);
+                if ($fullQualifiedClassName === '\\') {
+                    $fullQualifiedClassName = '';
+                } else {
+                    $fullQualifiedClassName .= '\\';
+                }
+
+                $fullQualifiedClassName .= $phpcsFile->getDeclarationName($currScope);
             } else {
                 $declarationName        = $phpcsFile->getDeclarationName($currScope);
                 $fullQualifiedClassName = $tokens[$calledClassName]['content'];

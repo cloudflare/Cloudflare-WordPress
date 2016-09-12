@@ -73,7 +73,7 @@ class PHP_CodeSniffer
      *
      * @var string
      */
-    const VERSION = '2.6.2';
+    const VERSION = '2.7.0';
 
     /**
      * Package stability; either stable, beta or alpha.
@@ -548,7 +548,7 @@ class PHP_CodeSniffer
             }
 
             if (PHP_CODESNIFFER_VERBOSITY === 1) {
-                $ruleset = simplexml_load_file($standard);
+                $ruleset = simplexml_load_string(file_get_contents($standard));
                 if ($ruleset !== false) {
                     $standardName = (string) $ruleset['name'];
                 }
@@ -711,7 +711,7 @@ class PHP_CodeSniffer
             echo "Processing ruleset $rulesetPath".PHP_EOL;
         }
 
-        $ruleset = simplexml_load_file($rulesetPath);
+        $ruleset = simplexml_load_string(file_get_contents($rulesetPath));
         if ($ruleset === false) {
             throw new PHP_CodeSniffer_Exception("Ruleset $rulesetPath is not valid");
         }
@@ -2093,13 +2093,17 @@ class PHP_CodeSniffer
             $lowerVarType = strtolower($varType);
             switch ($lowerVarType) {
             case 'bool':
+            case 'boolean':
                 return 'boolean';
             case 'double':
             case 'real':
+            case 'float':
                 return 'float';
             case 'int':
+            case 'integer':
                 return 'integer';
             case 'array()':
+            case 'array':
                 return 'array';
             }//end switch
 

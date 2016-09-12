@@ -4,15 +4,14 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit7d0167de9dd321ec590d9e98a7873834
+class ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11
 {
-    public static $files = array (
-        'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
-    );
-
     public static $prefixLengthsPsr4 = array (
         'p' => 
         array (
+            'phpmock\\phpunit\\' => 16,
+            'phpmock\\integration\\' => 20,
+            'phpmock\\' => 8,
             'phpDocumentor\\Reflection\\' => 25,
         ),
         'W' => 
@@ -22,16 +21,7 @@ class ComposerStaticInit7d0167de9dd321ec590d9e98a7873834
         'S' => 
         array (
             'Symfony\\Component\\Yaml\\' => 23,
-        ),
-        'R' => 
-        array (
-            'React\\Promise\\' => 14,
-        ),
-        'G' => 
-        array (
-            'GuzzleHttp\\Stream\\' => 18,
-            'GuzzleHttp\\Ring\\' => 16,
-            'GuzzleHttp\\' => 11,
+            'Symfony\\Component\\EventDispatcher\\' => 34,
         ),
         'D' => 
         array (
@@ -44,6 +34,19 @@ class ComposerStaticInit7d0167de9dd321ec590d9e98a7873834
     );
 
     public static $prefixDirsPsr4 = array (
+        'phpmock\\phpunit\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-mock/php-mock-phpunit/classes',
+        ),
+        'phpmock\\integration\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-mock/php-mock-integration/classes',
+        ),
+        'phpmock\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/php-mock/php-mock/classes',
+            1 => __DIR__ . '/..' . '/php-mock/php-mock/tests/unit',
+        ),
         'phpDocumentor\\Reflection\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
@@ -58,21 +61,9 @@ class ComposerStaticInit7d0167de9dd321ec590d9e98a7873834
         array (
             0 => __DIR__ . '/..' . '/symfony/yaml',
         ),
-        'React\\Promise\\' => 
+        'Symfony\\Component\\EventDispatcher\\' => 
         array (
-            0 => __DIR__ . '/..' . '/react/promise/src',
-        ),
-        'GuzzleHttp\\Stream\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/guzzlehttp/streams/src',
-        ),
-        'GuzzleHttp\\Ring\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/guzzlehttp/ringphp/src',
-        ),
-        'GuzzleHttp\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/guzzlehttp/guzzle/src',
+            0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
         ),
         'Doctrine\\Instantiator\\' => 
         array (
@@ -104,6 +95,17 @@ class ComposerStaticInit7d0167de9dd321ec590d9e98a7873834
                 0 => __DIR__ . '/..' . '/johnkary/phpunit-speedtrap/src',
             ),
         ),
+        'G' => 
+        array (
+            'Guzzle\\Tests' => 
+            array (
+                0 => __DIR__ . '/..' . '/guzzle/guzzle/tests',
+            ),
+            'Guzzle' => 
+            array (
+                0 => __DIR__ . '/..' . '/guzzle/guzzle/src',
+            ),
+        ),
         'C' => 
         array (
             'CloudFlare\\' => 
@@ -120,6 +122,7 @@ class ComposerStaticInit7d0167de9dd321ec590d9e98a7873834
         'Generic_Sniffs_Arrays_DisallowLongArraySyntaxSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/Arrays/DisallowLongArraySyntaxSniff.php',
         'Generic_Sniffs_Arrays_DisallowShortArraySyntaxSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/Arrays/DisallowShortArraySyntaxSniff.php',
         'Generic_Sniffs_Classes_DuplicateClassNameSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/Classes/DuplicateClassNameSniff.php',
+        'Generic_Sniffs_Classes_OpeningBraceSameLineSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/Classes/OpeningBraceSameLineSniff.php',
         'Generic_Sniffs_CodeAnalysis_EmptyStatementSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/CodeAnalysis/EmptyStatementSniff.php',
         'Generic_Sniffs_CodeAnalysis_ForLoopShouldBeWhileLoopSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/CodeAnalysis/ForLoopShouldBeWhileLoopSniff.php',
         'Generic_Sniffs_CodeAnalysis_ForLoopWithTestFunctionCallSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/CodeAnalysis/ForLoopWithTestFunctionCallSniff.php',
@@ -159,9 +162,11 @@ class ComposerStaticInit7d0167de9dd321ec590d9e98a7873834
         'Generic_Sniffs_NamingConventions_CamelCapsFunctionNameSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/NamingConventions/CamelCapsFunctionNameSniff.php',
         'Generic_Sniffs_NamingConventions_ConstructorNameSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/NamingConventions/ConstructorNameSniff.php',
         'Generic_Sniffs_NamingConventions_UpperCaseConstantNameSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/NamingConventions/UpperCaseConstantNameSniff.php',
+        'Generic_Sniffs_PHP_BacktickOperatorSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/PHP/BacktickOperatorSniff.php',
         'Generic_Sniffs_PHP_CharacterBeforePHPOpeningTagSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/PHP/CharacterBeforePHPOpeningTagSniff.php',
         'Generic_Sniffs_PHP_ClosingPHPTagSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/PHP/ClosingPHPTagSniff.php',
         'Generic_Sniffs_PHP_DeprecatedFunctionsSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/PHP/DeprecatedFunctionsSniff.php',
+        'Generic_Sniffs_PHP_DisallowAlternativePHPTagsSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/PHP/DisallowAlternativePHPTagsSniff.php',
         'Generic_Sniffs_PHP_DisallowShortOpenTagSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/PHP/DisallowShortOpenTagSniff.php',
         'Generic_Sniffs_PHP_ForbiddenFunctionsSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/PHP/ForbiddenFunctionsSniff.php',
         'Generic_Sniffs_PHP_LowerCaseConstantSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/PHP/LowerCaseConstantSniff.php',
@@ -802,10 +807,10 @@ class ComposerStaticInit7d0167de9dd321ec590d9e98a7873834
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit7d0167de9dd321ec590d9e98a7873834::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit7d0167de9dd321ec590d9e98a7873834::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit7d0167de9dd321ec590d9e98a7873834::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit7d0167de9dd321ec590d9e98a7873834::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11::$classMap;
 
         }, null, ClassLoader::class);
     }

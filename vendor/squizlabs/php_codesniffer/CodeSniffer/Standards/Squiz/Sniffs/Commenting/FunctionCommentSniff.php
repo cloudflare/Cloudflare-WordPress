@@ -32,6 +32,13 @@ if (class_exists('PEAR_Sniffs_Commenting_FunctionCommentSniff', true) === false)
 class Squiz_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commenting_FunctionCommentSniff
 {
 
+    /**
+     * The current PHP version.
+     *
+     * @var integer
+     */
+    private $_phpVersion = null;
+
 
     /**
      * Process the return comment of this function comment.
@@ -238,6 +245,13 @@ class Squiz_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
      */
     protected function processParams(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $commentStart)
     {
+        if ($this->_phpVersion === null) {
+            $this->_phpVersion = PHP_CodeSniffer::getConfigData('php_version');
+            if ($this->_phpVersion === null) {
+                $this->_phpVersion = PHP_VERSION_ID;
+            }
+        }
+
         $tokens = $phpcsFile->getTokens();
 
         $params  = array();
@@ -258,12 +272,14 @@ class Squiz_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
                 $matches = array();
                 preg_match('/([^$&.]+)(?:((?:\.\.\.)?(?:\$|&)[^\s]+)(?:(\s+)(.*))?)?/', $tokens[($tag + 2)]['content'], $matches);
 
-                $typeLen   = strlen($matches[1]);
-                $type      = trim($matches[1]);
-                $typeSpace = ($typeLen - strlen($type));
-                $typeLen   = strlen($type);
-                if ($typeLen > $maxType) {
-                    $maxType = $typeLen;
+                if (empty($matches) === false) {
+                    $typeLen   = strlen($matches[1]);
+                    $type      = trim($matches[1]);
+                    $typeSpace = ($typeLen - strlen($type));
+                    $typeLen   = strlen($type);
+                    if ($typeLen > $maxType) {
+                        $maxType = $typeLen;
+                    }
                 }
 
                 if (isset($matches[2]) === true) {
@@ -380,7 +396,7 @@ class Squiz_Sniffs_Commenting_FunctionCommentSniff extends PEAR_Sniffs_Commentin
                         $suggestedTypeHint = 'callable';
                     } else if (in_array($typeName, PHP_CodeSniffer::$allowedTypes) === false) {
                         $suggestedTypeHint = $suggestedName;
-                    } else if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
+                    } else if ($this->_phpVersion >= 70000) {
                         if ($typeName === 'string') {
                             $suggestedTypeHint = 'string';
                         } else if ($typeName === 'int' || $typeName === 'integer') {

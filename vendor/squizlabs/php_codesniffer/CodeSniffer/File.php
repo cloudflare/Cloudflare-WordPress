@@ -507,8 +507,11 @@ class PHP_CodeSniffer_File
                         if (count($parts) >= 3
                             && isset($this->phpcs->sniffCodes[$parts[0]]) === true
                         ) {
-                            $listenerClass = $this->phpcs->sniffCodes[$parts[0]];
-                            $this->phpcs->setSniffProperty($listenerClass, $parts[1], $parts[2]);
+                            $listenerCode  = array_shift($parts);
+                            $propertyCode  = array_shift($parts);
+                            $propertyValue = rtrim(implode(' ', $parts), " */\r\n");
+                            $listenerClass = $this->phpcs->sniffCodes[$listenerCode];
+                            $this->phpcs->setSniffProperty($listenerClass, $propertyCode, $propertyValue);
                         }
                     }//end if
                 }//end if
@@ -3710,6 +3713,58 @@ class PHP_CodeSniffer_File
         return $name;
 
     }//end findExtendedClassName()
+
+
+    /**
+     * Returns the name(s) of the interface(s) that the specified class implements.
+     *
+     * Returns FALSE on error or if there are no implemented interface names.
+     *
+     * @param int $stackPtr The stack position of the class.
+     *
+     * @return array|false
+     */
+    public function findImplementedInterfaceNames($stackPtr)
+    {
+        // Check for the existence of the token.
+        if (isset($this->_tokens[$stackPtr]) === false) {
+            return false;
+        }
+
+        if ($this->_tokens[$stackPtr]['code'] !== T_CLASS) {
+            return false;
+        }
+
+        if (isset($this->_tokens[$stackPtr]['scope_closer']) === false) {
+            return false;
+        }
+
+        $classOpenerIndex = $this->_tokens[$stackPtr]['scope_opener'];
+        $implementsIndex  = $this->findNext(T_IMPLEMENTS, $stackPtr, $classOpenerIndex);
+        if ($implementsIndex === false) {
+            return false;
+        }
+
+        $find = array(
+                 T_NS_SEPARATOR,
+                 T_STRING,
+                 T_WHITESPACE,
+                 T_COMMA,
+                );
+
+        $end  = $this->findNext($find, ($implementsIndex + 1), ($classOpenerIndex + 1), true);
+        $name = $this->getTokensAsString(($implementsIndex + 1), ($end - $implementsIndex - 1));
+        $name = trim($name);
+
+        if ($name === '') {
+            return false;
+        } else {
+            $names = explode(',', $name);
+            $names = array_map('trim', $names);
+            return $names;
+        }
+
+    }//end findImplementedInterfaceNames()
 
 
 }//end class
