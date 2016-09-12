@@ -1,0 +1,38 @@
+{
+    "name": "php-mock/php-mock",
+    "type": "library",
+    "description": "PHP-Mock can mock built-in PHP functions (e.g. time()). PHP-Mock relies on PHP's namespace fallback policy. No further extension is needed.",
+    "keywords": ["mock", "stub", "test double", "function", "test", "TDD", "BDD"],
+    "homepage": "https://github.com/php-mock/php-mock",
+    "license": "WTFPL",
+    "authors": [
+        {
+            "name": "Markus Malkusch",
+            "email": "markus@malkusch.de",
+            "homepage": "http://markus.malkusch.de",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "phpmock\\": ["classes/", "tests/unit/"]
+        }
+    },
+    "require": {
+        "php": ">=5.5",
+        "phpunit/php-text-template": "^1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4|^5"
+    },
+    "replace": {
+        "malkusch/php-mock": "*"
+    },
+    "suggest": {
+	"php-mock/php-mock-phpunit": "Allows integration into PHPUnit testcase with the trait PHPMock.",
+        "php-mock/php-mock-mockery": "Allows using PHPMockery for Mockery integration"
+    },
+    "archive": {
+        "exclude": ["/tests"]
+    }
+}

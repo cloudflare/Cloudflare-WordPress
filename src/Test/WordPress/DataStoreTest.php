@@ -1,79 +1,29 @@
 <?php
 
-namespace CF\WordPress {
-
-    /*
-     * PHPUnit looks for global methods in the current namespace so to mock them we:
-     * 1. Create a class with methods that match the signatures of global methods we want to mock.
-     * 2. Create a global instance of that class
-     * 3. Create global (to the namespace) methods that return our class method
-     * 4. In setup() set our mock to the global instance of the class
-     */
-    class WordPressGlobalFunctions
-    {
-        public function get_option($key)
-        {
-        }
-        public function update_option($key, $value)
-        {
-        }
-        public function delete_option($key)
-        {
-        }
-    }
-
-    global $wordPressGlobalFunctions;
-    $wordPressGlobalFunctions = new WordPressGlobalFunctions();
-
-    /*
-     * https://codex.wordpress.org/Function_Reference/update_option
-     */
-    function update_option($key, $value)
-    {
-        global $wordPressGlobalFunctions;
-
-        return $wordPressGlobalFunctions->update_option($key, $value);
-    }
-
-    /*
-     * https://developer.wordpress.org/reference/functions/get_option/
-     */
-    function get_option($key)
-    {
-        global $wordPressGlobalFunctions;
-
-        return $wordPressGlobalFunctions->get_option($key);
-    }
-
-    function delete_option($key)
-    {
-        global $wordPressGlobalFunctions;
-
-        return $wordPressGlobalFunctions->delete_option($key);
-    }
-}
-
 namespace CF\Test\WordPress {
 
     use CF\WordPress\DataStore;
     use CF\API\Plugin;
+	use phpmock\phpunit\PHPMock;
 
     class DataStoreTest extends \PHPUnit_Framework_TestCase
     {
+		use PHPMock;
+
         protected $dataStore;
+		protected $mockDeleteOption;
+		protected $mockGetOption;
         protected $mockLogger;
-        protected $mockWordPressGlobalFunctions;
+		protected $mockUpdateOption;
 
         public function setup()
         {
-            global $wordPressGlobalFunctions;
-            $this->mockWordPressGlobalFunctions = $this->getMockBuilder('CF\WordPress\WordPressGlobalFunctions')
-                ->disableOriginalConstructor()
-                ->getMock();
-            $wordPressGlobalFunctions = $this->mockWordPressGlobalFunctions;
             $this->mockLogger = $this->getMockBuilder('CF\Integration\DefaultLogger')
                 ->disableOriginalConstructor()
                 ->getMock();
+			$this->mockDeleteOption = $this->getFunctionMock('CF\WordPress', 'delete_option');
+			$this->mockGetOption = $this->getFunctionMock('CF\WordPress', 'get_option');
+			$this->mockUpdateOption = $this->getFunctionMock('CF\WordPress', 'update_option');
             $this->dataStore = new DataStore($this->mockLogger);
         }
 
@@ -82,7 +32,7 @@ namespace CF\Test\WordPress {
             $apiKey = 'apiKey';
             $email = 'email';
 
-            $this->mockWordPressGlobalFunctions->method('update_option')->willReturn(true);
+            $this->mockUpdateOption->expects($this->any())->willReturn(true);
 
             $this->assertTrue($this->dataStore->createUserDataStore($apiKey, $email, null, null));
         }
@@ -94,11 +44,9 @@ namespace CF\Test\WordPress {
 
         public function testGetClientV4APIKeyReturnsCorrectValue()
         {
-            $apiKey = 'apiKey';
-            $pluginSettingObject = Plugin::createPluginSettingObject(DataStore::API_KEY, $apiKey, true, '');
-            $this->mockWordPressGlobalFunctions->method('get_option')->with(DataStore::API_KEY)->willReturn($pluginSettingObject);
-
-            $this->dataStore->getClientV4APIKey();
+			$apiKey = 'apiKey';
+			$this->mockGetOption->expects($this->once())->with(DataStore::API_KEY)->willReturn($apiKey);
+			$this->assertEquals($apiKey, $this->dataStore->getClientV4APIKey());
         }
 
         public function testGetHostAPIUserKeyReturnsNull()
@@ -109,49 +57,45 @@ namespace CF\Test\WordPress {
         public function testGetDomainNameCacheReturnsDomainIfItExistsInCache()
         {
             $cachedDomain = 'cachedDomain';
-            $pluginSettingObject = Plugin::createPluginSettingObject(DataStore::CACHED_DOMAIN_NAME, $cachedDomain, true, '');
-            $this->mockWordPressGlobalFunctions->method('get_option')->with(DataStore::CACHED_DOMAIN_NAME)->willReturn($pluginSettingObject);
-
-            $this->dataStore->getDomainNameCache();
+			$this->mockGetOption->expects($this->once())->with(DataStore::CACHED_DOMAIN_NAME)->willReturn($cachedDomain);
+			$this->assertEquals($cachedDomain, $this->dataStore->getDomainNameCache());
         }
 
         public function testSetDomainNameCacheSetsDomain()
         {
             $domain = 'domain.com';
-            $this->mockWordPressGlobalFunctions->method('update_option')->willReturn(true);
+			$this->mockUpdateOption->expects($this->once())->willReturn(true);
             $this->assertTrue($this->dataStore->setDomainNameCache($domain));
         }
 
         public function testGetCloudFlareEmailReturnsCorrectValue()
         {
             $email = 'email';
-            $pluginSettingObject = Plugin::createPluginSettingObject(DataStore::EMAIL, $email, true, '');
-            $this->mockWordPressGlobalFunctions->method('get_option')->with(DataStore::EMAIL)->willReturn($pluginSettingObject);
-
-            $this->dataStore->getCloudFlareEmail();
+			$this->mockGetOption->expects($this->once())->with(DataStore::EMAIL)->willReturn($email);
+            $this->assertEquals($email, $this->dataStore->getCloudFlareEmail());
         }
 
         public function testGetPluginSettingCallsGetOption()
         {
-            $this->mockWordPressGlobalFunctions->expects($this->once())->method('get_option');
-            $this->dataStore->getPluginSetting(Plugin::SETTING_DEFAULT_SETTINGS);
+			$this->mockGetOption->expects($this->once());
+			$this->dataStore->getPluginSetting(Plugin::SETTING_DEFAULT_SETTINGS);
         }
 
         public function testGetCallsEscSqlAndGetOption()
         {
-            $this->mockWordPressGlobalFunctions->expects($this->once())->method('get_option');
+			$this->mockGetOption->expects($this->once());
             $this->dataStore->get('key');
         }
 
         public function testSetCallsEscSqlAndUpdateOption()
         {
-            $this->mockWordPressGlobalFunctions->expects($this->once())->method('update_option');
+			$this->mockUpdateOption->expects($this->once());
             $this->dataStore->set('key', 'value');
         }
 
         public function testClearCallsSqlAndDeleteToption()
         {
-            $this->mockWordPressGlobalFunctions->expects($this->once())->method('delete_option');
+			$this->mockDeleteOption->expects($this->once());
             $this->dataStore->clear('key');
         }
     }
