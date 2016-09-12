@@ -4,8 +4,8 @@
     "require": {
         "cloudflare/cloudflare-plugin-backend": "^1.1", 
         "cloudflare/cf-ip-rewrite": "^1.0.0", 
-        "symfony/yaml": "~2.6", 
-        "guzzlehttp/guzzle": "~5.3"
+        "symfony/yaml": "~2.6",
+        "guzzle/guzzle": "~3.9"
     }, 
     "autoload": {
         "psr-4": {
