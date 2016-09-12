@@ -38,7 +38,8 @@ class ClientActions
     public function returnWordPressDomain()
     {
         $cf_zones_list = $this->api->callAPI($this->request);
-        $wordpress_domain = $this->wordpressAPI->getDomainList()[0];
+        $wordpress_domain_list = $this->wordpressAPI->getDomainList();
+        $wordpress_domain = $wordpress_domain_list[0];
 
         $domain_list = array();
         if ($this->api->responseOk($cf_zones_list)) {

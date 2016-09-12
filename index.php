@@ -1,8 +1,8 @@
 <?php
 if (!defined('ABSPATH')) { // Exit if accessed directly
-	exit;
+    exit;
 }
-require_once 'vendor/autoload.php';
+
 $config = new CF\Integration\DefaultConfig(file_get_contents('config.js', true));
 $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
 $dataStore = new CF\WordPress\DataStore($logger);
@@ -37,10 +37,10 @@ localStorage.cfEmail = '<?=$dataStore->getCloudFlareEmail();?>';
 function RestProxyCallback(opts) {
     //only proxy external REST calls
     if(opts.url.lastIndexOf("http", 0) === 0) {
-		if(!opts.parameters) {
-			opts.parameters = {};
-		}
-		opts.parameters['action'] = 'cloudflare_proxy'; //wordpress ajax action
+        if(!opts.parameters) {
+            opts.parameters = {};
+        }
+        opts.parameters['action'] = 'cloudflare_proxy'; //wordpress ajax action
 
         if(opts.method.toUpperCase() !== "GET") {
             if(!opts.body) {
@@ -54,7 +54,7 @@ function RestProxyCallback(opts) {
 
         opts.url = ajaxurl; //wordpress ajax global
     } else {
-    	opts.url = absoluteUrlBase + opts.url;
+        opts.url = absoluteUrlBase + opts.url;
     }
 }
 </script>

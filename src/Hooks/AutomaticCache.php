@@ -45,7 +45,8 @@ class AutomaticCache
             $wordpressIntegration = new \CF\Integration\DefaultIntegration($config, $wordpressAPI, $dataStore, $logger);
             $clientAPIClient = new \CF\WordPress\WordPressClientAPI($wordpressIntegration);
 
-            $wp_domain = $wordpressAPI->getDomainList()[0];
+            $wp_domain_list = $wordpressAPI->getDomainList();
+            $wp_domain = $wp_domain_list[0];
             if (count($wp_domain) > 0) {
                 $zoneTag = $clientAPIClient->getZoneTag($wp_domain);
 
@@ -64,6 +65,9 @@ class AutomaticCache
         $logger = new \CF\Integration\DefaultLogger($config->getValue('debug'));
         $dataStore = new \CF\WordPress\DataStore($logger);
 
-        return $dataStore->getPluginSetting(\CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE)[\CF\API\Plugin::SETTING_VALUE_KEY];
+        $cacheSettingObject = $dataStore->getPluginSetting(\CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
+        $cacheSettingValue = $cacheSettingObject[\CF\API\Plugin::SETTING_VALUE_KEY];
+
+        return $cacheSettingValue;
     }
 }
