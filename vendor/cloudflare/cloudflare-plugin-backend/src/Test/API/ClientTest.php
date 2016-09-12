@@ -85,7 +85,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $errorMessage = 'I am an error message';
 
-        $error = $this->getMockBuilder('GuzzleHttp\Exception\RequestException')
+        $error = $this->getMockBuilder('\Guzzle\Http\Exception\BadResponseException')
             ->disableOriginalConstructor()
             ->setMethods(array('getResponse', 'getBody', 'getMessage'))
             ->getMock();

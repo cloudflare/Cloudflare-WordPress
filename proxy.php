@@ -1,12 +1,12 @@
 <?php
+
 if (!defined('ABSPATH')) { // Exit if accessed directly
-	exit;
+    exit;
 }
-require_once 'vendor/autoload.php';
 
 header('Content-Type: application/json');
 
-$config = new CF\Integration\DefaultConfig(file_get_contents('config.js'));
+$config = new CF\Integration\DefaultConfig(file_get_contents('config.js', true));
 $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
 $dataStore = new CF\WordPress\DataStore($logger);
 $wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);
@@ -18,7 +18,8 @@ $requestRouter->addRouter('\CF\API\Plugin', \CF\WordPress\PluginRoutes::getRoute
 
 // Check if domain name needs to cached
 $wpDomain = $wordpressAPI->getOriginalDomain();
-$cachedDomain = $wordpressAPI->getDomainList()[0];
+$cachedDomainList = $wordpressAPI->getDomainList();
+$cachedDomain = $cachedDomainList[0];
 if (CF\WordPress\Utils::getRegistrableDomain($wpDomain) != $cachedDomain) {
     $domainName = $wpDomain;
 
@@ -46,7 +47,8 @@ $request = new CF\API\Request($method, $path, $parameters, $body);
 if ($request->getMethod() === 'GET') {
     $isCSRFTokenValid = true;
 } else {
-    $nonce = $request->getBody()['cfCSRFToken'];
+    $body = $request->getBody();
+    $nonce = $body['cfCSRFToken'];
     $isCSRFTokenValid = wp_verify_nonce($nonce, CF\WordPress\WordPressAPI::API_NONCE);
     unset($body['cfCSRFToken']);
 }

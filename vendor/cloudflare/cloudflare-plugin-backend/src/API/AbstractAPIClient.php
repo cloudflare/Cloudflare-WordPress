@@ -3,8 +3,8 @@
 namespace CF\API;
 
 use CF\Integration\IntegrationInterface;
-use GuzzleHttp;
-use GuzzleHttp\Exception\RequestException;
+use Guzzle\Http\Client;
+use Guzzle\Http\Exception\BadResponseException;
 
 abstract class AbstractAPIClient implements APIInterface
 {
@@ -35,11 +35,13 @@ abstract class AbstractAPIClient implements APIInterface
     public function callAPI(Request $request)
     {
         try {
-            $client = new GuzzleHttp\Client(['base_url' => $this->getEndpoint()]);
+            $client = new Client($this->getEndpoint());
 
             $request = $this->beforeSend($request);
 
-            $bodyType = (($request->getHeaders()[self::CONTENT_TYPE_KEY] === self::APPLICATION_JSON_KEY) ? 'json' : 'body');
+            $headers = $request->getHeaders();
+            $contentTypeHeader = $headers[self::CONTENT_TYPE_KEY];
+            $bodyType = (($contentTypeHeader === self::APPLICATION_JSON_KEY) ? 'json' : 'body');
 
             $requestOptions = array(
                 'headers' => $request->getHeaders(),
@@ -51,12 +53,21 @@ abstract class AbstractAPIClient implements APIInterface
                 $requestOptions['debug'] = fopen('php://stderr', 'w');
             }
 
-            $apiRequest = $client->createRequest($request->getMethod(), $request->getUrl(), $requestOptions);
+            $apiRequest = $client->createRequest($request->getMethod(), $request->getUrl(), $request->getHeaders(), $request->getBody(), $request->getParameters());
+
+            $method = $request->getMethod();
+
+            // Since Guzzle automatically overwrites a new header when the request
+            // is POST / PATCH / DELETE / PUT, we need to overwrite the Content-Type header
+            // with setBody() function.
+            if ($method !== 'GET') {
+                $apiRequest->setBody(json_encode($request->getBody()), 'application/json');
+            }
 
             $response = $client->send($apiRequest)->json();
 
             if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new RequestException('Error decoding client API JSON', $response);
+                throw new BadResponseException('Error decoding client API JSON', $response);
             }
 
             if (!$this->responseOk($response)) {
@@ -64,7 +75,7 @@ abstract class AbstractAPIClient implements APIInterface
             }
 
             return $response;
-        } catch (RequestException $e) {
+        } catch (BadResponseException $e) {
             $errorMessage = $this->getErrorMessage($e);
 
             $this->logAPICall($this->getAPIClientName(), array(
@@ -74,18 +85,18 @@ abstract class AbstractAPIClient implements APIInterface
                 'headers' => $request->getHeaders(),
                 'params' => $request->getParameters(),
                 'body' => $request->getBody(), ), true);
-            $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'code' => $e->getCode(), 'body' => $errorMessage, 'stacktrace' => $e->getTraceAsString()), true);
+            $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'reason' => $e->getResponse()->getReasonPhrase(), 'code' => $e->getResponse()->getStatusCode(), 'body' => $errorMessage, 'stacktrace' => $e->getTraceAsString()), true);
 
             return $this->createAPIError($errorMessage);
         }
     }
 
     /**
-     * @param RequestException $object
+     * @param BadResponseException $object
      *
      * @return string
      */
-    public function getErrorMessage(RequestException $error)
+    public function getErrorMessage(BadResponseException $error)
     {
         return $error->getMessage();
     }

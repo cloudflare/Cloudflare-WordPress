@@ -2,8 +2,6 @@
 
 namespace CF\API;
 
-use CF\Integration\DataStoreInterface;
-
 class Plugin extends Client
 {
     const PLUGIN_API_NAME = 'PLUGIN API';
@@ -63,8 +61,8 @@ class Plugin extends Client
         return array(
             'success' => true,
             'result' => $result,
-            'messages' => [],
-            'errors' => [],
+            'messages' => array(),
+            'errors' => array(),
         );
     }
 
@@ -73,12 +71,13 @@ class Plugin extends Client
      * @param $value
      * @param $editable
      * @param $modified_on
+     *
      * @return array
      */
     public function createPluginSettingObject($pluginSettingKey, $value, $editable, $modified_on)
     {
         //allow null for settings that have never been set
-        if($modified_on !== null) {
+        if ($modified_on !== null) {
             // Format ISO 8601
             $modified_on = date('c');
         }
