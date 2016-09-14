@@ -4,6 +4,11 @@
  * everything here.
  */
 
+/* fix WordPress logo touching the most top of the page */
+.cf-layout__row {
+    margin-top: 8px; /* new */      
+}
+
 /* fix WordPress AdminPanel Settings */
 #adminmenu .wp-submenu {
     margin-left: 0em; /* new */
