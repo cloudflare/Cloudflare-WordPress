@@ -13,26 +13,26 @@ use CF\API\AbstractPluginActions;
 
 class PluginActions extends AbstractPluginActions
 {
-	protected $api;
-	protected $clientAPI;
-	protected $request;
+    protected $api;
+    protected $clientAPI;
+    protected $request;
 
     public function __construct(DefaultIntegration $defaultIntegration, APIInterface $api, Request $request)
     {
         parent::__construct($defaultIntegration, $api, $request);
-		$this->clientAPI = new WordPressClientAPI($defaultIntegration);
-
+        $this->clientAPI = new WordPressClientAPI($defaultIntegration);
     }
 
-	public function setClientAPI(APIInterface $clientAPI) {
-		//$this->clientAPI inheirited from AbstractPluginActions
-		$this->clientAPI = $clientAPI;
-	}
+    public function setClientAPI(APIInterface $clientAPI)
+    {
+        // Inheirited from AbstractPluginActions
+        $this->clientAPI = $clientAPI;
+    }
 
     /*
      * PATCH /plugin/:id/settings/default_settings
      *
-     * Requests are syncronized
+     * Requests are synchronized
      */
     public function applyDefaultSettings()
     {
@@ -129,13 +129,7 @@ class PluginActions extends AbstractPluginActions
         }
 
         // Set Page Rules
-        $loginUrlPattern = wp_login_url();
         $adminUrlPattern = get_admin_url().'*';
-
-        $result &= $this->clientAPI->createPageRule($zoneId, $loginUrlPattern);
-        if (!$result) {
-            throw new PageRuleLimitException();
-        }
 
         $result &= $this->clientAPI->createPageRule($zoneId, $adminUrlPattern);
         if (!$result) {
