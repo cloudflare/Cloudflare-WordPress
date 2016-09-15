@@ -76645,7 +76645,7 @@ function asyncPluginFetchSettings(zoneId) {
             if ((0, _PluginAPI.pluginResponseOk)(response)) {
                 dispatch(pluginFetchSettingsSuccess(zoneId, response.body.result));
             } else {
-                dispatch((0, _notifications.notificationAddClientAPIError)(pluginFetchSettingsError(), error));
+                dispatch((0, _notifications.notificationAddClientAPIError)(pluginFetchSettingsError(), response));
             }
         });
     };
@@ -76664,7 +76664,7 @@ function asyncPluginUpdateSetting(settingName, zoneId, value) {
                     dispatch((0, _notifications.notificationAddSuccess)('container.applydefaultsettingscard.success', true));
                 }
             } else {
-                dispatch((0, _notifications.notificationAddClientAPIError)(pluginUpdateSettingError(zoneId, oldSetting), error));
+                dispatch((0, _notifications.notificationAddClientAPIError)(pluginUpdateSettingError(zoneId, oldSetting), response));
             }
         });
     };
@@ -76748,7 +76748,7 @@ function asyncLogin(email, password) {
                 dispatch(asyncUserLoginSuccess(response.body.response.cloudflare_email));
             } else {
                 dispatch(userLoginError());
-                dispatch((0, _notifications.notificationAddError)(error));
+                dispatch((0, _notifications.notificationAddError)(response));
             }
         });
     };
@@ -76762,7 +76762,7 @@ function asyncAPILogin(email, apiKey) {
                 dispatch(asyncUserLoginSuccess(email));
             } else {
                 dispatch(userLoginError());
-                dispatch((0, _notifications.notificationAddClientAPIError)(userLoginError(), error));
+                dispatch((0, _notifications.notificationAddClientAPIError)(userLoginError(), response));
             }
         });
     };
@@ -76801,7 +76801,7 @@ function asyncUserSignup(email, password) {
                 dispatch(asyncLogin(email, password));
             } else {
                 dispatch(userSignupError());
-                dispatch((0, _notifications.notificationAddError)(error));
+                dispatch((0, _notifications.notificationAddError)(response));
             }
         });
     };
@@ -76853,7 +76853,7 @@ function asyncZoneFetchAnalytics(zoneId) {
             if ((0, _CFClientV4API.v4ResponseOk)(response)) {
                 dispatch(zoneFetchAnalyticsSuccess(zoneId, response.body.result));
             } else {
-                dispatch((0, _notifications.notificationAddClientAPIError)(zoneFetchAnalyticsError(), error));
+                dispatch((0, _notifications.notificationAddClientAPIError)(zoneFetchAnalyticsError(), response));
             }
         });
     };
@@ -76924,7 +76924,7 @@ function asyncDNSRecordCreate(zoneId, type, name, content) {
                 //CloudFlare defaults new records with proxied = false.
                 dispatch(asyncDNSRecordUpdate(zoneId, response.body.result, true));
             } else {
-                dispatch((0, _notifications.notificationAddClientAPIError)(dnsRecordCreateError(), error));
+                dispatch((0, _notifications.notificationAddClientAPIError)(dnsRecordCreateError(), response));
             }
         });
     };
@@ -76957,7 +76957,7 @@ function asyncDNSRecordFetchList(zoneId) {
             if ((0, _CFClientV4API.v4ResponseOk)(response)) {
                 dispatch(dnsRecordFetchListSuccess(zoneId, response.body.result));
             } else {
-                dispatch((0, _notifications.notificationAddClientAPIError)(dnsRecordFetchListError(), error));
+                dispatch((0, _notifications.notificationAddClientAPIError)(dnsRecordFetchListError(), response));
             }
         });
     };
@@ -76991,7 +76991,7 @@ function asyncDNSRecordUpdate(zoneId, dnsRecord, proxied) {
             if ((0, _CFClientV4API.v4ResponseOk)(response)) {
                 dispatch(dnsRecordUpdateSuccess(zoneId, response.body.result));
             } else {
-                dispatch((0, _notifications.notificationAddClientAPIError)(dnsRecordUpdateError, error));
+                dispatch((0, _notifications.notificationAddClientAPIError)(dnsRecordUpdateError, response));
             }
         });
     };
@@ -77062,7 +77062,7 @@ function asyncZoneActivationCheck(zoneId) {
                 dispatch(zoneActivationCheckSuccess());
                 dispatch((0, _notifications.notificationAddSuccess)('container.activationCheckCard.success', true));
             } else {
-                dispatch(notificationAddClientAPIError(zoneActivationCheckError(), error));
+                dispatch(notificationAddClientAPIError(zoneActivationCheckError(), response));
             }
         });
     };
@@ -77096,7 +77096,7 @@ function asyncZoneProvisionCname(domainName) {
                 dispatch(asyncSetHostAPIProvisionedDomainActive(domainName));
             } else {
                 dispatch(zoneProvisionCnameError());
-                dispatch((0, _notifications.notificationAddError)(error));
+                dispatch((0, _notifications.notificationAddError)(response));
             } // zoneProvision business logic error
         });
     }; // end thunk dispatch
@@ -77129,7 +77129,7 @@ function asyncZoneProvisionFull(domainName) {
                 dispatch(asyncSetHostAPIProvisionedDomainActive(domainName));
             } else {
                 dispatch(zoneProvisionFullError());
-                dispatch((0, _notifications.notificationAddError)(error));
+                dispatch((0, _notifications.notificationAddError)(response));
             }
         }); //end fullZoneSet
     };
@@ -77155,7 +77155,7 @@ function asyncSetHostAPIProvisionedDomainActive(domainName) {
                 var normalizedZoneList = (0, _Schemas.normalizeZoneGetAll)(response.body.result);
                 dispatch((0, _activeZone.asyncZoneSetActiveZone)(normalizedZoneList.entities.zones[domainName]));
             } else {
-                dispatch((0, _notifications.notificationAddError)(error));
+                dispatch((0, _notifications.notificationAddError)(response));
             }
         });
     };
@@ -77212,7 +77212,7 @@ function asyncZonePurgeCacheIndividualFiles(zoneId, files) {
                 dispatch(zonePurgeCacheSuccess());
                 dispatch((0, _notifications.notificationAddSuccess)('container.purgeCacheCard.success', true));
             } else {
-                dispatch((0, _notifications.notificationAddClientAPIError)(zonePurgeCacheError(), error));
+                dispatch((0, _notifications.notificationAddClientAPIError)(zonePurgeCacheError(), response));
             }
         });
     };
@@ -77226,7 +77226,7 @@ function asyncZonePurgeCacheEverything(zoneId) {
                 dispatch(zonePurgeCacheSuccess());
                 dispatch((0, _notifications.notificationAddSuccess)('container.purgeCacheByURLCard.success', true));
             } else {
-                dispatch((0, _notifications.notificationAddClientAPIError)(zonePurgeCacheError(), error));
+                dispatch((0, _notifications.notificationAddClientAPIError)(zonePurgeCacheError(), response));
             }
         });
     };
@@ -77285,7 +77285,7 @@ function asyncZoneRailgunFetchAll(zoneId) {
             if ((0, _CFClientV4API.v4ResponseOk)(response)) {
                 dispatch(zoneRailgunFetchAllSuccess(zoneId, response.body.result));
             } else {
-                dispatch((0, _notifications.notificationAddClientAPIError)(zoneRailgunFetchAllError(), error));
+                dispatch((0, _notifications.notificationAddClientAPIError)(zoneRailgunFetchAllError(), response));
             }
         });
     };
@@ -77323,7 +77323,7 @@ function asyncZoneRailgunConnectionUpdate(zoneId, railgun, isConnected) {
             if ((0, _CFClientV4API.v4ResponseOk)(response)) {
                 dispatch(zoneRailgunConnectionUpdateSuccess(zoneId, response.body.result));
             } else {
-                dispatch((0, _notifications.notificationAddClientAPIError)(zoneRailgunConnectionUpdateError(zoneId, oldRailgun), error));
+                dispatch((0, _notifications.notificationAddClientAPIError)(zoneRailgunConnectionUpdateError(zoneId, oldRailgun), response));
             }
         });
     };
@@ -77379,7 +77379,7 @@ function asyncZoneFetchSettings(zoneId) {
             if ((0, _CFClientV4API.v4ResponseOk)(response)) {
                 dispatch(zoneFetchSettingsSuccess(zoneId, response.body.result));
             } else {
-                dispatch((0, _notifications.notificationAddClientAPIError)(zoneFetchSettingsError(), error));
+                dispatch((0, _notifications.notificationAddClientAPIError)(zoneFetchSettingsError(), response));
             }
         });
     };
@@ -77418,7 +77418,7 @@ function asyncZoneUpdateSetting(settingName, zoneId, value) {
             if ((0, _CFClientV4API.v4ResponseOk)(response)) {
                 dispatch(zoneUpdateSettingSuccess(zoneId, response.body.result));
             } else {
-                dispatch((0, _notifications.notificationAddClientAPIError)(zoneUpdateSettingError(zoneId, oldSetting), error));
+                dispatch((0, _notifications.notificationAddClientAPIError)(zoneUpdateSettingError(zoneId, oldSetting), response));
             }
         });
     };
@@ -77482,7 +77482,7 @@ function asyncZoneDelete(zoneId) {
                 dispatch(asyncFetchZones());
             } else {
                 dispatch(zoneDeleteError());
-                dispatch((0, _notifications.notificationAddError)(error));
+                dispatch((0, _notifications.notificationAddError)(response));
             }
         });
     };
@@ -77520,7 +77520,7 @@ function asyncFetchZones() {
                 }
             } else {
                 dispatch(zoneFetchError());
-                dispatch((0, _notifications.notificationAddError)(error));
+                dispatch((0, _notifications.notificationAddError)(response));
             }
         });
     };
@@ -78893,17 +78893,17 @@ var AppContainer = function (_Component) {
                     null,
                     _react2.default.createElement(
                         _cfComponentLayout.LayoutColumn,
-                        { width: 1 / 4 },
+                        { width: 1 / 5 },
                         ' '
                     ),
                     _react2.default.createElement(
                         _cfComponentLayout.LayoutColumn,
-                        { width: 2 / 4 },
+                        { width: 3 / 5 },
                         this.props.children
                     ),
                     _react2.default.createElement(
                         _cfComponentLayout.LayoutColumn,
-                        { width: 1 / 4 },
+                        { width: 1 / 5 },
                         ' '
                     )
                 ),
@@ -79117,8 +79117,6 @@ var _reactRedux = _dereq_('react-redux');
 
 var _reactIntl = _dereq_('react-intl');
 
-var _cfComponentModal = _dereq_('cf-component-modal');
-
 var _cfComponentCard = _dereq_('cf-component-card');
 
 var _cfComponentButton = _dereq_('cf-component-button');
@@ -79147,33 +79145,18 @@ var VALUE = true;
 var ApplyDefaultSettingsCard = function (_Component) {
     _inherits(ApplyDefaultSettingsCard, _Component);
 
-    function ApplyDefaultSettingsCard(props) {
+    function ApplyDefaultSettingsCard() {
         _classCallCheck(this, ApplyDefaultSettingsCard);
 
-        var _this = _possibleConstructorReturn(this, _Component.call(this, props));
-
-        _this.state = {
-            isModalOpen: false
-        };
-        return _this;
+        return _possibleConstructorReturn(this, _Component.apply(this, arguments));
     }
 
     ApplyDefaultSettingsCard.prototype.onButtonClick = function onButtonClick() {
-        this.setState({ isModalOpen: false });
-
         var _props = this.props;
         var activeZoneId = _props.activeZoneId;
         var dispatch = _props.dispatch;
 
         dispatch((0, _pluginSettings2.asyncPluginUpdateSetting)(SETTING_NAME, activeZoneId, VALUE));
-    };
-
-    ApplyDefaultSettingsCard.prototype.handleModalOpen = function handleModalOpen() {
-        this.setState({ isModalOpen: true });
-    };
-
-    ApplyDefaultSettingsCard.prototype.handleModalClose = function handleModalClose() {
-        this.setState({ isModalOpen: false });
     };
 
     ApplyDefaultSettingsCard.prototype.render = function render() {
@@ -79204,51 +79187,8 @@ var ApplyDefaultSettingsCard = function (_Component) {
                         null,
                         this.props.isFetching === SETTING_NAME ? _react2.default.createElement(_cfComponentLoading2.default, null) : _react2.default.createElement(
                             _cfComponentButton.Button,
-                            { type: 'primary', onClick: this.handleModalOpen.bind(this) },
+                            { type: 'primary', onClick: this.onButtonClick.bind(this) },
                             _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'container.applydefaultsettingscard.button' })
-                        ),
-                        _react2.default.createElement(
-                            _cfComponentModal.Modal,
-                            {
-                                isOpen: this.state.isModalOpen,
-                                onRequestClose: this.handleModalClose.bind(this) },
-                            _react2.default.createElement(
-                                _cfComponentModal.ModalHeader,
-                                null,
-                                _react2.default.createElement(
-                                    _cfComponentModal.ModalTitle,
-                                    null,
-                                    _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'container.applydefaultsettingscard.modal.title' })
-                                ),
-                                _react2.default.createElement(_cfComponentModal.ModalClose, { onClick: this.handleModalClose.bind(this) })
-                            ),
-                            _react2.default.createElement(
-                                _cfComponentModal.ModalBody,
-                                null,
-                                _react2.default.createElement(
-                                    'p',
-                                    null,
-                                    _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'container.applydefaultsettingscard.modal.description' })
-                                )
-                            ),
-                            _react2.default.createElement(
-                                _cfComponentModal.ModalFooter,
-                                null,
-                                _react2.default.createElement(
-                                    _cfComponentModal.ModalActions,
-                                    null,
-                                    _react2.default.createElement(
-                                        _cfComponentButton.Button,
-                                        { type: 'primary', onClick: this.onButtonClick.bind(this) },
-                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'container.applydefaultsettingscard.modal.button' })
-                                    ),
-                                    _react2.default.createElement(
-                                        _cfComponentButton.Button,
-                                        { onClick: this.handleModalClose.bind(this) },
-                                        _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'container.applydefaultsettingscard.modal.buttonCancel' })
-                                    )
-                                )
-                            )
                         )
                     )
                 )
@@ -79268,7 +79208,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ApplyDefaultSettingsCard));
 
-},{"../../actions/pluginSettings":535,"../../selectors/pluginSettings":611,"../../utils/utils":620,"cf-component-button":5,"cf-component-card":16,"cf-component-loading":88,"cf-component-modal":99,"react":511,"react-intl":290,"react-redux":312}],562:[function(_dereq_,module,exports){
+},{"../../actions/pluginSettings":535,"../../selectors/pluginSettings":611,"../../utils/utils":620,"cf-component-button":5,"cf-component-card":16,"cf-component-loading":88,"react":511,"react-intl":290,"react-redux":312}],562:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81173,9 +81113,9 @@ var MinifyCard = function (_Component) {
         var formatMessage = this.props.intl.formatMessage;
         var modifiedDate = this.props.modifiedDate;
 
-
-        this.state.checkboxValues = [];
+        // this.state.checkboxValues = [];
         //convert on/off to true/false
+
         for (var key in this.props.minifyValues) {
             if (this.props.minifyValues[key] === 'on') {
                 this.state.checkboxValues.push(key);
