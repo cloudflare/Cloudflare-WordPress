@@ -26,7 +26,6 @@ class Init
         add_action('plugin_action_links_cloudflare/cloudflare.php', array('\CF\Hooks\Init', 'pluginActionLinks'));
     }
 
-    // "Save and Activate" pressed
     public static function cloudflareInit()
     {
         $ipRewrite = new IpRewrite();
@@ -73,8 +72,8 @@ class Init
         // NARNIA!!
     }
 
-	public static function initProxy()
-	{
-		include WP_PLUGIN_DIR.'/cloudflare/proxy.php';
-	}
+    public static function initProxy()
+    {
+        include WP_PLUGIN_DIR.'/cloudflare/proxy.php';
+    }
 }
