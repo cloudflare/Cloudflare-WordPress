@@ -3,7 +3,7 @@ Contributors: jwineman, thellimist, IcyApril
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 4.6
-Stable tag: 3.0
+Stable tag: 3.0.0
 License: BSD-3-Clause
 
 All of CloudFlare’s performance and security benefits in a simple one-click install of recommended settings specifically developed for WordPress.
@@ -107,5 +107,3 @@ Make sure that the php5-curl extension is installed on your system.
 
 * Updated user interface
 * Started to support WordPress 3.4+ instead of 2.8+ because we depend on the  [WordPress Options API](https://codex.wordpress.org/Options_API)  
-
-
