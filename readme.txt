@@ -84,6 +84,13 @@ Make sure that the php5-curl extension is installed on your system.
 
 == Changelog ==
 
+= 3.0.1 - 2016-09-16 =
+
+*Fixed*
+
+* Fixed HTTP/2 Server Push exceeding the header limit Cloudflare has which caused 520 errors.
+* Fixed warning message in HTTP/2 Server Push.
+
 = 3.0.0 - 2016-09-15 =
 
 *Added*
