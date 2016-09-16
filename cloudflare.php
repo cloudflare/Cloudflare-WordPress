@@ -36,4 +36,5 @@ add_action('wp_ajax_cloudflare_proxy', array('\CF\Hooks\Init', 'initProxy'));
 add_action('init', array('\CF\Hooks\AutomaticCache', 'init'));
 
 // Enable HTTP2 Server Push
-add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
+// Removed until the problems are indentified and fixed
+// add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
