@@ -42,6 +42,17 @@ class HTTP2ServerPush
                 return $src;
             }
 
+            // If the current header size is larger than 6KB (6144 bytes)
+            // ignore following resources which can be pushed
+            // This is a workaround for Cloudflare's 8KB header limit
+            $headerAsString = implode('  ', headers_list());
+
+            // +2 comes from the last CRLF since it's two bytes
+            $headerSize = strlen($headerAsString) + 2;
+            if ($headerSize > 6144) {
+                return $src;
+            }
+
             if (!empty($preload_src)) {
                 header(
                     sprintf(
@@ -67,9 +78,11 @@ class HTTP2ServerPush
     {
         $resource_types = array('script', 'style');
         array_walk($resource_types, function ($resource_type) {
-            array_walk($GLOBALS["http2_{$resource_type}_srcs"], function ($src) use ($resource_type) {
-                printf('<link rel="preload"  href="%s" as="%s">', esc_url($src), esc_html($resource_type));
-            });
+            if (is_array($GLOBALS["http2_{$resource_type}_srcs"])) {
+                array_walk($GLOBALS["http2_{$resource_type}_srcs"], function ($src) use ($resource_type) {
+                    printf('<link rel="preload"  href="%s" as="%s">', esc_url($src), esc_html($resource_type));
+                });
+            }
         });
     }
 
