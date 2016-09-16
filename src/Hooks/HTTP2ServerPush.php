@@ -78,9 +78,11 @@ class HTTP2ServerPush
     {
         $resource_types = array('script', 'style');
         array_walk($resource_types, function ($resource_type) {
-            array_walk($GLOBALS["http2_{$resource_type}_srcs"], function ($src) use ($resource_type) {
-                printf('<link rel="preload"  href="%s" as="%s">', esc_url($src), esc_html($resource_type));
-            });
+            if (is_array($GLOBALS["http2_{$resource_type}_srcs"])) {
+                array_walk($GLOBALS["http2_{$resource_type}_srcs"], function ($src) use ($resource_type) {
+                    printf('<link rel="preload"  href="%s" as="%s">', esc_url($src), esc_html($resource_type));
+                });
+            }
         });
     }
 
