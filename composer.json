@@ -12,7 +12,7 @@
             "CF\\": "src/"
         }
     }, 
-    "version": "3.0.1", 
+    "version": "3.0.2", 
     "scripts": {
         "test": "vendor/bin/phpunit", 
         "format": "vendor/bin/phpcs -n --standard=PSR2 --extensions=php,live.php src/",
