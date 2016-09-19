@@ -40,19 +40,35 @@ function RestProxyCallback(opts) {
         if(!opts.parameters) {
             opts.parameters = {};
         }
-        opts.parameters['action'] = 'cloudflare_proxy'; //wordpress ajax action
+        
+        // WordPress Ajax Action
+        opts.parameters['action'] = 'cloudflare_proxy';
 
         if(opts.method.toUpperCase() !== "GET") {
             if(!opts.body) {
                 opts.body = {};
             }
+
             opts.body['cfCSRFToken'] = cfCSRFToken;
             opts.body['proxyURL'] = opts.url;
         } else {
-            opts.parameters['proxyURL'] = opts.url;
+            var clientAPIURL = '<?= \CF\API\Client::ENDPOINT ?>';
+            var pluginAPIURL = '<?= \CF\API\Plugin::ENDPOINT ?>';
+
+            // If opts url begins with clientAPIURL or pluginAPIURL
+            // Remove the api url and assign the rest to proxyURL
+            if (opts.url.substring(0, clientAPIURL.length) === clientAPIURL) {
+                opts.parameters['proxyURL'] = opts.url.substring(clientAPIURL.
+                    length);
+                opts.parameters['proxyURLType'] = 'CLIENT';
+            } else if (opts.url.substring(0, pluginAPIURL.length) === pluginAPIURL) {
+                opts.parameters['proxyURL'] = opts.url.substring(pluginAPIURL.length);
+                opts.parameters['proxyURLType'] = 'PLUGIN';
+            }
         }
 
-        opts.url = ajaxurl; //wordpress ajax global
+        // WordPress Ajax Global
+        opts.url = ajaxurl; 
     } else {
         opts.url = absoluteUrlBase + opts.url;
     }

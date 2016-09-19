@@ -37,8 +37,18 @@ if (CF\WordPress\Utils::getRegistrableDomain($wpDomain) != $cachedDomain) {
 $method = $_SERVER['REQUEST_METHOD'];
 $parameters = $_GET;
 $body = json_decode(file_get_contents('php://input'), true);
-$path = (strtoupper($method === 'GET') ? $_GET['proxyURL'] : $body['proxyURL']);
+$path = null;
+if (strtoupper($method === 'GET')) {
+    if ($_GET['proxyURLType'] === 'CLIENT') {
+        $path = \CF\API\Client::ENDPOINT.$_GET['proxyURL'];
+    } elseif ($_GET['proxyURLType'] === 'PLUGIN') {
+        $path = \CF\API\Plugin::ENDPOINT.$_GET['proxyURL'];
+    }
+} else {
+    $path = $body['proxyURL'];
+}
 
+unset($parameters['proxyURLType']);
 unset($parameters['proxyURL']);
 unset($body['proxyURL']);
 $request = new CF\API\Request($method, $path, $parameters, $body);
