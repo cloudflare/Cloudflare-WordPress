@@ -49,7 +49,7 @@ register_activation_hook(__FILE__, array($cloudflareHooks, 'activate'));
 register_deactivation_hook(__FILE__, array($cloudflareHooks, 'deactivate'));
 
 // Load Uninstall Script
-register_uninstall_hook(__FILE__, array($cloudflareHooks, 'uninstall'));
+register_uninstall_hook(__FILE__, array('\CF\WordPress\Uninstall', 'init'));
 
 // Load AutomaticCache
 add_action('switch_theme', array($cloudflareHooks, 'purgeCache'));
