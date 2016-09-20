@@ -21,17 +21,26 @@ $wpDomain = $wordpressAPI->getOriginalDomain();
 $cachedDomainList = $wordpressAPI->getDomainList();
 $cachedDomain = $cachedDomainList[0];
 if (CF\WordPress\Utils::getRegistrableDomain($wpDomain) != $cachedDomain) {
-    $domainName = $wpDomain;
-
     $wordPressClientAPI = new \CF\WordPress\WordPressClientAPI($wordpressIntegration);
-    $response = $wordPressClientAPI->getZones();
-    $validDomainName = $wordpressAPI->getValidCloudflareDomain($response, $wpDomain);
 
-    if ($wordPressClientAPI->responseOK($response) && $validDomainName) {
-        $domainName = CF\WordPress\Utils::getRegistrableDomain($wpDomain);
+    // Since we may not be logged in yet we need to check the credentials being set
+    if ($wordPressClientAPI->isCrendetialsSet()) {
+        // If it's not a subdomain cache the current domain
+        $domainName = $wpDomain;
+
+        // Get cloudflare zones to find if the current domain is a subdomain
+        // of any cloudflare zones registered
+        $response = $wordPressClientAPI->getZones();
+        $validDomainName = $wordpressAPI->checkIfValidCloudflareSubdomain($response, $wpDomain);
+
+        // Check if it's a subdomain, if it is cache the zone instead of the
+        // subdomain
+        if ($wordPressClientAPI->responseOK($response) && $validDomainName) {
+            $domainName = CF\WordPress\Utils::getRegistrableDomain($wpDomain);
+        }
+
+        $wordpressAPI->setDomainNameCache($domainName);
     }
-
-    $wordpressAPI->setDomainNameCache($domainName);
 }
 
 $method = $_SERVER['REQUEST_METHOD'];
