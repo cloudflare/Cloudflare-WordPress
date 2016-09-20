@@ -53,31 +53,40 @@ unset($parameters['proxyURL']);
 unset($body['proxyURL']);
 $request = new CF\API\Request($method, $path, $parameters, $body);
 
-// Only check CSRF if its not a GET request
-if ($request->getMethod() === 'GET') {
-    $isCSRFTokenValid = true;
+$response = null;
+if (isCloudFlareCSRFTokenValid($request)) {
+	$response = $requestRouter->route($request);
 } else {
-    $body = $request->getBody();
-    $nonce = $body['cfCSRFToken'];
-    $isCSRFTokenValid = wp_verify_nonce($nonce, CF\WordPress\WordPressAPI::API_NONCE);
-    unset($body['cfCSRFToken']);
+	$message = 'CSRF Token not valid.';
+	$response = array(
+		'result' => null,
+		'success' => false,
+		'errors' => array(
+			array(
+				'code' => '',
+				'message' => $message,
+			),
+		),
+		'messages' => array(),
+	);
 }
 
-if ($isCSRFTokenValid) {
-    $response = $requestRouter->route($request);
-} else {
-    $message = 'CSRF Token not valid.';
-    $response = array(
-        'result' => null,
-        'success' => false,
-        'errors' => array(
-            array(
-                'code' => '',
-                'message' => $message,
-            ),
-        ),
-        'messages' => array(),
-    );
+/**
+ * https://codex.wordpress.org/Function_Reference/wp_verify_nonce
+ *
+ * Boolean false if the nonce is invalid. Otherwise, returns an integer with the value of:
+ * 1 – if the nonce has been generated in the past 12 hours or less.
+ * 2 – if the nonce was generated between 12 and 24 hours ago.
+ *
+ * @param CF\API\Request $request
+ * @return bool
+ */
+function isCloudFlareCSRFTokenValid($request) {
+	if($request->getMethod() === 'GET') {
+		return true;
+	}
+	$body = $request->getBody();
+	return (wp_verify_nonce($body['cfCSRFToken'], CF\WordPress\WordPressAPI::API_NONCE) !== false);
 }
 
 //die is how wordpress ajax keeps the rest of the app from loading during an ajax request
