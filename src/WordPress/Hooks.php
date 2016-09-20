@@ -2,154 +2,156 @@
 
 namespace CF\WordPress;
 
-use \CloudFlare\IpRewrite;
+use CloudFlare\IpRewrite;
 
-class Hooks {
+class Hooks
+{
+    protected $api;
+    protected $config;
+    protected $dataStore;
+    protected $integrationAPI;
+    protected $logger;
 
-	protected $api;
-	protected $config;
-	protected $dataStore;
-	protected $integrationAPI;
-	protected $logger;
+    const CF_MIN_PHP_VERSION = '5.3';
+    const CF_MIN_WP_VERSION = '3.4';
 
-	const CF_MIN_PHP_VERSION = '5.3';
-	const CF_MIN_WP_VERSION = '3.4';
-
-	/**
-	 * @param \CF\Integration\IntegrationInterface $integrationContext
+    /**
+     * @param \CF\Integration\IntegrationInterface $integrationContext
      */
-	public function __construct(\CF\Integration\IntegrationInterface $integrationContext)
-	{
-		$this->api = new \CF\WordPress\WordPressClientAPI($integrationContext);
-		$this->config = $integrationContext->getConfig();
-		$this->dataStore = $integrationContext->getDataStore();
-		$this->integrationAPI = $integrationContext->getIntegrationAPI();
-		$this->logger = $integrationContext->getLogger();
-	}
+    public function __construct(\CF\Integration\IntegrationInterface $integrationContext)
+    {
+        $this->api = new \CF\WordPress\WordPressClientAPI($integrationContext);
+        $this->config = $integrationContext->getConfig();
+        $this->dataStore = $integrationContext->getDataStore();
+        $this->integrationAPI = $integrationContext->getIntegrationAPI();
+        $this->logger = $integrationContext->getLogger();
+    }
 
-	/**
-	 * @param \CF\API\APIInterface $api
+    /**
+     * @param \CF\API\APIInterface $api
      */
-	public function setAPI(\CF\API\APIInterface $api){
-		$this->api = $api;
-	}
+    public function setAPI(\CF\API\APIInterface $api)
+    {
+        $this->api = $api;
+    }
 
-	public function init() {
-		$this->restoreOriginalIP();
-	}
+    public function init()
+    {
+        $this->restoreOriginalIP();
+    }
 
-	public function restoreOriginalIP()
-	{
-		$ipRewrite = new IpRewrite();
-		if ($ipRewrite->isCloudFlare()) {
-			/*
-			 * Fixes issues with Flexible-SSL
-			 */
-			if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-				$_SERVER['HTTPS'] = 'on';
-			}
-		}
-	}
+    public function restoreOriginalIP()
+    {
+        $ipRewrite = new IpRewrite();
 
-	public function cloudflareConfigPage()
-	{
-		if (function_exists('add_options_page')) {
-			add_options_page(__('CloudFlare Configuration'), __('CloudFlare'), 'manage_options', 'cloudflare', array($this, 'cloudflareIndexPage'));
-		}
-	}
+        if ($ipRewrite->isCloudFlare()) {
+            // Fixes issues with Flexible-SSL
+            if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+                $_SERVER['HTTPS'] = 'on';
+            }
+        }
+    }
 
-	public function cloudflareIndexPage()
-	{
-		include WP_PLUGIN_DIR.'/cloudflare/index.php';
-	}
+    public function cloudflareConfigPage()
+    {
+        if (function_exists('add_options_page')) {
+            add_options_page(__('CloudFlare Configuration'), __('CloudFlare'), 'manage_options', 'cloudflare', array($this, 'cloudflareIndexPage'));
+        }
+    }
 
-	public function pluginActionLinks($links)
-	{
-		$links[] = '<a href="'.get_admin_url(null, 'options-general.php?page=cloudflare').'">Settings</a>';
+    public function cloudflareIndexPage()
+    {
+        include WP_PLUGIN_DIR.'/cloudflare/index.php';
+    }
 
-		return $links;
-	}
+    public function pluginActionLinks($links)
+    {
+        $links[] = '<a href="'.get_admin_url(null, 'options-general.php?page=cloudflare').'">Settings</a>';
 
-	public function cloudflareAdminInit()
-	{
-		// NARNIA!!
-	}
+        return $links;
+    }
 
-	public function initProxy()
-	{
-		include WP_PLUGIN_DIR.'/cloudflare/proxy.php';
-	}
+    public function cloudflareAdminInit()
+    {
+        // NARNIA!!
+    }
 
-	public function checkVersionCompatibility()
-	{
-		$this->checkDependenciesExist();
-		//wordpress global
-		global $wp_version;
+    public function initProxy()
+    {
+        include WP_PLUGIN_DIR.'/cloudflare/proxy.php';
+    }
 
-		if (version_compare(PHP_VERSION, self::CF_MIN_PHP_VERSION, '<')) {
-			$flag = 'PHP';
-			$version = self::CF_MIN_PHP_VERSION;
-		}
+    public function activate()
+    {
+        $this->checkVersionCompatibility();
+        $this->checkDependenciesExist();
+    }
 
-		if (version_compare($wp_version, self::CF_MIN_WP_VERSION, '<')) {
-			$flag = 'WordPress';
-			$version = self::CF_MIN_WP_VERSION;
-		}
+    public function checkVersionCompatibility()
+    {
+        //wordpress global
+        global $wp_version;
 
-		if (isset($flag) || isset($version)) {
-			// Deactivate Plugin
-			deactivate_plugins(basename(__FILE__));
+        if (version_compare(PHP_VERSION, self::CF_MIN_PHP_VERSION, '<')) {
+            $flag = 'PHP';
+            $version = self::CF_MIN_PHP_VERSION;
+        }
 
-			// Kill Execution
-			wp_die('<p><strong>Cloudflare</strong> plugin requires '.$flag.'  version '.$version.' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+        if (version_compare($wp_version, self::CF_MIN_WP_VERSION, '<')) {
+            $flag = 'WordPress';
+            $version = self::CF_MIN_WP_VERSION;
+        }
 
-			return;
-		}
-	}
+        if (isset($flag) || isset($version)) {
+            // Deactivate Plugin
+            deactivate_plugins(basename(__FILE__));
 
-	public function checkDependenciesExist()
-	{
-		// Guzzle3 depends on php5-curl. If dependency does not exist kill the plugin.
-		if (!extension_loaded('curl')) {
-			// Deactivate Plugin
-			deactivate_plugins(basename(__FILE__));
+            // Kill Execution
+            wp_die('<p><strong>Cloudflare</strong> plugin requires '.$flag.'  version '.$version.' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
 
-			wp_die('<p><strong>Cloudflare</strong> plugin requires php5-curl to be installed.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+            return;
+        }
+    }
 
-			return;
-		}
-	}
+    public function checkDependenciesExist()
+    {
+        // Guzzle3 depends on php5-curl. If dependency does not exist kill the plugin.
+        if (!extension_loaded('curl')) {
+            // Deactivate Plugin
+            deactivate_plugins(basename(__FILE__));
 
-	public function deactivate() {
-		$this->dataStore->clearDataStore();
-	}
+            wp_die('<p><strong>Cloudflare</strong> plugin requires php5-curl to be installed.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
 
-	public function uninstall() {
-		$this->dataStore->clearDataStore();
-	}
+            return;
+        }
+    }
 
-	public function purgeCache()
-	{
-		if ($this->isPluginSpecificCacheEnabled()) {
-			$wp_domain_list = $this->integrationAPI->getDomainList();
-			$wp_domain = $wp_domain_list[0];
-			if (count($wp_domain) > 0) {
-				$zoneTag = $this->api->getZoneTag($wp_domain);
+    public function deactivate()
+    {
+        $this->dataStore->clearDataStore();
+    }
 
-				if (isset($zoneTag)) {
-					// Do not care of the return value
-					$this->api->zonePurgeCache($zoneTag);
-				}
-			}
-		}
-	}
+    public function purgeCache()
+    {
+        if ($this->isPluginSpecificCacheEnabled()) {
+            $wp_domain_list = $this->integrationAPI->getDomainList();
+            $wp_domain = $wp_domain_list[0];
+            if (count($wp_domain) > 0) {
+                $zoneTag = $this->api->getZoneTag($wp_domain);
 
-	public function isPluginSpecificCacheEnabled()
-	{
-		$cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
-		$cacheSettingValue = $cacheSettingObject[\CF\API\Plugin::SETTING_VALUE_KEY];
+                if (isset($zoneTag)) {
+                    // Do not care of the return value
+                    $this->api->zonePurgeCache($zoneTag);
+                }
+            }
+        }
+    }
 
-		return $cacheSettingValue;
-	}
+    public function isPluginSpecificCacheEnabled()
+    {
+        $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
+        $cacheSettingValue = $cacheSettingObject[\CF\API\Plugin::SETTING_VALUE_KEY];
+
+        return $cacheSettingValue;
+    }
 }
-
