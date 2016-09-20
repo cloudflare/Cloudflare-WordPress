@@ -110,5 +110,9 @@ class Hooks {
 			return;
 		}
 	}
+
+	public function deactivate() {
+		$this->dataStore->clearDataStore();
+	}
 }
 

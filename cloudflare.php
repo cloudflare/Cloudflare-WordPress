@@ -41,7 +41,7 @@ add_action('plugin_action_links_cloudflare/cloudflare.php', array($cloudflareHoo
 register_activation_hook(__FILE__, array($cloudflareHooks, 'checkVersionCompatibility'));
 
 // Load Deactivation Script
-register_deactivation_hook(__FILE__, array('\CF\Hooks\Deactivation', 'init'));
+register_deactivation_hook(__FILE__, array($cloudflareHooks, 'deactivate'));
 
 // Load Uninstall Script
 register_uninstall_hook(__FILE__, array('\CF\Hooks\Uninstall', 'init'));
