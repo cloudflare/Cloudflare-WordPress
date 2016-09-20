@@ -2,116 +2,85 @@
 
 namespace CF\WordPress;
 
-use \CloudFlare\IpRewrite;
+use CloudFlare\IpRewrite;
 
-class Hooks {
+class Hooks
+{
+    protected $api;
+    protected $config;
+    protected $dataStore;
+    protected $integrationAPI;
+    protected $logger;
 
-	protected $api;
-	protected $config;
-	protected $dataStore;
-	protected $integrationAPI;
-	protected $logger;
+    const CF_MIN_PHP_VERSION = '5.3';
+    const CF_MIN_WP_VERSION = '3.4';
 
-	const CF_MIN_PHP_VERSION = '5.3';
-	const CF_MIN_WP_VERSION = '3.4';
-
-	/**
-	 * @param \CF\Integration\IntegrationInterface $integrationContext
+    /**
+     * @param \CF\Integration\IntegrationInterface $integrationContext
      */
-	public function __construct(\CF\Integration\IntegrationInterface $integrationContext)
-	{
-		$this->api = new \CF\WordPress\WordPressClientAPI($integrationContext);
-		$this->config = $integrationContext->getConfig();
-		$this->dataStore = $integrationContext->getDataStore();
-		$this->integrationAPI = $integrationContext->getIntegrationAPI();
-		$this->logger = $integrationContext->getLogger();
-	}
+    public function __construct(\CF\Integration\IntegrationInterface $integrationContext)
+    {
+        $this->api = new \CF\WordPress\WordPressClientAPI($integrationContext);
+        $this->config = $integrationContext->getConfig();
+        $this->dataStore = $integrationContext->getDataStore();
+        $this->integrationAPI = $integrationContext->getIntegrationAPI();
+        $this->logger = $integrationContext->getLogger();
+    }
 
-	/**
-	 * @param \CF\API\APIInterface $api
+    /**
+     * @param \CF\API\APIInterface $api
      */
-	public function setAPI(\CF\API\APIInterface $api){
-		$this->api = $api;
-	}
+    public function setAPI(\CF\API\APIInterface $api)
+    {
+        $this->api = $api;
+    }
 
-	public function init() {
-		$this->restoreOriginalIP();
-	}
+    public function init()
+    {
+        $this->restoreOriginalIP();
+    }
 
-	public function restoreOriginalIP()
-	{
-		$ipRewrite = new IpRewrite();
-		if ($ipRewrite->isCloudFlare()) {
-			/*
-			 * Fixes issues with Flexible-SSL
-			 */
-			if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-				$_SERVER['HTTPS'] = 'on';
-			}
-		}
-	}
+    public function restoreOriginalIP()
+    {
+        $ipRewrite = new IpRewrite();
 
-	public function cloudflareConfigPage()
-	{
-		if (function_exists('add_options_page')) {
-			add_options_page(__('CloudFlare Configuration'), __('CloudFlare'), 'manage_options', 'cloudflare', array($this, 'cloudflareIndexPage'));
-		}
-	}
+        if ($ipRewrite->isCloudFlare()) {
+            // Fixes issues with Flexible-SSL
+            if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+                $_SERVER['HTTPS'] = 'on';
+            }
+        }
+    }
 
-	public function cloudflareIndexPage()
-	{
-		include WP_PLUGIN_DIR.'/cloudflare/index.php';
-	}
+    public function cloudflareConfigPage()
+    {
+        if (function_exists('add_options_page')) {
+            add_options_page(__('CloudFlare Configuration'), __('CloudFlare'), 'manage_options', 'cloudflare', array($this, 'cloudflareIndexPage'));
+        }
+    }
 
-	public function pluginActionLinks($links)
-	{
-		$links[] = '<a href="'.get_admin_url(null, 'options-general.php?page=cloudflare').'">Settings</a>';
+    public function cloudflareIndexPage()
+    {
+        include WP_PLUGIN_DIR.'/cloudflare/index.php';
+    }
 
-		return $links;
-	}
+    public function pluginActionLinks($links)
+    {
+        $links[] = '<a href="'.get_admin_url(null, 'options-general.php?page=cloudflare').'">Settings</a>';
 
-	public function cloudflareAdminInit()
-	{
-		// NARNIA!!
-	}
+        return $links;
+    }
 
-	public function initProxy()
-	{
-		include WP_PLUGIN_DIR.'/cloudflare/proxy.php';
-	}
+    public function cloudflareAdminInit()
+    {
+        // NARNIA!!
+    }
 
+    public function initProxy()
+    {
+        include WP_PLUGIN_DIR.'/cloudflare/proxy.php';
+    }
 
-	public function deactivate() {
-		$this->dataStore->clearDataStore();
-	}
-
-	public function uninstall() {
-		$this->dataStore->clearDataStore();
-	}
-
-	public function purgeCache()
-	{
-		if ($this->isPluginSpecificCacheEnabled()) {
-			$wp_domain_list = $this->integrationAPI->getDomainList();
-			$wp_domain = $wp_domain_list[0];
-			if (count($wp_domain) > 0) {
-				$zoneTag = $this->api->getZoneTag($wp_domain);
-
-				if (isset($zoneTag)) {
-					// Do not care of the return value
-					$this->api->zonePurgeCache($zoneTag);
-				}
-			}
-		}
-	}
-
-	public function isPluginSpecificCacheEnabled()
-	{
-		$cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
-		$cacheSettingValue = $cacheSettingObject[\CF\API\Plugin::SETTING_VALUE_KEY];
-
-		return $cacheSettingValue;
-	}
     public function activate()
     {
         $this->checkVersionCompatibility();
@@ -156,5 +125,33 @@ class Hooks {
             return;
         }
     }
-}
 
+    public function deactivate()
+    {
+        $this->dataStore->clearDataStore();
+    }
+
+    public function purgeCache()
+    {
+        if ($this->isPluginSpecificCacheEnabled()) {
+            $wp_domain_list = $this->integrationAPI->getDomainList();
+            $wp_domain = $wp_domain_list[0];
+            if (count($wp_domain) > 0) {
+                $zoneTag = $this->api->getZoneTag($wp_domain);
+
+                if (isset($zoneTag)) {
+                    // Do not care of the return value
+                    $this->api->zonePurgeCache($zoneTag);
+                }
+            }
+        }
+    }
+
+    public function isPluginSpecificCacheEnabled()
+    {
+        $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
+        $cacheSettingValue = $cacheSettingObject[\CF\API\Plugin::SETTING_VALUE_KEY];
+
+        return $cacheSettingValue;
+    }
+}
