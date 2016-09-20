@@ -10,9 +10,6 @@ License: BSD-3-Clause
 
 require_once 'vendor/autoload.php';
 
-const CF_MIN_PHP_VERSION = '5.3';
-const CF_MIN_WP_VERSION = '3.4';
-
 if (!defined('ABSPATH')) { // Exit if accessed directly
     exit;
 }
@@ -41,7 +38,7 @@ add_action('admin_init', array($cloudflareHooks, 'cloudflareAdminInit'));
 add_action('plugin_action_links_cloudflare/cloudflare.php', array($cloudflareHooks, 'pluginActionLinks'));
 
 // Load Activation Script
-register_activation_hook(__FILE__, array('\CF\Hooks\Activation', 'init'));
+register_activation_hook(__FILE__, array($cloudflareHooks, 'checkVersionCompatibility'));
 
 // Load Deactivation Script
 register_deactivation_hook(__FILE__, array('\CF\Hooks\Deactivation', 'init'));
