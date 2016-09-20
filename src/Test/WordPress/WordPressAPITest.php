@@ -202,14 +202,4 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($result);
     }
-
-    public function testClearDataStoreCallsExactNumberOfSqlCalls()
-    {
-        $pluginSettings = \CF\API\Plugin::getPluginSettingsKeys();
-        $numberOfDataStoreKeys = 3;
-        $totalNumberOfRowToClear = count($pluginSettings) + $numberOfDataStoreKeys;
-
-        $this->mockDataStore->expects($this->exactly($totalNumberOfRowToClear))->method('clear');
-        $this->wordpressAPI->clearDataStore();
-    }
 }

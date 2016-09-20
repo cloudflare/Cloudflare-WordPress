@@ -98,5 +98,15 @@ namespace CF\Test\WordPress {
 			$this->mockDeleteOption->expects($this->once());
             $this->dataStore->clear('key');
         }
+
+		public function testClearDataStoreCallsExactNumberOfSqlCalls()
+		{
+			$pluginSettings = \CF\API\Plugin::getPluginSettingsKeys();
+			$numberOfDataStoreKeys = 3;
+			$totalNumberOfRowToClear = count($pluginSettings) + $numberOfDataStoreKeys;
+
+			$this->mockDeleteOption->expects($this->exactly($totalNumberOfRowToClear));
+			$this->dataStore->clearDataStore();
+		}
     }
 }

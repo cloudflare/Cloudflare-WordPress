@@ -144,4 +144,19 @@ class DataStore implements DataStoreInterface
     {
         delete_option($key);
     }
+
+	public function clearDataStore()
+	{
+		$pluginKeys = \CF\API\Plugin::getPluginSettingsKeys();
+
+		// Delete Plugin Setting Options
+		foreach ($pluginKeys as $optionName) {
+			$this->clear($optionName);
+		}
+
+		// Delete DataStore Options
+		$this->clear(DataStore::API_KEY);
+		$this->clear(DataStore::EMAIL);
+		$this->clear(DataStore::CACHED_DOMAIN_NAME);
+	}
 }

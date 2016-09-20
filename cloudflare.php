@@ -10,30 +10,45 @@ License: BSD-3-Clause
 
 require_once 'vendor/autoload.php';
 
-const CF_MIN_PHP_VERSION = '5.3';
-const CF_MIN_WP_VERSION = '3.4';
-
 if (!defined('ABSPATH')) { // Exit if accessed directly
     exit;
 }
 
+
+$cloudflareConfig = new CF\Integration\DefaultConfig(file_get_contents('config.js', true));
+$cloudflareLogger = new CF\Integration\DefaultLogger($cloudflareConfig->getValue('debug'));
+$cloudflareDataStore = new CF\WordPress\DataStore($cloudflareLogger);
+$cloudflareWordpressAPI = new CF\WordPress\WordPressAPI($cloudflareDataStore);
+$cloudflareWordpressIntegration = new CF\Integration\DefaultIntegration($cloudflareConfig, $cloudflareWordpressAPI, $cloudflareDataStore, $cloudflareLogger);
+
+$cloudflareHooks = new \CF\WordPress\Hooks($cloudflareWordpressIntegration);
+
 // Load Init Script
-add_action('init', array('\CF\Hooks\Init', 'init'), 1);
-
-// Load Activation Script
-register_activation_hook(__FILE__, array('\CF\Hooks\Activation', 'init'));
-
-// Load Deactivation Script
-register_deactivation_hook(__FILE__, array('\CF\Hooks\Deactivation', 'init'));
-
-// Load Uninstall Script
-register_uninstall_hook(__FILE__, array('\CF\Hooks\Uninstall', 'init'));
+add_action('init', array($cloudflareHooks, 'init'), 1);
 
 //Register proxy AJAX endpoint
-add_action('wp_ajax_cloudflare_proxy', array('\CF\Hooks\Init', 'initProxy'));
+add_action('wp_ajax_cloudflare_proxy', array($cloudflareHooks, 'initProxy'));
+
+//Add CloudFlare Plugin homepage to admin settings menu
+add_action('admin_menu', array($cloudflareHooks, 'cloudflareConfigPage'));
+
+add_action('admin_init', array($cloudflareHooks, 'cloudflareAdminInit'));
+
+//Add CloudFlare Plugin homepage to admin settings menu
+add_action('plugin_action_links_cloudflare/cloudflare.php', array($cloudflareHooks, 'pluginActionLinks'));
+
+// Load Activation Script
+register_activation_hook(__FILE__, array($cloudflareHooks, 'checkVersionCompatibility'));
+
+// Load Deactivation Script
+register_deactivation_hook(__FILE__, array($cloudflareHooks, 'deactivate'));
+
+// Load Uninstall Script
+register_uninstall_hook(__FILE__, array($cloudflareHooks, 'uninstall'));
 
 // Load AutomaticCache
-add_action('init', array('\CF\Hooks\AutomaticCache', 'init'));
+add_action('switch_theme', array($cloudflareHooks, 'purgeCache'));
+add_action('customize_save_after', array($cloudflareHooks, 'purgeCache'));
 
 // Enable HTTP2 Server Push
 // Removed until the problems are indentified and fixed
