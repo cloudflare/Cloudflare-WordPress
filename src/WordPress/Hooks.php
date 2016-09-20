@@ -6,6 +6,7 @@ use \CloudFlare\IpRewrite;
 
 class Hooks {
 
+	protected $api;
 	protected $config;
 	protected $dataStore;
 	protected $integrationAPI;
@@ -19,10 +20,18 @@ class Hooks {
      */
 	public function __construct(\CF\Integration\IntegrationInterface $integrationContext)
 	{
+		$this->api = new \CF\WordPress\WordPressClientAPI($integrationContext);
 		$this->config = $integrationContext->getConfig();
 		$this->dataStore = $integrationContext->getDataStore();
 		$this->integrationAPI = $integrationContext->getIntegrationAPI();
 		$this->logger = $integrationContext->getLogger();
+	}
+
+	/**
+	 * @param \CF\API\APIInterface $api
+     */
+	public function setAPI(\CF\API\APIInterface $api){
+		$this->api = $api;
 	}
 
 	public function init() {
@@ -117,6 +126,30 @@ class Hooks {
 
 	public function uninstall() {
 		$this->dataStore->clearDataStore();
+	}
+
+	public function purgeCache()
+	{
+		if ($this->isPluginSpecificCacheEnabled()) {
+			$wp_domain_list = $this->integrationAPI->getDomainList();
+			$wp_domain = $wp_domain_list[0];
+			if (count($wp_domain) > 0) {
+				$zoneTag = $this->api->getZoneTag($wp_domain);
+
+				if (isset($zoneTag)) {
+					// Do not care of the return value
+					$this->api->zonePurgeCache($zoneTag);
+				}
+			}
+		}
+	}
+
+	public function isPluginSpecificCacheEnabled()
+	{
+		$cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
+		$cacheSettingValue = $cacheSettingObject[\CF\API\Plugin::SETTING_VALUE_KEY];
+
+		return $cacheSettingValue;
 	}
 }
 
