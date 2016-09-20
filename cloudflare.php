@@ -14,13 +14,18 @@ if (!defined('ABSPATH')) { // Exit if accessed directly
     exit;
 }
 
+// ************************************************************** //
 
+// Initialize Global Objects 
 $cloudflareConfig = new CF\Integration\DefaultConfig(file_get_contents('config.js', true));
 $cloudflareLogger = new CF\Integration\DefaultLogger($cloudflareConfig->getValue('debug'));
 $cloudflareDataStore = new CF\WordPress\DataStore($cloudflareLogger);
 $cloudflareWordpressAPI = new CF\WordPress\WordPressAPI($cloudflareDataStore);
 $cloudflareWordpressIntegration = new CF\Integration\DefaultIntegration($cloudflareConfig, $cloudflareWordpressAPI, $cloudflareDataStore, $cloudflareLogger);
 
+// ************************************************************** //
+
+// Initiliaze Hooks class which contains WordPress hook functions
 $cloudflareHooks = new \CF\WordPress\Hooks($cloudflareWordpressIntegration);
 
 // Load Init Script
@@ -38,7 +43,7 @@ add_action('admin_init', array($cloudflareHooks, 'cloudflareAdminInit'));
 add_action('plugin_action_links_cloudflare/cloudflare.php', array($cloudflareHooks, 'pluginActionLinks'));
 
 // Load Activation Script
-register_activation_hook(__FILE__, array($cloudflareHooks, 'checkVersionCompatibility'));
+register_activation_hook(__FILE__, array($cloudflareHooks, 'activate'));
 
 // Load Deactivation Script
 register_deactivation_hook(__FILE__, array($cloudflareHooks, 'deactivate'));
