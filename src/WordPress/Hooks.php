@@ -114,5 +114,9 @@ class Hooks {
 	public function deactivate() {
 		$this->dataStore->clearDataStore();
 	}
+
+	public function uninstall() {
+		$this->dataStore->clearDataStore();
+	}
 }
 

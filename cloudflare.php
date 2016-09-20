@@ -44,7 +44,7 @@ register_activation_hook(__FILE__, array($cloudflareHooks, 'checkVersionCompatib
 register_deactivation_hook(__FILE__, array($cloudflareHooks, 'deactivate'));
 
 // Load Uninstall Script
-register_uninstall_hook(__FILE__, array('\CF\Hooks\Uninstall', 'init'));
+register_uninstall_hook(__FILE__, array($cloudflareHooks, 'uninstall'));
 
 // Load AutomaticCache
 add_action('init', array('\CF\Hooks\AutomaticCache', 'init'));
