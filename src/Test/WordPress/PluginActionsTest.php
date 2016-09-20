@@ -72,7 +72,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
 		$this->mockWordPressClientAPI->method('createPageRule')->willReturn(true);
 
 		$this->mockWordPressClientAPI->expects($this->exactly(15))->method('changeZoneSettings');
-		$this->mockWordPressClientAPI->expects($this->exactly(2))->method('createPageRule');
+		$this->mockWordPressClientAPI->expects($this->exactly(1))->method('createPageRule');
 
 		$this->pluginActions->applyDefaultSettings();
 	}
@@ -95,7 +95,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
 		$this->mockWordPressClientAPI->method('createPageRule')->willReturn(true);
 
 		$this->mockWordPressClientAPI->expects($this->exactly(13))->method('changeZoneSettings');
-		$this->mockWordPressClientAPI->expects($this->exactly(2))->method('createPageRule');
+		$this->mockWordPressClientAPI->expects($this->exactly(1))->method('createPageRule');
 
 		$this->pluginActions->applyDefaultSettings();
 	}
