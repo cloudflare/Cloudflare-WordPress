@@ -3,7 +3,7 @@ Contributors: jwineman, furkan811, IcyApril
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 4.6
-Stable tag: 3.0.2
+Stable tag: 3.0.3
 License: BSD-3-Clause
 
 All of CloudFlare’s performance and security benefits in a simple one-click install of recommended settings specifically developed for WordPress.
@@ -83,6 +83,14 @@ Make sure that the php5-curl extension is installed on your system.
 1. Cloudflare Plugin
 
 == Changelog ==
+
+= 3.0.3 - 2016-09-21 =
+
+*Fixed*
+
+* Fixed similar domains break active zone selector.
+* Fixed Apply Default Settings not settings Image Optimization "on" when applied.
+* Fixed plugin triggering RFI Attack Rules.
 
 = 3.0.2 - 2016-09-16 =
 
