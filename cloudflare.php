@@ -14,6 +14,15 @@ if (!defined('ABSPATH')) { // Exit if accessed directly
     exit;
 }
 
+const CF_MIN_PHP_VERSION = '5.3.10';
+const CF_MIN_WP_VERSION = '3.4';
+
+//PHP version check has to go here because the below code uses namespaces
+if (version_compare(PHP_VERSION, CF_MIN_PHP_VERSION, '<')) {
+	deactivate_plugins(plugin_basename( __FILE__ ));
+	wp_die('<p>The CloudFlare plugin requires a php version of at least '.CF_MIN_PHP_VERSION.' you have '. PHP_VERSION .'.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+}
+
 // ************************************************************** //
 
 // Initialize Global Objects
@@ -57,3 +66,4 @@ add_action('customize_save_after', array($cloudflareHooks, 'purgeCache'));
 
 // Enable HTTP2 Server Push
 // add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
+
