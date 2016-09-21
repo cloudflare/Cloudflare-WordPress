@@ -88,9 +88,9 @@ Make sure that the php5-curl extension is installed on your system.
 
 *Fixed*
 
-* Fixed similar domains break active zone selector.
-* Fixed Apply Default Settings not settings Image Optimization "on" when applied.
-* Fixed plugin triggering RFI Attack Rules.
+* Fixed an issue where some domains were being incorrectly propagated to the domain selector dropdown
+* Fixed an issue where the Web Application Firewall was accidentally triggering RFI Attack Rules
+* Fixed an issue where image optimization was not being enabled for Pro and higher CloudFlare plans
 
 = 3.0.2 - 2016-09-16 =
 
