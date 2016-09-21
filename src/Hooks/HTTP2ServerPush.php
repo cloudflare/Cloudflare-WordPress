@@ -42,14 +42,15 @@ class HTTP2ServerPush
                 return $src;
             }
 
-            // If the current header size is larger than 6KB (6144 bytes)
+            // If the current header size is larger than 3KB (3072 bytes)
             // ignore following resources which can be pushed
             // This is a workaround for Cloudflare's 8KB header limit
+            // and fastcgi default 4KB header limit
             $headerAsString = implode('  ', headers_list());
 
             // +2 comes from the last CRLF since it's two bytes
             $headerSize = strlen($headerAsString) + 2;
-            if ($headerSize > 6144) {
+            if ($headerSize > 3072) {
                 return $src;
             }
 
