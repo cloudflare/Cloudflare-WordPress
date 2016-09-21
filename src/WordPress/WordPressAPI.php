@@ -133,11 +133,13 @@ class WordPressAPI implements IntegrationAPIInterface
     /**
      * @return mixed
      */
-    public function getValidCloudflareDomain($response, $domainName)
+    public function checkIfValidCloudflareSubdomain($response, $domainName)
     {
-        foreach ($response['result'] as $zone) {
-            if (Utils::isSubdomainOf($domainName, $zone['name'])) {
-                return $zone['name'];
+        if (isset($response['result'])) {
+            foreach ($response['result'] as $zone) {
+                if (Utils::isSubdomainOf($domainName, $zone['name'])) {
+                    return $zone['name'];
+                }
             }
         }
 

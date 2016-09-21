@@ -150,7 +150,7 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testGetValidCloudflareDomainReturnsDomainName()
+    public function testCheckIfValidCloudflareSubdomainReturnsDomainName()
     {
         $subDomainName = 'sub.domainname.com';
         $domainName = 'domainname.com';
@@ -163,12 +163,12 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
             ),
         );
 
-        $result = $this->wordpressAPI->getValidCloudflareDomain($zoneResponse, $subDomainName);
+        $result = $this->wordpressAPI->checkIfValidCloudflareSubdomain($zoneResponse, $subDomainName);
 
         $this->assertEquals($domainName, $result);
     }
 
-    public function testGetValidCloudflareDomainReturnsFalse()
+    public function testCheckIfValidCloudflareSubdomainReturnsFalse()
     {
         $subDomainName = 'sub.domainname.com';
 
@@ -180,12 +180,12 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
             ),
         );
 
-        $result = $this->wordpressAPI->getValidCloudflareDomain($zoneResponse, $subDomainName);
+        $result = $this->wordpressAPI->checkIfValidCloudflareSubdomain($zoneResponse, $subDomainName);
 
         $this->assertFalse($result);
     }
 
-    public function testGetValidCloudflareDomainReturnsFalseWhenDomainAreEquals()
+    public function testCheckIfValidCloudflareSubdomainAreEquals()
     {
         $subDomainName = 'domainname.com';
         $domainName = 'domainname.com';
@@ -198,7 +198,7 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
             ),
         );
 
-        $result = $this->wordpressAPI->getValidCloudflareDomain($zoneResponse, $subDomainName);
+        $result = $this->wordpressAPI->checkIfValidCloudflareSubdomain($zoneResponse, $subDomainName);
 
         $this->assertFalse($result);
     }
