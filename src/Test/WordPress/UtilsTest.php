@@ -30,6 +30,7 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(Utils::isSubdomainOf('sub.domain.com', ''));
         $this->assertFalse(Utils::isSubdomainOf('', ''));
         $this->assertFalse(Utils::isSubdomainOf('domain.com', 'domain.com'));
+        $this->assertFalse(Utils::isSubdomainOf('testdomain.com', 'domain.com'));
     }
 
     public function testGetRegistrableDomain()

@@ -5,9 +5,9 @@ namespace CF\WordPress;
 class Utils
 {
     /**
-     * @param $haystack 
-     * @param $needle 
-     * 
+     * @param $haystack
+     * @param $needle
+     *
      * @return bool
      */
     public static function endsWith($haystack, $needle)
@@ -21,7 +21,15 @@ class Utils
             return false;
         }
 
-        return self::endsWith($subDomainName, $domainName) && $subDomainName !== $domainName;
+        // Check if strpos is a positive integer
+        $dotPosition = strpos($subDomainName, $domainName) - 1;
+        if ($dotPosition === -1) {
+            return false;
+        }
+
+        return self::endsWith($subDomainName, $domainName) &&
+                $subDomainName !== $domainName &&
+                $subDomainName[$dotPosition] == '.';
     }
 
     public static function getRegistrableDomain($domainName)

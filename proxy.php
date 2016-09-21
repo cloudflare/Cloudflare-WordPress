@@ -20,18 +20,27 @@ $requestRouter->addRouter('\CF\API\Plugin', \CF\WordPress\PluginRoutes::getRoute
 $wpDomain = $wordpressAPI->getOriginalDomain();
 $cachedDomainList = $wordpressAPI->getDomainList();
 $cachedDomain = $cachedDomainList[0];
-if (CF\WordPress\Utils::getRegistrableDomain($wpDomain) != $cachedDomain) {
-    $domainName = $wpDomain;
-
+if (CF\WordPress\Utils::getRegistrableDomain($wpDomain) !== $cachedDomain) {
     $wordPressClientAPI = new \CF\WordPress\WordPressClientAPI($wordpressIntegration);
-    $response = $wordPressClientAPI->getZones();
-    $validDomainName = $wordpressAPI->getValidCloudflareDomain($response, $wpDomain);
 
-    if ($wordPressClientAPI->responseOK($response) && $validDomainName) {
-        $domainName = CF\WordPress\Utils::getRegistrableDomain($wpDomain);
+    // Since we may not be logged in yet we need to check the credentials being set
+    if ($wordPressClientAPI->isCrendetialsSet()) {
+        // If it's not a subdomain cache the current domain
+        $domainName = $wpDomain;
+
+        // Get cloudflare zones to find if the current domain is a subdomain
+        // of any cloudflare zones registered
+        $response = $wordPressClientAPI->getZones();
+        $validDomainName = $wordpressAPI->checkIfValidCloudflareSubdomain($response, $wpDomain);
+
+        // Check if it's a subdomain, if it is cache the zone instead of the
+        // subdomain
+        if ($wordPressClientAPI->responseOK($response) && $validDomainName) {
+            $domainName = CF\WordPress\Utils::getRegistrableDomain($wpDomain);
+        }
+
+        $wordpressAPI->setDomainNameCache($domainName);
     }
-
-    $wordpressAPI->setDomainNameCache($domainName);
 }
 
 $method = $_SERVER['REQUEST_METHOD'];
@@ -53,31 +62,40 @@ unset($parameters['proxyURL']);
 unset($body['proxyURL']);
 $request = new CF\API\Request($method, $path, $parameters, $body);
 
-// Only check CSRF if its not a GET request
-if ($request->getMethod() === 'GET') {
-    $isCSRFTokenValid = true;
+$response = null;
+if (isCloudFlareCSRFTokenValid($request)) {
+	$response = $requestRouter->route($request);
 } else {
-    $body = $request->getBody();
-    $nonce = $body['cfCSRFToken'];
-    $isCSRFTokenValid = wp_verify_nonce($nonce, CF\WordPress\WordPressAPI::API_NONCE);
-    unset($body['cfCSRFToken']);
+	$message = 'CSRF Token not valid.';
+	$response = array(
+		'result' => null,
+		'success' => false,
+		'errors' => array(
+			array(
+				'code' => '',
+				'message' => $message,
+			),
+		),
+		'messages' => array(),
+	);
 }
 
-if ($isCSRFTokenValid) {
-    $response = $requestRouter->route($request);
-} else {
-    $message = 'CSRF Token not valid.';
-    $response = array(
-        'result' => null,
-        'success' => false,
-        'errors' => array(
-            array(
-                'code' => '',
-                'message' => $message,
-            ),
-        ),
-        'messages' => array(),
-    );
+/**
+ * https://codex.wordpress.org/Function_Reference/wp_verify_nonce
+ *
+ * Boolean false if the nonce is invalid. Otherwise, returns an integer with the value of:
+ * 1 – if the nonce has been generated in the past 12 hours or less.
+ * 2 – if the nonce was generated between 12 and 24 hours ago.
+ *
+ * @param CF\API\Request $request
+ * @return bool
+ */
+function isCloudFlareCSRFTokenValid($request) {
+	if($request->getMethod() === 'GET') {
+		return true;
+	}
+	$body = $request->getBody();
+	return (wp_verify_nonce($body['cfCSRFToken'], CF\WordPress\WordPressAPI::API_NONCE) !== false);
 }
 
 //die is how wordpress ajax keeps the rest of the app from loading during an ajax request

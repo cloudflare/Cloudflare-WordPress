@@ -10,6 +10,7 @@ class Hooks
     protected $config;
     protected $dataStore;
     protected $integrationAPI;
+	protected $ipRewrite;
     protected $logger;
 
     const CF_MIN_PHP_VERSION = '5.3';
@@ -24,6 +25,7 @@ class Hooks
         $this->config = $integrationContext->getConfig();
         $this->dataStore = $integrationContext->getDataStore();
         $this->integrationAPI = $integrationContext->getIntegrationAPI();
+		$this->ipRewrite = new IpRewrite();
         $this->logger = $integrationContext->getLogger();
     }
 
@@ -35,21 +37,18 @@ class Hooks
         $this->api = $api;
     }
 
+	public function setIPRewrite(\CloudFlare\IpRewrite $ipRewrite) {
+		$this->ipRewrite = $ipRewrite;
+	}
+
     public function init()
     {
-        $this->restoreOriginalIP();
-    }
-
-    public function restoreOriginalIP()
-    {
-        $ipRewrite = new IpRewrite();
-
-        if ($ipRewrite->isCloudFlare()) {
-            // Fixes issues with Flexible-SSL
-            if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-                $_SERVER['HTTPS'] = 'on';
-            }
-        }
+		if ($this->ipRewrite->isCloudFlare()) {
+			// Fixes issues with Flexible-SSL
+			if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+				$_SERVER['HTTPS'] = 'on';
+			}
+		}
     }
 
     public function cloudflareConfigPage()
@@ -130,6 +129,13 @@ class Hooks
     {
         $this->dataStore->clearDataStore();
     }
+
+	public static function uninstall() {
+		$config = new \CF\Integration\DefaultConfig('[]');
+		$logger = new \CF\Integration\DefaultLogger($config->getValue('debug'));
+		$dataStore = new \CF\WordPress\DataStore($logger);
+		$dataStore->clearDataStore();
+	}
 
     public function purgeCache()
     {
