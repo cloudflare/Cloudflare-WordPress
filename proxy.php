@@ -20,7 +20,7 @@ $requestRouter->addRouter('\CF\API\Plugin', \CF\WordPress\PluginRoutes::getRoute
 $wpDomain = $wordpressAPI->getOriginalDomain();
 $cachedDomainList = $wordpressAPI->getDomainList();
 $cachedDomain = $cachedDomainList[0];
-if (CF\WordPress\Utils::getRegistrableDomain($wpDomain) != $cachedDomain) {
+if (CF\WordPress\Utils::getRegistrableDomain($wpDomain) !== $cachedDomain) {
     $wordPressClientAPI = new \CF\WordPress\WordPressClientAPI($wordpressIntegration);
 
     // Since we may not be logged in yet we need to check the credentials being set
