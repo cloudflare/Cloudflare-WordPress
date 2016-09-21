@@ -131,6 +131,13 @@ class Hooks
         $this->dataStore->clearDataStore();
     }
 
+	public static function uninstall() {
+		$config = new \CF\Integration\DefaultConfig('[]');
+		$logger = new \CF\Integration\DefaultLogger($config->getValue('debug'));
+		$dataStore = new \CF\WordPress\DataStore($logger);
+		$dataStore->clearDataStore();
+	}
+
     public function purgeCache()
     {
         if ($this->isPluginSpecificCacheEnabled()) {
