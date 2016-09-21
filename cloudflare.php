@@ -56,4 +56,4 @@ add_action('switch_theme', array($cloudflareHooks, 'purgeCache'));
 add_action('customize_save_after', array($cloudflareHooks, 'purgeCache'));
 
 // Enable HTTP2 Server Push
-add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
+// add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
