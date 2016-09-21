@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) { // Exit if accessed directly
 
 // ************************************************************** //
 
-// Initialize Global Objects 
+// Initialize Global Objects
 $cloudflareConfig = new CF\Integration\DefaultConfig(file_get_contents('config.js', true));
 $cloudflareLogger = new CF\Integration\DefaultLogger($cloudflareConfig->getValue('debug'));
 $cloudflareDataStore = new CF\WordPress\DataStore($cloudflareLogger);
@@ -49,7 +49,7 @@ register_activation_hook(__FILE__, array($cloudflareHooks, 'activate'));
 register_deactivation_hook(__FILE__, array($cloudflareHooks, 'deactivate'));
 
 // Load Uninstall Script
-register_uninstall_hook(__FILE__, array('\CF\WordPress\Uninstall', 'init'));
+register_uninstall_hook(__FILE__, array('\CF\WordPress\Hooks', 'uninstall'));
 
 // Load AutomaticCache
 add_action('switch_theme', array($cloudflareHooks, 'purgeCache'));
