@@ -40,7 +40,7 @@ class Spy extends Mock
      * @var Invocation[] The recorded calls.
      */
     private $invocations = [];
-    
+
     /**
      * Initializes the spy.
      *
@@ -54,14 +54,14 @@ class Spy extends Mock
     {
         parent::__construct($namespace, $name, $function ?: $name);
     }
-    
+
     public function call(array $arguments)
     {
         $return = parent::call($arguments);
         $this->invocations[] = new Invocation($arguments, $return);
         return $return;
     }
-    
+
     /**
      * Returns the recorded function calls and its arguments.
      *

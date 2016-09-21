@@ -15,12 +15,12 @@ use phpmock\integration\MockDelegateFunctionBuilder;
  */
 class MockObjectProxy implements MockObject
 {
-    
+
     /**
      * @var MockObject $mockObject The mock object.
      */
     private $mockObject;
-    
+
     /**
      * Inject the subject.
      *
@@ -30,7 +30,7 @@ class MockObjectProxy implements MockObject
     {
         $this->mockObject = $mockObject;
     }
-    
+
     /**
      * @SuppressWarnings(PHPMD)
      */
@@ -65,7 +65,7 @@ class MockObjectProxy implements MockObject
     {
         return $this->mockObject->expects($matcher)->method(MockDelegateFunctionBuilder::METHOD);
     }
-    
+
     /**
      * This method is not part of the contract but was found in
      * PHPUnit's mocked_class.tpl.dist.

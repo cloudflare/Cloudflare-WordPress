@@ -12,16 +12,16 @@ namespace phpmock\integration;
  */
 class MockDelegateFunctionTest extends \PHPUnit_Framework_TestCase
 {
-    
+
     /**
      * @var string The class name of a generated class.
      */
     private $className;
-    
+
     protected function setUp()
     {
         parent::setUp();
-        
+
         $builder = new MockDelegateFunctionBuilder();
         $builder->build();
         $this->className = $builder->getFullyQualifiedClassName();
@@ -36,11 +36,11 @@ class MockDelegateFunctionTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 3;
         $mock     = $this->getMockForAbstractClass($this->className);
-        
+
         $mock->expects($this->once())
              ->method(MockDelegateFunctionBuilder::METHOD)
              ->willReturn($expected);
-        
+
         $result = call_user_func($mock->getCallable());
         $this->assertEquals($expected, $result);
     }
@@ -53,11 +53,11 @@ class MockDelegateFunctionTest extends \PHPUnit_Framework_TestCase
     public function testDelegateForwardsArguments()
     {
         $mock = $this->getMockForAbstractClass($this->className);
-        
+
         $mock->expects($this->once())
              ->method(MockDelegateFunctionBuilder::METHOD)
              ->with(1, 2);
-        
+
         call_user_func($mock->getCallable(), 1, 2);
     }
 }

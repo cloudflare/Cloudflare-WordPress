@@ -15,25 +15,25 @@ use phpmock\AbstractMockTest;
  */
 class SpyTest extends AbstractMockTest
 {
-    
+
     protected function defineFunction($namespace, $functionName)
     {
         $mock = new Spy($namespace, $functionName, function () {
         });
         $mock->define();
     }
-    
+
     protected function mockFunction($namespace, $functionName, callable $function)
     {
         $mock = new Spy($namespace, $functionName, $function);
         $mock->enable();
     }
-    
+
     protected function disableMocks()
     {
         Mock::disableAll();
     }
-    
+
     /**
      * Tests spying.
      *
@@ -51,7 +51,7 @@ class SpyTest extends AbstractMockTest
         call_user_func($invocations);
         $this->assertEquals($expected, $spy->getInvocations());
     }
-    
+
     /**
      * Returns test cases for testGetInvocations().
      *
@@ -63,7 +63,7 @@ class SpyTest extends AbstractMockTest
         eval("function testGetInvocations_oneParameter(\$a) { return \$a + 1; }");
         eval("function testGetInvocations_twoParameters(\$a, \$b) { return \$a + \$b; }");
         eval("function testGetInvocations_optionalParameter(\$a = null) { return \$a; }");
-        
+
         return [
             [
                 [],

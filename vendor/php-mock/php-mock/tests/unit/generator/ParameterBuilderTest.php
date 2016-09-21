@@ -12,7 +12,7 @@ namespace phpmock\generator;
  */
 class ParameterBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    
+
     /**
      * Tests build().
      *
@@ -30,7 +30,7 @@ class ParameterBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedSignature, $builder->getSignatureParameters());
         $this->assertEquals($expectedBody, $builder->getBodyParameters());
     }
-    
+
     /**
      * Returns test cases for testBuild().
      *
@@ -67,7 +67,7 @@ class ParameterBuilderTest extends \PHPUnit_Framework_TestCase
         function testOptionalParameters4($one = 1, $two)
         {
         }
-        
+
         function testReference1(&$one)
         {
         }
@@ -87,9 +87,9 @@ class ParameterBuilderTest extends \PHPUnit_Framework_TestCase
         function testCombined($one, &$two, $three = 3, &$four = 4)
         {
         }
-        
+
         // @codingStandardsIgnoreEnd
-        
+
         return [
             ["", "", __NAMESPACE__."\\testNoParameter"],
             ['$one', '$one', __NAMESPACE__."\\testOneParameter"],

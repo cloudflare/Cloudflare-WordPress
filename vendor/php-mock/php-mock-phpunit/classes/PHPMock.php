@@ -75,25 +75,25 @@ trait PHPMock
     {
         $delegateBuilder = new MockDelegateFunctionBuilder();
         $delegateBuilder->build($name);
-        
+
         $mock = $this->getMockBuilder($delegateBuilder->getFullyQualifiedClassName())->getMockForAbstractClass();
-        
+
         $mock->__phpunit_getInvocationMocker()->addMatcher(new DefaultArgumentRemover());
-        
+
         $functionMockBuilder = new MockBuilder();
         $functionMockBuilder->setNamespace($namespace)
                             ->setName($name)
                             ->setFunctionProvider($mock);
-                
+
         $functionMock = $functionMockBuilder->build();
         $functionMock->enable();
-        
+
         $this->registerForTearDown($functionMock);
-        
+
         $proxy = new MockObjectProxy($mock);
         return $proxy;
     }
-    
+
     /**
      * Automatically disable function mocks after the test was run.
      *
@@ -108,7 +108,7 @@ trait PHPMock
         $result = $this->getTestResultObject();
         $result->addListener(new MockDisabler($deactivatable));
     }
-    
+
     /**
      * Defines the mocked function in the given namespace.
      *

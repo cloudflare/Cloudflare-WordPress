@@ -13,17 +13,17 @@ namespace phpmock;
  */
 class MockRegistry
 {
-    
+
     /**
      * @var Mock[] Enabled mocks.
      */
     private $mocks = [];
-    
+
     /**
      * @var MockRegistry Singleton.
      */
     private static $instance;
-    
+
     /**
      * Returns the singleton.
      *
@@ -33,11 +33,11 @@ class MockRegistry
     {
         if (empty(self::$instance)) {
             self::$instance = new self();
-            
+
         }
         return self::$instance;
     }
-    
+
     /**
      * Returns true if the mock is already registered.
      *
@@ -48,7 +48,7 @@ class MockRegistry
     {
         return isset($this->mocks[$mock->getFQFN()]);
     }
-    
+
     /**
      * Returns the registered mock.
      *
@@ -63,7 +63,7 @@ class MockRegistry
         }
         return $this->mocks[$fqfn];
     }
-    
+
     /**
      * Registers a mock.
      *
@@ -73,7 +73,7 @@ class MockRegistry
     {
         $this->mocks[$mock->getFQFN()] = $mock;
     }
-    
+
     /**
      * Unregisters all mocks.
      */
@@ -81,7 +81,7 @@ class MockRegistry
     {
         $this->mocks = [];
     }
-    
+
     /**
      * Unregisters a mock.
      *

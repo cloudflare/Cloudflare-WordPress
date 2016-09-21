@@ -26,7 +26,7 @@ class MockDefiningOrderTest extends \PHPUnit_Framework_TestCase
             $this->mock->disable();
         }
     }
-    
+
     /**
      * Returns the built-in call to escapeshellcmd().
      *
@@ -56,14 +56,14 @@ class MockDefiningOrderTest extends \PHPUnit_Framework_TestCase
     {
         $function = __NAMESPACE__ . '\escapeshellcmd';
         $this->assertFalse(function_exists($function));
-        
+
         self::escapeshellcmd("foo");
-        
+
         $builder = new MockBuilder();
         $builder->setNamespace(__NAMESPACE__)
                 ->setName("escapeshellcmd")
                 ->setFunctionProvider(new FixedValueFunction("foo"));
-        
+
         $this->mock = $builder->build();
         $this->mock->enable();
 

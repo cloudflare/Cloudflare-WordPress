@@ -25,10 +25,10 @@ class MockDisablerTest extends \PHPUnit_Framework_TestCase
         $min = new Mock(__NAMESPACE__, "min", "max");
         $min->enable();
         $this->assertEquals(9, min(1, 9));
-        
+
         $disabler = new MockDisabler($min);
         $disabler->endTest($this, 1);
-        
+
         $this->assertEquals(1, min(1, 9));
     }
 }

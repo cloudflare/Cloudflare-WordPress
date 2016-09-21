@@ -39,22 +39,22 @@ use phpmock\functions\FunctionProvider;
  */
 class MockBuilder
 {
-    
+
     /**
      * @var string namespace for the mock function.
      */
     private $namespace;
-    
+
     /**
      * @var string function name of the mocked function.
      */
     private $name;
-    
+
     /**
      * @var callable The function mock.
      */
     private $function;
-    
+
     /**
      * Sets the mock namespace.
      *
@@ -66,7 +66,7 @@ class MockBuilder
         $this->namespace = $namespace;
         return $this;
     }
-    
+
     /**
      * Sets the mocked function name.
      *
@@ -78,7 +78,7 @@ class MockBuilder
         $this->name = $name;
         return $this;
     }
-    
+
     /**
      * Sets the mock function.
      *
@@ -91,7 +91,7 @@ class MockBuilder
         $this->function = $function;
         return $this;
     }
-    
+
     /**
      * Sets the mock function.
      *
@@ -103,7 +103,7 @@ class MockBuilder
     {
         return $this->setFunction($provider->getCallable());
     }
-    
+
     /**
      * Builds a mock.
      *

@@ -14,7 +14,7 @@ use phpmock\functions\FixedValueFunction;
  */
 class MockBuilderTest extends \PHPUnit_Framework_TestCase
 {
-    
+
     /**
      * Tests build().
      *
@@ -30,13 +30,13 @@ class MockBuilderTest extends \PHPUnit_Framework_TestCase
                         return 1234;
                     }
                 );
-        
+
         $mock = $builder->build();
         $mock->enable();
         $this->assertEquals(1234, time());
         $mock->disable();
-        
-        
+
+
         $builder->setFunctionProvider(new FixedValueFunction(123));
         $mock = $builder->build();
         $mock->enable();

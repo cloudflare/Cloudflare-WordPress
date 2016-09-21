@@ -34,7 +34,7 @@ class DefaultArgumentRemover implements \PHPUnit_Framework_MockObject_Matcher_In
     public function verify()
     {
     }
-    
+
     /**
      * This method is not defined in the interface, but used in
      * PHPUnit_Framework_MockObject_InvocationMocker::hasMatchers().

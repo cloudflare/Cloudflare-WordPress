@@ -21,7 +21,7 @@ class MockDisabler extends \PHPUnit_Framework_BaseTestListener
      * @var Deactivatable The function mocks.
      */
     private $deactivatable;
-    
+
     /**
      * Sets the function mocks.
      *
@@ -31,7 +31,7 @@ class MockDisabler extends \PHPUnit_Framework_BaseTestListener
     {
         $this->deactivatable = $deactivatable;
     }
-    
+
     /**
      * Disables the function mocks.
      *
@@ -43,7 +43,7 @@ class MockDisabler extends \PHPUnit_Framework_BaseTestListener
     public function endTest(\PHPUnit_Framework_Test $test, $time)
     {
         parent::endTest($test, $time);
-        
+
         $this->deactivatable->disable();
     }
 }

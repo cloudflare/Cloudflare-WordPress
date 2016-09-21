@@ -17,7 +17,7 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
      * Disable all mocks.
      */
     abstract protected function disableMocks();
-    
+
     /**
      * Builds an enabled function mock.
      *
@@ -26,7 +26,7 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
      * @param callable $function     The function mock.
      */
     abstract protected function mockFunction($namespace, $functionName, callable $function);
-    
+
     /**
      * Defines the function mock.
      *
@@ -81,7 +81,7 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
         });
         $this->assertEquals(1234, rand(1, 1234));
     }
-    
+
     /**
      * Tests mocking of an undefined function.
      *
@@ -96,7 +96,7 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
         $result = testUndefinedFunction(1);
         $this->assertEquals(2, $result);
     }
-    
+
     /**
      * Tests failing enabling an already enabled mock.
      *
@@ -109,7 +109,7 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
         $this->mockFunction(__NAMESPACE__, $name, "sqrt");
         $this->mockFunction(__NAMESPACE__, $name, "sqrt");
     }
-    
+
     /**
      * Tests passing by value.
      *
@@ -120,11 +120,11 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
         $this->mockFunction(__NAMESPACE__, "testPassingByValue", function ($a) {
             return $a + 1;
         });
-        
+
         // Tests passing directly the value.
         $this->assertEquals(3, testPassingByValue(2));
     }
-    
+
     /**
      * Test passing by reference.
      *
@@ -149,7 +149,7 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals("test", $c);
         $this->assertEquals("expected", $noReference);
     }
-    
+
     /**
      * Tests that the mock preserves the default argument
      *
@@ -158,13 +158,13 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
     public function testPreserveArgumentDefaultValue()
     {
         $functionName = $this->buildPrivateFunctionName("testPreserveArgumentDefaultValue");
-        
+
         eval("
             function $functionName(\$b = \"default\") {
                 return \$b;
             }
         ");
-        
+
         $this->mockFunction(
             __NAMESPACE__,
             $functionName,
@@ -172,12 +172,12 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
                 return $arg;
             }
         );
-        
+
         $fqfn   = __NAMESPACE__ . "\\$functionName";
         $result = $fqfn();
         $this->assertEquals("expected", $result);
     }
-    
+
     /**
      * Tests that the disabled mock uses the default argument of the original function.
      *
@@ -190,7 +190,7 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
         $result       = $functionName();
         $this->assertEquals("default", $result);
     }
-    
+
     /**
      * Tests some methods which use the varname "...".
      *
@@ -199,7 +199,7 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
     public function testCVariadic()
     {
         $this->mockFunction(__NAMESPACE__, "min", "max");
-        
+
         $this->assertEquals(2, min(2, 1));
         $this->assertEquals(2, min([2, 1]));
     }
@@ -215,7 +215,7 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, min(2, 1));
         $this->assertEquals(1, min([2, 1]));
     }
-    
+
     /**
      * Setup a mock for testDisable().
      *
@@ -256,7 +256,7 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
         $this->mockFunction(__NAMESPACE__, $functionName, "sqrt");
         $this->assertTrue(function_exists($fqfn));
     }
-    
+
     /**
      * Tests explicit function defining.
      *
@@ -266,14 +266,14 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
     {
         $this->defineFunction(__NAMESPACE__, "escapeshellcmd");
         $this->escapeshellcmd("foo");
-        
+
         $this->mockFunction(__NAMESPACE__, "escapeshellcmd", function () {
             return "bar";
         });
-        
+
         $this->assertEquals("bar", self::escapeshellcmd("foo"));
     }
-    
+
     /**
      * Returns the built-in call to escapeshellcmd().
      *
@@ -297,7 +297,7 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
     {
         return $name . str_replace("\\", "_", get_class($this));
     }
-    
+
     /**
      * Tests declaring repeatedly a mock with enabled backupStaticAttributes.
      *
@@ -309,7 +309,7 @@ abstract class AbstractMockTest extends \PHPUnit_Framework_TestCase
     {
         $this->mockFunction(__NAMESPACE__, "testBackupStaticAttributes", "sqrt");
     }
-    
+
     /**
      * Just repeat testBackupStaticAttributes a few times.
      *

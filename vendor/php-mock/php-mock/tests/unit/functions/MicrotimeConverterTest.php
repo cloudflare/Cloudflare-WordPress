@@ -42,7 +42,7 @@ class MicrotimeConverterTest extends \PHPUnit_Framework_TestCase
         $converter = new MicrotimeConverter();
         $this->assertEquals($string, $converter->convertFloatToString($float));
     }
-    
+
     /**
      * Returns convert test cases.
      *

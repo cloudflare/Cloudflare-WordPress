@@ -14,7 +14,7 @@ use phpmock\MockBuilder;
  */
 class FixedMicrotimeFunctionTest extends \PHPUnit_Framework_TestCase
 {
-    
+
     /**
      * Tests setMicrotime().
      *
@@ -26,7 +26,7 @@ class FixedMicrotimeFunctionTest extends \PHPUnit_Framework_TestCase
         $function->setMicrotime("0.00000001 1");
         $this->assertEquals("0.00000001 1", $function->getMicrotime());
     }
-    
+
     /**
      * Tests setMicrotimeAsFloat().
      *
@@ -38,7 +38,7 @@ class FixedMicrotimeFunctionTest extends \PHPUnit_Framework_TestCase
         $function->setMicrotimeAsFloat(1.00000001);
         $this->assertEquals(1.00000001, $function->getMicrotime(true));
     }
-    
+
     /**
      * Tests getMicrotime().
      *
@@ -51,7 +51,7 @@ class FixedMicrotimeFunctionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1.00000001, $function->getMicrotime(true));
         $this->assertEquals("0.00000001 1", $function->getMicrotime());
     }
-    
+
     /**
      * Tests getCallable()
      *
@@ -61,20 +61,20 @@ class FixedMicrotimeFunctionTest extends \PHPUnit_Framework_TestCase
     {
         $function = new FixedMicrotimeFunction();
         $function->setMicrotimeAsFloat(1.00000001);
-        
+
         $builder = new MockBuilder();
         $builder->setNamespace(__NAMESPACE__)
                 ->setName("microtime")
                 ->setFunctionProvider($function);
-                    
+
         $mock = $builder->build();
         $mock->enable();
         $this->assertEquals("0.00000001 1", microtime());
         $this->assertEquals(1.00000001, microtime(true));
-            
+
         $mock->disable();
     }
-    
+
     /**
      * Tests initializing with the current timestamp
      *
@@ -83,11 +83,11 @@ class FixedMicrotimeFunctionTest extends \PHPUnit_Framework_TestCase
     public function testConstructCurrentTime()
     {
         $function = new FixedMicrotimeFunction();
-        
+
         $this->assertGreaterThan($function->getMicrotime(true), \microtime(true));
         $this->assertGreaterThan(0, $function->getMicrotime(true));
     }
-    
+
     /**
      * Tests exception for invalid argument in constructor.
      *
@@ -99,7 +99,7 @@ class FixedMicrotimeFunctionTest extends \PHPUnit_Framework_TestCase
     {
         new FixedMicrotimeFunction($timestamp);
     }
-    
+
     /**
      * Returns test cases for testConstructFailsForInvalidArgument()
      *
@@ -112,7 +112,7 @@ class FixedMicrotimeFunctionTest extends \PHPUnit_Framework_TestCase
             [new \stdClass()]
         ];
     }
-    
+
     /**
      * Tests initializing with a timestamp.
      *
@@ -125,10 +125,10 @@ class FixedMicrotimeFunctionTest extends \PHPUnit_Framework_TestCase
     public function testConstruct($timestamp, $expected)
     {
         $function = new FixedMicrotimeFunction($timestamp);
-        
+
         $this->assertEquals($expected, $function->getMicrotime(true));
     }
-    
+
     /**
      * Provides test cases for testConstruct().
      *

@@ -39,11 +39,11 @@ class MockDelegateFunctionBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder->build(create_function('$a', ''));
         $class2 = $builder->getFullyQualifiedClassName();
-        
+
         $builder2 = new MockDelegateFunctionBuilder();
         $builder2->build(create_function('$a, $b', ''));
         $class3 = $builder2->getFullyQualifiedClassName();
-        
+
         $this->assertNotEquals($class1, $class2);
         $this->assertNotEquals($class1, $class3);
         $this->assertNotEquals($class2, $class3);
@@ -61,13 +61,13 @@ class MockDelegateFunctionBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder->build(create_function($signature, ''));
         $class1 = $builder->getFullyQualifiedClassName();
-        
+
         $builder->build(create_function($signature, ''));
         $class2 = $builder->getFullyQualifiedClassName();
-        
+
         $this->assertEquals($class1, $class2);
     }
-    
+
     /**
      * Tests declaring a class with enabled backupStaticAttributes.
      *
@@ -80,7 +80,7 @@ class MockDelegateFunctionBuilderTest extends \PHPUnit_Framework_TestCase
         $builder = new MockDelegateFunctionBuilder();
         $builder->build("min");
     }
-    
+
     /**
      * Just repeat testBackupStaticAttributes a few times.
      *
@@ -105,7 +105,7 @@ class MockDelegateFunctionBuilderTest extends \PHPUnit_Framework_TestCase
     {
         unserialize($data);
     }
-    
+
     /**
      * Returns test cases for testDeserializationInNewProcess().
      *
@@ -115,7 +115,7 @@ class MockDelegateFunctionBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new MockDelegateFunctionBuilder();
         $builder->build("min");
-        
+
         return [
             [serialize($this->getMockForAbstractClass($builder->getFullyQualifiedClassName()))]
         ];

@@ -17,17 +17,17 @@ use phpmock\functions\FixedValueFunction;
  */
 class MockNamespaceTest extends \PHPUnit_Framework_TestCase
 {
-    
+
     /**
      * @var Mock
      */
     private $mock;
-    
+
     /**
      * @var MockBuilder
      */
     private $builder;
-    
+
     protected function setUp()
     {
         $this->builder = new MockBuilder();
@@ -35,13 +35,13 @@ class MockNamespaceTest extends \PHPUnit_Framework_TestCase
                 ->setName("time")
                 ->setFunctionProvider(new FixedValueFunction(1234));
     }
-    
+
     protected function tearDown()
     {
         if (! empty($this->mock)) {
             $this->mock->disable();
             unset($this->mock);
-            
+
         }
     }
 
@@ -57,7 +57,7 @@ class MockNamespaceTest extends \PHPUnit_Framework_TestCase
         $this->builder->setNamespace(__NAMESPACE__);
         $this->mock = $this->builder->build();
         $this->mock->enable();
-        
+
         $this->assertEquals(1234, time());
     }
 
@@ -72,10 +72,10 @@ class MockNamespaceTest extends \PHPUnit_Framework_TestCase
         $this->builder->setNamespace(__NAMESPACE__);
         $this->mock = $this->builder->build();
         $this->mock->enable();
-        
+
         $this->assertEquals(1234, time());
     }
-    
+
     /**
      * Provides namespaces for testNamespace().
      *

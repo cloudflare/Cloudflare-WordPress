@@ -75,7 +75,7 @@ class DefaultRestAPIRouter implements RouterInterface
         //substring of everything after the endpoint is the path
         return substr($request->getUrl(), strpos($request->getUrl(), $this->api->getEndpoint()) + strlen($this->api->getEndpoint()));
     }
-    
+
     /**
      * @param Request $request
      *

@@ -7,69 +7,69 @@ namespace Composer\Autoload;
 class ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11
 {
     public static $prefixLengthsPsr4 = array (
-        'p' => 
+        'p' =>
         array (
             'phpmock\\phpunit\\' => 16,
             'phpmock\\integration\\' => 20,
             'phpmock\\' => 8,
             'phpDocumentor\\Reflection\\' => 25,
         ),
-        'W' => 
+        'W' =>
         array (
             'Webmozart\\Assert\\' => 17,
         ),
-        'S' => 
+        'S' =>
         array (
             'Symfony\\Component\\Yaml\\' => 23,
             'Symfony\\Component\\EventDispatcher\\' => 34,
         ),
-        'D' => 
+        'D' =>
         array (
             'Doctrine\\Instantiator\\' => 22,
         ),
-        'C' => 
+        'C' =>
         array (
             'CF\\' => 3,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'phpmock\\phpunit\\' => 
+        'phpmock\\phpunit\\' =>
         array (
             0 => __DIR__ . '/..' . '/php-mock/php-mock-phpunit/classes',
         ),
-        'phpmock\\integration\\' => 
+        'phpmock\\integration\\' =>
         array (
             0 => __DIR__ . '/..' . '/php-mock/php-mock-integration/classes',
         ),
-        'phpmock\\' => 
+        'phpmock\\' =>
         array (
             0 => __DIR__ . '/..' . '/php-mock/php-mock/classes',
             1 => __DIR__ . '/..' . '/php-mock/php-mock/tests/unit',
         ),
-        'phpDocumentor\\Reflection\\' => 
+        'phpDocumentor\\Reflection\\' =>
         array (
             0 => __DIR__ . '/..' . '/phpdocumentor/reflection-common/src',
             1 => __DIR__ . '/..' . '/phpdocumentor/type-resolver/src',
             2 => __DIR__ . '/..' . '/phpdocumentor/reflection-docblock/src',
         ),
-        'Webmozart\\Assert\\' => 
+        'Webmozart\\Assert\\' =>
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
         ),
-        'Symfony\\Component\\Yaml\\' => 
+        'Symfony\\Component\\Yaml\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/yaml',
         ),
-        'Symfony\\Component\\EventDispatcher\\' => 
+        'Symfony\\Component\\EventDispatcher\\' =>
         array (
             0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
         ),
-        'Doctrine\\Instantiator\\' => 
+        'Doctrine\\Instantiator\\' =>
         array (
             0 => __DIR__ . '/..' . '/doctrine/instantiator/src/Doctrine/Instantiator',
         ),
-        'CF\\' => 
+        'CF\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src',
             1 => __DIR__ . '/..' . '/cloudflare/cloudflare-plugin-backend/src',
@@ -77,38 +77,38 @@ class ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11
     );
 
     public static $prefixesPsr0 = array (
-        'P' => 
+        'P' =>
         array (
-            'Psr\\Log\\' => 
+            'Psr\\Log\\' =>
             array (
                 0 => __DIR__ . '/..' . '/psr/log',
             ),
-            'Prophecy\\' => 
+            'Prophecy\\' =>
             array (
                 0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
             ),
         ),
-        'J' => 
+        'J' =>
         array (
-            'JohnKary' => 
+            'JohnKary' =>
             array (
                 0 => __DIR__ . '/..' . '/johnkary/phpunit-speedtrap/src',
             ),
         ),
-        'G' => 
+        'G' =>
         array (
-            'Guzzle\\Tests' => 
+            'Guzzle\\Tests' =>
             array (
                 0 => __DIR__ . '/..' . '/guzzle/guzzle/tests',
             ),
-            'Guzzle' => 
+            'Guzzle' =>
             array (
                 0 => __DIR__ . '/..' . '/guzzle/guzzle/src',
             ),
         ),
-        'C' => 
+        'C' =>
         array (
-            'CloudFlare\\' => 
+            'CloudFlare\\' =>
             array (
                 0 => __DIR__ . '/..' . '/cloudflare/cf-ip-rewrite/src',
             ),
