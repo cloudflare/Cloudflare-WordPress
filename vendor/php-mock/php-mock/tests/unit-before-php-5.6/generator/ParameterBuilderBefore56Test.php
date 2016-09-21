@@ -12,7 +12,7 @@ namespace phpmock\generator;
  */
 class ParameterBuilderBefore56Test extends \PHPUnit_Framework_TestCase
 {
-    
+
     /**
      * Tests build().
      *
@@ -30,7 +30,7 @@ class ParameterBuilderBefore56Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedSignature, $builder->getSignatureParameters());
         $this->assertEquals($expectedBody, $builder->getBodyParameters());
     }
-    
+
     /**
      * Returns test cases for testBuild().
      *

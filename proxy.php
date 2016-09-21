@@ -64,20 +64,20 @@ $request = new CF\API\Request($method, $path, $parameters, $body);
 
 $response = null;
 if (isCloudFlareCSRFTokenValid($request)) {
-	$response = $requestRouter->route($request);
+    $response = $requestRouter->route($request);
 } else {
-	$message = 'CSRF Token not valid.';
-	$response = array(
-		'result' => null,
-		'success' => false,
-		'errors' => array(
-			array(
-				'code' => '',
-				'message' => $message,
-			),
-		),
-		'messages' => array(),
-	);
+    $message = 'CSRF Token not valid.';
+    $response = array(
+        'result' => null,
+        'success' => false,
+        'errors' => array(
+            array(
+                'code' => '',
+                'message' => $message,
+            ),
+        ),
+        'messages' => array(),
+    );
 }
 
 /**
@@ -91,11 +91,11 @@ if (isCloudFlareCSRFTokenValid($request)) {
  * @return bool
  */
 function isCloudFlareCSRFTokenValid($request) {
-	if($request->getMethod() === 'GET') {
-		return true;
-	}
-	$body = $request->getBody();
-	return (wp_verify_nonce($body['cfCSRFToken'], CF\WordPress\WordPressAPI::API_NONCE) !== false);
+    if($request->getMethod() === 'GET') {
+        return true;
+    }
+    $body = $request->getBody();
+    return (wp_verify_nonce($body['cfCSRFToken'], CF\WordPress\WordPressAPI::API_NONCE) !== false);
 }
 
 //die is how wordpress ajax keeps the rest of the app from loading during an ajax request

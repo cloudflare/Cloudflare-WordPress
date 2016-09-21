@@ -27,7 +27,7 @@ class MockFunctionGeneratorTest extends \PHPUnit_Framework_TestCase
         MockFunctionGenerator::removeDefaultArguments($arguments);
         $this->assertEquals($expected, $arguments);
     }
-    
+
     /**
      * Returns test cases for testRemoveDefaultArguments().
      *

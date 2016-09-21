@@ -40,7 +40,7 @@ function RestProxyCallback(opts) {
         if(!opts.parameters) {
             opts.parameters = {};
         }
-        
+
         // WordPress Ajax Action
         opts.parameters['action'] = 'cloudflare_proxy';
 
@@ -68,7 +68,7 @@ function RestProxyCallback(opts) {
         }
 
         // WordPress Ajax Global
-        opts.url = ajaxurl; 
+        opts.url = ajaxurl;
     } else {
         opts.url = absoluteUrlBase + opts.url;
     }

@@ -14,7 +14,7 @@ GIT_REPOSITORY_RELEASES = "https://github.com/cloudflare/CloudFlare-Wordpress/re
 
 def print_shiny(printable):
     print '=========================================='
-    print 
+    print
     print printable
     print
     print '=========================================='
@@ -42,7 +42,7 @@ def ask_for_new_version(version):
     new_version = raw_input("Enter a version number [%s]: " %  suggested_version)
     if new_version == "":
         new_version = suggested_version
-    
+
     return new_version
 
 
@@ -61,7 +61,7 @@ def update_version_number_in_readme_txt(new_version):
     with open(README_FILE_NAME, 'r') as f:
         lines = f.readlines()
 
-        if "Stable tag:" not in lines[README_TXT_STABLE_TAG_LINE_NUMBER-1]: 
+        if "Stable tag:" not in lines[README_TXT_STABLE_TAG_LINE_NUMBER-1]:
             print_shiny("readme.txt file doesn't have stable tag in the correct line number. Please check the code")
             sys.exit()
 
@@ -78,7 +78,7 @@ def update_version_number_in_cloudflare_php(new_version):
     with open(CLOUDFLARE_PHP_FILE_NAME, 'r') as f:
         lines = f.readlines()
 
-        if "Version:" not in lines[CLOUDFLARE_PHP_VERSION_LINE_NUMBER-1]: 
+        if "Version:" not in lines[CLOUDFLARE_PHP_VERSION_LINE_NUMBER-1]:
             print_shiny("readme.txt file doesn't have stable tag in the correct line number. Please check the code")
             sys.exit()
 
@@ -88,7 +88,7 @@ def update_version_number_in_cloudflare_php(new_version):
         f.writelines(lines)
         return 1
 
-    return 0    
+    return 0
 
 def update_version_number_in_config_json(new_version):
     with open(CONFIG_FILE_NAME, 'r+') as f:
@@ -111,7 +111,7 @@ def set_version(new_version):
         print "Failed updating version numbers"
         sys.exit()
 
-    print "Version numbers updated to %s" % (new_version)     
+    print "Version numbers updated to %s" % (new_version)
 
 
 def git_commit_and_push(new_version):
@@ -132,7 +132,7 @@ def main():
     version = read_version()
 
     # Ask for new version
-    new_version = ask_for_new_version(version)    
+    new_version = ask_for_new_version(version)
 
     # Modify files with the new version
     set_version(new_version)

@@ -30,7 +30,7 @@ php: |
 ---
 test: horizontal tab (2)
 yaml: |
-    "\	"
+    "\  "
 php: |
     "\x09"
 ---

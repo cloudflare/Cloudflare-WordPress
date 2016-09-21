@@ -4,8 +4,8 @@
 REPOSITORY_FOLDER="$1"
 
 if [ -z "$REPOSITORY_FOLDER" ]; then
-	echo "Please provide the folder name as argument."
-	exit 1
+    echo "Please provide the folder name as argument."
+    exit 1
 fi
 
 rm -f $REPOSITORY_FOLDER/phpunit.xml
@@ -18,5 +18,5 @@ rm -rf $REPOSITORY_FOLDER/vendor/bin/
 rm -rf $REPOSITORY_FOLDER/vendor/squizlabs
 rm -rf $REPOSITORY_FOLDER/vendor/phpunit
 rm -rf $REPOSITORY_FOLDER/vendor/php-mock
-rm -rf $REPOSITORY_FOLDER/vendor/johnkary 
+rm -rf $REPOSITORY_FOLDER/vendor/johnkary
 rm -rf $REPOSITORY_FOLDER/scripts/

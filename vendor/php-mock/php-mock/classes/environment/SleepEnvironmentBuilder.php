@@ -50,7 +50,7 @@ class SleepEnvironmentBuilder
      * @var mixed the timestamp.
      */
     private $timestamp;
-    
+
     /**
      * Add a namespace for the mock environment.
      *

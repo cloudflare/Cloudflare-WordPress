@@ -12,7 +12,7 @@ namespace phpmock\generator;
  */
 class ParameterBuilder56Test extends \PHPUnit_Framework_TestCase
 {
-    
+
     /**
      * Tests build().
      *
@@ -30,7 +30,7 @@ class ParameterBuilder56Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedBody, $builder->getBodyParameters());
         $this->assertEquals($expectedSignature, $builder->getSignatureParameters());
     }
-    
+
     /**
      * Returns test cases for testBuild().
      *
@@ -55,9 +55,9 @@ class ParameterBuilder56Test extends \PHPUnit_Framework_TestCase
         function testPHPVariadics4(&$one, $two = 2, ...$three)
         {
         }
-        
+
         // @codingStandardsIgnoreEnd
-        
+
         return [
             ["", "", "min"],
             ["", "", __NAMESPACE__."\\testPHPVariadics1"],

@@ -17,7 +17,7 @@ use phpmock\environment\SleepEnvironmentBuilder;
  */
 class ExampleTest extends \PHPUnit_Framework_TestCase
 {
-    
+
     protected function tearDown()
     {
         MockRegistry::getInstance()->unregisterAll();
@@ -38,7 +38,7 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
                         return 1234;
                     }
                 );
-                    
+
         $mock = $builder->build();
         $mock->enable();
         assert(time() == 1234);
@@ -56,7 +56,7 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
         $builder->setNamespace(__NAMESPACE__)
                 ->setName("time")
                 ->setFunctionProvider(new FixedValueFunction(12345));
-                    
+
         $mock = $builder->build();
         $mock->enable();
         assert(time() == 12345);
@@ -76,13 +76,13 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
 
         $environment = $builder->build();
         $environment->enable();
-        
+
         sleep(10);
 
         assert(12345 + 10 == time());
         $this->assertEquals(12345 + 10, time());
     }
-    
+
     /**
      * Tests the example from the documentation.
      *
@@ -105,7 +105,7 @@ class ExampleTest extends \PHPUnit_Framework_TestCase
         }
     }
      */
-    
+
     /**
      * Tests the example from the documentation.
      *

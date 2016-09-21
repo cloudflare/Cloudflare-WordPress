@@ -16,7 +16,7 @@ use phpmock\integration\MockDelegateFunctionBuilder;
  */
 class MockObjectProxyTest extends \PHPUnit_Framework_TestCase
 {
- 
+
     /**
      * Tests expects()
      *
@@ -25,21 +25,21 @@ class MockObjectProxyTest extends \PHPUnit_Framework_TestCase
     public function testExpects()
     {
         $matcher = $this->getMock(\PHPUnit_Framework_MockObject_Matcher_Invocation::class);
-        
+
         $invocationMocker = $this->getMock(InvocationMocker::class, [], [], '', false);
         $invocationMocker->expects($this->once())->method("method")
                 ->with(MockDelegateFunctionBuilder::METHOD)->willReturn($invocationMocker);
-        
+
         $prophecy = $this->prophesize(\PHPUnit_Framework_MockObject_MockObject::class);
         $prophecy->expects($matcher)->willReturn($invocationMocker);
         $mock = $prophecy->reveal();
-        
+
         $proxy = new MockObjectProxy($mock);
-        
+
         $result = $proxy->expects($matcher);
         $this->assertEquals($invocationMocker, $result);
     }
-    
+
     /**
      * Tests delegation of __phpunit_hasMatchers().
      *
@@ -55,13 +55,13 @@ class MockObjectProxyTest extends \PHPUnit_Framework_TestCase
         $prophecy = $this->prophesize(\PHPUnit_Framework_MockObject_MockObject::class);
         $prophecy->__phpunit_hasMatchers()->willReturn("foo");
         $mock = $prophecy->reveal();
-        
+
         $proxy = new MockObjectProxy($mock);
-        
+
         $result = $proxy->__phpunit_hasMatchers();
         $this->assertEquals("foo", $result);
     }
-    
+
     /**
      * Tests calling the proxy forwards the call to the subject.
      *
@@ -76,9 +76,9 @@ class MockObjectProxyTest extends \PHPUnit_Framework_TestCase
         $prophecy = $this->prophesize(\PHPUnit_Framework_MockObject_MockObject::class);
         call_user_func_array([$prophecy, $method], $arguments)->willReturn($expected);
         $mock = $prophecy->reveal();
-        
+
         $proxy = new MockObjectProxy($mock);
-        
+
         $result = call_user_func_array([$proxy, $method], $arguments);
         $this->assertEquals($expected, $result);
     }

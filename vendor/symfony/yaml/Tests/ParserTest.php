@@ -71,10 +71,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase
     {
         // test tabs in YAML
         $yamls = array(
-            "foo:\n	bar",
-            "foo:\n 	bar",
-            "foo:\n	 bar",
-            "foo:\n 	 bar",
+            "foo:\n bar",
+            "foo:\n     bar",
+            "foo:\n  bar",
+            "foo:\n      bar",
         );
 
         foreach ($yamls as $yaml) {

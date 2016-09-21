@@ -14,22 +14,22 @@ use phpmock\generator\ParameterBuilder;
  */
 class MockDelegateFunctionBuilder
 {
-    
+
     /**
      * The delegation method name.
      */
     const METHOD = "delegate";
-    
+
     /**
      * @var string The namespace of the build class.
      */
     private $namespace;
-    
+
     /**
      * @var \Text_Template The MockDelegateFunction template.
      */
     private $template;
-    
+
     /**
      * Instantiation.
      */
@@ -37,7 +37,7 @@ class MockDelegateFunctionBuilder
     {
         $this->template = new \Text_Template(__DIR__ . "/MockDelegateFunction.tpl");
     }
-    
+
     /**
      * Builds a MockDelegateFunction for a function.
      *
@@ -60,14 +60,14 @@ class MockDelegateFunctionBuilder
         if (class_exists($this->getFullyQualifiedClassName())) {
             return;
         }
-        
+
         $data = [
             "namespace"           => $this->namespace,
             "signatureParameters" => $signatureParameters,
         ];
         $this->template->setVar($data, false);
         $definition = $this->template->render();
-        
+
         eval($definition);
     }
 
