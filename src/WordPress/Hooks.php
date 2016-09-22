@@ -10,7 +10,7 @@ class Hooks
     protected $config;
     protected $dataStore;
     protected $integrationAPI;
-	protected $ipRewrite;
+    protected $ipRewrite;
     protected $logger;
 
     /**
@@ -22,7 +22,7 @@ class Hooks
         $this->config = $integrationContext->getConfig();
         $this->dataStore = $integrationContext->getDataStore();
         $this->integrationAPI = $integrationContext->getIntegrationAPI();
-		$this->ipRewrite = new IpRewrite();
+        $this->ipRewrite = new IpRewrite();
         $this->logger = $integrationContext->getLogger();
     }
 
@@ -34,18 +34,9 @@ class Hooks
         $this->api = $api;
     }
 
-	public function setIPRewrite(\CloudFlare\IpRewrite $ipRewrite) {
-		$this->ipRewrite = $ipRewrite;
-	}
-
-    public function init()
+    public function setIPRewrite(\CloudFlare\IpRewrite $ipRewrite)
     {
-		if ($this->ipRewrite->isCloudFlare()) {
-			// Fixes issues with Flexible-SSL
-			if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-				$_SERVER['HTTPS'] = 'on';
-			}
-		}
+        $this->ipRewrite = $ipRewrite;
     }
 
     public function cloudflareConfigPage()
@@ -67,11 +58,6 @@ class Hooks
         return $links;
     }
 
-    public function cloudflareAdminInit()
-    {
-        // NARNIA!!
-    }
-
     public function initProxy()
     {
         include WP_PLUGIN_DIR.'/cloudflare/proxy.php';
@@ -79,17 +65,18 @@ class Hooks
 
     public function activate()
     {
-		if (version_compare($GLOBALS['wp_version'], CF_MIN_WP_VERSION, '<')) {
-			deactivate_plugins(basename(__FILE__));
-			wp_die('<p><strong>Cloudflare</strong> plugin requires WordPress version '.CF_MIN_WP_VERSION.' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
-		}
+        if (version_compare($GLOBALS['wp_version'], CLOUDFLARE_MIN_WP_VERSION, '<')) {
+            deactivate_plugins(basename(__FILE__));
+            wp_die('<p><strong>Cloudflare</strong> plugin requires WordPress version '.CLOUDFLARE_MIN_WP_VERSION.' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+        }
 
-		// Guzzle3 depends on php5-curl. If dependency does not exist kill the plugin.
-		if (!extension_loaded('curl')) {
-			deactivate_plugins(basename(__FILE__));
-			wp_die('<p><strong>Cloudflare</strong> plugin requires php5-curl to be installed.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
-		}
-		return;
+        // Guzzle3 depends on php5-curl. If dependency does not exist kill the plugin.
+        if (!extension_loaded('curl')) {
+            deactivate_plugins(basename(__FILE__));
+            wp_die('<p><strong>Cloudflare</strong> plugin requires php5-curl to be installed.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+        }
+
+        return;
     }
 
     public function deactivate()
@@ -97,12 +84,13 @@ class Hooks
         $this->dataStore->clearDataStore();
     }
 
-	public static function uninstall() {
-		$config = new \CF\Integration\DefaultConfig('[]');
-		$logger = new \CF\Integration\DefaultLogger($config->getValue('debug'));
-		$dataStore = new \CF\WordPress\DataStore($logger);
-		$dataStore->clearDataStore();
-	}
+    public static function uninstall()
+    {
+        $config = new \CF\Integration\DefaultConfig('[]');
+        $logger = new \CF\Integration\DefaultLogger($config->getValue('debug'));
+        $dataStore = new \CF\WordPress\DataStore($logger);
+        $dataStore->clearDataStore();
+    }
 
     public function purgeCache()
     {

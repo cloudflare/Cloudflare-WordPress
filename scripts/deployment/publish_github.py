@@ -51,7 +51,7 @@ def update_version_number_in_composer_json(new_version):
         data = json.load(f)
         data['version'] = new_version
         f.seek(0)          # should reset file position to the beginning.
-        json.dump(data, f, indent=4)
+        json.dump(data, f, indent=4, sort_keys=True)
         return 1
 
     return 0
