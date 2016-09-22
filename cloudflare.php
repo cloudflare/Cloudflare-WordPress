@@ -13,7 +13,6 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('CLOUDFLARE_MIN_WP_VERSION', '3.4');
 define('CLOUDFLARE_MIN_PHP_VERSION', '5.3.10');
 define('CLOUDFLARE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 

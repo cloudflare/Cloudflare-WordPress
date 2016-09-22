@@ -16,6 +16,9 @@ class Hooks
     protected $integrationAPI;
     protected $ipRewrite;
     protected $logger;
+	protected $proxy;
+
+	const CLOUDFLARE_MIN_WP_VERSION = '3.4';
 
     public function __construct()
     {
@@ -25,6 +28,7 @@ class Hooks
 		$this->integrationAPI = new WordPressAPI($this->dataStore);
 		$this->integrationContext = new Integration\DefaultIntegration($this->config, $this->integrationAPI, $this->dataStore, $this->logger);
         $this->api = new WordPressClientAPI($this->integrationContext);
+		$this->proxy = new Proxy($this->integrationContext);
     }
 
     /**
@@ -60,6 +64,10 @@ class Hooks
         $this->ipRewrite = $ipRewrite;
     }
 
+	public function setProxy(Proxy $proxy) {
+		$this->proxy = $proxy;
+	}
+
     public function cloudflareConfigPage()
     {
         if (function_exists('add_options_page')) {
@@ -81,15 +89,14 @@ class Hooks
 
     public function initProxy()
     {
-        $proxy = new Proxy($this->integrationContext);
-		$proxy->run();
+		$this->proxy->run();
     }
 
     public function activate()
     {
-        if (version_compare($GLOBALS['wp_version'], CLOUDFLARE_MIN_WP_VERSION, '<')) {
+        if (version_compare($GLOBALS['wp_version'], self::CLOUDFLARE_MIN_WP_VERSION, '<')) {
             deactivate_plugins(basename(__FILE__));
-            wp_die('<p><strong>Cloudflare</strong> plugin requires WordPress version '.CLOUDFLARE_MIN_WP_VERSION.' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+            wp_die('<p><strong>Cloudflare</strong> plugin requires WordPress version '. self::CLOUDFLARE_MIN_WP_VERSION .' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
         }
 
         // Guzzle3 depends on php5-curl. If dependency does not exist kill the plugin.
@@ -98,7 +105,7 @@ class Hooks
             wp_die('<p><strong>Cloudflare</strong> plugin requires php5-curl to be installed.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
         }
 
-        return;
+        return true;
     }
 
     public function deactivate()
@@ -122,7 +129,7 @@ class Hooks
         }
     }
 
-    public function isPluginSpecificCacheEnabled()
+    protected function isPluginSpecificCacheEnabled()
     {
         $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
         $cacheSettingValue = $cacheSettingObject[\CF\API\Plugin::SETTING_VALUE_KEY];
