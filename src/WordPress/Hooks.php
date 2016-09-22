@@ -2,7 +2,10 @@
 
 namespace CF\WordPress;
 
+use \CF\API\APIInterface;
+use \CF\Integration;
 use CloudFlare\IpRewrite;
+use Psr\Log\LoggerInterface;
 
 class Hooks
 {
@@ -13,28 +16,40 @@ class Hooks
     protected $ipRewrite;
     protected $logger;
 
-    /**
-     * @param \CF\Integration\IntegrationInterface $integrationContext
-     */
-    public function __construct(\CF\Integration\IntegrationInterface $integrationContext)
+    public function __construct()
     {
-        $this->api = new \CF\WordPress\WordPressClientAPI($integrationContext);
-        $this->config = $integrationContext->getConfig();
-        $this->dataStore = $integrationContext->getDataStore();
-        $this->integrationAPI = $integrationContext->getIntegrationAPI();
-        $this->ipRewrite = new IpRewrite();
-        $this->logger = $integrationContext->getLogger();
+		$this->config = new Integration\DefaultConfig('[]');
+		$this->logger = new Integration\DefaultLogger(false);
+		$this->dataStore = new DataStore($this->logger);
+		$this->integrationAPI = new WordPressAPI($this->dataStore);
+        $this->api = new WordPressClientAPI(new Integration\DefaultIntegration($this->config, $this->integrationAPI, $this->dataStore, $this->logger));
     }
 
     /**
      * @param \CF\API\APIInterface $api
      */
-    public function setAPI(\CF\API\APIInterface $api)
+    public function setAPI(APIInterface $api)
     {
         $this->api = $api;
     }
 
-    public function setIPRewrite(\CloudFlare\IpRewrite $ipRewrite)
+	public function setConfig(Integration\ConfigInterface $config) {
+		$this->config = $config;
+	}
+
+	public function setDataStore(Integration\DataStoreInterface $dataStore) {
+		$this->dataStore = $dataStore;
+	}
+
+	public function setIntegrationAPI(Integration\IntegrationAPIInterface $integrationAPI) {
+		$this->integrationAPI = $integrationAPI;
+	}
+
+	public function setLogger(LoggerInterface $logger) {
+		$this->logger = $logger;
+	}
+
+    public function setIPRewrite(IpRewrite $ipRewrite)
     {
         $this->ipRewrite = $ipRewrite;
     }
@@ -82,14 +97,6 @@ class Hooks
     public function deactivate()
     {
         $this->dataStore->clearDataStore();
-    }
-
-    public static function uninstall()
-    {
-        $config = new \CF\Integration\DefaultConfig('[]');
-        $logger = new \CF\Integration\DefaultLogger($config->getValue('debug'));
-        $dataStore = new \CF\WordPress\DataStore($logger);
-        $dataStore->clearDataStore();
     }
 
     public function purgeCache()
