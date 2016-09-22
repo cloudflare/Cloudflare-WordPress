@@ -13,9 +13,6 @@ class Hooks
 	protected $ipRewrite;
     protected $logger;
 
-    const CF_MIN_PHP_VERSION = '5.3';
-    const CF_MIN_WP_VERSION = '3.4';
-
     /**
      * @param \CF\Integration\IntegrationInterface $integrationContext
      */
@@ -82,47 +79,17 @@ class Hooks
 
     public function activate()
     {
-        $this->checkVersionCompatibility();
-        $this->checkDependenciesExist();
-    }
+		if (version_compare($GLOBALS['wp_version'], CF_MIN_WP_VERSION, '<')) {
+			deactivate_plugins(basename(__FILE__));
+			wp_die('<p><strong>Cloudflare</strong> plugin requires WordPress version '.CF_MIN_WP_VERSION.' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+		}
 
-    public function checkVersionCompatibility()
-    {
-        //wordpress global
-        global $wp_version;
-
-        if (version_compare(PHP_VERSION, self::CF_MIN_PHP_VERSION, '<')) {
-            $flag = 'PHP';
-            $version = self::CF_MIN_PHP_VERSION;
-        }
-
-        if (version_compare($wp_version, self::CF_MIN_WP_VERSION, '<')) {
-            $flag = 'WordPress';
-            $version = self::CF_MIN_WP_VERSION;
-        }
-
-        if (isset($flag) || isset($version)) {
-            // Deactivate Plugin
-            deactivate_plugins(basename(__FILE__));
-
-            // Kill Execution
-            wp_die('<p><strong>Cloudflare</strong> plugin requires '.$flag.'  version '.$version.' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
-
-            return;
-        }
-    }
-
-    public function checkDependenciesExist()
-    {
-        // Guzzle3 depends on php5-curl. If dependency does not exist kill the plugin.
-        if (!extension_loaded('curl')) {
-            // Deactivate Plugin
-            deactivate_plugins(basename(__FILE__));
-
-            wp_die('<p><strong>Cloudflare</strong> plugin requires php5-curl to be installed.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
-
-            return;
-        }
+		// Guzzle3 depends on php5-curl. If dependency does not exist kill the plugin.
+		if (!extension_loaded('curl')) {
+			deactivate_plugins(basename(__FILE__));
+			wp_die('<p><strong>Cloudflare</strong> plugin requires php5-curl to be installed.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+		}
+		return;
     }
 
     public function deactivate()
