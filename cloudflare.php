@@ -8,9 +8,8 @@ Author: John Wineman, Furkan Yilmaz, Junade Ali (CloudFlare Team)
 License: BSD-3-Clause
 */
 
-require_once 'vendor/autoload.php';
-
-if (!defined('ABSPATH')) { // Exit if accessed directly
+// Exit if accessed directly
+if (!defined('ABSPATH')) {
     exit;
 }
 
@@ -33,6 +32,8 @@ foreach ($cloudflareHttpsServerOptions as $option) {
 }
 
 // ************************************************************** //
+
+require_once 'vendor/autoload.php';
 
 // Initialize Global Objects
 $cloudflareConfig = new CF\Integration\DefaultConfig(file_get_contents('config.js', true));
