@@ -12,6 +12,7 @@ class Hooks
     protected $api;
     protected $config;
     protected $dataStore;
+	protected $integrationContext;
     protected $integrationAPI;
     protected $ipRewrite;
     protected $logger;
@@ -22,7 +23,8 @@ class Hooks
 		$this->logger = new Integration\DefaultLogger(false);
 		$this->dataStore = new DataStore($this->logger);
 		$this->integrationAPI = new WordPressAPI($this->dataStore);
-        $this->api = new WordPressClientAPI(new Integration\DefaultIntegration($this->config, $this->integrationAPI, $this->dataStore, $this->logger));
+		$this->integrationContext = new Integration\DefaultIntegration($this->config, $this->integrationAPI, $this->dataStore, $this->logger);
+        $this->api = new WordPressClientAPI($this->integrationContext);
     }
 
     /**
@@ -39,6 +41,10 @@ class Hooks
 
 	public function setDataStore(Integration\DataStoreInterface $dataStore) {
 		$this->dataStore = $dataStore;
+	}
+
+	public function setIntegrationContext(Integration\IntegrationInterface $integrationContext) {
+		$this->integrationContext = $integrationContext;
 	}
 
 	public function setIntegrationAPI(Integration\IntegrationAPIInterface $integrationAPI) {
@@ -75,7 +81,8 @@ class Hooks
 
     public function initProxy()
     {
-        include WP_PLUGIN_DIR.'/cloudflare/proxy.php';
+        $proxy = new Proxy($this->integrationContext);
+		$proxy->run();
     }
 
     public function activate()
