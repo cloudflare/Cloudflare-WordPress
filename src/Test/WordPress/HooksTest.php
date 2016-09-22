@@ -17,7 +17,9 @@ class HooksTest extends \PHPUnit_Framework_TestCase
 	protected $mockLogger;
 	protected $mockIPRewrite;
 	protected $mockWordPressAPI;
+	protected $mockWordPressClientAPI;
 	protected $mockDefaultIntegration;
+	protected $mockProxy;
 
 	public function setup() {
 		$this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
@@ -32,20 +34,25 @@ class HooksTest extends \PHPUnit_Framework_TestCase
 		$this->mockIPRewrite = $this->getMockBuilder('\CloudFlare\IpRewrite')
 			->disableOriginalConstructor()
 			->getMock();
+		$this->mockProxy = $this->getMockBuilder('CF\WordPress\Proxy')
+			->disableOriginalConstructor()
+			->getMock();
 		$this->mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
 			->disableOriginalConstructor()
 			->getMock();
+		$this->mockWordPressClientAPI = $this->getMockBuilder('CF\WordPress\WordPressClientAPI')
+			->disableOriginalConstructor()
+			->getMock();
 		$this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);
-		$this->hooks = new Hooks($this->mockDefaultIntegration);
+		$this->hooks = new Hooks();
+		$this->hooks->setAPI($this->mockWordPressClientAPI);
+		$this->hooks->setConfig($this->mockConfig);
+		$this->hooks->setDataStore($this->mockDataStore);
+		$this->hooks->setLogger($this->mockLogger);
 		$this->hooks->setIPRewrite($this->mockIPRewrite);
-	}
-
-	function testInitExecutesFlexibleSSLFix() {
-		$this->mockIPRewrite->method('isCloudFlare')->willReturn(true);
-		$_SERVER['HTTP_X_FORWARDED_PROTO'] = true;
-		$_SERVER['HTTP_X_FORWARDED_PROTO'] = 'https';
-		$this->hooks->init();
-		$this->assertEquals('on', $_SERVER['HTTPS']);
+		$this->hooks->setIntegrationAPI($this->mockWordPressAPI);
+		$this->hooks->setIntegrationContext($this->mockDefaultIntegration);
+		$this->hooks->setProxy($this->mockProxy);
 	}
 
 	function testCloudflareConfigPageCallsAddOptionsPageHookIfItExsits() {
@@ -65,6 +72,29 @@ class HooksTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(array($link), $this->hooks->pluginActionLinks(array()));
 	}
 
+	function testInitProxyCallsProxyRun() {
+		$this->mockProxy->expects($this->once())->method('run');
+		$this->hooks->initProxy();
+	}
 
+	function testActivateChecksWPVersionAndCurl() {
+		$GLOBALS['wp_version'] = '3.5';
+		$mockExtensionLoaded = $this->getFunctionMock('CF\WordPress', 'extension_loaded');
+		$mockExtensionLoaded->expects($this->any())->willReturn(true);
+		$this->assertTrue($this->hooks->activate());
+	}
+
+	function testDeactivateCallsClearDataStore() {
+		$this->mockDataStore->expects($this->once())->method('clearDataStore');
+		$this->hooks->deactivate();
+	}
+
+	function testPurgeCacheCallsZonePurgeCache() {
+		$this->mockDataStore->method('getPluginSetting')->willReturn(array('value' => 'value'));
+		$this->mockWordPressAPI->method('getDomainList')->willReturn(array('domain.com'));
+		$this->mockWordPressClientAPI->method('getZoneTag')->willReturn('zoneTag');
+		$this->mockWordPressClientAPI->expects($this->once())->method('zonePurgeCache');
+		$this->hooks->purgeCache();
+	}
 }
 
