@@ -14,6 +14,7 @@ class Proxy
 	protected $wordpressAPI;
 	protected $wordpressClientAPI;
 	protected $wordpressIntegration;
+	protected $requestRouter;
 
 	/**
 	 * @param IntegrationInterface $integration
@@ -25,6 +26,10 @@ class Proxy
 		$this->wordpressAPI = $integration->getIntegrationAPI();
 		$this->wordpressIntegration = $integration;
 		$this->wordpressClientAPI = new WordPressClientAPI($this->wordpressIntegration);
+
+		$this->requestRouter = new RequestRouter($this->wordpressIntegration);
+		$this->requestRouter->addRouter('\CF\WordPress\WordPressClientAPI', ClientRoutes::$routes);
+		$this->requestRouter->addRouter('\CF\API\Plugin', PluginRoutes::getRoutes(PluginRoutes::$routes));
 	}
 
 	/**
@@ -34,22 +39,25 @@ class Proxy
 		$this->wordpressClientAPI = $wordpressClientAPI;
 	}
 
+	/**
+	 * @param RequestRouter $requestRouter
+     */
+	public function setRequestRouter(RequestRouter $requestRouter) {
+		$this->requestRouter = $requestRouter;
+	}
+
 	public function run() {
 		header('Content-Type: application/json');
-
-		$requestRouter = $this->createRequestRouter();
 
 		$this->cacheDomainName();
 
 		$request = $this->createRequest();
 
 		$response = null;
-
 		$body = $request->getBody();
 		$csrfToken = $body['cfCSRFToken'];
-
 		if ($this->isCloudFlareCSRFTokenValid($request->getMethod(), $csrfToken)) {
-			$response = $requestRouter->route($request);
+			$response = $this->requestRouter->route($request);
 		} else {
 			if($csrfToken === null) {
 				$response = $this->wordpressClientAPI->createAPIError('CSRF Token not found.  Its possible another plugin is altering requests sent by the CloudFlare plugin.');
@@ -60,16 +68,6 @@ class Proxy
 
 		//die is how wordpress ajax keeps the rest of the app from loading during an ajax request
 		wp_die(json_encode($response));
-	}
-
-	/**
-	 * @return RequestRouter
-     */
-	public function createRequestRouter() {
-		$requestRouter = new RequestRouter($this->wordpressIntegration);
-		$requestRouter->addRouter('\CF\WordPress\WordPressClientAPI', ClientRoutes::$routes);
-		$requestRouter->addRouter('\CF\API\Plugin', PluginRoutes::getRoutes(PluginRoutes::$routes));
-		return $requestRouter;
 	}
 
 	public function cacheDomainName() {
