@@ -22,6 +22,14 @@ define('CLOUDFLARE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 // admin_init. register_activation_hook doesn't handle upgrading 
 // the plugin case but admin_init does.
 add_action('admin_init', 'cloudflare_admin_init');
+
+// Fixes Flexible SSL
+$cloudflareHttpsServerOptions = array('HTTP_CF_VISITOR', 'HTTP_X_FORWARDED_PROTO');
+foreach ($cloudflareHttpsServerOptions as $option) {
+    if (isset($_SERVER[$option]) && $_SERVER[$option] == 'https') {
+        $_SERVER['HTTPS'] = 'on';
+        break;
+    }
 }
 
 // ************************************************************** //
@@ -37,9 +45,6 @@ $cloudflareWordpressIntegration = new CF\Integration\DefaultIntegration($cloudfl
 
 // Initiliaze Hooks class which contains WordPress hook functions
 $cloudflareHooks = new \CF\WordPress\Hooks($cloudflareWordpressIntegration);
-
-// Load Init Script
-add_action('init', array($cloudflareHooks, 'init'), 1);
 
 //Register proxy AJAX endpoint
 add_action('wp_ajax_cloudflare_proxy', array($cloudflareHooks, 'initProxy'));

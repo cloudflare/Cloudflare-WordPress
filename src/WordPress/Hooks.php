@@ -38,14 +38,7 @@ class Hooks
 		$this->ipRewrite = $ipRewrite;
 	}
 
-    public function init()
     {
-		if ($this->ipRewrite->isCloudFlare()) {
-			// Fixes issues with Flexible-SSL
-			if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-				$_SERVER['HTTPS'] = 'on';
-			}
-		}
     }
 
     public function cloudflareConfigPage()
