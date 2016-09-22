@@ -14,12 +14,14 @@ if (!defined('ABSPATH')) { // Exit if accessed directly
     exit;
 }
 
-const CF_MIN_WP_VERSION = '3.4';
+define('CLOUDFLARE_MIN_WP_VERSION', '3.4');
+define('CLOUDFLARE_MIN_PHP_VERSION', '5.3.10');
+define('CLOUDFLARE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 
-//PHP version check has to go here because the below code uses namespaces
-if (version_compare(PHP_VERSION, '5.3.10', '<')) {
-	deactivate_plugins(plugin_basename( __FILE__ ));
-	wp_die('<p>The CloudFlare plugin requires a php version of at least '.CF_MIN_PHP_VERSION.' you have '. PHP_VERSION .'.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+// PHP version check must be either in register_activation_hook or
+// admin_init. register_activation_hook doesn't handle upgrading 
+// the plugin case but admin_init does.
+add_action('admin_init', 'cloudflare_admin_init');
 }
 
 // ************************************************************** //
@@ -45,8 +47,6 @@ add_action('wp_ajax_cloudflare_proxy', array($cloudflareHooks, 'initProxy'));
 //Add CloudFlare Plugin homepage to admin settings menu
 add_action('admin_menu', array($cloudflareHooks, 'cloudflareConfigPage'));
 
-add_action('admin_init', array($cloudflareHooks, 'cloudflareAdminInit'));
-
 //Add CloudFlare Plugin homepage to admin settings menu
 add_action('plugin_action_links_cloudflare/cloudflare.php', array($cloudflareHooks, 'pluginActionLinks'));
 
@@ -66,3 +66,11 @@ add_action('customize_save_after', array($cloudflareHooks, 'purgeCache'));
 // Enable HTTP2 Server Push
 // add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
 
+function cloudflare_admin_init()
+{
+    // PHP version check has to go here because the below code uses namespaces
+    if (version_compare(PHP_VERSION, CLOUDFLARE_MIN_PHP_VERSION, '<')) {
+        deactivate_plugins(plugin_basename(__FILE__), true);
+        wp_die('<p>The CloudFlare plugin requires a php version of at least '.CLOUDFLARE_MIN_PHP_VERSION.' you have '.PHP_VERSION.'.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+    }
+}

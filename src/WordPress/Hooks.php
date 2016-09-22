@@ -67,11 +67,6 @@ class Hooks
         return $links;
     }
 
-    public function cloudflareAdminInit()
-    {
-        // NARNIA!!
-    }
-
     public function initProxy()
     {
         include WP_PLUGIN_DIR.'/cloudflare/proxy.php';
