@@ -15,7 +15,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase
 	protected $mockConfig;
 	protected $mockDataStore;
 	protected $mockLogger;
-	protected $mockIPRewrite;
 	protected $mockWordPressAPI;
 	protected $mockWordPressClientAPI;
 	protected $mockDefaultIntegration;
@@ -29,9 +28,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase
 			->disableOriginalConstructor()
 			->getMock();
 		$this->mockLogger = $this->getMockBuilder('\Psr\Log\LoggerInterface')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->mockIPRewrite = $this->getMockBuilder('\CloudFlare\IpRewrite')
 			->disableOriginalConstructor()
 			->getMock();
 		$this->mockProxy = $this->getMockBuilder('CF\WordPress\Proxy')
@@ -49,7 +45,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase
 		$this->hooks->setConfig($this->mockConfig);
 		$this->hooks->setDataStore($this->mockDataStore);
 		$this->hooks->setLogger($this->mockLogger);
-		$this->hooks->setIPRewrite($this->mockIPRewrite);
 		$this->hooks->setIntegrationAPI($this->mockWordPressAPI);
 		$this->hooks->setIntegrationContext($this->mockDefaultIntegration);
 		$this->hooks->setProxy($this->mockProxy);

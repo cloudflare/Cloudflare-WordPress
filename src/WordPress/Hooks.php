@@ -14,7 +14,6 @@ class Hooks
     protected $dataStore;
 	protected $integrationContext;
     protected $integrationAPI;
-    protected $ipRewrite;
     protected $logger;
 	protected $proxy;
 
@@ -58,9 +57,7 @@ class Hooks
 		$this->logger = $logger;
 	}
 
-    public function setIPRewrite(IpRewrite $ipRewrite)
     {
-        $this->ipRewrite = $ipRewrite;
     }
 
 	public function setProxy(Proxy $proxy) {
