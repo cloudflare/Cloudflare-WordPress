@@ -2,9 +2,8 @@
 
 namespace CF\WordPress;
 
-use \CF\API\APIInterface;
-use \CF\Integration;
-use CloudFlare\IpRewrite;
+use CF\API\APIInterface;
+use CF\Integration;
 use Psr\Log\LoggerInterface;
 
 class Hooks
@@ -12,21 +11,20 @@ class Hooks
     protected $api;
     protected $config;
     protected $dataStore;
-	protected $integrationContext;
+    protected $integrationContext;
     protected $integrationAPI;
     protected $logger;
-	protected $proxy;
-
+    protected $proxy;
 
     public function __construct()
     {
-		$this->config = new Integration\DefaultConfig('[]');
-		$this->logger = new Integration\DefaultLogger(false);
-		$this->dataStore = new DataStore($this->logger);
-		$this->integrationAPI = new WordPressAPI($this->dataStore);
-		$this->integrationContext = new Integration\DefaultIntegration($this->config, $this->integrationAPI, $this->dataStore, $this->logger);
+        $this->config = new Integration\DefaultConfig('[]');
+        $this->logger = new Integration\DefaultLogger(false);
+        $this->dataStore = new DataStore($this->logger);
+        $this->integrationAPI = new WordPressAPI($this->dataStore);
+        $this->integrationContext = new Integration\DefaultIntegration($this->config, $this->integrationAPI, $this->dataStore, $this->logger);
         $this->api = new WordPressClientAPI($this->integrationContext);
-		$this->proxy = new Proxy($this->integrationContext);
+        $this->proxy = new Proxy($this->integrationContext);
     }
 
     /**
@@ -37,32 +35,35 @@ class Hooks
         $this->api = $api;
     }
 
-	public function setConfig(Integration\ConfigInterface $config) {
-		$this->config = $config;
-	}
-
-	public function setDataStore(Integration\DataStoreInterface $dataStore) {
-		$this->dataStore = $dataStore;
-	}
-
-	public function setIntegrationContext(Integration\IntegrationInterface $integrationContext) {
-		$this->integrationContext = $integrationContext;
-	}
-
-	public function setIntegrationAPI(Integration\IntegrationAPIInterface $integrationAPI) {
-		$this->integrationAPI = $integrationAPI;
-	}
-
-	public function setLogger(LoggerInterface $logger) {
-		$this->logger = $logger;
-	}
-
+    public function setConfig(Integration\ConfigInterface $config)
     {
+        $this->config = $config;
     }
 
-	public function setProxy(Proxy $proxy) {
-		$this->proxy = $proxy;
-	}
+    public function setDataStore(Integration\DataStoreInterface $dataStore)
+    {
+        $this->dataStore = $dataStore;
+    }
+
+    public function setIntegrationContext(Integration\IntegrationInterface $integrationContext)
+    {
+        $this->integrationContext = $integrationContext;
+    }
+
+    public function setIntegrationAPI(Integration\IntegrationAPIInterface $integrationAPI)
+    {
+        $this->integrationAPI = $integrationAPI;
+    }
+
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    public function setProxy(Proxy $proxy)
+    {
+        $this->proxy = $proxy;
+    }
 
     public function cloudflareConfigPage()
     {
@@ -73,7 +74,7 @@ class Hooks
 
     public function cloudflareIndexPage()
     {
-        include WP_PLUGIN_DIR.'/cloudflare/index.php';
+        include CLOUDFLARE_PLUGIN_DIR.'index.php';
     }
 
     public function pluginActionLinks($links)
@@ -85,7 +86,7 @@ class Hooks
 
     public function initProxy()
     {
-		$this->proxy->run();
+        $this->proxy->run();
     }
 
     public function activate()
