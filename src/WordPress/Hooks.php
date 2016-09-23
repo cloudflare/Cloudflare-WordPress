@@ -18,7 +18,6 @@ class Hooks
     protected $logger;
 	protected $proxy;
 
-	const CLOUDFLARE_MIN_WP_VERSION = '3.4';
 
     public function __construct()
     {
@@ -94,9 +93,9 @@ class Hooks
 
     public function activate()
     {
-        if (version_compare($GLOBALS['wp_version'], self::CLOUDFLARE_MIN_WP_VERSION, '<')) {
-            deactivate_plugins(basename(__FILE__));
-            wp_die('<p><strong>Cloudflare</strong> plugin requires WordPress version '. self::CLOUDFLARE_MIN_WP_VERSION .' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+        if (version_compare($GLOBALS['wp_version'], CLOUDFLARE_MIN_WP_VERSION, '<')) {
+            deactivate_plugins(basename(CLOUDFLARE_PLUGIN_DIR));
+            wp_die('<p><strong>Cloudflare</strong> plugin requires WordPress version '.CLOUDFLARE_MIN_WP_VERSION.' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
         }
 
         // Guzzle3 depends on php5-curl. If dependency does not exist kill the plugin.
