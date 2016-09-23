@@ -1,100 +1,100 @@
 <?php
 
-
 namespace CF\Test\WordPress;
 
-use \CF\WordPress\Hooks;
-use \CF\Integration\DefaultIntegration;
+use CF\WordPress\Hooks;
+use CF\Integration\DefaultIntegration;
 use phpmock\phpunit\PHPMock;
 
 class HooksTest extends \PHPUnit_Framework_TestCase
 {
-	use PHPMock;
+    use PHPMock;
 
-	protected $hooks;
-	protected $mockConfig;
-	protected $mockDataStore;
-	protected $mockLogger;
-	protected $mockIPRewrite;
-	protected $mockWordPressAPI;
-	protected $mockWordPressClientAPI;
-	protected $mockDefaultIntegration;
-	protected $mockProxy;
+    protected $hooks;
+    protected $mockConfig;
+    protected $mockDataStore;
+    protected $mockLogger;
+    protected $mockWordPressAPI;
+    protected $mockWordPressClientAPI;
+    protected $mockDefaultIntegration;
+    protected $mockProxy;
 
-	public function setup() {
-		$this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->mockDataStore = $this->getMockBuilder('CF\WordPress\DataStore')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->mockLogger = $this->getMockBuilder('\Psr\Log\LoggerInterface')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->mockIPRewrite = $this->getMockBuilder('\CloudFlare\IpRewrite')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->mockProxy = $this->getMockBuilder('CF\WordPress\Proxy')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->mockWordPressClientAPI = $this->getMockBuilder('CF\WordPress\WordPressClientAPI')
-			->disableOriginalConstructor()
-			->getMock();
-		$this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);
-		$this->hooks = new Hooks();
-		$this->hooks->setAPI($this->mockWordPressClientAPI);
-		$this->hooks->setConfig($this->mockConfig);
-		$this->hooks->setDataStore($this->mockDataStore);
-		$this->hooks->setLogger($this->mockLogger);
-		$this->hooks->setIPRewrite($this->mockIPRewrite);
-		$this->hooks->setIntegrationAPI($this->mockWordPressAPI);
-		$this->hooks->setIntegrationContext($this->mockDefaultIntegration);
-		$this->hooks->setProxy($this->mockProxy);
-	}
+    public function setup()
+    {
+        $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->mockDataStore = $this->getMockBuilder('CF\WordPress\DataStore')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->mockLogger = $this->getMockBuilder('\Psr\Log\LoggerInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->mockProxy = $this->getMockBuilder('CF\WordPress\Proxy')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->mockWordPressClientAPI = $this->getMockBuilder('CF\WordPress\WordPressClientAPI')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);
+        $this->hooks = new Hooks();
+        $this->hooks->setAPI($this->mockWordPressClientAPI);
+        $this->hooks->setConfig($this->mockConfig);
+        $this->hooks->setDataStore($this->mockDataStore);
+        $this->hooks->setLogger($this->mockLogger);
+        $this->hooks->setIntegrationAPI($this->mockWordPressAPI);
+        $this->hooks->setIntegrationContext($this->mockDefaultIntegration);
+        $this->hooks->setProxy($this->mockProxy);
+    }
 
-	function testCloudflareConfigPageCallsAddOptionsPageHookIfItExsits() {
-		$mockFunctionExists = $this->getFunctionMock('CF\WordPress', 'function_exists');
-		$mockFunctionExists->expects($this->once())->willReturn(true);
-		$mock__ = $this->getFunctionMock('CF\WordPress', '__');
-		$mockAddOptionsPage = $this->getFunctionMock('CF\WordPress', 'add_options_page');
-		$mockAddOptionsPage->expects($this->once());
-		$this->hooks->cloudflareConfigPage();
-	}
+    public function testCloudflareConfigPageCallsAddOptionsPageHookIfItExsits()
+    {
+        $mockFunctionExists = $this->getFunctionMock('CF\WordPress', 'function_exists');
+        $mockFunctionExists->expects($this->once())->willReturn(true);
+        $mock__ = $this->getFunctionMock('CF\WordPress', '__');
+        $mockAddOptionsPage = $this->getFunctionMock('CF\WordPress', 'add_options_page');
+        $mockAddOptionsPage->expects($this->once());
+        $this->hooks->cloudflareConfigPage();
+    }
 
-	function testPluginActionLinksGetAdminUrl() {
-		$mockGetAdminUrl = $this->getFunctionMock('CF\WordPress', 'get_admin_url');
-		$url = 'options-general.php?page=cloudflare';
-		$link = '<a href="'. $url . '">Settings</a>';
-		$mockGetAdminUrl->expects($this->once())->with(null, $url)->willReturn($url);
-		$this->assertEquals(array($link), $this->hooks->pluginActionLinks(array()));
-	}
+    public function testPluginActionLinksGetAdminUrl()
+    {
+        $mockGetAdminUrl = $this->getFunctionMock('CF\WordPress', 'get_admin_url');
+        $url = 'options-general.php?page=cloudflare';
+        $link = '<a href="'.$url.'">Settings</a>';
+        $mockGetAdminUrl->expects($this->once())->with(null, $url)->willReturn($url);
+        $this->assertEquals(array($link), $this->hooks->pluginActionLinks(array()));
+    }
 
-	function testInitProxyCallsProxyRun() {
-		$this->mockProxy->expects($this->once())->method('run');
-		$this->hooks->initProxy();
-	}
+    public function testInitProxyCallsProxyRun()
+    {
+        $this->mockProxy->expects($this->once())->method('run');
+        $this->hooks->initProxy();
+    }
 
-	function testActivateChecksWPVersionAndCurl() {
-		$GLOBALS['wp_version'] = '3.5';
-		$mockExtensionLoaded = $this->getFunctionMock('CF\WordPress', 'extension_loaded');
-		$mockExtensionLoaded->expects($this->any())->willReturn(true);
-		$this->assertTrue($this->hooks->activate());
-	}
+    public function testActivateChecksWPVersionAndCurl()
+    {
+        $GLOBALS['wp_version'] = '3.5';
+        $mockExtensionLoaded = $this->getFunctionMock('CF\WordPress', 'extension_loaded');
+        $mockExtensionLoaded->expects($this->any())->willReturn(true);
+        $this->assertTrue($this->hooks->activate());
+    }
 
-	function testDeactivateCallsClearDataStore() {
-		$this->mockDataStore->expects($this->once())->method('clearDataStore');
-		$this->hooks->deactivate();
-	}
+    public function testDeactivateCallsClearDataStore()
+    {
+        $this->mockDataStore->expects($this->once())->method('clearDataStore');
+        $this->hooks->deactivate();
+    }
 
-	function testPurgeCacheCallsZonePurgeCache() {
-		$this->mockDataStore->method('getPluginSetting')->willReturn(array('value' => 'value'));
-		$this->mockWordPressAPI->method('getDomainList')->willReturn(array('domain.com'));
-		$this->mockWordPressClientAPI->method('getZoneTag')->willReturn('zoneTag');
-		$this->mockWordPressClientAPI->expects($this->once())->method('zonePurgeCache');
-		$this->hooks->purgeCache();
-	}
+    public function testPurgeCacheCallsZonePurgeCache()
+    {
+        $this->mockDataStore->method('getPluginSetting')->willReturn(array('value' => 'value'));
+        $this->mockWordPressAPI->method('getDomainList')->willReturn(array('domain.com'));
+        $this->mockWordPressClientAPI->method('getZoneTag')->willReturn('zoneTag');
+        $this->mockWordPressClientAPI->expects($this->once())->method('zonePurgeCache');
+        $this->hooks->purgeCache();
+    }
 }
-

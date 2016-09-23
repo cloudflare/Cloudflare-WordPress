@@ -2,9 +2,8 @@
 
 namespace CF\WordPress;
 
-use \CF\API\APIInterface;
-use \CF\Integration;
-use CloudFlare\IpRewrite;
+use CF\API\APIInterface;
+use CF\Integration;
 use Psr\Log\LoggerInterface;
 
 class Hooks
@@ -12,23 +11,20 @@ class Hooks
     protected $api;
     protected $config;
     protected $dataStore;
-	protected $integrationContext;
+    protected $integrationContext;
     protected $integrationAPI;
-    protected $ipRewrite;
     protected $logger;
-	protected $proxy;
-
-	const CLOUDFLARE_MIN_WP_VERSION = '3.4';
+    protected $proxy;
 
     public function __construct()
     {
-		$this->config = new Integration\DefaultConfig('[]');
-		$this->logger = new Integration\DefaultLogger(false);
-		$this->dataStore = new DataStore($this->logger);
-		$this->integrationAPI = new WordPressAPI($this->dataStore);
-		$this->integrationContext = new Integration\DefaultIntegration($this->config, $this->integrationAPI, $this->dataStore, $this->logger);
+        $this->config = new Integration\DefaultConfig('[]');
+        $this->logger = new Integration\DefaultLogger(false);
+        $this->dataStore = new DataStore($this->logger);
+        $this->integrationAPI = new WordPressAPI($this->dataStore);
+        $this->integrationContext = new Integration\DefaultIntegration($this->config, $this->integrationAPI, $this->dataStore, $this->logger);
         $this->api = new WordPressClientAPI($this->integrationContext);
-		$this->proxy = new Proxy($this->integrationContext);
+        $this->proxy = new Proxy($this->integrationContext);
     }
 
     /**
@@ -39,34 +35,35 @@ class Hooks
         $this->api = $api;
     }
 
-	public function setConfig(Integration\ConfigInterface $config) {
-		$this->config = $config;
-	}
-
-	public function setDataStore(Integration\DataStoreInterface $dataStore) {
-		$this->dataStore = $dataStore;
-	}
-
-	public function setIntegrationContext(Integration\IntegrationInterface $integrationContext) {
-		$this->integrationContext = $integrationContext;
-	}
-
-	public function setIntegrationAPI(Integration\IntegrationAPIInterface $integrationAPI) {
-		$this->integrationAPI = $integrationAPI;
-	}
-
-	public function setLogger(LoggerInterface $logger) {
-		$this->logger = $logger;
-	}
-
-    public function setIPRewrite(IpRewrite $ipRewrite)
+    public function setConfig(Integration\ConfigInterface $config)
     {
-        $this->ipRewrite = $ipRewrite;
+        $this->config = $config;
     }
 
-	public function setProxy(Proxy $proxy) {
-		$this->proxy = $proxy;
-	}
+    public function setDataStore(Integration\DataStoreInterface $dataStore)
+    {
+        $this->dataStore = $dataStore;
+    }
+
+    public function setIntegrationContext(Integration\IntegrationInterface $integrationContext)
+    {
+        $this->integrationContext = $integrationContext;
+    }
+
+    public function setIntegrationAPI(Integration\IntegrationAPIInterface $integrationAPI)
+    {
+        $this->integrationAPI = $integrationAPI;
+    }
+
+    public function setLogger(LoggerInterface $logger)
+    {
+        $this->logger = $logger;
+    }
+
+    public function setProxy(Proxy $proxy)
+    {
+        $this->proxy = $proxy;
+    }
 
     public function cloudflareConfigPage()
     {
@@ -77,7 +74,7 @@ class Hooks
 
     public function cloudflareIndexPage()
     {
-        include WP_PLUGIN_DIR.'/cloudflare/index.php';
+        include CLOUDFLARE_PLUGIN_DIR.'index.php';
     }
 
     public function pluginActionLinks($links)
@@ -89,23 +86,21 @@ class Hooks
 
     public function initProxy()
     {
-		$this->proxy->run();
+        $this->proxy->run();
     }
 
     public function activate()
     {
-        if (version_compare($GLOBALS['wp_version'], self::CLOUDFLARE_MIN_WP_VERSION, '<')) {
-            deactivate_plugins(basename(__FILE__));
-            wp_die('<p><strong>Cloudflare</strong> plugin requires WordPress version '. self::CLOUDFLARE_MIN_WP_VERSION .' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+        if (version_compare($GLOBALS['wp_version'], CLOUDFLARE_MIN_WP_VERSION, '<')) {
+            deactivate_plugins(basename(CLOUDFLARE_PLUGIN_DIR));
+            wp_die('<p><strong>Cloudflare</strong> plugin requires WordPress version '.CLOUDFLARE_MIN_WP_VERSION.' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
         }
 
         // Guzzle3 depends on php5-curl. If dependency does not exist kill the plugin.
         if (!extension_loaded('curl')) {
-            deactivate_plugins(basename(__FILE__));
+            deactivate_plugins(basename(CLOUDFLARE_PLUGIN_DIR));
             wp_die('<p><strong>Cloudflare</strong> plugin requires php5-curl to be installed.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
         }
-
-        return true;
     }
 
     public function deactivate()
