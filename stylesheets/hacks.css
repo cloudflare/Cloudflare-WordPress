@@ -6,12 +6,12 @@
 
 /* fix WordPress logo touching the most top of the page */
 .cf-layout__row {
-    margin-top: 8px; /* new */      
+    margin-top: 8px; /* new */
 }
 
 /* fix WordPress AdminPanel Settings */
 #adminmenu .wp-submenu {
-    margin-left: 0em; /* new */
+    margin-left: 0; /* new */
 }
 
 /* Fix login Page */
@@ -37,7 +37,7 @@
 }
 
 #cf-login-page .cf-layout__row {
-    margin-top:15px;
+    margin-top: 15px;
 }
 
 #cf-login-page .cf-layout__column {
@@ -66,8 +66,8 @@ input[type="radio"]:checked:before {
     margin-top: 3px; /* new */
     margin-left: 4px; /* new */
     height: 6px; /* 7px */
-    left: 0px; /* 3px */
-    top: 0px; /* 7px */
+    left: 0; /* 3px */
+    top: 0; /* 7px */
     width: 6px; /* 7px */
 }
 
@@ -90,7 +90,6 @@ body, .cloudflare-partners .wrapper {
 .cloudflare-partners .slider-nav-container {
     display: table;
     list-style: none;
-    margin: 0;
     padding: 0;
     table-layout: fixed;
     width: auto; /* 100% */
@@ -133,11 +132,10 @@ label.cf-toggle {
 }
 
 /* More space between radio/checkbox and text */
-
 .cloudflare-partners input[type="radio"], .cloudflare-partners input[type="checkbox"] {
     height: 15px;
     line-height: normal;
-    margin: 0px 5px 0;
+    margin: 0 5px 0;
     padding: 5px;
     position: relative;
     width: 15px;
@@ -480,16 +478,15 @@ label.proxy input {
 .Select--multi.is-disabled .Select-value-icon:active {
     background-color: #fcfcfc;
 }
-@keyframes Select-animation-spin {
-    to {
-        transform: rotate(1turn);
-    }
-}
 @-webkit-keyframes Select-animation-spin {
     to {
         -webkit-transform: rotate(1turn);
     }
 }
+@keyframes Select-animation-spin {
+    to {
+        transform: rotate(1turn);
+    }
+}
 
 /* end cf-component-select */
-
