@@ -101,6 +101,8 @@ class Hooks
             deactivate_plugins(basename(CLOUDFLARE_PLUGIN_DIR));
             wp_die('<p><strong>Cloudflare</strong> plugin requires php5-curl to be installed.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
         }
+
+        return true;
     }
 
     public function deactivate()
