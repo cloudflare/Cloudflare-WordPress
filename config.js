@@ -11,7 +11,6 @@
     "featureManagerIsIpRewriteEnabled": true, 
     "featureManagerIsIpv6Enabled": true, 
     "featureManagerIsMinifyEnabled": true, 
-    "featureManagerIsProtocolRewriteEnabled": true, 
     "featureManagerIsPurgeCacheEnabled": true, 
     "featureManagerIsRailgunEnabled": true, 
     "featureManagerIsSSLEnabled": true, 
@@ -30,7 +29,8 @@
         "container.moresettings.security": [
             "SecurityLevelCard", 
             "WAFCard", 
-            "AdvanceDDoSCard"
+            "AdvanceDDoSCard",
+            "AutomaticHTTPSRewritesCard"
         ], 
         "container.moresettings.speed": [
             "AlwaysOnlineCard", 
