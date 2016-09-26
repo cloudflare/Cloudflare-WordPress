@@ -78978,7 +78978,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps)(AppWrapper);
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{"../../actions/config":532,"../../containers/ActiveZoneSelector/ActiveZoneSelector":555,"../../containers/AppNavigation/AppNavigation":560,"../../containers/GlobalNotifications/GlobalNotifications":570,"../../containers/UnderAttackButton/UnderAttackButton":590,"../../selectors/config":609,"../../utils/Auth/Auth":615,"cf-component-layout":80,"intl":186,"react":511,"react-gateway":281,"react-intl":290,"react-redux":312}],560:[function(_dereq_,module,exports){
+},{"../../actions/config":532,"../../containers/ActiveZoneSelector/ActiveZoneSelector":555,"../../containers/AppNavigation/AppNavigation":560,"../../containers/GlobalNotifications/GlobalNotifications":571,"../../containers/UnderAttackButton/UnderAttackButton":590,"../../selectors/config":609,"../../utils/Auth/Auth":615,"cf-component-layout":80,"intl":186,"react":511,"react-gateway":281,"react-intl":290,"react-redux":312}],560:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79221,6 +79221,107 @@ var _reactRedux = _dereq_('react-redux');
 
 var _reactIntl = _dereq_('react-intl');
 
+var _cfComponentToggle = _dereq_('cf-component-toggle');
+
+var _cfComponentToggle2 = _interopRequireDefault(_cfComponentToggle);
+
+var _cfComponentCard = _dereq_('cf-component-card');
+
+var _zoneSettings = _dereq_('../../actions/zoneSettings');
+
+var _utils = _dereq_('../../utils/utils');
+
+var _zoneSettings2 = _dereq_('../../selectors/zoneSettings');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SETTING_NAME = 'automatic_https_rewrites';
+
+var AutomaticHTTPSRewritesCard = function (_Component) {
+    _inherits(AutomaticHTTPSRewritesCard, _Component);
+
+    function AutomaticHTTPSRewritesCard() {
+        _classCallCheck(this, AutomaticHTTPSRewritesCard);
+
+        return _possibleConstructorReturn(this, _Component.apply(this, arguments));
+    }
+
+    AutomaticHTTPSRewritesCard.prototype.handleChange = function handleChange(value) {
+        var _props = this.props;
+        var activeZoneId = _props.activeZoneId;
+        var dispatch = _props.dispatch;
+
+        value = value === true ? 'on' : 'off';
+        dispatch((0, _zoneSettings.asyncZoneUpdateSetting)(SETTING_NAME, activeZoneId, value));
+    };
+
+    AutomaticHTTPSRewritesCard.prototype.render = function render() {
+        var formatMessage = this.props.intl.formatMessage;
+        var modifiedDate = this.props.modifiedDate;
+
+
+        return _react2.default.createElement(
+            'div',
+            null,
+            _react2.default.createElement(
+                _cfComponentCard.Card,
+                null,
+                _react2.default.createElement(
+                    _cfComponentCard.CardSection,
+                    null,
+                    _react2.default.createElement(
+                        _cfComponentCard.CardContent,
+                        { title: formatMessage({ id: 'container.automatichttprewrites.title' }), footerMessage: (0, _utils.getLastModifiedDate)(this.props.intl, modifiedDate) },
+                        _react2.default.createElement(
+                            'p',
+                            null,
+                            _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'container.automatichttprewrites.description' })
+                        )
+                    ),
+                    _react2.default.createElement(
+                        _cfComponentCard.CardControl,
+                        null,
+                        _react2.default.createElement(_cfComponentToggle2.default, {
+                            label: '',
+                            value: this.props.rewriteValue === 'on',
+                            onChange: this.handleChange.bind(this) })
+                    )
+                )
+            )
+        );
+    };
+
+    return AutomaticHTTPSRewritesCard;
+}(_react.Component);
+
+function mapStateToProps(state) {
+    return {
+        activeZoneId: state.activeZone.id,
+        rewriteValue: (0, _zoneSettings2.getZoneSettingsValueForZoneId)(state.activeZone.id, SETTING_NAME, state),
+        modifiedDate: (0, _zoneSettings2.getZoneSettingsModifiedDateForZoneId)(state.activeZone.id, SETTING_NAME, state)
+    };
+}
+exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(AutomaticHTTPSRewritesCard));
+
+},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],563:[function(_dereq_,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _react = _dereq_('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRedux = _dereq_('react-redux');
+
+var _reactIntl = _dereq_('react-intl');
+
 var _cfComponentCard = _dereq_('cf-component-card');
 
 var _cfComponentSelect = _dereq_('cf-component-select');
@@ -79307,7 +79408,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(BrowserCacheTTLCard));
 
-},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-select":117,"react":511,"react-intl":290,"react-redux":312}],563:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-select":117,"react":511,"react-intl":290,"react-redux":312}],564:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79408,7 +79509,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(BrowserIntegrityCheckCard));
 
-},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],564:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],565:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79506,7 +79607,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(CacheLevelCard));
 
-},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-radio":115,"react":511,"react-intl":290,"react-redux":312}],565:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-radio":115,"react":511,"react-intl":290,"react-redux":312}],566:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79606,7 +79707,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ChallengePassageCard));
 
-},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-select":117,"react":511,"react-intl":290,"react-redux":312}],566:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-select":117,"react":511,"react-intl":290,"react-redux":312}],567:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79792,7 +79893,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ClientLoginPage));
 
-},{"../../actions/user":536,"../../constants/UrlPaths.js":553,"../../containers/MarketingFeatureCollection/MarketingFeatureCollection":577,"../../selectors/generateUTMLink.js":610,"cf-component-button":5,"cf-component-form":71,"cf-component-input":76,"cf-component-layout":80,"react":511,"react-intl":290,"react-redux":312}],567:[function(_dereq_,module,exports){
+},{"../../actions/user":536,"../../constants/UrlPaths.js":553,"../../containers/MarketingFeatureCollection/MarketingFeatureCollection":578,"../../selectors/generateUTMLink.js":610,"cf-component-button":5,"cf-component-form":71,"cf-component-input":76,"cf-component-layout":80,"react":511,"react-intl":290,"react-redux":312}],568:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -79971,7 +80072,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(DNSManagementPage));
 
-},{"../../constants/UrlPaths.js":553,"../../containers/ActivationCheckCard/ActivationCheckCard":554,"../../containers/DNSRecordEditor/DNSRecordEditor":568,"../../containers/ZoneProvisionContainer/ZoneProvisionContainer":592,"cf-component-button":5,"cf-component-heading":74,"cf-component-table":131,"lodash":188,"react":511,"react-intl":290,"react-redux":312}],568:[function(_dereq_,module,exports){
+},{"../../constants/UrlPaths.js":553,"../../containers/ActivationCheckCard/ActivationCheckCard":554,"../../containers/DNSRecordEditor/DNSRecordEditor":569,"../../containers/ZoneProvisionContainer/ZoneProvisionContainer":592,"cf-component-button":5,"cf-component-heading":74,"cf-component-table":131,"lodash":188,"react":511,"react-intl":290,"react-redux":312}],569:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80128,7 +80229,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(DNSRecordEditor));
 
-},{"../../actions/zoneDnsRecords":538,"../../components/CloudToggle/CloudToggle":545,"cf-component-loading":88,"cf-component-table":131,"lodash":188,"react":511,"react-intl":290,"react-redux":312}],569:[function(_dereq_,module,exports){
+},{"../../actions/zoneDnsRecords":538,"../../components/CloudToggle/CloudToggle":545,"cf-component-loading":88,"cf-component-table":131,"lodash":188,"react":511,"react-intl":290,"react-redux":312}],570:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80229,7 +80330,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(DevelopmentModeCard));
 
-},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],570:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],571:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80312,7 +80413,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(GlobalNotifications));
 
-},{"../../actions/notifications":534,"cf-component-notifications":110,"react":511,"react-intl":290,"react-redux":312}],571:[function(_dereq_,module,exports){
+},{"../../actions/notifications":534,"cf-component-notifications":110,"react":511,"react-intl":290,"react-redux":312}],572:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80389,7 +80490,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(HomePage));
 
-},{"../../components/RenderCardsDynamically/RenderCardsDynamically":549,"../../selectors/pluginSettings":611,"cf-component-heading":74,"lodash":188,"react":511,"react-intl":290,"react-redux":312}],572:[function(_dereq_,module,exports){
+},{"../../components/RenderCardsDynamically/RenderCardsDynamically":549,"../../selectors/pluginSettings":611,"cf-component-heading":74,"lodash":188,"react":511,"react-intl":290,"react-redux":312}],573:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80571,7 +80672,7 @@ var HostLoginPage = function (_Component) {
 
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)()(HostLoginPage));
 
-},{"../../actions/user":536,"../../constants/UrlPaths.js":553,"../../containers/MarketingFeatureCollection/MarketingFeatureCollection":577,"react":511,"react-intl":290,"react-redux":312,"react-router":343}],573:[function(_dereq_,module,exports){
+},{"../../actions/user":536,"../../constants/UrlPaths.js":553,"../../containers/MarketingFeatureCollection/MarketingFeatureCollection":578,"react":511,"react-intl":290,"react-redux":312,"react-router":343}],574:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80672,7 +80773,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(IPV6Card));
 
-},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],574:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],575:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80747,7 +80848,8 @@ var ImageOptimizationCard = function (_Component) {
         var modifiedDate = _props2.modifiedDate;
 
         var zone = zones[activeZone.name];
-        var imageOptimizationValue = this.props.mirageValue === 'on' && this.props.polishValue === 'lossless';
+
+        var imageOptimizationValue = this.props.mirageValue === 'on' && (this.props.polishValue === 'lossless' || this.props.polishValue === 'lossy');
 
         var formatMessage = this.props.intl.formatMessage;
 
@@ -80794,7 +80896,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ImageOptimizationCard));
 
-},{"../../actions/zoneSettings":542,"../../components/CustomCardControl/CustomCardControl":546,"../../constants/Plans.js":551,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],575:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":542,"../../components/CustomCardControl/CustomCardControl":546,"../../constants/Plans.js":551,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],576:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80895,7 +80997,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(IpRewriteCard));
 
-},{"../../actions/pluginSettings":535,"../../selectors/pluginSettings":611,"../../utils/utils":620,"cf-component-card":16,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],576:[function(_dereq_,module,exports){
+},{"../../actions/pluginSettings":535,"../../selectors/pluginSettings":611,"../../utils/utils":620,"cf-component-card":16,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],577:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -80967,7 +81069,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(LoginPage);
 
-},{"../../constants/UrlPaths.js":553,"../../containers/ClientLoginPage/ClientLoginPage":566,"../../containers/HostLoginPage/HostLoginPage":572,"../../selectors/config":609,"../../utils/Auth/Auth":615,"react":511,"react-redux":312,"redux-simple-router":513}],577:[function(_dereq_,module,exports){
+},{"../../constants/UrlPaths.js":553,"../../containers/ClientLoginPage/ClientLoginPage":567,"../../containers/HostLoginPage/HostLoginPage":573,"../../selectors/config":609,"../../utils/Auth/Auth":615,"react":511,"react-redux":312,"redux-simple-router":513}],578:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81042,7 +81144,7 @@ function mapStateToProps(state) {
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps)(MarketingFeatureCollection);
 
-},{"../../components/MarketingFeature/MarketingFeature":548,"../../selectors/config":609,"cf-component-flex":64,"react":511,"react-redux":312}],578:[function(_dereq_,module,exports){
+},{"../../components/MarketingFeature/MarketingFeature":548,"../../selectors/config":609,"cf-component-flex":64,"react":511,"react-redux":312}],579:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81113,9 +81215,9 @@ var MinifyCard = function (_Component) {
         var formatMessage = this.props.intl.formatMessage;
         var modifiedDate = this.props.modifiedDate;
 
-        // this.state.checkboxValues = [];
-        //convert on/off to true/false
 
+        this.state.checkboxValues = [];
+        //convert on/off to true/false
         for (var key in this.props.minifyValues) {
             if (this.props.minifyValues[key] === 'on') {
                 this.state.checkboxValues.push(key);
@@ -81165,7 +81267,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(MinifyCard));
 
-},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-checkbox":23,"react":511,"react-intl":290,"react-redux":312}],579:[function(_dereq_,module,exports){
+},{"../../actions/zoneSettings":542,"../../selectors/zoneSettings":612,"../../utils/utils":620,"cf-component-card":16,"cf-component-checkbox":23,"react":511,"react-intl":290,"react-redux":312}],580:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81256,7 +81358,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(MoreSettingsPage));
 
-},{"../../components/RenderCardsDynamically/RenderCardsDynamically":549,"../../selectors/pluginSettings":611,"cf-component-heading":74,"lodash":188,"react":511,"react-intl":290,"react-redux":312}],580:[function(_dereq_,module,exports){
+},{"../../components/RenderCardsDynamically/RenderCardsDynamically":549,"../../selectors/pluginSettings":611,"cf-component-heading":74,"lodash":188,"react":511,"react-intl":290,"react-redux":312}],581:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81312,10 +81414,6 @@ var _MinifyCard2 = _interopRequireDefault(_MinifyCard);
 var _PurgeCacheCard = _dereq_('../../containers/PurgeCacheCard/PurgeCacheCard');
 
 var _PurgeCacheCard2 = _interopRequireDefault(_PurgeCacheCard);
-
-var _ProtocolRewriteCard = _dereq_('../../containers/ProtocolRewriteCard/ProtocolRewriteCard');
-
-var _ProtocolRewriteCard2 = _interopRequireDefault(_ProtocolRewriteCard);
 
 var _RailgunCard = _dereq_('../../containers/RailgunCard/RailgunCard');
 
@@ -81384,11 +81482,6 @@ var PerformancePage = function (_Component) {
                 ),
                 _react2.default.createElement(
                     _FeatureManager2.default,
-                    { isEnabled: config.featureManagerIsProtocolRewriteEnabled },
-                    _react2.default.createElement(_ProtocolRewriteCard2.default, null)
-                ),
-                _react2.default.createElement(
-                    _FeatureManager2.default,
                     { isEnabled: config.featureManagerIsCacheLevelEnabled },
                     _react2.default.createElement(_CacheLevelCard2.default, null)
                 ),
@@ -81443,7 +81536,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(PerformancePage));
 
-},{"../../components/FeatureManager/FeatureManager":547,"../../containers/AlwaysOnlineCard/AlwaysOnlineCard":557,"../../containers/BrowserCacheTTLCard/BrowserCacheTTLCard":562,"../../containers/CacheLevelCard/CacheLevelCard":564,"../../containers/DevelopmentModeCard/DevelopmentModeCard":569,"../../containers/IPV6Card/IPV6Card":573,"../../containers/ImageOptimizationCard/ImageOptimizationCard":574,"../../containers/IpRewriteCard/IpRewriteCard":575,"../../containers/MinifyCard/MinifyCard":578,"../../containers/ProtocolRewriteCard/ProtocolRewriteCard":583,"../../containers/PurgeCacheCard/PurgeCacheCard":584,"../../containers/RailgunCard/RailgunCard":585,"../../containers/WAFCard/WAFCard":591,"../../selectors/pluginSettings":611,"cf-component-heading":74,"lodash":188,"react":511,"react-intl":290,"react-redux":312}],581:[function(_dereq_,module,exports){
+},{"../../components/FeatureManager/FeatureManager":547,"../../containers/AlwaysOnlineCard/AlwaysOnlineCard":557,"../../containers/BrowserCacheTTLCard/BrowserCacheTTLCard":563,"../../containers/CacheLevelCard/CacheLevelCard":565,"../../containers/DevelopmentModeCard/DevelopmentModeCard":570,"../../containers/IPV6Card/IPV6Card":574,"../../containers/ImageOptimizationCard/ImageOptimizationCard":575,"../../containers/IpRewriteCard/IpRewriteCard":576,"../../containers/MinifyCard/MinifyCard":579,"../../containers/PurgeCacheCard/PurgeCacheCard":584,"../../containers/RailgunCard/RailgunCard":585,"../../containers/WAFCard/WAFCard":591,"../../selectors/pluginSettings":611,"cf-component-heading":74,"lodash":188,"react":511,"react-intl":290,"react-redux":312}],582:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81611,7 +81704,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(PluginSpecificCacheCard));
 
-},{"../../actions/pluginSettings":535,"../../selectors/pluginSettings":611,"../../utils/utils":620,"cf-component-button":5,"cf-component-card":16,"cf-component-modal":99,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],582:[function(_dereq_,module,exports){
+},{"../../actions/pluginSettings":535,"../../selectors/pluginSettings":611,"../../utils/utils":620,"cf-component-button":5,"cf-component-card":16,"cf-component-modal":99,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],583:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -81722,107 +81815,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(PluginSpecificCacheTagCard));
 
-},{"../../actions/pluginSettings":535,"../../components/CustomCardControl/CustomCardControl":546,"../../constants/Plans.js":551,"../../selectors/pluginSettings":611,"../../selectors/zones":613,"../../utils/utils":620,"cf-component-card":16,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],583:[function(_dereq_,module,exports){
-'use strict';
-
-exports.__esModule = true;
-
-var _react = _dereq_('react');
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactRedux = _dereq_('react-redux');
-
-var _reactIntl = _dereq_('react-intl');
-
-var _cfComponentCard = _dereq_('cf-component-card');
-
-var _cfComponentToggle = _dereq_('cf-component-toggle');
-
-var _cfComponentToggle2 = _interopRequireDefault(_cfComponentToggle);
-
-var _pluginSettings = _dereq_('../../actions/pluginSettings');
-
-var _pluginSettings2 = _dereq_('../../selectors/pluginSettings');
-
-var _utils = _dereq_('../../utils/utils');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var SETTING_NAME = 'protocol_rewrite';
-
-var ProtocolRewriteCard = function (_Component) {
-    _inherits(ProtocolRewriteCard, _Component);
-
-    function ProtocolRewriteCard() {
-        _classCallCheck(this, ProtocolRewriteCard);
-
-        return _possibleConstructorReturn(this, _Component.apply(this, arguments));
-    }
-
-    ProtocolRewriteCard.prototype.handleChange = function handleChange(value) {
-        var _props = this.props;
-        var activeZoneId = _props.activeZoneId;
-        var dispatch = _props.dispatch;
-
-        dispatch((0, _pluginSettings.asyncPluginUpdateSetting)(SETTING_NAME, activeZoneId, value));
-    };
-
-    ProtocolRewriteCard.prototype.render = function render() {
-        var formatMessage = this.props.intl.formatMessage;
-        var modifiedDate = this.props.modifiedDate;
-
-
-        return _react2.default.createElement(
-            'div',
-            null,
-            _react2.default.createElement(
-                _cfComponentCard.Card,
-                null,
-                _react2.default.createElement(
-                    _cfComponentCard.CardSection,
-                    null,
-                    _react2.default.createElement(
-                        _cfComponentCard.CardContent,
-                        { title: formatMessage({ id: 'container.protocolRewrite.title' }), footerMessage: (0, _utils.getLastModifiedDate)(this.props.intl, modifiedDate) },
-                        _react2.default.createElement(
-                            'p',
-                            null,
-                            _react2.default.createElement(_reactIntl.FormattedMessage, { id: 'container.protocolRewrite.description' })
-                        )
-                    ),
-                    _react2.default.createElement(
-                        _cfComponentCard.CardControl,
-                        null,
-                        _react2.default.createElement(_cfComponentToggle2.default, {
-                            label: '',
-                            value: this.props.protocolRewriteValue == true,
-                            onChange: this.handleChange.bind(this) })
-                    )
-                )
-            )
-        );
-    };
-
-    return ProtocolRewriteCard;
-}(_react.Component);
-
-function mapStateToProps(state) {
-    return {
-        activeZoneId: state.activeZone.id,
-        protocolRewriteValue: (0, _pluginSettings2.getPluginSettingsValueForZoneId)(state.activeZone.id, SETTING_NAME, state),
-        modifiedDate: (0, _pluginSettings2.getPluginSettingsModifiedDateForZoneId)(state.activeZone.id, SETTING_NAME, state)
-    };
-}
-exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(ProtocolRewriteCard));
-
-},{"../../actions/pluginSettings":535,"../../selectors/pluginSettings":611,"../../utils/utils":620,"cf-component-card":16,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],584:[function(_dereq_,module,exports){
+},{"../../actions/pluginSettings":535,"../../components/CustomCardControl/CustomCardControl":546,"../../constants/Plans.js":551,"../../selectors/pluginSettings":611,"../../selectors/zones":613,"../../utils/utils":620,"cf-component-card":16,"cf-component-toggle":149,"react":511,"react-intl":290,"react-redux":312}],584:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -82219,6 +82212,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var SETTING_NAME = 'ssl';
+
 var SSLCard = function (_Component) {
     _inherits(SSLCard, _Component);
 
@@ -82491,7 +82486,7 @@ function mapStateToProps(state) {
 }
 exports.default = (0, _reactIntl.injectIntl)((0, _reactRedux.connect)(mapStateToProps)(SecurityPage));
 
-},{"../../components/FeatureManager/FeatureManager":547,"../../containers/BrowserIntegrityCheckCard/BrowserIntegrityCheckCard":563,"../../containers/ChallengePassageCard/ChallengePassageCard":565,"../../containers/SSLCard/SSLCard":586,"../../containers/SecurityLevelCard/SecurityLevelCard":587,"cf-component-heading":74,"lodash":188,"react":511,"react-intl":290,"react-redux":312}],589:[function(_dereq_,module,exports){
+},{"../../components/FeatureManager/FeatureManager":547,"../../containers/BrowserIntegrityCheckCard/BrowserIntegrityCheckCard":564,"../../containers/ChallengePassageCard/ChallengePassageCard":566,"../../containers/SSLCard/SSLCard":586,"../../containers/SecurityLevelCard/SecurityLevelCard":587,"cf-component-heading":74,"lodash":188,"react":511,"react-intl":290,"react-redux":312}],589:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -83654,7 +83649,7 @@ function buildZoneAnalyticsData(zoneAnalyticsResponse) {
             data.threats[0].push(analyticsInterval.threats.all);
         }
         if (typeof analyticsInterval.uniques !== 'undefined') {
-            data.uniques[0].push(analyticsInterval.threats.all);
+            data.uniques[0].push(analyticsInterval.uniques.all);
         }
     });
     return data;
@@ -84114,7 +84109,7 @@ exports.default = _react2.default.createElement(
     _react2.default.createElement(_reactRouter.Route, { path: UrlPaths.MORE_SETTINGS_PAGE, component: _MoreSettingsPage2.default, onEnter: requireAuth })
 );
 
-},{"./constants/UrlPaths":553,"./containers/AnalyticsPage/AnaltyicsPage":558,"./containers/App/App":559,"./containers/DNSManagementPage/DNSManagementPage":567,"./containers/HomePage/HomePage":571,"./containers/LoginPage/LoginPage":576,"./containers/MoreSettingsPage/MoreSettingsPage":579,"./containers/PerformancePage/PerformancePage":580,"./containers/SecurityPage/SecurityPage":588,"./containers/SignUpPage/SignUpPage":589,"./utils/Auth/Auth":615,"react":511,"react-router":343}],609:[function(_dereq_,module,exports){
+},{"./constants/UrlPaths":553,"./containers/AnalyticsPage/AnaltyicsPage":558,"./containers/App/App":559,"./containers/DNSManagementPage/DNSManagementPage":568,"./containers/HomePage/HomePage":572,"./containers/LoginPage/LoginPage":577,"./containers/MoreSettingsPage/MoreSettingsPage":580,"./containers/PerformancePage/PerformancePage":581,"./containers/SecurityPage/SecurityPage":588,"./containers/SignUpPage/SignUpPage":589,"./utils/Auth/Auth":615,"react":511,"react-router":343}],609:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -84851,10 +84846,6 @@ var _MinifyCard = _dereq_('../containers/MinifyCard/MinifyCard');
 
 var _MinifyCard2 = _interopRequireDefault(_MinifyCard);
 
-var _ProtocolRewriteCard = _dereq_('../containers/ProtocolRewriteCard/ProtocolRewriteCard');
-
-var _ProtocolRewriteCard2 = _interopRequireDefault(_ProtocolRewriteCard);
-
 var _PurgeCacheCard = _dereq_('../containers/PurgeCacheCard/PurgeCacheCard');
 
 var _PurgeCacheCard2 = _interopRequireDefault(_PurgeCacheCard);
@@ -84883,6 +84874,10 @@ var _RailgunCard = _dereq_('../containers/RailgunCard/RailgunCard');
 
 var _RailgunCard2 = _interopRequireDefault(_RailgunCard);
 
+var _AutomaticHTTPSRewritesCard = _dereq_('../containers/AutomaticHTTPSRewritesCard/AutomaticHTTPSRewritesCard');
+
+var _AutomaticHTTPSRewritesCard2 = _interopRequireDefault(_AutomaticHTTPSRewritesCard);
+
 var _DNSManagementPage = _dereq_('../containers/DNSManagementPage/DNSManagementPage');
 
 var _DNSManagementPage2 = _interopRequireDefault(_DNSManagementPage);
@@ -84904,20 +84899,20 @@ var cardMapper = {
     MinifyCard: _MinifyCard2.default,
     PluginSpecificCacheCard: _PluginSpecificCacheCard2.default,
     PluginSpecificCacheTagCard: _PluginSpecificCachetTagCard2.default,
-    ProtocolRewriteCard: _ProtocolRewriteCard2.default,
     PurgeCacheCard: _PurgeCacheCard2.default,
     SSLCard: _SSLCard2.default,
     SecurityLevelCard: _SecurityLevelCard2.default,
     WAFCard: _WAFCard2.default,
     RailgunCard: _RailgunCard2.default,
-    DNSManagementPage: _DNSManagementPage2.default
+    DNSManagementPage: _DNSManagementPage2.default,
+    AutomaticHTTPSRewritesCard: _AutomaticHTTPSRewritesCard2.default
 };
 
 // Pages
 // Cards
 exports.cardMapper = cardMapper;
 
-},{"../containers/AdvanceDDoSCard/AdvanceDDoSCard":556,"../containers/AlwaysOnlineCard/AlwaysOnlineCard":557,"../containers/ApplyDefaultSettingsCard/ApplyDefaultSettingsCard":561,"../containers/BrowserCacheTTLCard/BrowserCacheTTLCard":562,"../containers/BrowserIntegrityCheckCard/BrowserIntegrityCheckCard":563,"../containers/CacheLevelCard/CacheLevelCard":564,"../containers/ChallengePassageCard/ChallengePassageCard":565,"../containers/DNSManagementPage/DNSManagementPage":567,"../containers/DevelopmentModeCard/DevelopmentModeCard":569,"../containers/IPV6Card/IPV6Card":573,"../containers/ImageOptimizationCard/ImageOptimizationCard":574,"../containers/IpRewriteCard/IpRewriteCard":575,"../containers/MinifyCard/MinifyCard":578,"../containers/PluginSpecificCacheCard/PluginSpecificCacheCard":581,"../containers/PluginSpecificCacheTagCard/PluginSpecificCachetTagCard.js":582,"../containers/ProtocolRewriteCard/ProtocolRewriteCard":583,"../containers/PurgeCacheCard/PurgeCacheCard":584,"../containers/RailgunCard/RailgunCard":585,"../containers/SSLCard/SSLCard":586,"../containers/SecurityLevelCard/SecurityLevelCard":587,"../containers/WAFCard/WAFCard":591}],619:[function(_dereq_,module,exports){
+},{"../containers/AdvanceDDoSCard/AdvanceDDoSCard":556,"../containers/AlwaysOnlineCard/AlwaysOnlineCard":557,"../containers/ApplyDefaultSettingsCard/ApplyDefaultSettingsCard":561,"../containers/AutomaticHTTPSRewritesCard/AutomaticHTTPSRewritesCard":562,"../containers/BrowserCacheTTLCard/BrowserCacheTTLCard":563,"../containers/BrowserIntegrityCheckCard/BrowserIntegrityCheckCard":564,"../containers/CacheLevelCard/CacheLevelCard":565,"../containers/ChallengePassageCard/ChallengePassageCard":566,"../containers/DNSManagementPage/DNSManagementPage":568,"../containers/DevelopmentModeCard/DevelopmentModeCard":570,"../containers/IPV6Card/IPV6Card":574,"../containers/ImageOptimizationCard/ImageOptimizationCard":575,"../containers/IpRewriteCard/IpRewriteCard":576,"../containers/MinifyCard/MinifyCard":579,"../containers/PluginSpecificCacheCard/PluginSpecificCacheCard":582,"../containers/PluginSpecificCacheTagCard/PluginSpecificCachetTagCard.js":583,"../containers/PurgeCacheCard/PurgeCacheCard":584,"../containers/RailgunCard/RailgunCard":585,"../containers/SSLCard/SSLCard":586,"../containers/SecurityLevelCard/SecurityLevelCard":587,"../containers/WAFCard/WAFCard":591}],619:[function(_dereq_,module,exports){
 'use strict';
 
 exports.__esModule = true;
