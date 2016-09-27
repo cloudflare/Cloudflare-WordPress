@@ -131,7 +131,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             'proxyURL' => $proxyURL,
         ));
 
-        $mockFileGetContents = $this->getFunctionMock('CF\WordPress', 'readJSON');
+        $mockFileGetContents = $this->getFunctionMock('CF\WordPress', 'file_get_contents');
         $mockFileGetContents->expects($this->any())->willReturn($jsonBody);
 
         $request = $this->proxy->createRequest();
