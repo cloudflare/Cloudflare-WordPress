@@ -36,18 +36,18 @@ Cloudflare’s plugin for WordPress automatically refreshes the Cloudflare cache
 - Support for HTTP2/Server Push.  
 
 ## Installation
-- To install the Cloudflare plugin into your WordPress admin panel, please visit: https://wordpress.org/plugins/cloudflare/ and click “Download” or download the plugin from this GitHub repo.
+1. To install the Cloudflare plugin into your WordPress admin panel, please visit: https://wordpress.org/plugins/cloudflare/ and click “Download” or download the plugin from this GitHub repo.
   - To install the plugin after downloading it via GitHub, navigate to Plugins >> Add New >> Upload Plugin and upload the Cloudflare-Wordpress-master.zip file.
 
-- Once you’ve installed the plugin, activate it through the WordPress plugin panel.
+2. Once you’ve installed the plugin, activate it through the WordPress plugin panel.
 
-- If you're upgrading from the old plugin, and had previously inputted your API Key, you'll be automatically logged-in after updating the plugin. 
+3. If you're upgrading from the old plugin, and had previously inputted your API Key, you'll be automatically logged-in after updating the plugin. 
 
-- If this is the first time installing Cloudflare's WordPress plugin, please navigate to the plugin settings inside of your WordPress admin panel after activating, and input your Cloudflare username and API key; to find your API key, follow these instructions. If you do not already have a Cloudflare account, you’ll see the option to create one.
+4. If this is the first time installing Cloudflare's WordPress plugin, please navigate to the plugin settings inside of your WordPress admin panel after activating, and input your Cloudflare username and API key; to find your API key, follow these instructions. If you do not already have a Cloudflare account, you’ll see the option to create one.
 
-- After successfully logging into the plugin, click the “Apply Default Settings” button within the plugin’s dashboard. Clicking “Apply” will enable specific Cloudflare settings, optimized for the WordPress platform. These settings can be found here.
+5. After successfully logging into the plugin, click the “Apply Default Settings” button within the plugin’s dashboard. Clicking “Apply” will enable specific Cloudflare settings, optimized for the WordPress platform. These settings can be found here.
 
-- Once this setting has been applied, that’s it! Your website is now on the Cloudflare network and optimized for the WordPress platform. You’ll also begin to see improved website load speeds, bandwidth savings, and protection against hackers, spammers, and bots.
+6. Once this setting has been applied, that’s it! Your website is now on the Cloudflare network and optimized for the WordPress platform. You’ll also begin to see improved website load speeds, bandwidth savings, and protection against hackers, spammers, and bots.
 
 ## FAQ
 ### Do I need a Cloudflare account to use the plugin?
