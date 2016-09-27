@@ -247,43 +247,6 @@
         "abandoned": "guzzlehttp/guzzle"
     },
     {
-        "name": "cloudflare/cloudflare-plugin-backend",
-        "version": "1.1.10",
-        "version_normalized": "1.1.10.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",
-            "reference": "d4993dbfc456bb7f7a6491978aa5e65ce9a2c924"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/d4993dbfc456bb7f7a6491978aa5e65ce9a2c924",
-            "reference": "d4993dbfc456bb7f7a6491978aa5e65ce9a2c924",
-            "shasum": ""
-        },
-        "require": {
-            "guzzle/guzzle": "~3.9",
-            "psr/log": "^1.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "4.8.*",
-            "squizlabs/php_codesniffer": "2.*"
-        },
-        "time": "2016-09-12 15:56:33",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "CF\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "description": "A PHP backend for CloudFlare plugins."
-    },
-    {
         "name": "johnkary/phpunit-speedtrap",
         "version": "v1.0.1",
         "version_normalized": "1.0.1.0",
@@ -1735,5 +1698,42 @@
             "phpcs",
             "standards"
         ]
+    },
+    {
+        "name": "cloudflare/cloudflare-plugin-backend",
+        "version": "1.1.11",
+        "version_normalized": "1.1.11.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",
+            "reference": "20e5b6d5ae271aa8770eb42c3899a0958a9a24ad"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/20e5b6d5ae271aa8770eb42c3899a0958a9a24ad",
+            "reference": "20e5b6d5ae271aa8770eb42c3899a0958a9a24ad",
+            "shasum": ""
+        },
+        "require": {
+            "guzzle/guzzle": "~3.9",
+            "psr/log": "^1.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "4.8.*",
+            "squizlabs/php_codesniffer": "2.*"
+        },
+        "time": "2016-09-27 16:47:36",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "CF\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "description": "A PHP backend for CloudFlare plugins."
     }
 ]
