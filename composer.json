@@ -1,30 +1,30 @@
 {
-    "name": "cloudflare/wordpress-plugin", 
-    "license": "BSD-3-Clause", 
-    "require": {
-        "cloudflare/cloudflare-plugin-backend": "^1.1", 
-        "cloudflare/cf-ip-rewrite": "^1.0.0", 
-        "symfony/yaml": "~2.6", 
-        "guzzle/guzzle": "~3.9"
-    }, 
     "autoload": {
         "psr-4": {
             "CF\\": "src/"
         }
     }, 
-    "version": "3.0.3", 
+    "description": "A CloudFlare plugin for WordPress", 
+    "license": "BSD-3-Clause", 
+    "name": "cloudflare/wordpress-plugin", 
+    "require": {
+        "cloudflare/cf-ip-rewrite": "^1.0.0", 
+        "cloudflare/cloudflare-plugin-backend": "^1.1", 
+        "guzzle/guzzle": "~3.9", 
+        "symfony/yaml": "~2.6"
+    }, 
+    "require-dev": {
+        "johnkary/phpunit-speedtrap": "^1.0", 
+        "php-mock/php-mock-phpunit": "^1.1", 
+        "phpunit/phpunit": "4.8.*", 
+        "squizlabs/php_codesniffer": "2.*"
+    }, 
     "scripts": {
-        "test": "vendor/bin/phpunit", 
         "format": "vendor/bin/phpcs -n --standard=PSR2 --extensions=php,live.php src/", 
         "post-install-cmd": [
             "bash git-hooks/setup.sh"
-        ]
+        ], 
+        "test": "vendor/bin/phpunit"
     }, 
-    "require-dev": {
-        "squizlabs/php_codesniffer": "2.*", 
-        "johnkary/phpunit-speedtrap": "^1.0", 
-        "phpunit/phpunit": "4.8.*", 
-        "php-mock/php-mock-phpunit": "^1.1"
-    }, 
-    "description": "A CloudFlare plugin for WordPress"
+    "version": "3.0.4"
 }

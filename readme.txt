@@ -3,7 +3,7 @@ Contributors: jwineman, furkan811, IcyApril
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 4.6
-Stable tag: 3.0.3
+Stable tag: 3.0.4
 License: BSD-3-Clause
 
 All of CloudFlare’s performance and security benefits in a simple one-click install of recommended settings specifically developed for WordPress.
@@ -83,6 +83,25 @@ Make sure that the php5-curl extension is installed on your system.
 1. Cloudflare Plugin
 
 == Changelog ==
+
+= 3.0.4 - 2016-09-27 =
+
+*Added*
+
+* Ability for users to toggle Automatic HTTPS Rewrites (enabled by default, solves for most mixed content errors).
+
+*Fixed*
+
+* Fixed an issue where low PHP version where getting syntax error.
+* Fixed issue where some users using Flexible SSL where not able to login to wp-admin .
+* Fixed a bug where the active zone selector was not paginating through the whole zone list.
+* Fixed an issue where the setting for Image Optimization was being displayed incorrectly.
+* Fixed a bug in Analytics where the  Uniques Visitors data was not displaying accurately.
+
+*Changed*
+
+* Compressed assets to lower plugin size.
+* Hooks loading logic refactored to make it more simple and readable.
 
 = 3.0.3 - 2016-09-21 =
 
