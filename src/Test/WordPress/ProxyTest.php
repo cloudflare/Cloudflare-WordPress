@@ -77,3 +77,43 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
 	}
 }
 
+    public function testCreateRequestGETProxyPlugin()
+    {
+        $url = 'testproxyurl.com';
+        $proxyURL = 'proxyurl.com';
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+        $_GET['proxyURL'] = $url;
+        $_GET['proxyURLType'] = 'PLUGIN';
+        $jsonBody = json_encode(array(
+            'proxyURL' => $proxyURL,
+        ));
+
+        $mockFileGetContents = $this->getFunctionMock('CF\WordPress', 'file_get_contents');
+        $mockFileGetContents->expects($this->any())->willReturn($jsonBody);
+
+        $request = $this->proxy->createRequest();
+
+        $this->assertFalse(isset($request->getParameters()['proxyURL']));
+        $this->assertFalse(isset($request->getParameters()['proxyURLType']));
+        $this->assertFalse(isset($request->getBody()['proxyURL']));
+        $this->assertEquals(\CF\API\Plugin::ENDPOINT.$url, $request->getUrl());
+    }
+
+    public function testCreateRequestNonGET()
+    {
+        $proxyURL = 'proxyurl.com';
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $jsonBody = json_encode(array(
+            'proxyURL' => $proxyURL,
+        ));
+
+        $mockFileGetContents = $this->getFunctionMock('CF\WordPress', 'readJSON');
+        $mockFileGetContents->expects($this->any())->willReturn($jsonBody);
+
+        $request = $this->proxy->createRequest();
+
+        $this->assertFalse(isset($request->getParameters()['proxyURL']));
+        $this->assertFalse(isset($request->getParameters()['proxyURLType']));
+        $this->assertFalse(isset($request->getBody()['proxyURL']));
+        // $this->assertEquals($proxyURL, $request->getUrl());
+    }
