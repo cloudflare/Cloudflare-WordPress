@@ -17,6 +17,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
     protected $mockWordPressClientAPI;
     protected $mockDefaultIntegration;
     protected $mockRequestRouter;
+    protected $mockWordPressWrapper;
     protected $proxy;
 
     public function setup()
@@ -40,6 +41,9 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);
+        $this->mockWordPressWrapper = $this->getMockBuilder('\CF\WordPress\WordPressWrapper')
+            ->disableOriginalConstructor()
+            ->getMock();
         $this->proxy = new Proxy($this->mockDefaultIntegration);
         $this->proxy->setWordpressClientAPI($this->mockWordPressClientAPI);
         $this->proxy->setRequestRouter($this->mockRequestRouter);
@@ -131,8 +135,9 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             'proxyURL' => $proxyURL,
         ));
 
-        $mockFileGetContents = $this->getFunctionMock('CF\WordPress', 'file_get_contents');
-        $mockFileGetContents->expects($this->any())->willReturn($jsonBody);
+        $this->mockWordPressWrapper->expects($this->once())->method('fileGetContents')->willReturn($jsonBody);
+
+        $this->proxy->setWordpressWrapper($this->mockWordPressWrapper);
 
         $request = $this->proxy->createRequest();
 

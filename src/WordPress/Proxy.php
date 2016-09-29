@@ -15,6 +15,7 @@ class Proxy
     protected $wordpressClientAPI;
     protected $wordpressIntegration;
     protected $requestRouter;
+    protected $wordpressWrapper;
 
     /**
      * @param IntegrationInterface $integration
@@ -31,6 +32,8 @@ class Proxy
         $this->requestRouter = new RequestRouter($this->wordpressIntegration);
         $this->requestRouter->addRouter('\CF\WordPress\WordPressClientAPI', ClientRoutes::$routes);
         $this->requestRouter->addRouter('\CF\API\Plugin', PluginRoutes::getRoutes(PluginRoutes::$routes));
+
+        $this->wordpressWrapper = new WordPressWrapper();
     }
 
     /**
@@ -39,6 +42,14 @@ class Proxy
     public function setWordpressClientAPI(API\APIInterface $wordpressClientAPI)
     {
         $this->wordpressClientAPI = $wordpressClientAPI;
+    }
+
+    /**
+     * @param API\APIInterface $wordpressClientAPI
+     */
+    public function setWordpressWrapper(WordPressWrapper $wordpressWrapper)
+    {
+        $this->wordpressWrapper = $wordpressWrapper;
     }
 
     /**
@@ -107,7 +118,8 @@ class Proxy
     {
         $method = $_SERVER['REQUEST_METHOD'];
         $parameters = $_GET;
-        $body = json_decode(file_get_contents('php://input'), true);
+        $jsonInput = $this->wordpressWrapper->fileGetContents('php://input');
+        $body = json_decode($jsonInput, true);
         $path = null;
 
         if (strtoupper($method === 'GET')) {
