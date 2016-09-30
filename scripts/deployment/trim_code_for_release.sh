@@ -13,10 +13,13 @@ rm -f $REPOSITORY_FOLDER/.editorconfig
 rm -rf $REPOSITORY_FOLDER/.git
 rm -rf $REPOSITORY_FOLDER/src/Test/
 rm -rf $REPOSITORY_FOLDER/git-hooks
+rm -rf $REPOSITORY_FOLDER/compiled.map.js
 rm -rf $REPOSITORY_FOLDER/scripts
 rm -rf $REPOSITORY_FOLDER/vendor/bin/
 rm -rf $REPOSITORY_FOLDER/vendor/squizlabs
 rm -rf $REPOSITORY_FOLDER/vendor/phpunit
 rm -rf $REPOSITORY_FOLDER/vendor/php-mock
 rm -rf $REPOSITORY_FOLDER/vendor/johnkary 
-rm -rf $REPOSITORY_FOLDER/scripts/
+rm -rf $REPOSITORY_FOLDER/vendor/guzzle/guzzle/tests
+rm -rf $REPOSITORY_FOLDER/vendor/guzzle/guzzle/docs
+rm -rf $REPOSITORY_FOLDER/vendor/phpdocumentor
