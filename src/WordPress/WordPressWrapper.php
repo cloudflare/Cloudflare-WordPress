@@ -4,8 +4,18 @@ namespace CF\WordPress;
 
 class WordPressWrapper
 {
-    public function fileGetContents($input)
+    public function getOption($key, $default)
     {
-        return file_get_contents($input);
+        return get_option($key, $default);
+    }
+
+    public function updateOption($key, $value)
+    {
+        return update_option($key, $value);
+    }
+
+    public function deleteOption($key)
+    {
+        return delete_option($key);
     }
 }

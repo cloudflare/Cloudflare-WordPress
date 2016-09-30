@@ -12,12 +12,21 @@ class DataStore implements DataStoreInterface
     const EMAIL = 'cloudflare_api_email';
     const CACHED_DOMAIN_NAME = 'cloudflare_cached_domain_name';
 
+    protected $wordPressWrapper;
+
     /**
      * @param DefaultLogger $logger
      */
     public function __construct(DefaultLogger $logger)
     {
         $this->logger = $logger;
+
+        $this->wordPressWrapper = new WordPressWrapper();
+    }
+
+    public function setWordPressWrapper(WordPressWrapper $wordPressWrapper)
+    {
+        $this->wordPressWrapper = $wordPressWrapper;
     }
 
     /**
@@ -121,7 +130,7 @@ class DataStore implements DataStoreInterface
      */
     public function get($key)
     {
-        $result = get_option($key, null);
+        $result = $this->wordPressWrapper->getOption($key, null);
 
         return $result;
     }
@@ -134,7 +143,7 @@ class DataStore implements DataStoreInterface
      */
     public function set($key, $value)
     {
-        return update_option($key, $value);
+        return $this->wordPressWrapper->updateOption($key, $value);
     }
 
     /**
@@ -142,7 +151,7 @@ class DataStore implements DataStoreInterface
      */
     public function clear($key)
     {
-        delete_option($key);
+        $this->wordPressWrapper->deleteOption($key);
     }
 
     public function clearDataStore()

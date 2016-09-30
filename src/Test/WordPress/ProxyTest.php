@@ -2,7 +2,6 @@
 
 namespace CF\Test\WordPress;
 
-use CF\WordPress\Proxy;
 use CF\Integration\DefaultIntegration;
 use phpmock\phpunit\PHPMock;
 
@@ -17,8 +16,6 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
     protected $mockWordPressClientAPI;
     protected $mockDefaultIntegration;
     protected $mockRequestRouter;
-    protected $mockWordPressWrapper;
-    protected $proxy;
 
     public function setup()
     {
@@ -41,12 +38,14 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);
-        $this->mockWordPressWrapper = $this->getMockBuilder('\CF\WordPress\WordPressWrapper')
-            ->disableOriginalConstructor()
+
+        $this->mockProxy = $this->getMockBuilder('\CF\WordPress\Proxy')
+            ->setConstructorArgs(array($this->mockDefaultIntegration))
+            ->setMethods(array('getJSONBody'))
             ->getMock();
-        $this->proxy = new Proxy($this->mockDefaultIntegration);
-        $this->proxy->setWordpressClientAPI($this->mockWordPressClientAPI);
-        $this->proxy->setRequestRouter($this->mockRequestRouter);
+
+        $this->mockProxy->setWordpressClientAPI($this->mockWordPressClientAPI);
+        $this->mockProxy->setRequestRouter($this->mockRequestRouter);
 
         $mockHeader = $this->getFunctionMock('CF\WordPress', 'header');
     }
@@ -58,7 +57,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
         $_GET['proxyURLType'] = 'proxyUrlType';
         $this->mockRequestRouter->expects($this->once())->method('route');
         $mockWPDie = $this->getFunctionMock('CF\WordPress', 'wp_die');
-        $this->proxy->run();
+        $this->mockProxy->run();
     }
 
     public function testRunHandlesPost()
@@ -75,12 +74,12 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
         $mockWPVerifyNonce->expects($this->once())->willReturn(true);
         $this->mockRequestRouter->expects($this->once())->method('route');
         $mockWPDie = $this->getFunctionMock('CF\WordPress', 'wp_die');
-        $this->proxy->run();
+        $this->mockProxy->run();
     }
 
     public function testIsCloudFlareCSRFTokenValidReturnsTrueForGet()
     {
-        $this->assertTrue($this->proxy->isCloudFlareCSRFTokenValid('GET', null));
+        $this->assertTrue($this->mockProxy->isCloudFlareCSRFTokenValid('GET', null));
     }
 
     public function testCreateRequestGETProxyClient()
@@ -94,10 +93,9 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             'proxyURL' => $proxyURL,
         ));
 
-        $mockFileGetContents = $this->getFunctionMock('CF\WordPress', 'file_get_contents');
-        $mockFileGetContents->expects($this->any())->willReturn($jsonBody);
+        $this->mockProxy->expects($this->once())->method('getJSONBody')->willReturn($jsonBody);
 
-        $request = $this->proxy->createRequest();
+        $request = $this->mockProxy->createRequest();
 
         $this->assertFalse(isset($request->getParameters()['proxyURL']));
         $this->assertFalse(isset($request->getParameters()['proxyURLType']));
@@ -116,10 +114,9 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             'proxyURL' => $proxyURL,
         ));
 
-        $mockFileGetContents = $this->getFunctionMock('CF\WordPress', 'file_get_contents');
-        $mockFileGetContents->expects($this->any())->willReturn($jsonBody);
+        $this->mockProxy->expects($this->once())->method('getJSONBody')->willReturn($jsonBody);
 
-        $request = $this->proxy->createRequest();
+        $request = $this->mockProxy->createRequest();
 
         $this->assertFalse(isset($request->getParameters()['proxyURL']));
         $this->assertFalse(isset($request->getParameters()['proxyURLType']));
@@ -135,15 +132,13 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             'proxyURL' => $proxyURL,
         ));
 
-        $this->mockWordPressWrapper->expects($this->once())->method('fileGetContents')->willReturn($jsonBody);
+        $this->mockProxy->expects($this->once())->method('getJSONBody')->willReturn($jsonBody);
 
-        $this->proxy->setWordpressWrapper($this->mockWordPressWrapper);
-
-        $request = $this->proxy->createRequest();
+        $request = $this->mockProxy->createRequest();
 
         $this->assertFalse(isset($request->getParameters()['proxyURL']));
         $this->assertFalse(isset($request->getParameters()['proxyURLType']));
         $this->assertFalse(isset($request->getBody()['proxyURL']));
-        // $this->assertEquals($proxyURL, $request->getUrl());
+        $this->assertEquals($proxyURL, $request->getUrl());
     }
 }
