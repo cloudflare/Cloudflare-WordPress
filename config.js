@@ -29,7 +29,7 @@
         "container.moresettings.security": [
             "SecurityLevelCard", 
             "WAFCard", 
-            "AdvanceDDoSCard",
+            "AdvanceDDoSCard", 
             "AutomaticHTTPSRewritesCard"
         ], 
         "container.moresettings.speed": [
@@ -38,5 +38,5 @@
         ]
     }, 
     "useHostAPILogin": false, 
-    "version": "3.0.3"
+    "version": "3.0.5"
 }

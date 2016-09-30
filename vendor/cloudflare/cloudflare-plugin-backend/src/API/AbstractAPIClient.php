@@ -39,42 +39,74 @@ abstract class AbstractAPIClient implements APIInterface
 
             $request = $this->beforeSend($request);
 
-            $headers = $request->getHeaders();
-            $contentTypeHeader = $headers[self::CONTENT_TYPE_KEY];
-            $bodyType = (($contentTypeHeader === self::APPLICATION_JSON_KEY) ? 'json' : 'body');
-
-            $requestOptions = array(
-                'headers' => $request->getHeaders(),
-                'query' => $request->getParameters(),
-                $bodyType => $request->getBody(),
-            );
-
-            if ($this->config->getValue('debug')) {
-                $requestOptions['debug'] = fopen('php://stderr', 'w');
-            }
-
-            $apiRequest = $client->createRequest($request->getMethod(), $request->getUrl(), $request->getHeaders(), $request->getBody(), $request->getParameters());
-
             $method = $request->getMethod();
+            $params = $request->getParameters();
+            $url = $request->getUrl();
+            $headers = $request->getHeaders();
+            $body = $request->getBody();
 
-            // Since Guzzle automatically overwrites a new header when the request
-            // is POST / PATCH / DELETE / PUT, we need to overwrite the Content-Type header
-            // with setBody() function.
-            if ($method !== 'GET') {
-                $apiRequest->setBody(json_encode($request->getBody()), 'application/json');
+            $isPaginatable = false;
+            if ($method === 'GET') {
+                $isPaginatable = true;
             }
 
-            $response = $client->send($apiRequest)->json();
+            $mergedResponse = null;
 
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new BadResponseException('Error decoding client API JSON', $response);
+            $currentPage = 1;
+            $totalPages = 1;
+
+            while ($totalPages >= $currentPage) {
+                $apiRequest = $client->createRequest($method, $url, $headers, $body, array());
+
+                // Enable pagination
+                if ($isPaginatable) {
+                    $params['page'] = $currentPage;
+                }
+
+                // Assign parameters
+                $query = $apiRequest->getQuery();
+                foreach ($params as $key => $value) {
+                    $query->set($key, $value);
+                }
+
+                // Since Guzzle automatically overwrites a new header when the request
+                // is POST / PATCH / DELETE / PUT, we need to overwrite the Content-Type header
+                // with setBody() function.
+                if ($method !== 'GET') {
+                    $apiRequest->setBody(json_encode($request->getBody()), 'application/json');
+                }
+
+                $response = $client->send($apiRequest)->json();
+
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new BadResponseException('Error decoding client API JSON', $response);
+                }
+
+                if (!$this->responseOk($response)) {
+                    $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'body' => $response), true);
+                }
+
+                if ($isPaginatable && isset($response['result_info'])) {
+                    $totalPages = $response['result_info']['total_pages'];
+
+                    if (!isset($mergedResponse)) {
+                        $mergedResponse = $response;
+                    } else {
+                        $mergedResponse['result'] = array_merge($mergedResponse['result'], $response['result']);
+
+                        // Notify the frontend that pagination is taken care.
+                        $mergedResponse['result_info']['notify'] = 'Backend has taken care of pagination. Ouput is merged in results.';
+                        $mergedResponse['result_info']['page'] = -1;
+                        $mergedResponse['result_info']['count'] = -1;
+                    }
+                } else {
+                    $mergedResponse = $response;
+                }
+
+                $currentPage += 1;
             }
 
-            if (!$this->responseOk($response)) {
-                $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'body' => $response), true);
-            }
-
-            return $response;
+            return $mergedResponse;
         } catch (BadResponseException $e) {
             $errorMessage = $this->getErrorMessage($e);
 

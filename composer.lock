@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "cb20b55c0ab1fdc09769a87e3fd1d700",
-    "content-hash": "26a16ecc21d9797c7cea2d2e5d4f59ee",
+    "hash": "1b2ed2384099ef1861c3f325effb669e",
+    "content-hash": "ebafc0d16ea74dc6eff5419a82bb7006",
     "packages": [
         {
             "name": "cloudflare/cf-ip-rewrite",
@@ -54,16 +54,16 @@
         },
         {
             "name": "cloudflare/cloudflare-plugin-backend",
-            "version": "1.1.10",
+            "version": "1.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",
-                "reference": "d4993dbfc456bb7f7a6491978aa5e65ce9a2c924"
+                "reference": "20e5b6d5ae271aa8770eb42c3899a0958a9a24ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/d4993dbfc456bb7f7a6491978aa5e65ce9a2c924",
-                "reference": "d4993dbfc456bb7f7a6491978aa5e65ce9a2c924",
+                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/20e5b6d5ae271aa8770eb42c3899a0958a9a24ad",
+                "reference": "20e5b6d5ae271aa8770eb42c3899a0958a9a24ad",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "BSD-3-Clause"
             ],
             "description": "A PHP backend for CloudFlare plugins.",
-            "time": "2016-09-12 15:56:33"
+            "time": "2016-09-27 16:47:36"
         },
         {
             "name": "guzzle/guzzle",
