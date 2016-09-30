@@ -107,7 +107,8 @@ class Proxy
     {
         $method = $_SERVER['REQUEST_METHOD'];
         $parameters = $_GET;
-        $body = json_decode(file_get_contents('php://input'), true);
+        $jsonInput = $this->getJSONBody();
+        $body = json_decode($jsonInput, true);
         $path = null;
 
         if (strtoupper($method === 'GET')) {
@@ -125,6 +126,14 @@ class Proxy
         unset($body['proxyURL']);
 
         return new API\Request($method, $path, $parameters, $body);
+    }
+
+    /**
+     * @return json
+     */
+    public function getJSONBody()
+    {
+        return file_get_contents('php://input');
     }
 
     /**
