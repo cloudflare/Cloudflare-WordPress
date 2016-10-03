@@ -14,6 +14,7 @@ class ClientActions
     private $dataStore;
     private $logger;
     private $request;
+    private $wordpressClientAPI;
 
     /**
      * @param DefaultIntegration $defaultIntegration
@@ -28,6 +29,8 @@ class ClientActions
         $this->dataStore = $defaultIntegration->getDataStore();
         $this->logger = $defaultIntegration->getLogger();
         $this->request = $request;
+
+        $this->wordpressClientAPI = new WordPressClientAPI($defaultIntegration);
     }
 
     /**
@@ -37,15 +40,29 @@ class ClientActions
      */
     public function returnWordPressDomain()
     {
-        $cf_zones_list = $this->api->callAPI($this->request);
-        $wordpress_domain_list = $this->wordpressAPI->getDomainList();
-        $wordpress_domain = $wordpress_domain_list[0];
+        // Call GET /zones
+        $response = $this->api->callAPI($this->request);
+
+        // Cache the domain for subdomains
+        $this->cacheDomainName($response);
+
+        // Get zone information
+        $cf_zones_list = $this->filterZones($response);
+
+        return $cf_zones_list;
+    }
+
+    private function filterZones($response)
+    {
+        $cf_zones_list = $response;
+        $wpDomainList = $this->wordpressAPI->getDomainList();
+        $wpDomain = $wpDomainList[0];
 
         $domain_list = array();
         if ($this->api->responseOk($cf_zones_list)) {
             $found = false;
             foreach ($cf_zones_list['result'] as $cf_zone) {
-                if ($cf_zone['name'] === $wordpress_domain) {
+                if ($cf_zone['name'] === $wpDomain) {
                     $found = true;
                     array_push($domain_list, $cf_zone);
                 }
@@ -53,7 +70,7 @@ class ClientActions
 
             if ($found === false) {
                 array_push($domain_list, array(
-                    'name' => $wordpress_domain,
+                    'name' => $wpDomain,
                     'plan' => array('name' => ''),
                     'type' => '',
                     'status' => 'inactive',
@@ -63,5 +80,34 @@ class ClientActions
         $cf_zones_list['result'] = $domain_list;
 
         return $cf_zones_list;
+    }
+
+    private function cacheDomainName($response)
+    {
+        // Check if domain name needs to cached
+        $wpDomain = $this->wordpressAPI->getOriginalDomain();
+        $cachedDomainList = $this->wordpressAPI->getDomainList();
+        $cachedDomain = $cachedDomainList[0];
+
+        if (Utils::getRegistrableDomain($wpDomain) !== $cachedDomain) {
+            // Since we may not be logged in yet we need to check the credentials being set
+            if ($this->wordpressClientAPI->isCrendetialsSet()) {
+                // If it's not a subdomain cache the current domain
+                $domainName = $wpDomain;
+
+                // Get cloudflare zones to find if the current domain is a subdomain
+                // of any cloudflare zones registered
+
+                $validDomainName = $this->wordpressAPI->checkIfValidCloudflareSubdomain($response, $wpDomain);
+
+                // Check if it's a subdomain, if it is cache the zone instead of the
+                // subdomain
+                if ($this->wordpressClientAPI->responseOK($response) && $validDomainName) {
+                    $domainName = Utils::getRegistrableDomain($wpDomain);
+                }
+
+                $this->wordpressAPI->setDomainNameCache($domainName);
+            }
+        }
     }
 }
