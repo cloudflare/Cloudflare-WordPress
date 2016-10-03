@@ -93,7 +93,7 @@ class WordPressAPI implements IntegrationAPIInterface
      */
     public function getOriginalDomain()
     {
-        return $this->formatDomain($_SERVER['SERVER_NAME']);
+        return $this->formatDomain(get_site_url());
     }
 
     /**
