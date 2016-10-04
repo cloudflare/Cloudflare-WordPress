@@ -31,17 +31,6 @@ class WordPressClientAPI extends Client
     }
 
     /**
-     * @return mixed
-     */
-    public function getZones()
-    {
-        $request = new Request('GET', 'zones/', array(), array());
-        $response = $this->callAPI($request);
-
-        return $response;
-    }
-
-    /**
      * @param $zoneId
      *
      * @return bool
@@ -111,16 +100,5 @@ class WordPressClientAPI extends Client
             ),
             'status' => 'active',
         );
-    }
-
-    /**
-     * @return bool
-     */
-    public function isCrendetialsSet()
-    {
-        $apiKey = $this->data_store->getClientV4APIKey();
-        $email = $this->data_store->getCloudFlareEmail();
-
-        return isset($apiKey) && isset($email);
     }
 }

@@ -18,4 +18,9 @@ class WordPressWrapper
     {
         return delete_option($key);
     }
+
+    public function getSiteURL()
+    {
+        return get_site_url();
+    }
 }

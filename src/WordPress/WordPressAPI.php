@@ -10,6 +10,7 @@ class WordPressAPI implements IntegrationAPIInterface
     const API_NONCE = 'cloudflare-db-api-nonce';
 
     private $dataStore;
+    private $wordPressWrapper;
 
     /**
      * @param $dataStore
@@ -17,6 +18,13 @@ class WordPressAPI implements IntegrationAPIInterface
     public function __construct(DataStore $dataStore)
     {
         $this->dataStore = $dataStore;
+
+        $this->wordPressWrapper = new WordPressWrapper();
+    }
+
+    public function setWordPressWrapper(WordPressWrapper $wordPressWrapper)
+    {
+        $this->wordPressWrapper = $wordPressWrapper;
     }
 
     /**
@@ -93,7 +101,9 @@ class WordPressAPI implements IntegrationAPIInterface
      */
     public function getOriginalDomain()
     {
-        return $this->formatDomain($_SERVER['SERVER_NAME']);
+        $siteURL = $this->wordPressWrapper->getSiteURL();
+
+        return $this->formatDomain($siteURL);
     }
 
     /**

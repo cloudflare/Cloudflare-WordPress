@@ -12,7 +12,7 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
     private $mockLogger;
     private $mockDefaultIntegration;
     private $mockWordPressClientAPI;
-    private $mockWordPressAPI;
+    private $mockWordPressWrapper;
 
     public function setup()
     {
@@ -31,14 +31,14 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
         $this->mockLogger = $this->getMockBuilder('CF\Integration\DefaultLogger')
                 ->disableOriginalConstructor()
                 ->getMock();
+        $this->mockWordPressWrapper = $this->getMockBuilder('CF\WordPress\WordPressWrapper')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->wordpressAPI = new WordPressAPI($this->mockDataStore);
+        $this->wordpressAPI->setWordPressWrapper($this->mockWordPressWrapper);
 
         $this->mockDefaultIntegration = new \CF\Integration\DefaultIntegration($this->mockConfig, $this->wordpressAPI, $this->mockDataStore, $this->mockLogger);
-
-        $this->mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
-        ->disableOriginalConstructor()
-        ->getMock();
     }
 
     /**
@@ -97,7 +97,9 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
     public function testGetOriginalDomain()
     {
         $domainName = 'domainName.com';
-        $_SERVER['SERVER_NAME'] = $domainName;
+
+        $this->mockWordPressWrapper->expects($this->once())->method('getSiteURL')->willReturn($domainName);
+
         $domain = $this->wordpressAPI->getOriginalDomain();
 
         $this->assertEquals($domainName, $domain);
