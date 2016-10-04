@@ -14,7 +14,6 @@ class ClientActions
     private $dataStore;
     private $logger;
     private $request;
-    private $wordpressClientAPI;
 
     /**
      * @param DefaultIntegration $defaultIntegration
@@ -29,8 +28,6 @@ class ClientActions
         $this->dataStore = $defaultIntegration->getDataStore();
         $this->logger = $defaultIntegration->getLogger();
         $this->request = $request;
-
-        $this->wordpressClientAPI = new WordPressClientAPI($defaultIntegration);
     }
 
     /**
@@ -82,7 +79,7 @@ class ClientActions
         return $cf_zones_list;
     }
 
-    private function cacheDomainName($response)
+    public function cacheDomainName($response)
     {
         // Check if domain name needs to cached
         $wpDomain = $this->wordpressAPI->getOriginalDomain();
@@ -90,24 +87,24 @@ class ClientActions
         $cachedDomain = $cachedDomainList[0];
 
         if (Utils::getRegistrableDomain($wpDomain) !== $cachedDomain) {
-            // Since we may not be logged in yet we need to check the credentials being set
-            if ($this->wordpressClientAPI->isCrendetialsSet()) {
-                // If it's not a subdomain cache the current domain
-                $domainName = $wpDomain;
+            // If it's not a subdomain cache the current domain
+            $domainName = $wpDomain;
 
-                // Get cloudflare zones to find if the current domain is a subdomain
-                // of any cloudflare zones registered
+            // Get cloudflare zones to find if the current domain is a
+            // subdomain of any cloudflare zones registered
+            $validDomainName = $this->wordpressAPI->checkIfValidCloudflareSubdomain($response, $wpDomain);
 
-                $validDomainName = $this->wordpressAPI->checkIfValidCloudflareSubdomain($response, $wpDomain);
-
-                // Check if it's a subdomain, if it is cache the zone instead of the
-                // subdomain
-                if ($this->wordpressClientAPI->responseOK($response) && $validDomainName) {
-                    $domainName = Utils::getRegistrableDomain($wpDomain);
-                }
-
-                $this->wordpressAPI->setDomainNameCache($domainName);
+            // Check if it's a subdomain, if it is cache the zone instead of the
+            // subdomain
+            if ($this->api->responseOK($response) && $validDomainName) {
+                $domainName = Utils::getRegistrableDomain($wpDomain);
             }
+
+            $this->wordpressAPI->setDomainNameCache($domainName);
+
+            return $domainName;
         }
+
+        return $cachedDomain;
     }
 }

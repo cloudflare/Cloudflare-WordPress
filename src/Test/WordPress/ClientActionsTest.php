@@ -50,4 +50,42 @@ class ClientActionsTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($wordPressDomain, $response['result'][0]['name']);
     }
+
+    public function testCacheDomainNameCachesSubDomain()
+    {
+        $responseDomain = 'domain.com';
+        $originalDomain = 'sub.domain.com';
+        $cachedDomainList = '';
+        $response = array(
+            'result' => array(
+                array(
+                    'name' => $responseDomain,
+                ),
+            ),
+         );
+
+        $request = new Request(null, null, null, null);
+        $clientActions = new ClientActions($this->mockDefaultIntegration, $this->mockClientAPI, $request);
+
+        $this->mockWordPressAPI->method('getOriginalDomain')->willReturn($originalDomain);
+        $this->mockWordPressAPI->method('getDomainList')->willReturn(array($cachedDomainList));
+
+        $result = $clientActions->cacheDomainName($response);
+        $this->assertEquals($originalDomain, $result);
+    }
+
+    public function testCacheDomainNameReturnsCachedDomain()
+    {
+        $originalDomain = 'domain.com';
+        $cachedDomainList = 'domain.com';
+
+        $request = new Request(null, null, null, null);
+        $clientActions = new ClientActions($this->mockDefaultIntegration, $this->mockClientAPI, $request);
+
+        $this->mockWordPressAPI->method('getOriginalDomain')->willReturn($originalDomain);
+        $this->mockWordPressAPI->method('getDomainList')->willReturn(array($cachedDomainList));
+
+        $result = $clientActions->cacheDomainName(array());
+        $this->assertEquals($cachedDomainList, $result);
+    }
 }
