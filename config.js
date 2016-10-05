@@ -34,7 +34,8 @@
         ], 
         "container.moresettings.speed": [
             "AlwaysOnlineCard", 
-            "ImageOptimizationCard"
+            "ImageOptimizationCard",
+            "DevelopmentModeCard"
         ]
     }, 
     "useHostAPILogin": false, 
