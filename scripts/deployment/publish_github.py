@@ -3,6 +3,7 @@
 import json
 import subprocess
 import sys
+from collections import OrderedDict
 
 COMPOSER_FILE_NAME = "composer.json"
 README_FILE_NAME = "readme.txt"
@@ -48,10 +49,20 @@ def ask_for_new_version(version):
 
 def update_version_number_in_composer_json(new_version):
     with open(COMPOSER_FILE_NAME, 'r+') as f:
-        data = json.load(f)
+        data = json.load(f, object_pairs_hook=OrderedDict)
         data['version'] = new_version
         f.seek(0)          # should reset file position to the beginning.
-        json.dump(data, f, indent=4, sort_keys=True)
+        json.dump(data, f, indent=4)
+        return 1
+
+    return 0
+
+def update_version_number_in_config_json(new_version):
+    with open(CONFIG_FILE_NAME, 'r+') as f:
+        data = json.load(f, object_pairs_hook=OrderedDict)
+        data['version'] = new_version
+        f.seek(0)          # should reset file position to the beginning.
+        json.dump(data, f, indent=4)
         return 1
 
     return 0
@@ -89,16 +100,6 @@ def update_version_number_in_cloudflare_php(new_version):
         return 1
 
     return 0    
-
-def update_version_number_in_config_json(new_version):
-    with open(CONFIG_FILE_NAME, 'r+') as f:
-        data = json.load(f)
-        data['version'] = new_version
-        f.seek(0)          # should reset file position to the beginning.
-        json.dump(data, f, indent=4, sort_keys=True)
-        return 1
-
-    return 0
 
 def set_version(new_version):
     print "Will set new version to be %s" % (new_version)
@@ -140,9 +141,8 @@ def main():
     # Tag git version, commit and push
     git_commit_and_push(new_version)
 
-    # Give user instructions to edit the changelog
-    git_logs = subprocess.check_output(["git", "log", "--oneline"])
-    print_shiny("Please do not forget edit changelog.\n" + GIT_REPOSITORY_RELEASES + "\n\n" + git_logs)
+    # Notice user
+    print_shiny("Please do not forget edit changelog.\n" + GIT_REPOSITORY_RELEASES + "\n\n")
 
 if __name__ == "__main__":
     main()
