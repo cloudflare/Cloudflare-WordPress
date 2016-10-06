@@ -17,27 +17,27 @@
     "featureManagerIsScanEnabled": false, 
     "featureManagerIsSecurityLevelEnabled": true, 
     "featureManagerIsWAFEnabled": true, 
+    "isSubdomainCheckEnabled": true, 
+    "useHostAPILogin": false, 
     "homePageCards": [
         "ApplyDefaultSettingsCard", 
         "PurgeCacheCard", 
         "PluginSpecificCacheCard"
     ], 
-    "integrationName": "wordpress", 
-    "isSubdomainCheckEnabled": true, 
-    "locale": "en", 
     "moreSettingsCards": {
+        "container.moresettings.speed": [
+            "AlwaysOnlineCard", 
+            "ImageOptimizationCard", 
+            "DevelopmentModeCard"
+        ], 
         "container.moresettings.security": [
             "SecurityLevelCard", 
             "WAFCard", 
             "AdvanceDDoSCard", 
             "AutomaticHTTPSRewritesCard"
-        ], 
-        "container.moresettings.speed": [
-            "AlwaysOnlineCard", 
-            "ImageOptimizationCard",
-            "DevelopmentModeCard"
         ]
     }, 
-    "useHostAPILogin": false, 
-    "version": "3.0.5"
+    "locale": "en", 
+    "integrationName": "wordpress", 
+    "version": "3.0.6"
 }

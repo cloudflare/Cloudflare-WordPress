@@ -1,12 +1,12 @@
 === CloudFlare ===
-Contributors: jwineman, furkan811, IcyApril
+Contributors: jwineman, furkan811, icyapril
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 4.6
-Stable tag: 3.0.5
+Stable tag: 3.0.6
 License: BSD-3-Clause
 
-All of CloudFlare’s performance and security benefits in a simple one-click install of recommended settings specifically developed for WordPress.
+All of Cloudflare’s performance and security benefits in a simple one-click install of recommended settings specifically developed for WordPress.
 
 == Description ==
 
@@ -14,22 +14,22 @@ All of CloudFlare’s performance and security benefits in a simple one-click in
 
 **One-click WordPress-optimized settings**
 
-The easiest way to setup CloudFlare for your WordPress site.
+The easiest way to setup Cloudflare for your WordPress site.
 
 **Web application firewall (WAF) rulesets**
 
-Available on all of CloudFlare’s paid plans, the WAF has built-in rulesets, including rules that mitigate WordPress specific threats and vulnerabilities. These security rules are always kept up-to-date, once the WAF is enabled, you can rest easy knowing your site is protected from even the latest threats.
+Available on all of Cloudflare’s paid plans, the WAF has built-in rulesets, including rules that mitigate WordPress specific threats and vulnerabilities. These security rules are always kept up-to-date, once the WAF is enabled, you can rest easy knowing your site is protected from even the latest threats.
 
 **Automatic cache purge**
 
 Occurs when you change the appearance of your website. This means that you can focus on your website, while we ensure that the latest content is always available to your visitors.
-(Note: By default, CloudFlare does not cache HTML, and a cache purge is not required on updating HTML content such as publishing a new blog entry).
+(Note: By default, Cloudflare does not cache HTML, and a cache purge is not required on updating HTML content such as publishing a new blog entry).
 
 = Additional features =
 
-* Header rewrite to prevent a redirect loop when CloudFlare’s Universal SSL is enabled
+* Header rewrite to prevent a redirect loop when Cloudflare’s Universal SSL is enabled
 
-* Change CloudFlare settings from within the plugin itself without needing to navigate to the cloudflare.com dashboard. You can change settings for cache purge, security level, Always Online, and image optimization
+* Change Cloudflare settings from within the plugin itself without needing to navigate to the cloudflare.com dashboard. You can change settings for cache purge, security level, Always Online, and image optimization
 
 * View analytics such as total visitors, bandwidth saved, and threats blocked
 
@@ -62,17 +62,17 @@ Occurs when you change the appearance of your website. This means that you can f
 
 == Frequently Asked Questions ==
 
-= Do I need a CloudFlare account to use the plugin? =
+= Do I need a Cloudflare account to use the plugin? =
 
 Yes, on install and activation the plugin, first time users will be asked to enter their email address (used to sign-up for an account at cloudflare.com) and their user API key. This is needed to support all the features offered by the plugin.
 
-= What settings are applied when I click "Apply Default Settings" in CloudFlare's WordPress plugin? =
+= What settings are applied when I click "Apply Default Settings" in Cloudflare's WordPress plugin? =
 
  You can review the recommended settings that are applied [here](https://support.cloudflare.com/hc/en-us/articles/227342487).
 
 = Does the plugin work if I have Varnish enabled? =
 
-Yes, CloudFlare works with, and helps speed up your site even more, if you have Varnish enabled.
+Yes, Cloudflare works with, and helps speed up your site even more, if you have Varnish enabled.
 
 = Why am I getting “Cloudflare plugin requires php5-curl to be installed” error? =
 
@@ -83,6 +83,21 @@ Make sure that the php5-curl extension is installed on your system.
 1. Cloudflare Plugin
 
 == Changelog ==
+
+= 3.0.6 - 2016-10-6 =
+
+*Added*
+
+* Added ability to toggle Development Mode.
+
+*Fixed*
+
+* Fixed bug where active zone dropdown was not working properly.
+
+*Changed*
+
+* Compressed resources to lower plugin size.
+* Updated Cloudflare logo.
 
 = 3.0.5 - 2016-09-28 =
 
@@ -115,7 +130,7 @@ Make sure that the php5-curl extension is installed on your system.
 
 * Fixed an issue where some domains were being incorrectly propagated to the domain selector dropdown
 * Fixed an issue where the Web Application Firewall was accidentally triggering RFI Attack Rules
-* Fixed an issue where image optimization was not being enabled for Pro and higher CloudFlare plans
+* Fixed an issue where image optimization was not being enabled for Pro and higher Cloudflare plans
 
 = 3.0.2 - 2016-09-16 =
 
@@ -135,8 +150,8 @@ Make sure that the php5-curl extension is installed on your system.
 *Added*
 
 * Added one-click application oft WordPress specific recommended settings
-* Added ability to purge the CloudFlare cache
-* Integrated with WordPress cache management to automatically clear the CloudFlare cache on updating site appearance
+* Added ability to purge the Cloudflare cache
+* Integrated with WordPress cache management to automatically clear the Cloudflare cache on updating site appearance
 * Added ability to change CloudFlare settings (Always Online mode, I’m Under Attack, Image Optimization, Security Level, Web Application Firewall)
 * Added Analytics showing Cached Requests, bandwidth used, unique visitors, threats blocked
 * Added Header rewrite to prevent a redirect loop when Cloudflare’s Universal SSL is enabled

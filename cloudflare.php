@@ -1,10 +1,10 @@
 <?php
 /*
-Plugin Name: CloudFlare
-Plugin URI: http://www.cloudflare.com/wiki/CloudFlareWordPressPlugin
-Description: CloudFlare integrates your blog with the CloudFlare platform.
-Version: 3.0.5
-Author: John Wineman, Furkan Yilmaz, Junade Ali (CloudFlare Team)
+Plugin Name: Cloudflare
+Plugin URI: https://blog.cloudflare.com/new-wordpress-plugin/
+Description: Cloudflare integrates your blog with the Cloudflare platform.
+Version: 3.0.6
+Author: John Wineman, Furkan Yilmaz, Junade Ali (Cloudflare Team)
 License: BSD-3-Clause
 */
 
@@ -23,7 +23,7 @@ if (version_compare(PHP_VERSION, CLOUDFLARE_MIN_PHP_VERSION, '<')) {
     require_once ABSPATH.'wp-admin/includes/plugin.php';
 
     deactivate_plugins(plugin_basename(__FILE__), true);
-    wp_die('<p>The CloudFlare plugin requires a php version of at least '.CLOUDFLARE_MIN_PHP_VERSION.' you have '.PHP_VERSION.'.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+    wp_die('<p>The Cloudflare plugin requires a php version of at least '.CLOUDFLARE_MIN_PHP_VERSION.' you have '.PHP_VERSION.'.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
 }
 
 // Plugin uses namespaces. To support old PHP version which doesn't support
