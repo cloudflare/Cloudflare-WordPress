@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: Cloudflare
-Plugin URI: http://www.cloudflare.com/wiki/CloudflareWordPressPlugin
+Plugin URI: https://blog.cloudflare.com/new-wordpress-plugin/
 Description: Cloudflare integrates your blog with the Cloudflare platform.
 Version: 3.0.6
 Author: John Wineman, Furkan Yilmaz, Junade Ali (Cloudflare Team)
