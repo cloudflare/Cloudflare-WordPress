@@ -18,9 +18,10 @@ if ($is_cf) {
 // Enable HTTP2 Server Push
 // add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
 
+// Initiliaze Hooks class which contains WordPress hook functions
+$cloudflareHooks = new \CF\WordPress\Hooks();
+
 if (is_admin()) {
-    // Initiliaze Hooks class which contains WordPress hook functions
-    $cloudflareHooks = new \CF\WordPress\Hooks();
 
     //Register proxy AJAX endpoint
     add_action('wp_ajax_cloudflare_proxy', array($cloudflareHooks, 'initProxy'));
@@ -40,4 +41,8 @@ if (is_admin()) {
     // Load Automatic Cache Purge
     add_action('switch_theme', array($cloudflareHooks, 'purgeCache'));
     add_action('customize_save_after', array($cloudflareHooks, 'purgeCache'));
+
+    add_action('save_post', array($cloudflareHooks, 'onPostChanged'));
 }
+
+add_filter('show_admin_bar', array($cloudflareHooks, 'hideAdminBar'));
