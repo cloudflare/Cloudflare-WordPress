@@ -84,6 +84,21 @@ Make sure that the php5-curl extension is installed on your system.
 
 == Changelog ==
 
+= 3.0.6 - 2016-10-6 =
+
+*Added*
+
+* Added ability to toggle Development Mode.
+
+*Fixed*
+
+* Fixed bug where active zone dropdown was not working properly.
+
+*Changed*
+
+* Compressed resources to lower plugin size.
+* Updated Cloudflare logo.
+
 = 3.0.5 - 2016-09-28 =
 
 *Fixed*
