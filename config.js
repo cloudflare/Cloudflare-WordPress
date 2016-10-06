@@ -27,9 +27,9 @@
     "moreSettingsCards": {
         "container.moresettings.speed": [
             "AlwaysOnlineCard", 
-            "ImageOptimizationCard",
+            "ImageOptimizationCard", 
             "DevelopmentModeCard"
-        ],
+        ], 
         "container.moresettings.security": [
             "SecurityLevelCard", 
             "WAFCard", 
@@ -39,5 +39,5 @@
     }, 
     "locale": "en", 
     "integrationName": "wordpress", 
-    "version": "3.0.5"
+    "version": "3.0.6"
 }

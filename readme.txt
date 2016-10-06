@@ -3,7 +3,7 @@ Contributors: jwineman, furkan811, IcyApril
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 4.6
-Stable tag: 3.0.5
+Stable tag: 3.0.6
 License: BSD-3-Clause
 
 All of CloudFlare’s performance and security benefits in a simple one-click install of recommended settings specifically developed for WordPress.
