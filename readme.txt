@@ -1,4 +1,4 @@
-=== CloudFlare ===
+=== Cloudflare ===
 Contributors: jwineman, furkan811, icyapril
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
@@ -152,7 +152,7 @@ Make sure that the php5-curl extension is installed on your system.
 * Added one-click application oft WordPress specific recommended settings
 * Added ability to purge the Cloudflare cache
 * Integrated with WordPress cache management to automatically clear the Cloudflare cache on updating site appearance
-* Added ability to change CloudFlare settings (Always Online mode, I’m Under Attack, Image Optimization, Security Level, Web Application Firewall)
+* Added ability to change Cloudflare settings (Always Online mode, I’m Under Attack, Image Optimization, Security Level, Web Application Firewall)
 * Added Analytics showing Cached Requests, bandwidth used, unique visitors, threats blocked
 * Added Header rewrite to prevent a redirect loop when Cloudflare’s Universal SSL is enabled
 * Added HTTP/2 Server Push support

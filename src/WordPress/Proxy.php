@@ -62,7 +62,7 @@ class Proxy
             $response = $this->requestRouter->route($request);
         } else {
             if ($csrfToken === null) {
-                $response = $this->wordpressClientAPI->createAPIError('CSRF Token not found.  Its possible another plugin is altering requests sent by the CloudFlare plugin.');
+                $response = $this->wordpressClientAPI->createAPIError('CSRF Token not found.  Its possible another plugin is altering requests sent by the Cloudflare plugin.');
             } else {
                 $response = $this->wordpressClientAPI->createAPIError('CSRF Token not valid.');
             }
