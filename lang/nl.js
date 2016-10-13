@@ -4,7 +4,7 @@
     "component.login.form.password": "Wachtwoord",
     "component.login.form.button": "Log in",
     "component.login.form.signUp": "Registreren",
-    "component.login.form.title": "Log in bij CloudFlare",
+    "component.login.form.title": "Log in bij Cloudflare",
     "container.activeZoneSelector.activeZone": "Actieve Zone",
     "container.activationCheckCard.button": "Hercontroleer Naamservers",
     "container.activationCheckCard.description": "het kan tot 24u duren voor deze verandering verwerkt kan worden. Er zal geen downtime zijn wanneer de genaamde servers worden verwisseld. Verkeer zal vlot overgaan van uw oude naamservers naar de nieuwe naamservers zonder onderbreking. Uw site zal beschikbaar blijven tijdens de wissel".
@@ -50,7 +50,7 @@
     "container.challengePassageCard.select.oneYear": "1 jaar",
     "container.challengePassageCard.title": "Challenge Passage",
     "container.dnsManagementPage.thead.domain": "Domein",
-    "container.dnsManagementPage.thead.cloudflarePlan": "CloudFlare Plan"
+    "container.dnsManagementPage.thead.cloudflarePlan": "Cloudflare Plan"
     "container.dnsManagementPage.thead.zoneType": "Type zone",
     "container.dnsManagementPage.thead.status":  "Status",
     "container.dnsRecordEditor.thead.type":  "Type",
@@ -66,16 +66,16 @@
     "container.performancePage.title": "Prestatie",
     "container.purgeCacheCard.button": "Verwijder alles",
     "container.purgeCacheCard.title": "Cache legen",
-    "container.purgeCacheCard.description": "Verwijder cached documenten om CloudFlare te dwingen om een nieuwe versie te maken van de files op uw web server." ,
+    "container.purgeCacheCard.description": "Verwijder cached documenten om Cloudflare te dwingen om een nieuwe versie te maken van de files op uw web server." ,
     "container.purgeCacheCard.success": "Cache was succesvol geleegd.",
     "container.signup.error.emailBlank":  "Uw e-mailadres mag niet opengelaten worden. ",
     "container.signup.error.passwordBlank": "Uw wachtwoord mag niet opengelaten worden ".
     "container.signup.error.passwordsDontMatch": "De gegeven wachtwoorden zijn geen match. ",
-    "container.signup.form.title": "Registreer bij CloudFlare",
+    "container.signup.form.title": "Registreer bij Cloudflare",
     "container.signup.form.email": "E-mail",
     "container.signup.form.password": "Wachtwoord",
     "container.signup.form.passwordAgain": "Wachtwoord (opnieuw)",
-    "container.signup.form.button": "Schrijf in voor CloudFlare",
+    "container.signup.form.button": "Schrijf in voor Cloudflare",
     "container.securityPage.title": "Veiligheidsinstellingen",
     "container.securityLevelCard.description": "Pas het veiligheidslevel van uw website aan om te bepalen welke bezoekers een uitdagingspagina zullen ontvangen.",
     "container.securityLevelCard.select.essentiallyOff": "Voornamelijk Af",
@@ -92,7 +92,7 @@
     "container.sslCard.title": "SSL",
     "container.zoneProvision.button.full": "Provisie Domein met volledige Zone Setup",
     "container.zoneProvision.button.cname": "Provisie Domein met CNAME Set-up",
-    "container.zoneProvision.button.deprovision": "Verwijder domein van CloudFlare",
+    "container.zoneProvision.button.deprovision": "Verwijder domein van Cloudflare",
     "container.zoneProvision.provisionDifference": "Wat is het verschil tussen volledige en Cname bevoorrading?" ,
     "container.zoneProvision.title": "Provisie domein",
     "errors.noActiveZoneSelected": "Selecteer een domein."

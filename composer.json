@@ -4,7 +4,7 @@
             "CF\\": "src/"
         }
     }, 
-    "description": "A CloudFlare plugin for WordPress", 
+    "description": "A Cloudflare plugin for WordPress", 
     "license": "BSD-3-Clause", 
     "name": "cloudflare/wordpress-plugin", 
     "require": {

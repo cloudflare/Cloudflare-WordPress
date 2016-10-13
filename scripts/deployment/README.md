@@ -1,4 +1,4 @@
-# Releasing New Version Of CloudFlare WordPress Plugin
+# Releasing New Version Of Cloudflare WordPress Plugin
 
 ## How it works
 
