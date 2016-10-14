@@ -2,7 +2,7 @@
 /*
 Plugin Name: Cloudflare
 Plugin URI: https://blog.cloudflare.com/new-wordpress-plugin/
-Description: Cloudflare integrates your blog with the Cloudflare platform.
+Description: Cloudflare speeds up and protects your WordPress site.
 Version: 3.0.6
 Author: John Wineman, Furkan Yilmaz, Junade Ali (Cloudflare Team)
 License: BSD-3-Clause
