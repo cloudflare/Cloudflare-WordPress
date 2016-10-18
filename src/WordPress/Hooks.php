@@ -126,6 +126,73 @@ class Hooks
         }
     }
 
+    public function purgeUrlCache($files = array()) {
+
+      if ($this->isPluginSpecificCacheEnabled()) {
+
+        $wp_domain_list = $this->integrationAPI->getDomainList();
+        $wp_domain = $wp_domain_list[0];
+        if (count($wp_domain) > 0) {
+          $zoneTag = $this->api->getZoneTag($wp_domain);
+
+          if (isset($zoneTag) && count($files) > 0) {
+
+            // Do not care of the return value
+            $this->api->urlPurgeCache($zoneTag, $files);
+          }
+        }
+      }
+    }
+
+    public function purgeHomepageCache() {
+
+      $url = get_home_url();
+
+      if($url) {
+        $files = array($url);
+        $this->purgeUrlCache($files);
+      }
+    }
+
+    public function purgePostCache($post) {
+
+      $url = get_permalink($post);
+
+      if($url) {
+
+        $files = array($url);
+        $this->purgeUrlCache($files);
+      }
+    }
+
+    public function onPostChanged($post_id) {
+
+      if(wp_is_post_revision($post_id)) {
+        return;
+      } else {
+
+        $post = get_post($post_id);
+
+        $status_trigger = array(
+          'publish',
+          'trash',
+          'private',
+          'trash'
+        );
+
+        if($post && in_array(get_post_status($post->ID), $status_trigger)) {
+
+          $this->purgePostCache($post);
+          $this->purgeHomepageCache($post);
+        }
+      }
+    }
+
+
+    public function hideAdminBar() {
+      return false;
+    }
+
     protected function isPluginSpecificCacheEnabled()
     {
         $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
