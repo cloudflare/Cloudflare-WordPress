@@ -23,3 +23,5 @@ rm -rf $REPOSITORY_FOLDER/vendor/johnkary
 rm -rf $REPOSITORY_FOLDER/vendor/guzzle/guzzle/tests
 rm -rf $REPOSITORY_FOLDER/vendor/guzzle/guzzle/docs
 rm -rf $REPOSITORY_FOLDER/vendor/phpdocumentor
+rm -rf $REPOSITORY_FOLDER/vendor/webmozart
+rm -rf $REPOSITORY_FOLDER/vendor/sebastian/global-state
