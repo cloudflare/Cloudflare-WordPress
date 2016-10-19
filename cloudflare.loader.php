@@ -46,4 +46,5 @@ if (is_admin()) {
     // Load Automatic Cache Purge
     add_action('switch_theme', array($cloudflareHooks, 'purgeCache'));
     add_action('customize_save_after', array($cloudflareHooks, 'purgeCache'));
+    add_action('save_post', array($cloudflareHooks, 'purgePage'));
 }
