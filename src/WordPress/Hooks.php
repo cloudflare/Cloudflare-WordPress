@@ -134,48 +134,46 @@ class Hooks
             if (count($wp_domain) > 0) {
                 $zoneTag = $this->api->getZoneTag($wp_domain);
 
-        		$saved_post = get_post( $post_id );
-        
-        		if ( is_a( $saved_post, 'WP_Post' ) == false ) {
-        			return false;
-        		} 
-        
-        		if (  wp_is_post_autosave( $saved_post ) ||  wp_is_post_revision( $saved_post ) || ( 'publish' != get_post_status( $post_id ) ) ) {
-        		    return false;
-        		}
+		$saved_post = get_post( $post_id );
 
-        		$post_url = get_permalink( $saved_post );
-                
-        		$urls = array();
-        		
-        		array_push( $urls, $post_url );
-        		array_push( $urls, home_url() );
+		if ( is_a( $saved_post, 'WP_Post' ) == false ) {
+			return false;
+		} 
+
+		if (  wp_is_post_autosave( $saved_post ) ||  wp_is_post_revision( $saved_post ) || ( 'publish' != get_post_status( $post_id ) ) ) {
+		    return false;
+		}
+
+		$post_url = get_permalink( $saved_post );
+
+		$urls = array();
+
+		array_push( $urls, $post_url );
+		array_push( $urls, home_url() );
         
-            	// get post type by post
-        		$post_type = get_post_type( $saved_post );
+		$post_type = get_post_type( $saved_post );
+
+		$taxonomies = get_object_taxonomies( $post_type, 'objects' );
+
+		foreach ( $taxonomies as $taxonomy_slug => $taxonomy ){
+
+			$terms = get_the_terms( $saved_post, $taxonomy_slug );
+
+			if ( !empty( $terms ) && ! is_wp_error( $terms ) ) {
+				foreach ( $terms as $term) {
+
+					$term_link = get_term_link( $term );
+
+					if ( ! is_wp_error( $term_link ) ) {
+						array_push( $urls, $term_link );
+					}
+				} 
+			}
+		}
         
-        			// get all taxonomies for the post type
-        		$taxonomies = get_object_taxonomies( $post_type, 'objects' );
-        
-        		foreach ( $taxonomies as $taxonomy_slug => $taxonomy ){
-        
-        			$terms = get_the_terms( $saved_post, $taxonomy_slug );
-        
-        			if ( !empty( $terms ) && ! is_wp_error( $terms ) ) {
-        				foreach ( $terms as $term) {
-        
-        					$term_link = get_term_link( $term );
-        
-        					if ( ! is_wp_error( $term_link ) ) {
-        						array_push( $urls, $term_link );
-        					}
-        				} 
-        			}
-        		}
-        
-        		if ( ('post' == $post_type) && ( 'page' == get_option('show_on_front') ) && get_option( 'page_for_posts' ) ) {
-        			array_push( $urls, get_permalink( get_option( 'page_for_posts' ) ) );
-        		}
+		if ( ('post' == $post_type) && ( 'page' == get_option('show_on_front') ) && get_option( 'page_for_posts' ) ) {
+			array_push( $urls, get_permalink( get_option( 'page_for_posts' ) ) );
+		}
 
                 if( is_ssl() ){
                     $urls = array_merge($urls, array_map( function($url){ return str_replace('https://', 'http://', $url); }, $urls) );
