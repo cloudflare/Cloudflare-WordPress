@@ -43,6 +43,20 @@ class WordPressClientAPI extends Client
         return $this->responseOk($response);
     }
 
+	 /**
+     * @param $zoneId
+	 * @param $files
+     *
+     * @return bool
+     */
+    public function zonePurgeFiles($zoneId, $files)
+    {
+        $request = new Request('DELETE', 'zones/'.$zoneId.'/purge_cache', array(), array('files' => $files));
+        $response = $this->callAPI($request);
+
+        return $this->responseOk($response);
+    }   
+	
     /**
      * @param $zoneId
      * @param $settingName
