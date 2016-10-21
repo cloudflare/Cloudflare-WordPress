@@ -46,5 +46,7 @@ if (is_admin()) {
     // Load Automatic Cache Purge
     add_action('switch_theme', array($cloudflareHooks, 'purgeCache'));
     add_action('customize_save_after', array($cloudflareHooks, 'purgeCache'));
-    add_action('save_post', array($cloudflareHooks, 'purgePage'));
+    add_action('edit_post', array($cloudflareHooks, 'purgeOnPostUpdate'), 10, 3); //published post update
+    add_action('transition_post_status', array($cloudflareHooks, 'purgeOnPostTransition'), 10 ,3); // new post published or old post unpublished
+		add_action('after_delete_post', array($cloudflareHooks, 'purgeSinglePost')); //post deleted
 }
