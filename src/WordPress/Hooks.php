@@ -145,72 +145,72 @@ class Hooks
             $wp_domain_list = $this->integrationAPI->getDomainList();
             $wp_domain = $wp_domain_list[0];
             if (count($wp_domain) > 0) {
-                $zoneTag = $this->api->getZoneTag($wp_domain);
+				$zoneTag = $this->api->getZoneTag($wp_domain);
 
-            		if ( is_numeric($target_post) ) {
-            			$target_post = get_post( (int)$target_post );
-            		}
+				if ( is_numeric($target_post) ) {
+					$target_post = get_post( (int)$target_post );
+				}
 
                 if ( ! is_a( $target_post, 'WP_Post' ) ) {
                    return false;
                 }
 
-            		$post_url = get_permalink( $target_post );
+				$post_url = get_permalink( $target_post );
 
-            		$urls = array();
+				$urls = array();
 
-                //purge post url and home
-            		array_push( $urls, $post_url, home_url() );
+				//purge post url and home
+				array_push( $urls, $post_url, home_url() );
 
-                //purge all taxonomies terms pages
-            		$post_type = get_post_type( $target_post );
+				//purge all taxonomies terms pages
+				$post_type = get_post_type( $target_post );
 
-            		$taxonomies = get_object_taxonomies( $post_type, 'objects' );
+				$taxonomies = get_object_taxonomies( $post_type, 'objects' );
 
-            		foreach ( $taxonomies as $taxonomy_slug => $taxonomy ){
+				foreach ( $taxonomies as $taxonomy_slug => $taxonomy ){
 
-            			$terms = get_the_terms( $target_post, $taxonomy_slug );
+					$terms = get_the_terms( $target_post, $taxonomy_slug );
 
-            			if ( !empty( $terms ) && ! is_wp_error( $terms ) ) {
-            				foreach ( $terms as $term) {
+					if ( !empty( $terms ) && ! is_wp_error( $terms ) ) {
+						foreach ( $terms as $term) {
 
-            					$term_link = get_term_link( $term );
+							$term_link = get_term_link( $term );
 
-            					if ( ! is_wp_error( $term_link ) ) {
-            						array_push( $urls, $term_link );
-            					}
-            				}
-            			}
-            		}
+							if ( ! is_wp_error( $term_link ) ) {
+								array_push( $urls, $term_link );
+							}
+						}
+					}
+				}
 
-               //purge author pages
-               $post_author = get_post_field('post_author', $target_post->ID);
-                array_push($urls,
-                  get_author_posts_url($post_author),
-                  get_author_feed_link($post_author)
-                );
+			   //purge author pages
+			   $post_author = get_post_field('post_author', $target_post->ID);
+				array_push($urls,
+				  get_author_posts_url($post_author),
+				  get_author_feed_link($post_author)
+				);
 
-                //purge post-type archive pages
-                if (get_post_type_archive_link($post_type) == true) {
-                  array_push($urls,
-                    get_post_type_archive_link($post_type),
-                    get_post_type_archive_feed_link($post_type)
-                  );
-                }
+				//purge post-type archive pages
+				if (get_post_type_archive_link($post_type) == true) {
+				  array_push($urls,
+					get_post_type_archive_link($post_type),
+					get_post_type_archive_feed_link($post_type)
+				  );
+				}
 
-                //purge feeds
-                array_push($urls,
-                  get_bloginfo_rss('rdf_url') ,
-                  get_bloginfo_rss('rss_url') ,
-                  get_bloginfo_rss('rss2_url'),
-                  get_bloginfo_rss('atom_url'),
-                  get_bloginfo_rss('comments_rss2_url'),
-                  get_post_comments_feed_link($target_post->ID)
-                );
+				//purge feeds
+				array_push($urls,
+				  get_bloginfo_rss('rdf_url') ,
+				  get_bloginfo_rss('rss_url') ,
+				  get_bloginfo_rss('rss2_url'),
+				  get_bloginfo_rss('atom_url'),
+				  get_bloginfo_rss('comments_rss2_url'),
+				  get_post_comments_feed_link($target_post->ID)
+				);
 
-            		if ( ('post' == $post_type) && ( 'page' == get_option('show_on_front') ) && get_option( 'page_for_posts' ) ) {
-            			array_push( $urls, get_permalink( get_option( 'page_for_posts' ) ) );
-            		}
+				if ( ('post' == $post_type) && ( 'page' == get_option('show_on_front') ) && get_option( 'page_for_posts' ) ) {
+					array_push( $urls, get_permalink( get_option( 'page_for_posts' ) ) );
+				}
 
                 if( is_ssl() ){
                     $urls = array_merge($urls, array_map( function($url){ return str_replace('https://', 'http://', $url); }, $urls) );
