@@ -1,13 +1,12 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__.'/vendor/autoload.php';
 
 use CloudFlare\IpRewrite;
 
-
 // Exit if accessed directly
 if (!defined('ABSPATH')) {
-	exit;
+    exit;
 }
 
 // Rewrites Cloudflare IP
@@ -24,10 +23,14 @@ if ($is_cf) {
 // Enable HTTP2 Server Push
 // add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
 
-if (is_admin()) {
-    // Initiliaze Hooks class which contains WordPress hook functions
-    $cloudflareHooks = new \CF\WordPress\Hooks();
+// Don't allow "logged in" options to display to anonymous users
+add_filter('show_admin_bar', __return_false);
+add_filter('edit_post_link', __return_null);
 
+// Initiliaze Hooks class which contains WordPress hook functions
+$cloudflareHooks = new \CF\WordPress\Hooks();
+
+if (is_admin()) {
     //Register proxy AJAX endpoint
     add_action('wp_ajax_cloudflare_proxy', array($cloudflareHooks, 'initProxy'));
 
@@ -42,9 +45,19 @@ if (is_admin()) {
 
     // Load Deactivation Script
     register_deactivation_hook(CLOUDFLARE_PLUGIN_DIR.'cloudflare.php', array($cloudflareHooks, 'deactivate'));
+}
 
-    // Load Automatic Cache Purge
-    add_action('switch_theme', array($cloudflareHooks, 'purgeCache'));
-    add_action('customize_save_after', array($cloudflareHooks, 'purgeCache'));
-    add_action('save_post', array($cloudflareHooks, 'purgePage'));
+// Load Automatic Cache Purge
+add_action('switch_theme', array($cloudflareHooks, 'purgeCacheEverything'));
+add_action('customize_save_after', array($cloudflareHooks, 'purgeCacheEverything'));
+
+$cloudflarePurgeActions = array(
+    'autoptimize_action_cachepurged',   // Compat with https://wordpress.org/plugins/autoptimize
+    'deleted_post',                     // Delete a post
+    'edit_post',                        // Edit a post - includes leaving comments
+    'delete_attachment',                // Delete an attachment - includes re-uploading
+);
+
+foreach ($cloudflarePurgeActions as $action) {
+    add_action($action, array($cloudflareHooks, 'purgeCacheByRevelantURLs'), 10, 2);
 }

@@ -110,7 +110,7 @@ class Hooks
         $this->dataStore->clearDataStore();
     }
 
-    public function purgeCache()
+    public function purgeCacheEverything()
     {
         if ($this->isPluginSpecificCacheEnabled()) {
             $wp_domain_list = $this->integrationAPI->getDomainList();
@@ -119,73 +119,113 @@ class Hooks
                 $zoneTag = $this->api->getZoneTag($wp_domain);
 
                 if (isset($zoneTag)) {
-                    // Do not care of the return value
                     $this->api->zonePurgeCache($zoneTag);
                 }
             }
         }
     }
 
-    public function purgePage($post_id)
+    public function purgeCacheByRevelantURLs($postId)
     {
         if ($this->isPluginSpecificCacheEnabled()) {
             $wp_domain_list = $this->integrationAPI->getDomainList();
             $wp_domain = $wp_domain_list[0];
-            if (count($wp_domain) > 0) {
-                $zoneTag = $this->api->getZoneTag($wp_domain);
+            if (count($wp_domain) <= 0) {
+                return;
+            }
 
-		$saved_post = get_post( $post_id );
+            $validPostStatus = array('publish', 'trash');
+            $thisPostStatus = get_post_status($postId);
 
-		if ( is_a( $saved_post, 'WP_Post' ) == false ) {
-			return false;
-		} 
+            if (get_permalink($postId) != true || !in_array($thisPostStatus, $validPostStatus)) {
+                return;
+            }
 
-		if (  wp_is_post_autosave( $saved_post ) ||  wp_is_post_revision( $saved_post ) || ( 'publish' != get_post_status( $post_id ) ) ) {
-		    return false;
-		}
+            if (is_int(wp_is_post_autosave($postId)) ||  is_int(wp_is_post_revision($postId))) {
+                return;
+            }
 
-		$post_url = get_permalink( $saved_post );
+            $saved_post = get_post($postId);
+            if (is_a($saved_post, 'WP_Post') == false) {
+                return;
+            }
 
-		$urls = array();
+            $urls = $this->getPostRelatedLinks($postId);
 
-		array_push( $urls, $post_url );
-		array_push( $urls, home_url() );
-        
-		$post_type = get_post_type( $saved_post );
+            $zoneTag = $this->api->getZoneTag($wp_domain);
 
-		$taxonomies = get_object_taxonomies( $post_type, 'objects' );
-
-		foreach ( $taxonomies as $taxonomy_slug => $taxonomy ){
-
-			$terms = get_the_terms( $saved_post, $taxonomy_slug );
-
-			if ( !empty( $terms ) && ! is_wp_error( $terms ) ) {
-				foreach ( $terms as $term) {
-
-					$term_link = get_term_link( $term );
-
-					if ( ! is_wp_error( $term_link ) ) {
-						array_push( $urls, $term_link );
-					}
-				} 
-			}
-		}
-        
-		if ( ('post' == $post_type) && ( 'page' == get_option('show_on_front') ) && get_option( 'page_for_posts' ) ) {
-			array_push( $urls, get_permalink( get_option( 'page_for_posts' ) ) );
-		}
-
-                if( is_ssl() ){
-                    $urls = array_merge($urls, array_map( function($url){ return str_replace('https://', 'http://', $url); }, $urls) );
-                }
-
-                if (isset($zoneTag)) {
-                    $this->api->zonePurgeFiles($zoneTag, $urls);
-                }
+            if (isset($zoneTag) && !empty($urls)) {
+                $this->api->zonePurgeFiles($zoneTag, $urls);
             }
         }
-    }  	
-	
+    }
+
+    public function getPostRelatedLinks($postId)
+    {
+        $listofurls = array();
+
+        // Category purge
+        $categories = get_the_category($postId);
+        if ($categories) {
+            foreach ($categories as $cat) {
+                array_push($listofurls, get_category_link($cat->term_id));
+            }
+        }
+
+        // Tag purge
+        $tags = get_the_tags($postId);
+        if ($tags) {
+            foreach ($tags as $tag) {
+                array_push($listofurls, get_tag_link($tag->term_id));
+            }
+        }
+
+        // Author URL
+        array_push(
+            $listofurls,
+            get_author_posts_url(get_post_field('post_author', $postId)),
+            get_author_feed_link(get_post_field('post_author', $postId))
+        );
+
+        // Archives and their feeds
+        if (get_post_type_archive_link(get_post_type($postId)) == true) {
+            array_push(
+                $listofurls,
+                get_post_type_archive_link(get_post_type($postId)),
+                get_post_type_archive_feed_link(get_post_type($postId))
+            );
+        }
+
+        // Post URL
+        array_push($listofurls, get_permalink($postId));
+
+        // Also clean URL for trashed post.
+        if (get_post_status($postId) == 'trash') {
+            $trashpost = get_permalink($postId);
+            $trashpost = str_replace('__trashed', '', $trashpost);
+            array_push($listofurls, $trashpost, $trashpost.'feed/');
+        }
+
+        // Feeds
+        array_push(
+            $listofurls,
+            get_bloginfo_rss('rdf_url'),
+            get_bloginfo_rss('rss_url'),
+            get_bloginfo_rss('rss2_url'),
+            get_bloginfo_rss('atom_url'),
+            get_bloginfo_rss('comments_rss2_url'),
+            get_post_comments_feed_link($postId)
+        );
+
+        // Home Page and (if used) posts page
+        array_push($listofurls, home_url('/'));
+        if (get_option('show_on_front') == 'page') {
+            array_push($listofurls, get_permalink(get_option('page_for_posts')));
+        }
+
+        return $listofurls;
+    }
+
     protected function isPluginSpecificCacheEnabled()
     {
         $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
