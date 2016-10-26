@@ -37,6 +37,9 @@ Occurs when you change the appearance of your website. This means that you can f
 
 == Installation ==
 
+= Prerequisite =
+Make sure your PHP version is 5.3.10 or higher.
+
 = From your WordPress Dashboard =
 
 1. Visit “Plugins” > Add New
