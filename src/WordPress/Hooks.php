@@ -68,7 +68,7 @@ class Hooks
     public function cloudflareConfigPage()
     {
         if (function_exists('add_options_page')) {
-            add_options_page(__('CloudFlare Configuration'), __('CloudFlare'), 'manage_options', 'cloudflare', array($this, 'cloudflareIndexPage'));
+            add_options_page(__('Cloudflare Configuration'), __('Cloudflare'), 'manage_options', 'cloudflare', array($this, 'cloudflareIndexPage'));
         }
     }
 
