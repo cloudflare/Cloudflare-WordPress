@@ -20,7 +20,13 @@ class WordPressWrapper
     }
 
     public function getSiteURL()
-    {
-        return get_site_url();
+    {			
+	$site_url = get_site_url();
+		
+        if(function_exists('domain_mapping_siteurl')){
+            $site_url = domain_mapping_siteurl($site_url);
+        } 
+		
+        return $site_url;  
     }
 }
