@@ -24,8 +24,8 @@ if ($is_cf) {
 // add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
 
 // Don't allow "logged in" options to display to anonymous users
-add_filter('show_admin_bar', '__return_false');
-add_filter('edit_post_link', '__return_null');
+// add_filter('show_admin_bar', '__return_false');
+// add_filter('edit_post_link', '__return_null');
 
 // Initiliaze Hooks class which contains WordPress hook functions
 $cloudflareHooks = new \CF\WordPress\Hooks();
