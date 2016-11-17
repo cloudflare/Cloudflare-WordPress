@@ -91,7 +91,7 @@ Make sure that the php5-curl extension is installed on your system.
 
 *Changed*
 
-* Moved Admin Bar behind the Automatic Cache Purge toggle.
+* Moved Admin Bar behind Automatic Cache Purge toggle.
 
 = 3.1.0 - 2016-11-17 =
 
