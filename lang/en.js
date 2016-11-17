@@ -150,7 +150,7 @@
     "container.moresettings.speed": "Speed",
     "container.moresettings.security": "Security",
     "container.performancePage.title": "Performance",
-    "container.pluginSpecificCacheCard.title": "Automatic Full Cache Management",
+    "container.pluginSpecificCacheCard.title": "Automatic Cache Management",
     "container.pluginSpecificCacheCard.description": "Purge Cloudflare cache automatically when you update the appearance of your site.",
     "container.pluginSpecificCacheCard.modal.title": "Confirm Enabling Automatic Cache",
     "container.pluginSpecificCacheCard.modal.description": "Enabling this feature will automatically trigger a full cache purge when you update the appearance of your site.",
