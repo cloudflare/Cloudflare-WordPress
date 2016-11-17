@@ -95,6 +95,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase
         $this->mockWordPressAPI->method('getDomainList')->willReturn(array('domain.com'));
         $this->mockWordPressClientAPI->method('getZoneTag')->willReturn('zoneTag');
         $this->mockWordPressClientAPI->expects($this->once())->method('zonePurgeCache');
-        $this->hooks->purgeCache();
+        $this->hooks->purgeCacheEverything();
     }
 }
