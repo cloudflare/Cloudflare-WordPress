@@ -237,6 +237,6 @@ class Hooks
         $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
         $cacheSettingValue = $cacheSettingObject[\CF\API\Plugin::SETTING_VALUE_KEY];
 
-        return $cacheSettingValue !== false && $cacheSettingValue !== 'off';
+        return isset($cacheSettingValue) && $cacheSettingValue !== false && $cacheSettingValue !== 'off';
     }
 }
