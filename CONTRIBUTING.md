@@ -19,11 +19,11 @@ We welcome community contribution to this repository. To help add functionality 
 
 Cloudflare has multiple plugins using shared codebases. 
 
-[WordPress](https://github.com/cloudflare/Cloudflare-WordPress), [CPanel](https://github.com/cloudflare/CloudFlare-CPanel), [Magento](https://github.com/cloudflare/CloudFlare-Magento) are the main repositories of the plugins. Every plugin has a config.js file which allows them to control the frontend of the plugin. 
+[WordPress](https://github.com/cloudflare/Cloudflare-WordPress), [CPanel](https://github.com/cloudflare/Cloudflare-CPanel), [Magento](https://github.com/cloudflare/Cloudflare-Magento) are the main repositories of the plugins. Every plugin has a config.js file which allows them to control the frontend of the plugin. 
 
 Below are Cloudflare maintained repositories the plugins depend on.  
 
-* [cloudflare-frontend](https://github.com/cloudflare/CloudFlare-FrontEnd) is a generic frontend used in plugins. You can add/remove cards simply by editing [config](https://github.com/cloudflare/CloudFlare-FrontEnd/blob/master/config.js) file.
+* [cloudflare-frontend](https://github.com/cloudflare/cloudflare-plugin-frontend) is a generic frontend used in plugins. You can add/remove cards simply by editing [config](https://github.com/cloudflare/cloudflare-plugin-frontend/blob/master/config.js) file.
 * [cf-ui](https://github.com/cloudflare/cf-ui) is a Cloudflare UI Framework where cloudflare-frontend is using. 
 * [cloudflare-plugin-backend](https://github.com/cloudflare/cloudflare-plugin-backend) is a generic backend plugins use.
 * [cf-ip-rewrite](https://github.com/cloudflare/cf-ip-rewrite) allows to rewrite Cloudflare IP's in Application level. 
@@ -35,7 +35,7 @@ Cloudflare WordPress Plugin uses PHPUnit for testing. WordPress specific functio
 
 ## Frontend Updates
 
-Each plugin may use different Frontend [versions]((https://github.com/cloudflare/CloudFlare-FrontEnd/releases)). When publishing a Frontend release we copy the following files to other plugins;
+Each plugin may use different Frontend [versions]((https://github.com/cloudflare/cloudflare-plugin-frontend/releases)). When publishing a Frontend release we copy the following files to other plugins;
 
 * `assets/`
 * `fonts/`
@@ -45,4 +45,4 @@ Each plugin may use different Frontend [versions]((https://github.com/cloudflare
 
 ## Translations
 
-The plugins use a common language file which is located [here](https://github.com/cloudflare/CloudFlare-FrontEnd/tree/master/lang). English translation is always up to date where as other translations are not. If you have any issues or questions regarding with translations feel free to open an [issue](https://github.com/cloudflare/CloudFlare-FrontEnd/issues).
+The plugins use a common language file which is located [here](https://github.com/cloudflare/cloudflare-plugin-frontend/tree/master/lang). English translation is always up to date where as other translations are not. If you have any issues or questions regarding with translations feel free to open an [issue](https://github.com/cloudflare/cloudflare-plugin-frontend/issues).

@@ -98,7 +98,7 @@ class DataStore implements DataStoreInterface
     /**
      * @return cloudflare email
      */
-    public function getCloudFlareEmail()
+    public function getCloudflareEmail()
     {
         return $this->get(self::EMAIL);
     }

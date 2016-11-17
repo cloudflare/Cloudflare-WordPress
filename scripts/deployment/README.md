@@ -11,13 +11,13 @@
 - Change directory to project root folder
 - Edit `readme.txt` Change Logs
 - Run `./scripts/deployment/publish_github.py`
-- Open `https://github.com/cloudflare/CloudFlare-WordPress`
+- Open `https://github.com/cloudflare/Cloudflare-WordPress`
 - Edit GitHub Change Logs
 - Draft a new Release
 
 ### Triming Code Before Release
 
-- Call `git clone --branch LASTEST_TAG https://github.com/cloudflare/CloudFlare-WordPress ~/Desktop/wordpress_before_release`
+- Call `git clone --branch LASTEST_TAG https://github.com/cloudflare/Cloudflare-WordPress ~/Desktop/wordpress_before_release`
   - Note: `~/Desktop/wordpress_before_release` is an optional path.
 - Run `~/Desktop/wordpress_before_release/scripts/deployment/trim_code_for_release.sh ~/Desktop/wordpress_before_release`
 

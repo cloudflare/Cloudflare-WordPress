@@ -58,7 +58,7 @@ class Proxy
         $response = null;
         $body = $request->getBody();
         $csrfToken = $body['cfCSRFToken'];
-        if ($this->isCloudFlareCSRFTokenValid($request->getMethod(), $csrfToken)) {
+        if ($this->isCloudflareCSRFTokenValid($request->getMethod(), $csrfToken)) {
             $response = $this->requestRouter->route($request);
         } else {
             if ($csrfToken === null) {
@@ -119,7 +119,7 @@ class Proxy
      *
      * @return bool
      */
-    public function isCloudFlareCSRFTokenValid($method, $csrfToken)
+    public function isCloudflareCSRFTokenValid($method, $csrfToken)
     {
         if ($method === 'GET') {
             return true;
