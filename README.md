@@ -82,4 +82,3 @@ We welcome community contribution to this repository. To help add functionality 
 ## Changelog
 
 See [changelog](https://en-gb.wordpress.org/plugins/cloudflare/changelog/)
-
