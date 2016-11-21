@@ -24,4 +24,4 @@
 - Create a new tag folder in `SVN_PATH/tags` with the `LASTEST_TAG` tag name.
   - Note: In GitHub we use `vX.Y.Z` tagging format where as in SVN we use `X.Y.Z` format.
 - Copy the files in `SVN_PATH/trunk` to `SVN_PATH/tags/LASTEST_TAG` folder
-- Add the modified files to SVN and commit. 
+- Add the modified files to SVN and commit with the message `Tagging version X.Y.Z`. 
