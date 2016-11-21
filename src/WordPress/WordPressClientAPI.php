@@ -43,9 +43,9 @@ class WordPressClientAPI extends Client
         return $this->responseOk($response);
     }
 
-	 /**
+    /**
      * @param $zoneId
-	 * @param $files
+     * @param $files
      *
      * @return bool
      */
@@ -55,8 +55,8 @@ class WordPressClientAPI extends Client
         $response = $this->callAPI($request);
 
         return $this->responseOk($response);
-    }   
-	
+    }
+
     /**
      * @param $zoneId
      * @param $settingName
