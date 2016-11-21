@@ -3,7 +3,7 @@ Contributors: jwineman, furkan811, icyapril
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 4.6
-Stable tag: 3.1.0
+Stable tag: 3.1.1
 License: BSD-3-Clause
 
 All of Cloudflare’s performance and security benefits in a simple one-click install of recommended settings specifically developed for WordPress.
@@ -86,6 +86,12 @@ Make sure that the php5-curl extension is installed on your system.
 1. Cloudflare Plugin
 
 == Changelog ==
+
+= 3.1.1 - 2016-11-17 =
+
+*Changed*
+
+* Moved Admin Bar behind Automatic Cache Purge toggle.
 
 = 3.1.0 - 2016-11-17 =
 
