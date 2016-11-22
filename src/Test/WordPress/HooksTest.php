@@ -40,7 +40,11 @@ class HooksTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);
-        $this->hooks = new Hooks();
+
+        $this->hooks = $this->getMockBuilder('\CF\WordPress\Hooks')
+            ->setMethods(array('setHooks'))
+            ->getMock();
+        $this->hooks->method('setHooks')->willReturn(null);
         $this->hooks->setAPI($this->mockWordPressClientAPI);
         $this->hooks->setConfig($this->mockConfig);
         $this->hooks->setDataStore($this->mockDataStore);
@@ -95,6 +99,6 @@ class HooksTest extends \PHPUnit_Framework_TestCase
         $this->mockWordPressAPI->method('getDomainList')->willReturn(array('domain.com'));
         $this->mockWordPressClientAPI->method('getZoneTag')->willReturn('zoneTag');
         $this->mockWordPressClientAPI->expects($this->once())->method('zonePurgeCache');
-        $this->hooks->purgeCache();
+        $this->hooks->purgeCacheEverything();
     }
 }
