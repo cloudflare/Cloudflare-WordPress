@@ -52,7 +52,7 @@ Make sure your PHP version is 5.3.10 or higher.
 2. Upload the “cloudflare” directory to your “/wp-content/plugins/” directory, using ftp, sftp, scp etc.
 3. Activate Cloudflare from your Plugins page.
 
-= Once Activated = 
+= Once Activated =
 
 1. Go to cloudflare.com
 2. Login with your cloudflare account. (If you don’t have a Cloudflare account first sign up for Cloudflare)
@@ -61,7 +61,7 @@ Make sure your PHP version is 5.3.10 or higher.
 5. Copy the API key
 6. Return back to WordPress Cloudflare Plugin page
 7. Enter your email address and paste your API key
-8. Press Login. 
+8. Press Login.
 
 == Frequently Asked Questions ==
 
@@ -196,4 +196,4 @@ Make sure that the php5-curl extension is installed on your system.
 *Changed*
 
 * Updated user interface
-* Started to support WordPress 3.4+ instead of 2.8+ because we depend on the  [WordPress Options API](https://codex.wordpress.org/Options_API)  
+* Started to support WordPress 3.4+ instead of 2.8+ because we depend on the  [WordPress Options API](https://codex.wordpress.org/Options_API)

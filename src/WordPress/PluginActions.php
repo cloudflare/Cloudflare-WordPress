@@ -120,8 +120,8 @@ class PluginActions extends AbstractPluginActions
             throw new ZoneSettingFailException();
         }
 
-        // If plan supports  Mirage and Polish try to set them on
-        if (!Plans::PlanNeedsUpgrade($currentPlan, Plans::BIZ_PLAN)) {
+        // If the plan supports Mirage and Polish try to set them on
+        if (!Plans::planNeedsUpgrade($currentPlan, Plans::BIZ_PLAN)) {
             $result &= $this->clientAPI->changeZoneSettings($zoneId, 'mirage', array('value' => 'on'));
             if (!$result) {
                 throw new ZoneSettingFailException();
@@ -134,7 +134,7 @@ class PluginActions extends AbstractPluginActions
         }
 
         // Set Page Rules
-        $adminUrlPattern = get_admin_url().'*';
+        $adminUrlPattern = get_admin_url() . '*';
 
         $result &= $this->clientAPI->createPageRule($zoneId, $adminUrlPattern);
         if (!$result) {

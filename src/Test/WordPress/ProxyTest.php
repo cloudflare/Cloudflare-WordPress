@@ -100,7 +100,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(isset($request->getParameters()['proxyURL']));
         $this->assertFalse(isset($request->getParameters()['proxyURLType']));
         $this->assertFalse(isset($request->getBody()['proxyURL']));
-        $this->assertEquals(\CF\API\Client::ENDPOINT.$url, $request->getUrl());
+        $this->assertEquals(\CF\API\Client::ENDPOINT . $url, $request->getUrl());
     }
 
     public function testCreateRequestGETProxyPlugin()
@@ -121,7 +121,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(isset($request->getParameters()['proxyURL']));
         $this->assertFalse(isset($request->getParameters()['proxyURLType']));
         $this->assertFalse(isset($request->getBody()['proxyURL']));
-        $this->assertEquals(\CF\API\Plugin::ENDPOINT.$url, $request->getUrl());
+        $this->assertEquals(\CF\API\Plugin::ENDPOINT . $url, $request->getUrl());
     }
 
     public function testCreateRequestNonGET()

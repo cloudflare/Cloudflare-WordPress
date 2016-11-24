@@ -9,7 +9,7 @@ class Plans
     const BIZ_PLAN = 'business';
     const ENT_PLAN = 'enterprise';
 
-    public static function PlanNeedsUpgrade($currentPlan, $minimumPlan)
+    public static function planNeedsUpgrade($currentPlan, $minimumPlan)
     {
         $planList = array();
         $planList[self::FREE_PLAN] = 0;

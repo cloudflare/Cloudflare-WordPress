@@ -64,7 +64,7 @@ class HTTP2ServerPush
                     false
                 );
 
-                $GLOBALS['http2_'.self::http2LinkResourceHintAs(current_filter()).'_srcs'][] = self::http2LinkUrlToRelativePath($preload_src);
+                $GLOBALS['http2_' . self::http2LinkResourceHintAs(current_filter()) . '_srcs'][] = self::http2LinkUrlToRelativePath($preload_src);
             }
         }
 
@@ -81,7 +81,7 @@ class HTTP2ServerPush
         array_walk($resource_types, function ($resource_type) {
             if (is_array($GLOBALS["http2_{$resource_type}_srcs"])) {
                 array_walk($GLOBALS["http2_{$resource_type}_srcs"], function ($src) use ($resource_type) {
-                    printf('<link rel="preload"  href="%s" as="%s">', esc_url($src), esc_html($resource_type));
+                    printf('<link rel="preload" href="%s" as="%s">', esc_url($src), esc_html($resource_type));
                 });
             }
         });
