@@ -68,7 +68,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase
     {
         $mockGetAdminUrl = $this->getFunctionMock('CF\WordPress', 'get_admin_url');
         $url = 'options-general.php?page=cloudflare';
-        $link = '<a href="'.$url.'">Settings</a>';
+        $link = '<a href="' . $url . '">Settings</a>';
         $mockGetAdminUrl->expects($this->once())->with(null, $url)->willReturn($url);
         $this->assertEquals(array($link), $this->hooks->pluginActionLinks(array()));
     }
