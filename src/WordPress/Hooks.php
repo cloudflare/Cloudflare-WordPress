@@ -86,12 +86,12 @@ class Hooks
 
     public function cloudflareIndexPage()
     {
-        include CLOUDFLARE_PLUGIN_DIR.'index.php';
+        include CLOUDFLARE_PLUGIN_DIR . 'index.php';
     }
 
     public function pluginActionLinks($links)
     {
-        $links[] = '<a href="'.get_admin_url(null, 'options-general.php?page=cloudflare').'">Settings</a>';
+        $links[] = '<a href="' . get_admin_url(null, 'options-general.php?page=cloudflare') . '">Settings</a>';
 
         return $links;
     }
@@ -105,7 +105,7 @@ class Hooks
     {
         if (version_compare($GLOBALS['wp_version'], CLOUDFLARE_MIN_WP_VERSION, '<')) {
             deactivate_plugins(basename(CLOUDFLARE_PLUGIN_DIR));
-            wp_die('<p><strong>Cloudflare</strong> plugin requires WordPress version '.CLOUDFLARE_MIN_WP_VERSION.' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+            wp_die('<p><strong>Cloudflare</strong> plugin requires WordPress version ' . CLOUDFLARE_MIN_WP_VERSION . ' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
         }
 
         return true;
@@ -209,7 +209,7 @@ class Hooks
         if (get_post_status($postId) == 'trash') {
             $trashpost = get_permalink($postId);
             $trashpost = str_replace('__trashed', '', $trashpost);
-            array_push($listofurls, $trashpost, $trashpost.'feed/');
+            array_push($listofurls, $trashpost, $trashpost . 'feed/');
         }
 
         // Feeds

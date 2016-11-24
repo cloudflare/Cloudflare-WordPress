@@ -20,22 +20,27 @@ The WordPress plugin for Cloudflare offers all of the benefits of Cloudflare, wi
 
 ## Features
 
-### One-click WordPress-optimized settings  
+### One-click WordPress-optimized settings
+
 One-click application of WordPress-optimized settings is the easiest way to setup Cloudflare’s performance and security on your WordPress site. You can review the recommended settings that are applied, here: https://support.cloudflare.com/hc/en-us/articles/227342487
 
-### Web application firewall (WAF) rulesets  
+### Web application firewall (WAF) rulesets
+
 Cloudflare’s web application firewall (WAF), available on all of Cloudflare’s paid plans, has built-in rulesets specifically built to mitigate against WordPress threats and vulnerabilities. Cloudflare’s WAF provides confidence that your website is always protected, even against the latest threats and vulnerabilities targeting WordPress websites.
 
-### Automatic cache purge on website updates  
+### Automatic cache purge on website updates
+
 Cloudflare’s plugin for WordPress automatically refreshes the Cloudflare cache upon making changes to your website appearance. This means that you can focus on your website, while we take care of ensuring that the freshest content is always available to your visitors.
 
 ### Additional Features
-- Header rewrites to prevent a redirect loop when Cloudflare’s Universal SSL is enabled.  
-- Change Cloudflare settings from within the plugin without needing to navigate to the Cloudflare.com dashboard. You can change settings for cache purge, security level, Always Online™, and image optimization.  
-- View analytics such as total visitors, bandwidth saved, and threats blocked.  
-- Support for HTTP2/Server Push.  
+
+- Header rewrites to prevent a redirect loop when Cloudflare’s Universal SSL is enabled.
+- Change Cloudflare settings from within the plugin without needing to navigate to the Cloudflare.com dashboard. You can change settings for cache purge, security level, Always Online™, and image optimization.
+- View analytics such as total visitors, bandwidth saved, and threats blocked.
+- Support for HTTP2/Server Push.
 
 ## Installation
+
 1. To install the Cloudflare plugin into your WordPress admin panel, please visit: https://wordpress.org/plugins/cloudflare/ and click “Download” or download the plugin from this GitHub repo.
   - To install the plugin after downloading it via GitHub, navigate to Plugins >> Add New >> Upload Plugin and upload the Cloudflare-Wordpress-master.zip file.
 
@@ -50,21 +55,28 @@ Cloudflare’s plugin for WordPress automatically refreshes the Cloudflare cache
 6. Once this setting has been applied, that’s it! Your website is now on the Cloudflare network and optimized for the WordPress platform. You’ll also begin to see improved website load speeds, bandwidth savings, and protection against hackers, spammers, and bots.
 
 ## FAQ
+
 ### Do I need a Cloudflare account to use the plugin?
+
 Yes, on install and activation the plugin, first time users will be asked to enter their email address (used to sign-up for an account at cloudflare.com) and their user API key. This is needed to support all the features offered by the plugin.
 
 ### What settings are applied when I click "Apply Default Settings" in Cloudflare's WordPress plugin?
+
  You can review the recommended settings that are applied, here: https://support.cloudflare.com/hc/en-us/articles/227342487
 
 ### Does the plugin work if I have Varnish enabled?
+
 Yes, Cloudflare works with, and helps speed up your site even more, if you have Varnish enabled.
 
 ## Support
-### Visit Our Knowledge Base  
+
+### Visit Our Knowledge Base
+
 Before submitting a support ticket, check out our knowledge base to see if your question has already been answered: https://support.cloudflare.com/hc/en-us/sections/200820268-Content-Management-System-CMS-
 
-### File a Support Ticket  
-For all support inquiries regarding Cloudflare’s WordPress plugin, please login to your Cloudflare account, file a support ticket, include any screenshots or details: https://support.cloudflare.com/hc/en-us/requests/new  
+### File a Support Ticket
+
+For all support inquiries regarding Cloudflare’s WordPress plugin, please login to your Cloudflare account, file a support ticket, include any screenshots or details: https://support.cloudflare.com/hc/en-us/requests/new
 
 ## Contributions
 We welcome community contribution to this repository. To help add functionality or address issues, please take the following steps:
