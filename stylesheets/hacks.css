@@ -6,7 +6,7 @@
 
 /* fix WordPress logo touching the most top of the page */
 .cf-layout__row {
-    margin-top: 8px; /* new */      
+    margin-top: 8px; /* new */
 }
 
 /* fix WordPress AdminPanel Settings */
