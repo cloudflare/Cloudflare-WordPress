@@ -41,7 +41,7 @@ Cloudflare’s plugin for WordPress automatically refreshes the Cloudflare cache
 
 2. Once you’ve installed the plugin, activate it through the WordPress plugin panel.
 
-3. If you're upgrading from the old plugin, and had previously inputted your API Key, you'll be automatically logged-in after updating the plugin. 
+3. If you're upgrading from the old plugin, and had previously inputted your API Key, you'll be automatically logged-in after updating the plugin.
 
 4. If this is the first time installing Cloudflare's WordPress plugin, please navigate to the plugin settings inside of your WordPress admin panel after activating, and input your Cloudflare username and API key; to find your API key, follow these instructions. If you do not already have a Cloudflare account, you’ll see the option to create one.
 
@@ -59,9 +59,6 @@ Yes, on install and activation the plugin, first time users will be asked to ent
 ### Does the plugin work if I have Varnish enabled?
 Yes, Cloudflare works with, and helps speed up your site even more, if you have Varnish enabled.
 
-### Why am I getting “Cloudflare plugin requires php5-curl to be installed” error?
-Make sure that the php5-curl extension is installed on your system.
-
 ## Support
 ### Visit Our Knowledge Base  
 Before submitting a support ticket, check out our knowledge base to see if your question has already been answered: https://support.cloudflare.com/hc/en-us/sections/200820268-Content-Management-System-CMS-
@@ -70,13 +67,13 @@ Before submitting a support ticket, check out our knowledge base to see if your 
 For all support inquiries regarding Cloudflare’s WordPress plugin, please login to your Cloudflare account, file a support ticket, include any screenshots or details: https://support.cloudflare.com/hc/en-us/requests/new  
 
 ## Contributions
-We welcome community contribution to this repository. To help add functionality or address issues, please take the following steps: 
-- Fork the repository from the master branch. 
-- Create a new branch for your features / fixes. 
-- Make the changes you wish to see. 
-- Add tests for all changes. 
-- Create a pull request with details of what changes have been made, explanation of new behaviour, and link to issue that is addressed. 
-- Ensure documentation contains the correct information. 
+We welcome community contribution to this repository. To help add functionality or address issues, please take the following steps:
+- Fork the repository from the master branch.
+- Create a new branch for your features / fixes.
+- Make the changes you wish to see.
+- Add tests for all changes.
+- Create a pull request with details of what changes have been made, explanation of new behaviour, and link to issue that is addressed.
+- Ensure documentation contains the correct information.
 - Pull requests will be reviewed and hopefully merged into a release.
 
 ## Changelog
