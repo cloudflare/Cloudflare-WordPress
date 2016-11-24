@@ -121,7 +121,7 @@ class PluginActions extends AbstractPluginActions
         }
 
         // If the plan supports Mirage and Polish try to set them on
-        if (!Plans::PlanNeedsUpgrade($currentPlan, Plans::BIZ_PLAN)) {
+        if (!Plans::planNeedsUpgrade($currentPlan, Plans::BIZ_PLAN)) {
             $result &= $this->clientAPI->changeZoneSettings($zoneId, 'mirage', array('value' => 'on'));
             if (!$result) {
                 throw new ZoneSettingFailException();
