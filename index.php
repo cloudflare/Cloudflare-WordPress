@@ -27,6 +27,7 @@ var absoluteUrlBase = '<?php echo plugins_url('/cloudflare/'); ?>';
 
 cfCSRFToken = '<?php echo wp_create_nonce(\CF\WordPress\WordPressAPI::API_NONCE); ?>';
 localStorage.cfEmail = '<?php echo $dataStore->getCloudFlareEmail(); ?>';
+
 /*
  * A callback for cf-util-http to proxy all calls to our backend
  *
@@ -40,28 +41,21 @@ localStorage.cfEmail = '<?php echo $dataStore->getCloudFlareEmail(); ?>';
  * @param {Function} [opts.onError]
  */
 function RestProxyCallback(opts) {
-    //only proxy external REST calls
-    if(opts.url.lastIndexOf("http", 0) === 0) {
-        if(!opts.parameters) {
+    // Only proxy external REST calls
+    if (opts.url.lastIndexOf('http', 0) === 0) {
+        if (!opts.parameters) {
             opts.parameters = {};
         }
 
         // WordPress Ajax Action
         opts.parameters['action'] = 'cloudflare_proxy';
 
-        if(opts.method.toUpperCase() !== "GET") {
-            if(!opts.body) {
-                opts.body = {};
-            }
-
-            opts.body['cfCSRFToken'] = cfCSRFToken;
-            opts.body['proxyURL'] = opts.url;
-        } else {
+        if (opts.method.toUpperCase() === 'GET') {
             var clientAPIURL = '<?php echo \CF\API\Client::ENDPOINT; ?>';
             var pluginAPIURL = '<?php echo \CF\API\Plugin::ENDPOINT; ?>';
 
-            // If opts url begins with clientAPIURL or pluginAPIURL
-            // Remove the api url and assign the rest to proxyURL
+            // If opts.url begins with clientAPIURL or pluginAPIURL,
+            // remove the API URL and assign the rest to proxyURL
             if (opts.url.substring(0, clientAPIURL.length) === clientAPIURL) {
                 opts.parameters['proxyURL'] = opts.url.substring(clientAPIURL.
                     length);
@@ -70,6 +64,13 @@ function RestProxyCallback(opts) {
                 opts.parameters['proxyURL'] = opts.url.substring(pluginAPIURL.length);
                 opts.parameters['proxyURLType'] = 'PLUGIN';
             }
+        } else {
+            if (!opts.body) {
+                opts.body = {};
+            }
+
+            opts.body['cfCSRFToken'] = cfCSRFToken;
+            opts.body['proxyURL'] = opts.url;
         }
 
         // WordPress Ajax Global
@@ -78,7 +79,7 @@ function RestProxyCallback(opts) {
         // To avoid static files getting cached add the version number
         // to the url
         var versionNumber = '<?php echo $pluginVersion; ?>';
-        opts.url = absoluteUrlBase + opts.url + "?ver=" + versionNumber;
+        opts.url = absoluteUrlBase + opts.url + '?ver=' + versionNumber;
     }
 }
 </script>
