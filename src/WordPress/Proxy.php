@@ -62,7 +62,7 @@ class Proxy
             $response = $this->requestRouter->route($request);
         } else {
             if ($csrfToken === null) {
-                $response = $this->wordpressClientAPI->createAPIError('CSRF Token not found.  Its possible another plugin is altering requests sent by the Cloudflare plugin.');
+                $response = $this->wordpressClientAPI->createAPIError('CSRF Token not found. It\'s possible another plugin is altering requests sent by the Cloudflare plugin.');
             } else {
                 $response = $this->wordpressClientAPI->createAPIError('CSRF Token not valid.');
             }
@@ -82,9 +82,9 @@ class Proxy
 
         if (strtoupper($method === 'GET')) {
             if ($_GET['proxyURLType'] === 'CLIENT') {
-                $path = API\Client::ENDPOINT.$_GET['proxyURL'];
+                $path = API\Client::ENDPOINT . $_GET['proxyURL'];
             } elseif ($_GET['proxyURLType'] === 'PLUGIN') {
-                $path = API\Plugin::ENDPOINT.$_GET['proxyURL'];
+                $path = API\Plugin::ENDPOINT . $_GET['proxyURL'];
             }
         } else {
             $path = $body['proxyURL'];
