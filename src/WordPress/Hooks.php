@@ -108,12 +108,6 @@ class Hooks
             wp_die('<p><strong>Cloudflare</strong> plugin requires WordPress version '.CLOUDFLARE_MIN_WP_VERSION.' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
         }
 
-        // Guzzle3 depends on php5-curl. If dependency does not exist kill the plugin.
-        if (!extension_loaded('curl')) {
-            deactivate_plugins(basename(CLOUDFLARE_PLUGIN_DIR));
-            wp_die('<p><strong>Cloudflare</strong> plugin requires php5-curl to be installed.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
-        }
-
         return true;
     }
 
