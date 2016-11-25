@@ -1,5 +1,7 @@
 # Cloudflare’s Plugin for WordPress
 
+[![Build Status](https://travis-ci.org/cloudflare/Cloudflare-WordPress.svg?branch=master)](https://travis-ci.org/cloudflare/Cloudflare-WordPress)
+
 Cloudflare’s WordPress plugin brings all of the benefits of Cloudflare into your WordPress dashboard for configuration, including a one-click application of default settings specifically optimized for WordPress.
 
 By enabling Cloudflare on your WordPress website, you’ll find performance and security gains such as doubling your page load speeds, DDoS protection, web application firewall with WordPress-specific rulesets, free SSL, and SEO improvements.
