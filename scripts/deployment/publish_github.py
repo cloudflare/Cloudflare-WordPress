@@ -11,7 +11,7 @@ CONFIG_FILE_NAME = "config.js"
 CLOUDFLARE_PHP_FILE_NAME = "cloudflare.php"
 README_TXT_STABLE_TAG_LINE_NUMBER = 6
 CLOUDFLARE_PHP_VERSION_LINE_NUMBER = 6
-GIT_REPOSITORY_RELEASES = "https://github.com/cloudflare/CloudFlare-Wordpress/releases"
+GIT_REPOSITORY_RELEASES = "https://github.com/cloudflare/Cloudflare-WordPress/releases"
 
 
 def print_shiny(printable):
