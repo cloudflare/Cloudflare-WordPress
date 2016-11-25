@@ -81,6 +81,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase
 
     public function testActivateChecksWPVersionAndCurl()
     {
+        define('CLOUDFLARE_MIN_WP_VERSION', '3.4');
         $GLOBALS['wp_version'] = '3.5';
         $mockExtensionLoaded = $this->getFunctionMock('CF\WordPress', 'extension_loaded');
         $mockExtensionLoaded->expects($this->any())->willReturn(true);
