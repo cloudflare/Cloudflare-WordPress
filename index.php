@@ -8,15 +8,13 @@ $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
 $dataStore = new CF\WordPress\DataStore($logger);
 $wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);
 
-$pluginData = get_plugin_data(CLOUDFLARE_PLUGIN_DIR . 'cloudflare.php');
+$pluginData = get_plugin_data(CLOUDFLARE_PLUGIN_DIR.'cloudflare.php');
 $pluginVersion = $pluginData['Version'];
 
 wp_register_style('cf-corecss', plugins_url('stylesheets/cf.core.css', __FILE__), null, $pluginVersion);
 wp_enqueue_style('cf-corecss');
 wp_register_style('cf-componentscss', plugins_url('stylesheets/components.css', __FILE__), null, $pluginVersion);
 wp_enqueue_style('cf-componentscss');
-wp_register_style('cf-pluginscss', plugins_url('stylesheets/plugins.css', __FILE__), null, $pluginVersion);
-wp_enqueue_style('cf-pluginscss');
 wp_register_style('cf-hackscss', plugins_url('stylesheets/hacks.css', __FILE__), null, $pluginVersion);
 wp_enqueue_style('cf-hackscss');
 wp_enqueue_script('cf-compiledjs', plugins_url('compiled.js', __FILE__), null, $pluginVersion);
