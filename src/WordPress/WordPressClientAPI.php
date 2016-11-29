@@ -85,34 +85,4 @@ class WordPressClientAPI extends Client
 
         return $this->responseOk($response);
     }
-
-    /**
-     * @param $urlPattern
-     *
-     * @return array
-     */
-    public function createPageRuleDisablePerformanceCacheBypassJsonBody($urlPattern)
-    {
-        return array(
-            'targets' => array(
-                array(
-                    'target' => 'url',
-                    'constraint' => array(
-                        'operator' => 'matches',
-                        'value' => $urlPattern,
-                    ),
-                ),
-            ),
-            'actions' => array(
-                array(
-                    'id' => 'disable_performance',
-                ),
-                array(
-                    'id' => 'cache_level',
-                    'value' => 'bypass',
-                ),
-            ),
-            'status' => 'active',
-        );
-    }
 }
