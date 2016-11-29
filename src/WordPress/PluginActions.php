@@ -6,7 +6,6 @@ use CF\API\APIInterface;
 use CF\API\Request;
 use CF\API\Plugin;
 use CF\Integration\DefaultIntegration;
-use CF\API\Exception\PageRuleLimitException;
 use CF\API\Exception\ZoneSettingFailException;
 use CF\WordPress\Constants\Plans;
 use CF\API\AbstractPluginActions;
@@ -131,14 +130,6 @@ class PluginActions extends AbstractPluginActions
             if (!$result) {
                 throw new ZoneSettingFailException();
             }
-        }
-
-        // Set Page Rules
-        $adminUrlPattern = get_admin_url() . '*';
-
-        $result &= $this->clientAPI->createPageRule($zoneId, $adminUrlPattern);
-        if (!$result) {
-            throw new PageRuleLimitException();
         }
     }
 }
