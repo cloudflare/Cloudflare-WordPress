@@ -37,7 +37,7 @@ class WordPressClientAPI extends Client
      */
     public function zonePurgeCache($zoneId)
     {
-        $request = new Request('DELETE', 'zones/' . $zoneId . '/purge_cache', array(), array('purge_everything' => true));
+        $request = new Request('DELETE', 'zones/'.$zoneId.'/purge_cache', array(), array('purge_everything' => true));
         $response = $this->callAPI($request);
 
         return $this->responseOk($response);
@@ -51,7 +51,7 @@ class WordPressClientAPI extends Client
      */
     public function zonePurgeFiles($zoneId, $files)
     {
-        $request = new Request('DELETE', 'zones/' . $zoneId . '/purge_cache', array(), array('files' => $files));
+        $request = new Request('DELETE', 'zones/'.$zoneId.'/purge_cache', array(), array('files' => $files));
         $response = $this->callAPI($request);
 
         return $this->responseOk($response);
@@ -66,7 +66,7 @@ class WordPressClientAPI extends Client
      */
     public function changeZoneSettings($zoneId, $settingName, $params)
     {
-        $request = new Request('PATCH', 'zones/' . $zoneId . '/settings/'.$settingName, array(), $params);
+        $request = new Request('PATCH', 'zones/'.$zoneId.'/settings/'.$settingName, array(), $params);
         $response = $this->callAPI($request);
 
         return $this->responseOk($response);
@@ -77,10 +77,9 @@ class WordPressClientAPI extends Client
      *
      * @return array
      */
-    public function createPageRule($zoneId, $urlPattern)
+    public function createPageRule($zoneId, $body)
     {
-        $body = $this->createPageRuleDisablePerformanceCacheBypassJsonBody($urlPattern);
-        $request = new Request('POST', 'zones/' . $zoneId . '/pagerules/', array(), $body);
+        $request = new Request('POST', 'zones/'.$zoneId.'/pagerules/', array(), $body);
         $response = $this->callAPI($request);
 
         return $this->responseOk($response);
