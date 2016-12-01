@@ -24,8 +24,12 @@
     "scripts": {
         "format": "vendor/bin/phpcs -n --standard=phpcs.xml",
         "test": "vendor/bin/phpunit",
-        "post-update-cmd": "rm -rf vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/PHPCompatibility; cp -rp vendor/wimg/php-compatibility vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/PHPCompatibility",
-        "post-install-cmd": "rm -rf vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/PHPCompatibility; cp -rp vendor/wimg/php-compatibility vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/PHPCompatibility"
+        "post-install-cmd": "@php-compatibility-install",
+        "post-update-cmd": "@php-compatibility-install",
+        "php-compatibility-install": "rm -rf vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/PHPCompatibility; cp -rp vendor/wimg/php-compatibility vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/PHPCompatibility"
     },
+    "_comment": [
+        "php-compatibility-install comes from https://github.com/wimg/PHPCompatibility/issues/102#issuecomment-255778195"
+    ],
     "version": "3.1.1"
 }
