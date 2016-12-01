@@ -97,9 +97,11 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
 
         $request = $this->mockProxy->createRequest();
 
-        $this->assertFalse(isset($request->getParameters()['proxyURL']));
-        $this->assertFalse(isset($request->getParameters()['proxyURLType']));
-        $this->assertFalse(isset($request->getBody()['proxyURL']));
+        $parameters = $request->getParameters();
+        $body = $request->getBody();
+        $this->assertFalse(isset($parameters['proxyURL']));
+        $this->assertFalse(isset($parameters['proxyURLType']));
+        $this->assertFalse(isset($body['proxyURL']));
         $this->assertEquals(\CF\API\Client::ENDPOINT . $url, $request->getUrl());
     }
 
@@ -118,9 +120,11 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
 
         $request = $this->mockProxy->createRequest();
 
-        $this->assertFalse(isset($request->getParameters()['proxyURL']));
-        $this->assertFalse(isset($request->getParameters()['proxyURLType']));
-        $this->assertFalse(isset($request->getBody()['proxyURL']));
+        $parameters = $request->getParameters();
+        $body = $request->getBody();
+        $this->assertFalse(isset($parameters['proxyURL']));
+        $this->assertFalse(isset($parameters['proxyURLType']));
+        $this->assertFalse(isset($body['proxyURL']));
         $this->assertEquals(\CF\API\Plugin::ENDPOINT . $url, $request->getUrl());
     }
 
@@ -136,9 +140,11 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
 
         $request = $this->mockProxy->createRequest();
 
-        $this->assertFalse(isset($request->getParameters()['proxyURL']));
-        $this->assertFalse(isset($request->getParameters()['proxyURLType']));
-        $this->assertFalse(isset($request->getBody()['proxyURL']));
+        $parameters = $request->getParameters();
+        $body = $request->getBody();
+        $this->assertFalse(isset($parameters['proxyURL']));
+        $this->assertFalse(isset($parameters['proxyURLType']));
+        $this->assertFalse(isset($body['proxyURL']));
         $this->assertEquals($proxyURL, $request->getUrl());
     }
 }

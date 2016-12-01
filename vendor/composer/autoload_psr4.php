@@ -13,6 +13,7 @@ return array(
     'Webmozart\\Assert\\' => array($vendorDir . '/webmozart/assert/src'),
     'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
     'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
+    'PHPCompatibility\\' => array($vendorDir . '/wimg/php-compatibility'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),
     'CF\\' => array($baseDir . '/src', $vendorDir . '/cloudflare/cloudflare-plugin-backend/src'),
 );

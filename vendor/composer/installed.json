@@ -1735,5 +1735,108 @@
             "BSD-3-Clause"
         ],
         "description": "A PHP backend for CloudFlare plugins."
+    },
+    {
+        "name": "wimg/php-compatibility",
+        "version": "7.0.8",
+        "version_normalized": "7.0.8.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wimg/PHPCompatibility.git",
+            "reference": "a3263259daa3629d174d1ac25657466222d6607e"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wimg/PHPCompatibility/zipball/a3263259daa3629d174d1ac25657466222d6607e",
+            "reference": "a3263259daa3629d174d1ac25657466222d6607e",
+            "shasum": ""
+        },
+        "require": {
+            "ext-tokenizer": "*",
+            "php": ">=5.1.2",
+            "squizlabs/php_codesniffer": "~2.0"
+        },
+        "require-dev": {
+            "satooshi/php-coveralls": "dev-master"
+        },
+        "time": "2016-10-30 14:34:26",
+        "type": "phpcodesniffer-standard",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "PHPCompatibility\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Wim Godden",
+                "role": "lead"
+            }
+        ],
+        "description": "This is a set of sniffs for PHP_CodeSniffer that checks for PHP version compatibility.",
+        "homepage": "http://techblog.wimgodden.be/tag/codesniffer/",
+        "keywords": [
+            "compatibility",
+            "phpcs",
+            "standards"
+        ]
+    },
+    {
+        "name": "simplyadmire/composer-plugins",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/SimplyAdmire/ComposerPlugins.git",
+            "reference": "d8380f670694c1c2330b22591ca74adc82cffe19"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/SimplyAdmire/ComposerPlugins/zipball/d8380f670694c1c2330b22591ca74adc82cffe19",
+            "reference": "d8380f670694c1c2330b22591ca74adc82cffe19",
+            "shasum": ""
+        },
+        "require": {
+            "composer-plugin-api": "^1.0",
+            "squizlabs/php_codesniffer": "*"
+        },
+        "time": "2016-05-12 11:58:38",
+        "type": "composer-plugin",
+        "extra": {
+            "class": [
+                "SimplyAdmire\\ComposerPlugins\\PhpCodesnifferStandardInstallerPlugin"
+            ]
+        },
+        "installation-source": "source",
+        "autoload": {
+            "psr-0": {
+                "SimplyAdmire\\ComposerPlugins": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-3.0+"
+        ],
+        "authors": [
+            {
+                "name": "Rens Admiraal",
+                "email": "rens@simplyadmire.com",
+                "role": "lead"
+            }
+        ],
+        "description": "Composer plugin for installing PHP_CodeSniffer standards",
+        "keywords": [
+            "PHP_CodeSniffer",
+            "TYPO3 CMS",
+            "TYPO3 Flow",
+            "TYPO3 Neos",
+            "phpcs",
+            "standards",
+            "typo3"
+        ]
     }
 ]
