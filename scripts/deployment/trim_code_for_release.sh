@@ -8,6 +8,7 @@ if [ -z "$REPOSITORY_FOLDER" ]; then
 	exit 1
 fi
 
+rm -f $REPOSITORY_FOLDER/phpcs.xml
 rm -f $REPOSITORY_FOLDER/phpunit.xml
 rm -f $REPOSITORY_FOLDER/.editorconfig
 rm -rf $REPOSITORY_FOLDER/.git
@@ -25,3 +26,5 @@ rm -rf $REPOSITORY_FOLDER/vendor/guzzle/guzzle/docs
 rm -rf $REPOSITORY_FOLDER/vendor/phpdocumentor
 rm -rf $REPOSITORY_FOLDER/vendor/webmozart
 rm -rf $REPOSITORY_FOLDER/vendor/sebastian/global-state
+rm -rf $REPOSITORY_FOLDER/vendor/wimg
+rm -rf $REPOSITORY_FOLDER/vendor/simplyadmire
