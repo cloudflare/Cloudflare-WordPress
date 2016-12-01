@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ruleset name="Cloudflare_WordPress_PHPCS">
+	<file>src/</file>
+
+	<rule ref="PSR2"/>
+</ruleset>
