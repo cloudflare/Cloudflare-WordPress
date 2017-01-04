@@ -21,8 +21,8 @@
         "simplyadmire/composer-plugins" : "@dev"
     },
     "scripts": {
-        "format": "vendor/bin/phpcs -n --standard=phpcs.xml",
-        "test": "vendor/bin/phpunit",
+        "format": "php vendor/squizlabs/php_codesniffer/scripts/phpcs -n --standard=phpcs.xml",
+        "test": "php vendor/phpunit/phpunit/phpunit",
         "post-install-cmd": "@php-compatibility-install",
         "post-update-cmd": "@php-compatibility-install",
         "php-compatibility-install": "rm -rf vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/PHPCompatibility; cp -rp vendor/wimg/php-compatibility vendor/squizlabs/php_codesniffer/CodeSniffer/Standards/PHPCompatibility"
