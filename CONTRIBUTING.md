@@ -19,7 +19,7 @@ We welcome community contribution to this repository. To help add functionality 
 
 Cloudflare has multiple plugins using shared codebases. 
 
-[WordPress](https://github.com/cloudflare/Cloudflare-WordPress), [CPanel]([WordPress](https://github.com/cloudflare/CloudFlare-CPanel)), [Magento]([WordPress](https://github.com/cloudflare/CloudFlare-Magento)) are the main repositories of the plugins. Every plugin has a config.js file which allows them to control the frontend of the plugin. 
+[WordPress](https://github.com/cloudflare/Cloudflare-WordPress), [CPanel](https://github.com/cloudflare/CloudFlare-CPanel), [Magento](https://github.com/cloudflare/CloudFlare-Magento) are the main repositories of the plugins. Every plugin has a config.js file which allows them to control the frontend of the plugin. 
 
 Below are Cloudflare maintained repositories the plugins depend on.  
 
@@ -29,9 +29,13 @@ Below are Cloudflare maintained repositories the plugins depend on.
 * [cf-ip-rewrite](https://github.com/cloudflare/cf-ip-rewrite) allows to rewrite Cloudflare IP's in Application level. 
 * [mod_cloudflare](https://github.com/cloudflare/mod_cloudflare) allows Apache to rewrite Cloudflare IP's with user IP's. It is not used in plugins itself but it maybe be a better alternative then `cf-ip-rewrite`.
 
+## WordPress Plugin Specific Details
+
+Cloudflare WordPress Plugin uses PHPUnit for testing. WordPress specific function are mocked inside [WordPressWrapper](https://github.com/cloudflare/Cloudflare-WordPress/blob/master/src/WordPress/WordPressWrapper.php) class. Everything under `src/` directory should have unit test written.
+
 ## Frontend Updates
 
-The plugins meaning the plugins may have different Frontend [versions]((https://github.com/cloudflare/CloudFlare-FrontEnd/releases)). When publishing a Frontend release we copy the following files to other plugins;
+Each plugin may use different Frontend [versions]((https://github.com/cloudflare/CloudFlare-FrontEnd/releases)). When publishing a Frontend release we copy the following files to other plugins;
 
 * `assets/`
 * `fonts/`

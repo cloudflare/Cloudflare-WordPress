@@ -79,15 +79,7 @@ For all support inquiries regarding Cloudflare’s WordPress plugin, please logi
 
 ## Contributions
 
-We welcome community contribution to this repository. To help add functionality or address issues, please take the following steps:
-
-- Fork the repository from the master branch.
-- Create a new branch for your features / fixes.
-- Make the changes you wish to see.
-- Add tests for all changes.
-- Create a pull request with details of what changes have been made, explanation of new behaviour, and link to issue that is addressed.
-- Ensure documentation contains the correct information.
-- Pull requests will be reviewed and hopefully merged into a release.
+We welcome community contribution to this repository. [CONTRIBUTING.md](https://github.com/cloudflare/Cloudflare-WordPress/blob/master/CONTRIBUTING.md) will help you start contributing.
 
 ## Changelog
 
