@@ -23,10 +23,10 @@ wp_enqueue_script('cf-compiledjs', plugins_url('compiled.js', __FILE__), null, $
 ?>
 <div id="root" class="cloudflare-partners site-wrapper"></div>
 <script>
-var absoluteUrlBase = '<?=plugins_url('/cloudflare/');?>';
+var absoluteUrlBase = '<?php echo plugins_url('/cloudflare/'); ?>';
 
-cfCSRFToken = '<?= wp_create_nonce(\CF\WordPress\WordPressAPI::API_NONCE) ?>';
-localStorage.cfEmail = '<?=$dataStore->getCloudFlareEmail();?>';
+cfCSRFToken = '<?php echo wp_create_nonce(\CF\WordPress\WordPressAPI::API_NONCE); ?>';
+localStorage.cfEmail = '<?php echo $dataStore->getCloudFlareEmail(); ?>';
 /*
  * A callback for cf-util-http to proxy all calls to our backend
  *
@@ -57,8 +57,8 @@ function RestProxyCallback(opts) {
             opts.body['cfCSRFToken'] = cfCSRFToken;
             opts.body['proxyURL'] = opts.url;
         } else {
-            var clientAPIURL = '<?= \CF\API\Client::ENDPOINT ?>';
-            var pluginAPIURL = '<?= \CF\API\Plugin::ENDPOINT ?>';
+            var clientAPIURL = '<?php echo \CF\API\Client::ENDPOINT; ?>';
+            var pluginAPIURL = '<?php echo \CF\API\Plugin::ENDPOINT; ?>';
 
             // If opts url begins with clientAPIURL or pluginAPIURL
             // Remove the api url and assign the rest to proxyURL
@@ -77,7 +77,7 @@ function RestProxyCallback(opts) {
     } else {
         // To avoid static files getting cached add the version number
         // to the url
-        var versionNumber = '<?= $pluginVersion ?>';
+        var versionNumber = '<?php echo $pluginVersion; ?>';
         opts.url = absoluteUrlBase + opts.url + "?ver=" + versionNumber;
     }
 }
