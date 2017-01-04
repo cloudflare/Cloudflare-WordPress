@@ -10,7 +10,6 @@
     "require": {
         "cloudflare/cf-ip-rewrite": "^1.0.0",
         "cloudflare/cloudflare-plugin-backend": "^1.1",
-        "guzzle/guzzle": "~3.9",
         "symfony/yaml": "~2.6"
     },
     "require-dev": {

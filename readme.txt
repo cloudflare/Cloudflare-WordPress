@@ -77,10 +77,6 @@ Yes, on install and activation the plugin, first time users will be asked to ent
 
 Yes, Cloudflare works with, and helps speed up your site even more, if you have Varnish enabled.
 
-= Why am I getting “Cloudflare plugin requires php5-curl to be installed” error? =
-
-Make sure that the php5-curl extension is installed on your system.
-
 == Screenshots ==
 
 1. Cloudflare Plugin
