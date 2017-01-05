@@ -7,7 +7,7 @@ By enabling Cloudflare on your WordPress website, you’ll find performance and 
 ## Table of Contents
 
 [Description](#description)  
-[Installation](#description)  
+[Installation](#installation)  
 [Support](#support)  
 [Features](#features)  
 [FAQ](#faq)  
@@ -79,7 +79,7 @@ For all support inquiries regarding Cloudflare’s WordPress plugin, please logi
 
 ## Contributions
 
-We welcome community contribution to this repository. [CONTRIBUTING.md](https://github.com/cloudflare/Cloudflare-WordPress/blob/master/CONTRIBUTING.md) will help you start contributing.
+We welcome community contribution to this repository. [CONTRIBUTING.md](CONTRIBUTING.md) will help you start contributing.
 
 ## Changelog
 
