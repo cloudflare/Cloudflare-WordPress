@@ -42,7 +42,7 @@ Make sure your PHP version is 5.3.10 or higher.
 
 = From your WordPress Dashboard =
 
-1. Visit “Plugins” > Add New
+1. Visit “Plugins” → Add New
 2. Search for Cloudflare
 3. Activate Cloudflare from your Plugins page.
 
@@ -57,7 +57,7 @@ Make sure your PHP version is 5.3.10 or higher.
 1. Go to cloudflare.com
 2. Login with your cloudflare account. (If you don’t have a Cloudflare account first sign up for Cloudflare)
 3. Press your account name on top right corner and select “My Settings”
-4. Scroll down to “API Key” > “Global API Key” > View API Key
+4. Scroll down to “API Key” → “Global API Key” → View API Key
 5. Copy the API key
 6. Return back to WordPress Cloudflare Plugin page
 7. Enter your email address and paste your API key
@@ -77,10 +77,6 @@ Yes, on install and activation the plugin, first time users will be asked to ent
 
 Yes, Cloudflare works with, and helps speed up your site even more, if you have Varnish enabled.
 
-= Why am I getting “Cloudflare plugin requires php5-curl to be installed” error? =
-
-Make sure that the php5-curl extension is installed on your system.
-
 == Screenshots ==
 
 1. Cloudflare Plugin
@@ -98,7 +94,7 @@ Make sure that the php5-curl extension is installed on your system.
 *Added*
 
 * Added ability to automatically purge cache when a post is published, edited or deleted. (Thanks to brandomeniconi and mike503)
-* Added ability to work with Wordpress MU Domain Mapping plugin. (Thanks to brandomeniconi)
+* Added ability to work with WordPress MU Domain Mapping plugin. (Thanks to brandomeniconi)
 
 *Changed*
 
@@ -111,7 +107,6 @@ Make sure that the php5-curl extension is installed on your system.
 * Fixed bug where require vendor folders was not working.
 * Fixed bug where static files were cached which caused issues updating the plugin.
 * Fixed dependencies which caused issues with PHP Compatibility Checker plugin.
-
 
 = 3.0.6 - 2016-10-6 =
 

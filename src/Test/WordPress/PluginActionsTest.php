@@ -69,10 +69,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         );
         $this->mockWordPressClientAPI->method('responseOk')->willReturn(true);
         $this->mockWordPressClientAPI->method('changeZoneSettings')->willReturn(true);
-        $this->mockWordPressClientAPI->method('createPageRule')->willReturn(true);
-
         $this->mockWordPressClientAPI->expects($this->exactly(16))->method('changeZoneSettings');
-        $this->mockWordPressClientAPI->expects($this->exactly(1))->method('createPageRule');
 
         $this->pluginActions->applyDefaultSettings();
     }
@@ -92,10 +89,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         );
         $this->mockWordPressClientAPI->method('responseOk')->willReturn(true);
         $this->mockWordPressClientAPI->method('changeZoneSettings')->willReturn(true);
-        $this->mockWordPressClientAPI->method('createPageRule')->willReturn(true);
-
         $this->mockWordPressClientAPI->expects($this->exactly(14))->method('changeZoneSettings');
-        $this->mockWordPressClientAPI->expects($this->exactly(1))->method('createPageRule');
 
         $this->pluginActions->applyDefaultSettings();
     }
@@ -124,31 +118,6 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
         $this->mockWordPressClientAPI->method('zoneGetDetails')->willReturn(true);
         $this->mockWordPressClientAPI->method('responseOk')->willReturn(true);
         $this->mockWordPressClientAPI->method('changeZoneSettings')->willReturn(false);
-
-        $this->pluginActions->applyDefaultSettings();
-    }
-
-    /**
-     * @expectedException CF\API\Exception\PageRuleLimitException
-     */
-    public function testReturnApplyDefaultSettingsCreatePageRuleThrowsPageRuleLimitException()
-    {
-        $this->mockRequest->method('getUrl')->willReturn('/plugin/:id/settings/default_settings');
-
-        $this->mockWordPressClientAPI->method('zoneGetDetails')->willReturn(
-            array(
-                'result' => array(
-                    'plan' => array(
-                        'legacy_id' => Plans::ENT_PLAN,
-                    ),
-                ),
-            )
-        );
-
-        $this->mockWordPressClientAPI->method('zoneGetDetails')->willReturn(true);
-        $this->mockWordPressClientAPI->method('responseOk')->willReturn(true);
-        $this->mockWordPressClientAPI->method('changeZoneSettings')->willReturn(true);
-        $this->mockWordPressClientAPI->method('createPageRule')->willReturn(false);
 
         $this->pluginActions->applyDefaultSettings();
     }

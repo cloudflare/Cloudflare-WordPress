@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<ruleset name="Cloudflare_WordPress_PSR2">
+    <file>src/</file>
+
+    <config name="testVersion" value="5.3-5.4"/>
+    <rule ref="PHPCompatibility"/>
+
+    <rule ref="PSR2"/>
+</ruleset>
