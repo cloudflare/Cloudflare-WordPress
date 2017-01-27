@@ -229,6 +229,13 @@ class Hooks
             array_push($listofurls, get_permalink(get_option('page_for_posts')));
         }
 
+        // Purge https and http URLs
+        if (force_ssl_admin()) {
+            $listofurls = array_merge($listofurls, str_replace('https://', 'http://', $listofurls));
+        } elseif (!is_ssl() && force_ssl_content()) {
+            $listofurls = array_merge($listofurls, str_replace('http://', 'https://', $listofurls));
+        }
+
         return $listofurls;
     }
 
