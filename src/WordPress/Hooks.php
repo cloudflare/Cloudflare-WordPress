@@ -25,18 +25,6 @@ class Hooks
         $this->integrationContext = new Integration\DefaultIntegration($this->config, $this->integrationAPI, $this->dataStore, $this->logger);
         $this->api = new WordPressClientAPI($this->integrationContext);
         $this->proxy = new Proxy($this->integrationContext);
-
-        // Set hooks which are conditional
-        $this->setHooks();
-    }
-
-    public function setHooks()
-    {
-        // Don't allow "logged in" options to display to anonymous users
-        if ($this->isPluginSpecificCacheEnabled()) {
-            add_filter('show_admin_bar', '__return_false');
-            add_filter('edit_post_link', '__return_null');
-        }
     }
 
     /**
