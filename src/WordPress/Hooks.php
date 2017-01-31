@@ -157,20 +157,23 @@ class Hooks
     public function getPostRelatedLinks($postId)
     {
         $listofurls = array();
+        $post_type = get_post_type($postId);
 
-        // Category purge
-        $categories = get_the_category($postId);
-        if ($categories) {
-            foreach ($categories as $cat) {
-                array_push($listofurls, get_category_link($cat->term_id));
+        //Purge taxonomies terms URLs
+        $post_type_taxonomies = get_object_taxonomies($post_type);
+
+        foreach ($post_type_taxonomies as $taxonomy) {
+            $terms = get_the_terms($postId, $taxonomy);
+
+            if (empty($terms) || is_wp_error($terms)) {
+                continue;
             }
-        }
 
-        // Tag purge
-        $tags = get_the_tags($postId);
-        if ($tags) {
-            foreach ($tags as $tag) {
-                array_push($listofurls, get_tag_link($tag->term_id));
+            foreach ($terms as $term) {
+                $term_link = get_term_link($term);
+                if (!is_wp_error($term_link)) {
+                    array_push($listofurls, $term_link);
+                }
             }
         }
 
@@ -182,11 +185,11 @@ class Hooks
         );
 
         // Archives and their feeds
-        if (get_post_type_archive_link(get_post_type($postId)) == true) {
+        if (get_post_type_archive_link($post_type) == true) {
             array_push(
                 $listofurls,
-                get_post_type_archive_link(get_post_type($postId)),
-                get_post_type_archive_feed_link(get_post_type($postId))
+                get_post_type_archive_link($post_type),
+                get_post_type_archive_feed_link($post_type)
             );
         }
 
