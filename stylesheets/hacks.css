@@ -4,9 +4,14 @@
  * everything here.
  */
 
-/* fix WordPress logo touching the most top of the page */
-.cf-layout__row {
+/* fix WordPress whole div touching the most top of the page */
+.cf-layout__container {
     margin-top: 8px; /* new */      
+}
+
+/* fix the under attack button being too close to right */
+.under-attack-button {
+    margin-right: 2rem !important;
 }
 
 /* fix WordPress AdminPanel Settings */
@@ -44,6 +49,23 @@
     text-align: center;
 }
 
+/* fixes signup and login page form label */
+#cf-login-page .cf-form__label {
+    float: left; /* new */
+    font-size: 13px;
+}
+
+/* fix header aligning incorrect */
+#header-global .cf-layout__column {
+    height: 100%; /* new */
+}
+
+
+/* Fix black fill in Analytics */
+.c3-chart {
+    fill: transparent;
+}
+
 /* fix WordPress notification z-index being lower than
  * WordPress Admin Panel z-index level.
  */
@@ -51,14 +73,14 @@
     z-index: 9999; /* new */
 }
 
+/* Decrease the size of footer message */
+.cf-card__footer_message {
+    font-size: 0.7rem;
+}
+
 /* fix Cpanel Plugin title */
 span#pageHeading {
     display: block;
-}
-
-/* fix the wrapper to stick to top */
-.wrapper {
-    margin-top: 20px; /* new */
 }
 
 /* center the dot in radio button */
@@ -81,9 +103,15 @@ body, .cloudflare-partners .wrapper {
     display: none; /* block */
 }
 
+/* Adjust margins betweens cf-card divs. */
+/* This can mess other section elements styling */
+.cloudflare-partners section, .cloudflare-partners .section {
+    margin-bottom: 1rem;
+    margin-top: 1rem; 
+}
+
 /* center and change bg color of app nav */
 .cloudflare-partners .apps-nav-container {
-    background-color: #ebebeb; /* new */
     padding: 0.66667rem 0;
     position: relative;
 }
@@ -95,6 +123,7 @@ body, .cloudflare-partners .wrapper {
     table-layout: fixed;
     width: auto; /* 100% */
     margin: 0 auto; /* new */
+    margin-top: 0.3rem; /* new */
 }
 
 /* app nav performance text is hidden */
