@@ -4,27 +4,44 @@
 REPOSITORY_FOLDER="$1"
 
 if [ -z "$REPOSITORY_FOLDER" ]; then
-	echo "Please provide the folder name as argument."
-	exit 1
+    echo "Please provide the folder name as argument."
+    exit 1
 fi
 
-rm -f $REPOSITORY_FOLDER/phpcs.xml
-rm -f $REPOSITORY_FOLDER/phpunit.xml
-rm -f $REPOSITORY_FOLDER/.editorconfig
-rm -rf $REPOSITORY_FOLDER/.git
-rm -rf $REPOSITORY_FOLDER/src/Test/
-rm -rf $REPOSITORY_FOLDER/git-hooks
-rm -rf $REPOSITORY_FOLDER/compiled.js.map
-rm -rf $REPOSITORY_FOLDER/scripts
-rm -rf $REPOSITORY_FOLDER/vendor/bin/
-rm -rf $REPOSITORY_FOLDER/vendor/squizlabs
-rm -rf $REPOSITORY_FOLDER/vendor/phpunit
-rm -rf $REPOSITORY_FOLDER/vendor/php-mock
-rm -rf $REPOSITORY_FOLDER/vendor/johnkary 
-rm -rf $REPOSITORY_FOLDER/vendor/guzzle/guzzle/tests
-rm -rf $REPOSITORY_FOLDER/vendor/guzzle/guzzle/docs
-rm -rf $REPOSITORY_FOLDER/vendor/phpdocumentor
-rm -rf $REPOSITORY_FOLDER/vendor/webmozart
-rm -rf $REPOSITORY_FOLDER/vendor/sebastian/global-state
-rm -rf $REPOSITORY_FOLDER/vendor/wimg
-rm -rf $REPOSITORY_FOLDER/vendor/simplyadmire
+pushd "$REPOSITORY_FOLDER"
+
+rm -f .editorconfig
+rm -f .gitignore
+rm -f .travis.yml
+rm -f compiled.js.map
+rm -f phpcs.xml
+rm -f phpunit.xml
+rm -rf .git/
+rm -rf git-hooks/
+rm -rf scripts/
+rm -rf src/Test/
+rm -rf vendor/bin/
+rm -rf vendor/cloudflare/cf-ip-rewrite/.gitignore
+rm -rf vendor/cloudflare/cf-ip-rewrite/tests/
+rm -rf vendor/cloudflare/cloudflare-plugin-backend/.gitignore
+rm -rf vendor/cloudflare/cloudflare-plugin-backend/src/Test/
+rm -rf vendor/guzzle/
+rm -rf vendor/psr/log/Psr/Log/Test/
+rm -rf vendor/symfony/event-dispatcher/Tests/
+rm -rf vendor/symfony/yaml/.gitignore
+rm -rf vendor/symfony/yaml/Tests/
+
+# dev packages
+rm -rf vendor/doctrine/
+rm -rf vendor/johnkary/
+rm -rf vendor/phpdocumentor/
+rm -rf vendor/php-mock/
+rm -rf vendor/phpspec/
+rm -rf vendor/phpunit/
+rm -rf vendor/sebastian/
+rm -rf vendor/simplyadmire/
+rm -rf vendor/squizlabs/
+rm -rf vendor/webmozart/
+rm -rf vendor/wimg/
+
+popd
