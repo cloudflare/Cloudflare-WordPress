@@ -17,6 +17,9 @@ define('CLOUDFLARE_MIN_PHP_VERSION', '5.3.10');
 define('CLOUDFLARE_MIN_WP_VERSION', '3.4');
 define('CLOUDFLARE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 
+// To enable HTTP2 Server Push, change 'false' to 'true' without single quotes.
+define('CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE', false);
+
 // PHP version check has to go here because the below code uses namespaces
 if (version_compare(PHP_VERSION, CLOUDFLARE_MIN_PHP_VERSION, '<')) {
     // We need to load "plugin.php" manually to call "deactivate_plugins"

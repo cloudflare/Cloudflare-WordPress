@@ -20,11 +20,13 @@ if ($is_cf) {
     }
 }
 
-// Enable HTTP2 Server Push
-// add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
-
 // Initiliaze Hooks class which contains WordPress hook functions
 $cloudflareHooks = new \CF\WordPress\Hooks();
+
+// Enable HTTP2 Server Push
+if (CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE) {
+    add_action('init', array($cloudflareHooks, 'http2ServerPushInit'));
+}
 
 if (is_admin()) {
     //Register proxy AJAX endpoint
