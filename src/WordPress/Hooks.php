@@ -237,4 +237,9 @@ class Hooks
 
         return isset($cacheSettingValue) && $cacheSettingValue !== false && $cacheSettingValue !== 'off';
     }
+
+    public function http2ServerPushInit()
+    {
+        HTTP2ServerPush::init();
+    }
 }

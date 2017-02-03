@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__.'/vendor/autoload.php';
 
 use CloudFlare\IpRewrite;
 
@@ -20,11 +20,13 @@ if ($is_cf) {
     }
 }
 
-// Enable HTTP2 Server Push
-// add_action('init', array('\CF\Hooks\HTTP2ServerPush', 'init'));
-
 // Initiliaze Hooks class which contains WordPress hook functions
 $cloudflareHooks = new \CF\WordPress\Hooks();
+
+// Enable HTTP2 Server Push
+if (CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE) {
+    add_action('init', array($cloudflareHooks, 'http2ServerPushInit'));
+}
 
 if (is_admin()) {
     //Register proxy AJAX endpoint
@@ -37,10 +39,10 @@ if (is_admin()) {
     add_action('plugin_action_links_cloudflare/cloudflare.php', array($cloudflareHooks, 'pluginActionLinks'));
 
     // Load Activation Script
-    register_activation_hook(CLOUDFLARE_PLUGIN_DIR . 'cloudflare.php', array($cloudflareHooks, 'activate'));
+    register_activation_hook(CLOUDFLARE_PLUGIN_DIR.'cloudflare.php', array($cloudflareHooks, 'activate'));
 
     // Load Deactivation Script
-    register_deactivation_hook(CLOUDFLARE_PLUGIN_DIR . 'cloudflare.php', array($cloudflareHooks, 'deactivate'));
+    register_deactivation_hook(CLOUDFLARE_PLUGIN_DIR.'cloudflare.php', array($cloudflareHooks, 'deactivate'));
 }
 
 // Load Automatic Cache Purge
