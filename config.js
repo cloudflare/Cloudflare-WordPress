@@ -13,7 +13,8 @@
         "container.moresettings.speed": [
             "AlwaysOnlineCard", 
             "ImageOptimizationCard", 
-            "DevelopmentModeCard"
+            "DevelopmentModeCard",
+            "BypassCacheByCookieCard"
         ], 
         "container.moresettings.security": [
             "SecurityLevelCard", 
