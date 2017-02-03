@@ -1,8 +1,8 @@
 {
-    "debug": false,
-    "featureManagerIsFullZoneProvisioningEnabled": false,
-    "isDNSPageEnabled": false,
-    "isSubdomainCheckEnabled": true,
+    "debug": false, 
+    "featureManagerIsFullZoneProvisioningEnabled": false, 
+    "isDNSPageEnabled": false, 
+    "isSubdomainCheckEnabled": true, 
     "useHostAPILogin": false, 
     "homePageCards": [
         "ApplyDefaultSettingsCard", 
@@ -13,7 +13,7 @@
         "container.moresettings.speed": [
             "AlwaysOnlineCard", 
             "ImageOptimizationCard", 
-            "DevelopmentModeCard",
+            "DevelopmentModeCard", 
             "BypassCacheByCookieCard"
         ], 
         "container.moresettings.security": [
@@ -25,5 +25,5 @@
     }, 
     "locale": "en", 
     "integrationName": "wordpress", 
-    "version": "3.1.1"
+    "version": "3.2.0"
 }
