@@ -8,6 +8,9 @@ Author: John Wineman, Furkan Yilmaz, Junade Ali (Cloudflare Team)
 License: BSD-3-Clause
 */
 
+// To enable HTTP2 Server Push feature, add the following line to wp-config.php file
+// define('CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE', true);
+
 // Exit if accessed directly
 if (!defined('ABSPATH')) {
     exit;
@@ -16,9 +19,6 @@ if (!defined('ABSPATH')) {
 define('CLOUDFLARE_MIN_PHP_VERSION', '5.3.10');
 define('CLOUDFLARE_MIN_WP_VERSION', '3.4');
 define('CLOUDFLARE_PLUGIN_DIR', plugin_dir_path(__FILE__));
-
-// To enable HTTP2 Server Push, change 'false' to 'true' without single quotes.
-define('CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE', false);
 
 // PHP version check has to go here because the below code uses namespaces
 if (version_compare(PHP_VERSION, CLOUDFLARE_MIN_PHP_VERSION, '<')) {
