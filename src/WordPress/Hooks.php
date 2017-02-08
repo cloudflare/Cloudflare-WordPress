@@ -221,9 +221,9 @@ class Hooks
         }
 
         // Purge https and http URLs
-        if (force_ssl_admin()) {
+        if (function_exists('force_ssl_admin') && force_ssl_admin()) {
             $listofurls = array_merge($listofurls, str_replace('https://', 'http://', $listofurls));
-        } elseif (!is_ssl() && force_ssl_content()) {
+        } elseif (!is_ssl() && function_exists('force_ssl_content') && force_ssl_content()) {
             $listofurls = array_merge($listofurls, str_replace('http://', 'https://', $listofurls));
         }
 
