@@ -18,8 +18,8 @@ class Hooks
 
     public function __construct()
     {
-        $this->config = new Integration\DefaultConfig('[]');
-        $this->logger = new Integration\DefaultLogger(false);
+        $this->config = new Integration\DefaultConfig(file_get_contents(CLOUDFLARE_PLUGIN_DIR.'config.js', true));
+        $this->logger = new Integration\DefaultLogger($this->config->getValue('debug'));
         $this->dataStore = new DataStore($this->logger);
         $this->integrationAPI = new WordPressAPI($this->dataStore);
         $this->integrationContext = new Integration\DefaultIntegration($this->config, $this->integrationAPI, $this->dataStore, $this->logger);
