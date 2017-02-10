@@ -92,15 +92,14 @@ class WordPressClientAPI extends Client
      */
     public function callAPI(Request $request)
     {
-
         $request = $this->beforeSend($request);
 
-        $url = add_query_arg($request->getParameters(), $this->getEndpoint() . $request->getUrl());
+        $url = add_query_arg($request->getParameters(), $this->getEndpoint().$request->getUrl());
 
         $requestParams = array(
             'timeout' => 30,
             'method' => $request->getMethod(),
-            'headers' => $request->getHeaders()
+            'headers' => $request->getHeaders(),
         );
 
         $isPaginatable = false;
@@ -150,7 +149,7 @@ class WordPressClientAPI extends Client
 
             if (json_last_error() !== JSON_ERROR_NONE) {
                 $errorMessage = 'Error decoding client API JSON';
-                $this->logAPICall($errorMessage, array( 'error' => json_last_error() ), true);
+                $this->logAPICall($errorMessage, array('error' => json_last_error()), true);
 
                 return $this->createAPIError($errorMessage);
             }
@@ -168,7 +167,7 @@ class WordPressClientAPI extends Client
                     $mergedResponse['result'] = array_merge($mergedResponse['result'], $response['result']);
 
                     // Notify the frontend that pagination is taken care.
-                    $mergedResponse['result_info']['notify'] = 'Backend has taken care of pagination. Ouput is merged in results.';
+                    $mergedResponse['result_info']['notify'] = 'Backend has taken care of pagination. Output is merged in results.';
                     $mergedResponse['result_info']['page'] = -1;
                     $mergedResponse['result_info']['count'] = -1;
                 }
