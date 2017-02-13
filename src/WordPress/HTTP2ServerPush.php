@@ -3,6 +3,7 @@
 // TODO: 
 // Get rid of $GLOBALS and use static variables
 // Make class functions non-static
+// Add debug logs. Need dependency injection of logger to this class
 namespace CF\WordPress;
 
 class HTTP2ServerPush

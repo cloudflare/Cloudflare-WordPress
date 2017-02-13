@@ -102,6 +102,11 @@ class ClientActions
 
             $this->wordpressAPI->setDomainNameCache($domainName);
 
+            // Log for debugging
+            $this->logger->debug("Current domain -> $wpDomain");
+            $this->logger->debug("Valid domain -> $validDomainName");
+            $this->logger->debug("Cached domain -> $domainName");
+
             return $domainName;
         }
 
