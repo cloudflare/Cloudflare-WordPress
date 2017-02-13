@@ -42,9 +42,10 @@ class HooksTest extends \PHPUnit_Framework_TestCase
         $this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);
 
         $this->hooks = $this->getMockBuilder('\CF\WordPress\Hooks')
-            ->setMethods(array('setHooks'))
+            ->disableOriginalConstructor()
+            ->setMethods(array('__construct')) // This is a hack to make the tests work
             ->getMock();
-        $this->hooks->method('setHooks')->willReturn(null);
+
         $this->hooks->setAPI($this->mockWordPressClientAPI);
         $this->hooks->setConfig($this->mockConfig);
         $this->hooks->setDataStore($this->mockDataStore);
