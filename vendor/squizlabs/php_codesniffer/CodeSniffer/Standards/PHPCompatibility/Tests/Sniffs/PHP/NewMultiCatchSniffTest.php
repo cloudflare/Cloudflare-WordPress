@@ -9,6 +9,11 @@
 /**
  * New catching multiple exception types sniff test file
  *
+ * @group multiCatch
+ * @group exceptions
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_NewMultiCatchSniff
+ *
  * @uses    BaseSniffTest
  * @package PHPCompatibility
  * @author  Juliette Reinders Folmer <phpcompatibility_nospam@adviesenzo.nl>
@@ -19,8 +24,6 @@ class NewMultiCatchSniffTest extends BaseSniffTest
 
     /**
      * testNewMultiCatch
-     *
-     * @group multiCatch
      *
      * @dataProvider dataNewMultiCatch
      *
@@ -55,8 +58,6 @@ class NewMultiCatchSniffTest extends BaseSniffTest
     /**
      * testNoViolation
      *
-     * @group multiCatch
-     *
      * @dataProvider dataNoViolation
      *
      * @param int $line The line number.
@@ -83,6 +84,7 @@ class NewMultiCatchSniffTest extends BaseSniffTest
             array(10),
             array(12),
             array(23),
+            array(30), // Live coding.
         );
     }
 }

@@ -9,6 +9,11 @@
 /**
  * Removed global variables sniff tests
  *
+ * @group removedGlobalVariables
+ * @group superglobals
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_RemovedGlobalVariablesSniff
+ *
  * @uses BaseSniffTest
  * @package PHPCompatibility
  * @author Wim Godden <wim@cu.be>
@@ -19,8 +24,6 @@ class RemovedGlobalVariablesSniffTest  extends BaseSniffTest
 
     /**
      * testRemovedGlobalVariables
-     *
-     * @group removedGlobalVariables
      *
      * @dataProvider dataRemovedGlobalVariables
      *
@@ -35,10 +38,10 @@ class RemovedGlobalVariablesSniffTest  extends BaseSniffTest
         $this->assertNoViolation($file, $line);
 
         $file = $this->sniffFile(self::TEST_FILE, '5.6');
-        $this->assertWarning($file, $line, "Global variable '$" . $varName . "' is deprecated since PHP 5.6 - use php://input instead");
+        $this->assertWarning($file, $line, "Global variable '$" . $varName . "' is deprecated since PHP 5.6; Use php://input instead");
 
         $file = $this->sniffFile(self::TEST_FILE, '7.0');
-        $this->assertError($file, $line, "Global variable '$" . $varName . "' is deprecated since PHP 5.6 and removed since PHP 7.0 - use php://input instead");
+        $this->assertError($file, $line, "Global variable '$" . $varName . "' is deprecated since PHP 5.6 and removed since PHP 7.0; Use php://input instead");
     }
 
     /**
@@ -58,8 +61,6 @@ class RemovedGlobalVariablesSniffTest  extends BaseSniffTest
 
     /**
      * testNoViolation
-     *
-     * @group removedGlobalVariables
      *
      * @dataProvider dataNoViolation
      *

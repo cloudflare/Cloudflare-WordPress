@@ -9,6 +9,9 @@
 /**
  * Classname determination function tests
  *
+ * @group utilityGetFQClassNameFromNewToken
+ * @group utilityFunctions
+ *
  * @uses    BaseClass_MethodTestFrame
  * @package PHPCompatibility
  * @author  Juliette Reinders Folmer <phpcompatibility_nospam@adviesenzo.nl>
@@ -16,12 +19,16 @@
 class BaseClass_GetFQClassNameFromNewTokenTest extends BaseClass_MethodTestFrame
 {
 
-    public $filename = '../sniff-examples/utility-functions/get_fqclassname_from_new_token.php';
+    /**
+     * The file name for the file containing the test cases within the
+     * `sniff-examples/utility-functions/` directory.
+     *
+     * @var string
+     */
+    protected $filename = 'get_fqclassname_from_new_token.php';
 
     /**
      * testGetFQClassNameFromNewToken
-     *
-     * @group utilityFunctions
      *
      * @requires PHP 5.3
      *

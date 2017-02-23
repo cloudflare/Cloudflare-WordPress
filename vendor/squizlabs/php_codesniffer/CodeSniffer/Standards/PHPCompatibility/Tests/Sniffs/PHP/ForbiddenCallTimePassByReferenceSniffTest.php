@@ -9,6 +9,11 @@
 /**
  * Forbidden call time pass by reference sniff test
  *
+ * @group forbiddenCallTimePassByReference
+ * @group references
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_ForbiddenCallTimePassByReferenceSniff
+ *
  * @uses BaseSniffTest
  * @package PHPCompatibility
  * @author Jansen Price <jansen.price@gmail.com>
@@ -25,11 +30,11 @@ class ForbiddenCallTimePassByReferenceSniffTest extends BaseSniffTest
     protected $_sniffFile;
 
     /**
-     * setUp
+     * Set up the test file for this unit test.
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 
@@ -39,8 +44,6 @@ class ForbiddenCallTimePassByReferenceSniffTest extends BaseSniffTest
 
     /**
      * testForbiddenCallTimePassByReference
-     *
-     * @group forbiddenCallTimePassByReference
      *
      * @dataProvider dataForbiddenCallTimePassByReference
      *
@@ -76,14 +79,13 @@ class ForbiddenCallTimePassByReferenceSniffTest extends BaseSniffTest
             array(44), // Bad: call time pass by reference.
             array(45), // Bad: call time pass by reference.
             array(49), // Bad: multiple call time pass by reference.
+            array(71), // Bad: call time pass by reference.
         );
     }
 
 
     /**
      * testNoViolation
-     *
-     * @group forbiddenCallTimePassByReference
      *
      * @dataProvider dataNoViolation
      *
@@ -121,6 +123,26 @@ class ForbiddenCallTimePassByReferenceSniffTest extends BaseSniffTest
 
             array(51), // OK: No variables.
             array(53), // OK: Outside scope of this sniff.
+
+            // Assign by reference within function call.
+            array(56),
+            array(57),
+            array(58),
+            array(59),
+            array(60),
+            array(61),
+            array(62),
+            array(63),
+            array(64),
+            array(65),
+            array(66),
+            array(67),
+            array(68),
+            array(69),
+
+            // Comparison with reference.
+            array(74),
+            array(75),
         );
     }
 

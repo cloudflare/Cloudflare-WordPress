@@ -9,6 +9,10 @@
 /**
  * New language constructs sniff tests
  *
+ * @group newLanguageConstructs
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_NewLanguageConstructsSniff
+ *
  * @uses BaseSniffTest
  * @package PHPCompatibility
  * @author Jansen Price <jansen.price@gmail.com>
@@ -19,8 +23,6 @@ class NewLanguageConstructsSniffTest extends BaseSniffTest
 
     /**
      * testNamespaceSeparator
-     *
-     * @group NewLanguageConstructs
      *
      * @requires PHP 5.3
      *
@@ -38,8 +40,6 @@ class NewLanguageConstructsSniffTest extends BaseSniffTest
     /**
      * testPow
      *
-     * @group NewLanguageConstructs
-     *
      * @return void
      */
     public function testPow()
@@ -53,8 +53,6 @@ class NewLanguageConstructsSniffTest extends BaseSniffTest
 
     /**
      * testPowEquals
-     *
-     * @group NewLanguageConstructs
      *
      * @return void
      */
@@ -70,8 +68,6 @@ class NewLanguageConstructsSniffTest extends BaseSniffTest
     /**
      * testSpaceship
      *
-     * @group NewLanguageConstructs
-     *
      * @return void
      */
     public function testSpaceship()
@@ -86,25 +82,33 @@ class NewLanguageConstructsSniffTest extends BaseSniffTest
     /**
      * Coalescing operator
      *
-     * @group NewLanguageConstructs
-     *
      * @return void
      */
     public function testCoalescing()
     {
         $file = $this->sniffFile(self::TEST_FILE, '5.6');
         $this->assertError($file, 8, "null coalescing operator (??) is not present in PHP version 5.6 or earlier");
-        $this->assertError($file, 10, "null coalescing operator (??) is not present in PHP version 5.6 or earlier");
 
         $file = $this->sniffFile(self::TEST_FILE, '7.0');
         $this->assertNoViolation($file, 8);
+    }
+
+    /**
+     * Coalesce equal operator
+     *
+     * @return void
+     */
+    public function testCoalesceEquals()
+    {
+        $file = $this->sniffFile(self::TEST_FILE, '7.1');
+        $this->assertError($file, 10, "null coalesce equal operator (??=) is not present in PHP version 7.1 or earlier");
+
+        $file = $this->sniffFile(self::TEST_FILE, '7.2');
         $this->assertNoViolation($file, 10);
     }
 
     /**
      * Variadic functions using ...
-     *
-     * @group NewLanguageConstructs
      *
      * @return void
      */

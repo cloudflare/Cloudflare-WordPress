@@ -9,6 +9,11 @@
 /**
  * Empty list() assignments have been removed in PHP 7.0 sniff test file
  *
+ * @group forbiddenEmptyListAssignment
+ * @group listAssignments
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_ForbiddenEmptyListAssignmentSniff
+ *
  * @uses BaseSniffTest
  * @package PHPCompatibility
  * @author Wim Godden <wim@cu.be>
@@ -17,8 +22,6 @@ class ForbiddenEmptyListAssignmentSniffTest extends BaseSniffTest
 {
     /**
      * testEmptyListAssignment
-     *
-     * @group forbiddenEmptyListAssignment
      *
      * @dataProvider dataEmptyListAssignment
      *
@@ -55,8 +58,6 @@ class ForbiddenEmptyListAssignmentSniffTest extends BaseSniffTest
 
     /**
      * testValidListAssignment
-     *
-     * @group forbiddenEmptyListAssignment
      *
      * @dataProvider dataValidListAssignment
      *

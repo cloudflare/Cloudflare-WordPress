@@ -9,6 +9,11 @@
 /**
  * Internal Interfaces Sniff tests
  *
+ * @group internalInterfaces
+ * @group interfaces
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_InternalInterfacesSniff
+ *
  * @uses    BaseSniffTest
  * @package PHPCompatibility
  * @author  Juliette Reinders Folmer <phpcompatibility_nospam@adviesenzo.nl>
@@ -23,11 +28,11 @@ class InternalInterfacesSniffTest extends BaseSniffTest
     protected $_sniffFile;
 
     /**
-     * setUp
+     * Set up the test file for this unit test.
      *
      * @return void
      */
-    public function setUp()
+    protected function setUp()
     {
         parent::setUp();
 

@@ -9,6 +9,10 @@
 /**
  * Late static binding sniff test file
  *
+ * @group lateStaticBinding
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_LateStaticBindingSniff
+ *
  * @uses    BaseSniffTest
  * @package PHPCompatibility
  * @author  Juliette Reinders Folmer <phpcompatibility_nospam@adviesenzo.nl>
@@ -19,8 +23,6 @@ class LateStaticBindingSniffTest extends BaseSniffTest
 
     /**
      * testLateStaticBinding
-     *
-     * @group lateStaticBinding
      *
      * @dataProvider dataLateStaticBinding
      *
@@ -56,8 +58,6 @@ class LateStaticBindingSniffTest extends BaseSniffTest
     /**
      * testLateStaticBindingOutsideClassScope
      *
-     * @group lateStaticBinding
-     *
      * @dataProvider dataLateStaticBindingOutsideClassScope
      *
      * @param int $line The line number.
@@ -87,8 +87,6 @@ class LateStaticBindingSniffTest extends BaseSniffTest
 
     /**
      * testNoViolation
-     *
-     * @group lateStaticBinding
      *
      * @dataProvider dataNoViolation
      *

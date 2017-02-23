@@ -448,4 +448,23 @@ class InlineTest extends \PHPUnit_Framework_TestCase
             array('{ foo: { bar: { 1: 2, baz: 3 } } }', array('foo' => array('bar' => array(1 => 2, 'baz' => 3)))),
         );
     }
+
+    /**
+     * @expectedException \Symfony\Component\Yaml\Exception\ParseException
+     * @expectedExceptionMessage Malformed inline YAML string: {this, is not, supported}.
+     */
+    public function testNotSupportedMissingValue()
+    {
+        Inline::parse('{this, is not, supported}');
+    }
+
+    public function testVeryLongQuotedStrings()
+    {
+        $longStringWithQuotes = str_repeat("x\r\n\\\"x\"x", 1000);
+
+        $yamlString = Inline::dump(array('longStringWithQuotes' => $longStringWithQuotes));
+        $arrayFromYaml = Inline::parse($yamlString);
+
+        $this->assertEquals($longStringWithQuotes, $arrayFromYaml['longStringWithQuotes']);
+    }
 }

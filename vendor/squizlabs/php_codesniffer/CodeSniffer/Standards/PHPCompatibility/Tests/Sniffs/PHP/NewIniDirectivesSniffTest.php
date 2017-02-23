@@ -9,6 +9,11 @@
 /**
  * New ini directives sniff tests
  *
+ * @group newIniDirectives
+ * @group iniDirectives
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_NewIniDirectivesSniff
+ *
  * @uses BaseSniffTest
  * @package PHPCompatibility
  * @author Jansen Price <jansen.price@gmail.com>
@@ -20,8 +25,6 @@ class NewIniDirectivesSniffTest extends BaseSniffTest
 
     /**
      * Test functions that shouldn't be flagged by this sniff
-     *
-     * @group IniDirectives
      *
      * @dataProvider dataFunctionThatShouldntBeFlagged
      *
@@ -55,8 +58,6 @@ class NewIniDirectivesSniffTest extends BaseSniffTest
 
     /**
      * testNewIniDirectives
-     *
-     * @group IniDirectives
      *
      * @dataProvider dataNewIniDirectives
      *
@@ -221,8 +222,6 @@ class NewIniDirectivesSniffTest extends BaseSniffTest
 
     /**
      * testNewIniDirectivesWithAlternative
-     *
-     * @group IniDirectives
      *
      * @dataProvider dataNewIniDirectivesWithAlternative
      *

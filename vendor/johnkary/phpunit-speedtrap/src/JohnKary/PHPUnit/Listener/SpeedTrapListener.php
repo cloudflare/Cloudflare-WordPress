@@ -62,6 +62,21 @@ class SpeedTrapListener implements \PHPUnit_Framework_TestListener
     }
 
     /**
+     * A warning occurred.
+     *
+     * @param \PHPUnit_Framework_Test    $test
+     * @param \PHPUnit_Framework_Warning $e
+     * @param float                     $time
+     *
+     * @since Method available since Release 6.0.0
+     * @todo  Uncomment in time for PHPUnit 6.0.0
+     * @see   https://github.com/sebastianbergmann/phpunit/pull/1840#issuecomment-162535997
+     */
+    public function addWarning(\PHPUnit_Framework_Test $test, \PHPUnit_Framework_Warning $e, $time)
+    {
+    }
+
+    /**
      * A failure occurred.
      *
      * @param \PHPUnit_Framework_Test                 $test
@@ -236,7 +251,7 @@ class SpeedTrapListener implements \PHPUnit_Framework_TestListener
     protected function getHiddenCount()
     {
         $total = count($this->slow);
-        $showing = $this->getReportLength($this->slow);
+        $showing = $this->getReportLength();
 
         $hidden = 0;
         if ($total > $showing) {
@@ -261,7 +276,7 @@ class SpeedTrapListener implements \PHPUnit_Framework_TestListener
     {
         $slowTests = $this->slow;
 
-        $length = $this->getReportLength($slowTests);
+        $length = $this->getReportLength();
         for ($i = 1; $i <= $length; ++$i) {
             $label = key($slowTests);
             $time = array_shift($slowTests);
@@ -275,7 +290,7 @@ class SpeedTrapListener implements \PHPUnit_Framework_TestListener
      */
     protected function renderFooter()
     {
-        if ($hidden = $this->getHiddenCount($this->slow)) {
+        if ($hidden = $this->getHiddenCount()) {
             echo sprintf("...and there %s %s more above your threshold hidden from view", $hidden == 1 ? 'is' : 'are', $hidden);
         }
     }

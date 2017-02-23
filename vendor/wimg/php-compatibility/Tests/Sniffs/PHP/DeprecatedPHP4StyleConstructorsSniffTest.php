@@ -8,6 +8,10 @@
 /**
  * PHP4 style constructors sniff test
  *
+ * @group deprecatedPHP4StyleConstructors
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_DeprecatedPHP4StyleConstructorsSniff
+ *
  * @uses BaseSniffTest
  * @package PHPCompatibility
  * @author Koen Eelen <koen.eelen@cu.be>
@@ -18,8 +22,6 @@ class DeprecatedPHP4StyleConstructorsSniffTest extends BaseSniffTest
 
     /**
      * Test PHP4 style constructors.
-     *
-     * @group deprecatedPHP4Constructors
      *
      * @dataProvider dataIsDeprecated
      *
@@ -54,8 +56,6 @@ class DeprecatedPHP4StyleConstructorsSniffTest extends BaseSniffTest
 
     /**
      * Test valid methods with the same name as the class.
-     *
-     * @group deprecatedPHP4Constructors
      *
      * @dataProvider dataValidMethods
      *

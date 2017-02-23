@@ -9,6 +9,11 @@
 /**
  * Removed hash algorithms sniff tests
  *
+ * @group removedHashAlgorithms
+ * @group hashAlgorithms
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_RemovedHashAlgorithmsSniff
+ *
  * @uses BaseSniffTest
  * @package PHPCompatibility
  * @author Jansen Price <jansen.price@gmail.com>
@@ -19,8 +24,6 @@ class RemovedHashAlgorithmsSniffTest extends BaseSniffTest
 
     /**
      * testRemovedHashAlgorithms
-     *
-     * @group hashAlgorithms
      *
      * @dataProvider dataRemovedHashAlgorithms
      *
@@ -37,7 +40,7 @@ class RemovedHashAlgorithmsSniffTest extends BaseSniffTest
         $this->assertNoViolation($file, $line);
 
         $file = $this->sniffFile(self::TEST_FILE, $removedIn);
-        $this->assertError($file, $line, "The {$algorithm} hash algorithm is removed since PHP version {$removedIn}");
+        $this->assertError($file, $line, "The {$algorithm} hash algorithm is removed since PHP {$removedIn}");
     }
 
     /**
@@ -69,21 +72,17 @@ class RemovedHashAlgorithmsSniffTest extends BaseSniffTest
      * As the function hash_pbkdf2() itself was only introduced in PHP 5.5, we cannot test the noViolation case
      * (as it would still show an error for use of a new function).
      *
-     * @group hashAlgorithms
-     *
      * return void
      */
     public function testRemovedHashAlgorithmsPbkdf2()
     {
         $file = $this->sniffFile(self::TEST_FILE, '5.5');
-        $this->assertError($file, 25, "The salsa20 hash algorithm is removed since PHP version 5.4");
+        $this->assertError($file, 25, "The salsa20 hash algorithm is removed since PHP 5.4");
     }
 
 
     /**
      * testNoViolation
-     *
-     * @group hashAlgorithms
      *
      * @dataProvider dataNoViolation
      *
