@@ -122,11 +122,11 @@ abstract class AbstractAPIClient implements APIInterface
     }
 
     /**
-     * @param BadResponseException $object
+     * @param $error
      *
      * @return string
      */
-    public function getErrorMessage(BadResponseException $error)
+    public function getErrorMessage($error)
     {
         return $error->getMessage();
     }

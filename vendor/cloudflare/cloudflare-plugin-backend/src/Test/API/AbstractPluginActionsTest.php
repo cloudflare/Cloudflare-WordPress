@@ -134,13 +134,15 @@ class AbstractPluginActionsTest extends \PHPUnit_Framework_TestCase
         $this->mockAbstractPluginActions->login();
     }
 
-    public function testGetPluginSettingsCallsCreatePluginSettingObjectIfDataStoreGetIsNull() {
+    public function testGetPluginSettingsCallsCreatePluginSettingObjectIfDataStoreGetIsNull()
+    {
         $this->mockDataStore->method('get')->willReturn(null);
         $this->mockAPIClient->expects($this->atLeastOnce())->method('createPluginSettingObject');
         $this->mockAbstractPluginActions->getPluginSettings();
     }
 
-    public function testPatchPluginSettingsCallsApplyDefaultSettingsIfSettingIsDefaultSettings() {
+    public function testPatchPluginSettingsCallsApplyDefaultSettingsIfSettingIsDefaultSettings()
+    {
         $settingId = 'default_settings';
         $this->mockRequest->method('getUrl')->willReturn('plugin/:zonedId/settings/'.$settingId);
         $this->mockDataStore->method('set')->willReturn(true);
