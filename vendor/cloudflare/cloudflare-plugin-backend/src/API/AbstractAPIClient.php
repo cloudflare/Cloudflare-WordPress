@@ -41,14 +41,6 @@ abstract class AbstractAPIClient implements APIInterface
 
             $method = $request->getMethod();
             $params = $request->getParameters();
-            $url = $request->getUrl();
-            $headers = $request->getHeaders();
-            $body = $request->getBody();
-
-            $isPaginatable = false;
-            if ($method === 'GET') {
-                $isPaginatable = true;
-            }
 
             $mergedResponse = null;
 
@@ -56,10 +48,10 @@ abstract class AbstractAPIClient implements APIInterface
             $totalPages = 1;
 
             while ($totalPages >= $currentPage) {
-                $apiRequest = $client->createRequest($method, $url, $headers, $body, array());
+                $apiRequest = $client->createRequest($method, $request->getUrl(), $request->getHeaders(), $request->getBody(), array());
 
                 // Enable pagination
-                if ($isPaginatable) {
+                if ($method === 'GET') {
                     $params['page'] = $currentPage;
                 }
 
@@ -86,19 +78,9 @@ abstract class AbstractAPIClient implements APIInterface
                     $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'body' => $response), true);
                 }
 
-                if ($isPaginatable && isset($response['result_info'])) {
+                if (isset($response['result_info'])) {
                     $totalPages = $response['result_info']['total_pages'];
-
-                    if (!isset($mergedResponse)) {
-                        $mergedResponse = $response;
-                    } else {
-                        $mergedResponse['result'] = array_merge($mergedResponse['result'], $response['result']);
-
-                        // Notify the frontend that pagination is taken care.
-                        $mergedResponse['result_info']['notify'] = 'Backend has taken care of pagination. Ouput is merged in results.';
-                        $mergedResponse['result_info']['page'] = -1;
-                        $mergedResponse['result_info']['count'] = -1;
-                    }
+                    $mergedResponse = $this->mergeResponses($mergedResponse, $response);
                 } else {
                     $mergedResponse = $response;
                 }
@@ -123,12 +105,28 @@ abstract class AbstractAPIClient implements APIInterface
         }
     }
 
+    public function mergeResponses($mergedResponse, $response)
+    {
+        if (!isset($mergedResponse)) {
+            $mergedResponse = $response;
+        } else {
+            $mergedResponse['result'] = array_merge($mergedResponse['result'], $response['result']);
+
+            // Notify the frontend that pagination is taken care.
+            $mergedResponse['result_info']['notify'] = 'Backend has taken care of pagination. Ouput is merged in results.';
+            $mergedResponse['result_info']['page'] = -1;
+            $mergedResponse['result_info']['count'] = -1;
+        }
+
+        return $mergedResponse;
+    }
+
     /**
-     * @param BadResponseException $object
+     * @param $error
      *
      * @return string
      */
-    public function getErrorMessage(BadResponseException $error)
+    public function getErrorMessage($error)
     {
         return $error->getMessage();
     }

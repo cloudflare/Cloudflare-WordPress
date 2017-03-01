@@ -9,6 +9,11 @@
 /**
  * Deprecated Mbstring regex replace e modifier test file.
  *
+ * @group mbstringReplaceEModifier
+ * @group regexEModifier
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_MbstringReplaceEModifierSniff
+ *
  * @uses    BaseSniffTest
  * @package PHPCompatibility
  * @author  Juliette Reinders Folmer <phpcompatibility_nospam@adviesenzo.nl>
@@ -19,8 +24,6 @@ class MbstringReplaceEModifierSniffTest extends BaseSniffTest
 
     /**
      * testMbstringEModifier
-     *
-     * @group mbstringEModifier
      *
      * @dataProvider dataMbstringEModifier
      *
@@ -53,14 +56,15 @@ class MbstringReplaceEModifierSniffTest extends BaseSniffTest
             array(14),
             array(15),
             array(16),
+            array(24),
+            array(25),
+            array(26),
         );
     }
 
 
     /**
      * testNoViolation
-     *
-     * @group mbstringEModifier
      *
      * @dataProvider dataNoViolation
      *
@@ -90,6 +94,9 @@ class MbstringReplaceEModifierSniffTest extends BaseSniffTest
             array(9),
             array(10),
             array(11),
+            array(19),
+            array(20),
+            array(21),
         );
     }
 }

@@ -9,6 +9,11 @@
 /**
  * Non Static Magic Sniff tests
  *
+ * @group nonStaticMagicMethods
+ * @group magicMethods
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_NonStaticMagicMethodsSniff
+ *
  * @uses BaseSniffTest
  * @package PHPCompatibility
  * @author Jansen Price <jansen.price@gmail.com>
@@ -25,6 +30,8 @@ class NonStaticMagicMethodsSniffTest extends BaseSniffTest
 
     /**
      * Set up skip condition.
+     *
+     * @return void
      */
     public static function setUpBeforeClass()
     {
@@ -32,6 +39,8 @@ class NonStaticMagicMethodsSniffTest extends BaseSniffTest
         if (version_compare(PHP_CodeSniffer::VERSION, '2.0', '<') && version_compare(phpversion(), '5.4', '<')) {
             self::$recognizesTraits = false;
         }
+
+        parent::setUpBeforeClass();
     }
 
 
@@ -64,8 +73,6 @@ class NonStaticMagicMethodsSniffTest extends BaseSniffTest
 
     /**
      * testCorrectImplementation
-     *
-     * @group MagicMethods
      *
      * @dataProvider dataCorrectImplementation
      *
@@ -177,8 +184,6 @@ class NonStaticMagicMethodsSniffTest extends BaseSniffTest
     /**
      * testWrongMethodVisibility
      *
-     * @group MagicMethods
-     *
      * @dataProvider dataWrongMethodVisibility
      *
      * @param string $methodName        Method name.
@@ -258,8 +263,6 @@ class NonStaticMagicMethodsSniffTest extends BaseSniffTest
     /**
      * testWrongStaticMethod
      *
-     * @group MagicMethods
-     *
      * @dataProvider dataWrongStaticMethod
      *
      * @param string $methodName Method name.
@@ -328,8 +331,6 @@ class NonStaticMagicMethodsSniffTest extends BaseSniffTest
 
     /**
      * testWrongNonStaticMethod
-     *
-     * @group MagicMethods
      *
      * @dataProvider dataWrongNonStaticMethod
      *

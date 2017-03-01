@@ -9,6 +9,9 @@
 /**
  * Extended class name determination function tests
  *
+ * @group utilityGetFQExtendedClassName
+ * @group utilityFunctions
+ *
  * @uses    BaseClass_MethodTestFrame
  * @package PHPCompatibility
  * @author  Juliette Reinders Folmer <phpcompatibility_nospam@adviesenzo.nl>
@@ -16,14 +19,18 @@
 class BaseClass_GetFQExtendedClassNameTest extends BaseClass_MethodTestFrame
 {
 
-    public $filename = '../sniff-examples/utility-functions/get_fqextended_classname.php';
+    /**
+     * The file name for the file containing the test cases within the
+     * `sniff-examples/utility-functions/` directory.
+     *
+     * @var string
+     */
+    protected $filename = 'get_fqextended_classname.php';
 
     /**
      * testGetFQExtendedClassName
      *
      * @requires PHP 5.3
-     *
-     * @group utilityFunctions
      *
      * @dataProvider dataGetFQExtendedClassName
      *

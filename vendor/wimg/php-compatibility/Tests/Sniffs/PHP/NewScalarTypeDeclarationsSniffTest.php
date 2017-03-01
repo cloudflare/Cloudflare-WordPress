@@ -9,6 +9,11 @@
 /**
  * New type declarations test file
  *
+ * @group newScalarTypeDeclarations
+ * @group typeDeclarations
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_NewScalarTypeDeclarationsSniff
+ *
  * @uses BaseSniffTest
  * @package PHPCompatibility
  * @author Wim Godden <wim@cu.be>
@@ -19,8 +24,6 @@ class NewScalarTypeDeclarationsSniffTest extends BaseSniffTest
 
     /**
      * testNewTypeDeclaration
-     *
-     * @group TypeDeclarations
      *
      * @dataProvider dataNewTypeDeclaration
      *
@@ -63,8 +66,6 @@ class NewScalarTypeDeclarationsSniffTest extends BaseSniffTest
     /**
      * testInvalidTypeDeclaration
      *
-     * @group TypeDeclarations
-     *
      * @dataProvider dataInvalidTypeDeclaration
      *
      * @param string $type The scalar type.
@@ -99,8 +100,6 @@ class NewScalarTypeDeclarationsSniffTest extends BaseSniffTest
     /**
      * testInvalidSelfTypeDeclaration
      *
-     * @group TypeDeclarations
-     *
      * @dataProvider dataInvalidSelfTypeDeclaration
      *
      * @param int $line Line number on which to expect an error.
@@ -131,8 +130,6 @@ class NewScalarTypeDeclarationsSniffTest extends BaseSniffTest
 
     /**
      * testTypeDeclaration
-     *
-     * @group TypeDeclarations
      *
      * @dataProvider dataTypeDeclaration
      *
@@ -184,4 +181,34 @@ class NewScalarTypeDeclarationsSniffTest extends BaseSniffTest
         );
     }
 
+
+    /**
+     * testNoFalsePositives
+     *
+     * @dataProvider dataNoFalsePositives
+     *
+     * @param int $line The line number.
+     *
+     * @return void
+     */
+    public function testNoFalsePositives($line)
+    {
+        $file = $this->sniffFile(self::TEST_FILE, '5.0-7.1');
+        $this->assertNoViolation($file, $line);
+    }
+
+    /**
+     * Data provider.
+     *
+     * @see testNoFalsePositives()
+     *
+     * @return array
+     */
+    public function dataNoFalsePositives()
+    {
+        return array(
+            array(48),
+            array(49),
+        );
+    }
 }

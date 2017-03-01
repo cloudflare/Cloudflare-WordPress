@@ -10,7 +10,7 @@ class DefaultLogger extends AbstractLogger implements LoggerInterface
 {
     private $debug;
 
-    const PREFIX = '[CloudFlare]';
+    const PREFIX = '[Cloudflare]';
 
     /**
      * @param bool|false $debug

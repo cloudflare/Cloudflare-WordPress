@@ -9,6 +9,10 @@
 /**
  * Removed alternative PHP tags sniff test file
  *
+ * @group removedAlternativePHPTags
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_RemovedAlternativePHPTagsSniff
+ *
  * @uses    BaseSniffTest
  * @package PHPCompatibility
  * @author  Juliette Reinders Folmer <phpcompatibility_nospam@adviesenzo.nl>
@@ -27,19 +31,21 @@ class RemovedAlternativePHPTagsSniffTest extends BaseSniffTest
 
     /**
      * Set up skip condition.
+     *
+     * @return void
      */
     public static function setUpBeforeClass()
     {
         if (version_compare(phpversion(), '7.0', '<')) {
             self::$aspTags = (boolean) ini_get('asp_tags');
         }
+
+        parent::setUpBeforeClass();
     }
 
 
     /**
      * testAlternativePHPTags
-     *
-     * @group alternativePHPTags
      *
      * @dataProvider dataAlternativePHPTags
      *
@@ -88,8 +94,6 @@ class RemovedAlternativePHPTagsSniffTest extends BaseSniffTest
     /**
      * testMaybeASPOpenTag
      *
-     * @group alternativePHPTags
-     *
      * @dataProvider dataMaybeASPOpenTag
      *
      * @param int    $line    The line number.
@@ -137,8 +141,6 @@ class RemovedAlternativePHPTagsSniffTest extends BaseSniffTest
 
     /**
      * testNoViolation
-     *
-     * @group alternativePHPTags
      *
      * @dataProvider dataNoViolation
      *

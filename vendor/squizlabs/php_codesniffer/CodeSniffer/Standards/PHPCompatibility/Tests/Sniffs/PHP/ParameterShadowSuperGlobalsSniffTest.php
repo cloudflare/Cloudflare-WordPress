@@ -9,6 +9,11 @@
 /**
  * ParameterShadowSuperGlobalsSniffTest
  *
+ * @group parameterShadowSuperGlobals
+ * @group superglobals
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_ParameterShadowSuperGlobalsSniff
+ *
  * @uses    BaseSniffTest
  * @package PHPCompatibility
  * @author  Juliette Reinders Folmer <phpcompatibility_nospam@adviesenzo.nl>
@@ -20,8 +25,6 @@ class ParameterShadowSuperGlobalsSniffTest extends BaseSniffTest
 
     /**
      * testParameterShadowSuperGlobals
-     *
-     * @group parameterShadowSuperGlobals
      *
      * @dataProvider dataParameterShadowSuperGlobals
      *
@@ -65,8 +68,6 @@ class ParameterShadowSuperGlobalsSniffTest extends BaseSniffTest
 
     /**
      * testValidParameter
-     *
-     * @group parameterShadowSuperGlobals
      *
      * @dataProvider dataValidParameter
      *

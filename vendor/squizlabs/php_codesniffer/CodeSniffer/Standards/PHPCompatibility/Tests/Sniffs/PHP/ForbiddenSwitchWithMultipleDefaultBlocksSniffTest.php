@@ -9,6 +9,10 @@
 /**
  * Switch statements can only have one default case in PHP 7.0
  *
+ * @group forbiddenSwitchWithMultipleDefaultBlocks
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_ForbiddenSwitchWithMultipleDefaultBlocksSniff
+ *
  * @uses BaseSniffTest
  * @package PHPCompatibility
  * @author Jansen Price <jansen.price@gmail.com>
@@ -19,8 +23,6 @@ class ForbiddenSwitchWithMultipleDefaultBlocksSniffTest extends BaseSniffTest
 
     /**
      * testForbiddenSwitchWithMultipleDefaultBlocks
-     *
-     * @group forbiddenSwitchMultipleDefault
      *
      * @dataProvider dataForbiddenSwitchWithMultipleDefaultBlocks
      *
@@ -55,17 +57,15 @@ class ForbiddenSwitchWithMultipleDefaultBlocksSniffTest extends BaseSniffTest
 
 
     /**
-     * testValidSwitchStatement
+     * testNoFalsePositives
      *
-     * @group forbiddenSwitchMultipleDefault
-     *
-     * @dataProvider dataValidSwitchStatement
+     * @dataProvider dataNoFalsePositives
      *
      * @param int $line The line number.
      *
      * @return void
      */
-    public function testValidSwitchStatement($line)
+    public function testNoFalsePositives($line)
     {
         $file = $this->sniffFile(self::TEST_FILE, '7.0');
         $this->assertNoViolation($file, $line);
@@ -74,16 +74,17 @@ class ForbiddenSwitchWithMultipleDefaultBlocksSniffTest extends BaseSniffTest
     /**
      * Data provider.
      *
-     * @see testValidSwitchStatement()
+     * @see testNoFalsePositives()
      *
      * @return array
      */
-    public function dataValidSwitchStatement()
+    public function dataNoFalsePositives()
     {
         return array(
             array(14),
             array(23),
             array(43),
+            array(67), // Live coding.
         );
     }
 }

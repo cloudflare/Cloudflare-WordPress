@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [1.1.13](#1.1.13) - 2017-02-28
+### Added 
+- Travis CI [#34](https://github.com/cloudflare/cloudflare-plugin-backend/pull/34)
+
+### Fixed
+- Fixed Guzzle type hints on getErrorMessage() [#33](https://github.com/cloudflare/cloudflare-plugin-backend/pull/33)
+
+## [1.1.12](#1.1.12) - 2016-02-3
+### Changed
+- Moved Guzzle to require-dev [#31](https://github.com/cloudflare/cloudflare-plugin-backend/pull/31)
+
 ## [1.1.11](#1.1.11) - 2016-09-27
 ### Fixed
 - Fixed bug where requests were not paginating. [#27](https://github.com/cloudflare/cloudflare-plugin-backend/pull/27)

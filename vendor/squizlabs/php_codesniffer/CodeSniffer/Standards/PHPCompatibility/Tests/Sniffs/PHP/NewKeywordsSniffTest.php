@@ -9,6 +9,11 @@
 /**
  * New keywords sniff tests
  *
+ * @group newKeywords
+ * @group reservedKeywords
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_NewKeywordsSniff
+ *
  * @uses BaseSniffTest
  * @package PHPCompatibility
  * @author Jansen Price <jansen.price@gmail.com>
@@ -19,8 +24,6 @@ class NewKeywordsSniffTest extends BaseSniffTest
 
     /**
      * Test allow_url_include
-     *
-     * @group newKeywords
      *
      * @return void
      */
@@ -35,8 +38,6 @@ class NewKeywordsSniffTest extends BaseSniffTest
 
     /**
      * Test insteadof
-     *
-     * @group newKeywords
      *
      * @return void
      */
@@ -55,8 +56,6 @@ class NewKeywordsSniffTest extends BaseSniffTest
     /**
      * Test namespace keyword
      *
-     * @group newKeywords
-     *
      * @return void
      */
     public function testNamespaceKeyword()
@@ -70,8 +69,6 @@ class NewKeywordsSniffTest extends BaseSniffTest
 
     /**
      * testNamespaceConstant
-     *
-     * @group newKeywords
      *
      * @return void
      */
@@ -87,8 +84,6 @@ class NewKeywordsSniffTest extends BaseSniffTest
     /**
      * Test trait keyword
      *
-     * @group newKeywords
-     *
      * @return void
      */
     public function testTraitKeyword()
@@ -102,8 +97,6 @@ class NewKeywordsSniffTest extends BaseSniffTest
 
     /**
      * Test trait magic constant
-     *
-     * @group newKeywords
      *
      * @return void
      */
@@ -119,8 +112,6 @@ class NewKeywordsSniffTest extends BaseSniffTest
     /**
      * Test the use keyword
      *
-     * @group newKeywords
-     *
      * @return void
      */
     public function testUse()
@@ -134,8 +125,6 @@ class NewKeywordsSniffTest extends BaseSniffTest
 
     /**
      * Test yield
-     *
-     * @group newKeywords
      *
      * @return void
      */
@@ -151,8 +140,6 @@ class NewKeywordsSniffTest extends BaseSniffTest
     /**
      * testFinally
      *
-     * @group newKeywords
-     *
      * @return void
      */
     public function testFinally()
@@ -166,8 +153,6 @@ class NewKeywordsSniffTest extends BaseSniffTest
 
     /**
      * testNowdoc
-     *
-     * @group newKeywords
      *
      * @requires PHP 5.3
      *
@@ -187,8 +172,6 @@ class NewKeywordsSniffTest extends BaseSniffTest
     /**
      * testConst
      *
-     * @group newKeywords
-     *
      * @return void
      */
     public function testConst()
@@ -197,6 +180,8 @@ class NewKeywordsSniffTest extends BaseSniffTest
         $this->assertError($file, 43, "\"const\" keyword is not present in PHP version 5.2 or earlier");
         $this->assertNoViolation($file, 46);
         $this->assertNoViolation($file, 47);
+        $this->assertNoViolation($file, 51);
+        $this->assertNoViolation($file, 52);
 
         $file = $this->sniffFile(self::TEST_FILE, '5.3');
         $this->assertNoViolation($file, 43);
@@ -205,14 +190,12 @@ class NewKeywordsSniffTest extends BaseSniffTest
     /**
      * testCallable
      *
-     * @group newKeywords
-     *
      * @return void
      */
     public function testCallable()
     {
         $file = $this->sniffFile(self::TEST_FILE, '5.3');
-        $this->assertError($file, 50, "\"callable\" keyword is not present in PHP version 5.3 or earlier");
+        $this->assertError($file, 55, "\"callable\" keyword is not present in PHP version 5.3 or earlier");
 
         // Not testing no violations as the ForbiddenNames sniff will also kick in.
     }
@@ -220,27 +203,22 @@ class NewKeywordsSniffTest extends BaseSniffTest
     /**
      * testGoto
      *
-     * @group newKeywords
-     *
      * @return void
      */
     public function testGoto()
     {
         $file = $this->sniffFile(self::TEST_FILE, '5.2');
-        $this->assertError($file, 52, "\"goto\" keyword is not present in PHP version 5.2 or earlier");
+        $this->assertError($file, 57, "\"goto\" keyword is not present in PHP version 5.2 or earlier");
 
         $file = $this->sniffFile(self::TEST_FILE, '5.3');
-        $this->assertNoViolation($file, 52);
+        $this->assertNoViolation($file, 57);
     }
 
     /**
      * testHaltCompiler
      *
-     * @group newKeywords
-     *
      * @requires PHP 5.3
      *
-
      * @return void
      */
     public function testHaltCompiler()
@@ -248,7 +226,7 @@ class NewKeywordsSniffTest extends BaseSniffTest
         if (version_compare(phpversion(), '5.3', '=')) {
             // PHP 5.3 actually shows the warning.
             $file = $this->sniffFile(self::TEST_FILE, '5.0');
-            $this->assertError($file, 58, "\"__halt_compiler\" keyword is not present in PHP version 5.0 or earlier");
+            $this->assertError($file, 63, "\"__halt_compiler\" keyword is not present in PHP version 5.0 or earlier");
         }
         else {
             /*
@@ -258,7 +236,7 @@ class NewKeywordsSniffTest extends BaseSniffTest
              * not be reported.
              */
             $file = $this->sniffFile(self::TEST_FILE, '5.2');
-            $this->assertNoViolation($file, 61);
+            $this->assertNoViolation($file, 66);
         }
     }
 }

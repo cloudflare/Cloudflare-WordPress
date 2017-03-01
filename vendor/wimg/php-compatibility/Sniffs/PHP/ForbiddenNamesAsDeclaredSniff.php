@@ -53,6 +53,8 @@ class PHPCompatibility_Sniffs_PHP_ForbiddenNamesAsDeclaredSniff extends PHPCompa
         'object'   => '7.0',
         'mixed'    => '7.0',
         'numeric'  => '7.0',
+        'iterable' => '7.1',
+        'void'     => '7.1',
     );
 
 
@@ -85,6 +87,10 @@ class PHPCompatibility_Sniffs_PHP_ForbiddenNamesAsDeclaredSniff extends PHPCompa
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
+        if ($this->supportsAbove('7.0') === false) {
+            return;
+        }
+
         $tokens         = $phpcsFile->getTokens();
         $tokenCode      = $tokens[$stackPtr]['code'];
         $tokenContentLc = strtolower($tokens[$stackPtr]['content']);
@@ -141,23 +147,23 @@ class PHPCompatibility_Sniffs_PHP_ForbiddenNamesAsDeclaredSniff extends PHPCompa
 
             $nextNonEmptyCode = $tokens[$nextNonEmpty]['code'];
 
-			if ($nextNonEmptyCode !== T_STRING && isset($this->forbiddenTokens[$nextNonEmptyCode]) === true) {
+            if ($nextNonEmptyCode !== T_STRING && isset($this->forbiddenTokens[$nextNonEmptyCode]) === true) {
                 $name   = $tokens[$nextNonEmpty]['content'];
                 $nameLc = strtolower($tokens[$nextNonEmpty]['content']);
             } else if ($nextNonEmptyCode === T_STRING) {
-				$endOfStatement = $phpcsFile->findNext(array(T_SEMICOLON, T_OPEN_CURLY_BRACKET), ($stackPtr + 1));
+                $endOfStatement = $phpcsFile->findNext(array(T_SEMICOLON, T_OPEN_CURLY_BRACKET), ($stackPtr + 1));
 
-				do {
-					$nextNonEmptyLc = strtolower($tokens[$nextNonEmpty]['content']);
+                do {
+                    $nextNonEmptyLc = strtolower($tokens[$nextNonEmpty]['content']);
 
-	                if (isset($this->forbiddenNames[$nextNonEmptyLc]) === true) {
-	                    $name   = $tokens[$nextNonEmpty]['content'];
-	                    $nameLc = $nextNonEmptyLc;
-	                    break;
-	                }
-	                
-	                $nextNonEmpty = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($nextNonEmpty + 1), $endOfStatement, true);
-				} while ($nextNonEmpty !== false);
+                    if (isset($this->forbiddenNames[$nextNonEmptyLc]) === true) {
+                        $name   = $tokens[$nextNonEmpty]['content'];
+                        $nameLc = $nextNonEmptyLc;
+                        break;
+                    }
+
+                    $nextNonEmpty = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($nextNonEmpty + 1), $endOfStatement, true);
+                } while ($nextNonEmpty !== false);
             }
             unset($nextNonEmptyCode, $nextNonEmptyLc, $endOfStatement);
         }
@@ -169,14 +175,15 @@ class PHPCompatibility_Sniffs_PHP_ForbiddenNamesAsDeclaredSniff extends PHPCompa
         // Still here, so this is one of the reserved words.
         $version = $this->forbiddenNames[$nameLc];
         if ($this->supportsAbove($version) === true) {
-            $error = "'%s' is a reserved keyword as of PHP version %s and cannot be used to name a class, interface or trait or as part of a namespace (%s)";
-            $data  = array(
+            $error     = "'%s' is a reserved keyword as of PHP version %s and cannot be used to name a class, interface or trait or as part of a namespace (%s)";
+            $errorCode = $this->stringToErrorCode($nameLc).'Found';
+            $data      = array(
                 $nameLc,
                 $version,
                 $tokens[$stackPtr]['type'],
             );
 
-            $phpcsFile->addError($error, $stackPtr, 'Found', $data);
+            $phpcsFile->addError($error, $stackPtr, $errorCode, $data);
         }
     }//end process()
 

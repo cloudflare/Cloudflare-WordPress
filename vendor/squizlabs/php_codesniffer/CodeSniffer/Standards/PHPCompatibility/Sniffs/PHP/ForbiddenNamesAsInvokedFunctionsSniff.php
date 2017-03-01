@@ -34,7 +34,6 @@ class PHPCompatibility_Sniffs_PHP_ForbiddenNamesAsInvokedFunctionsSniff extends 
         T_ABSTRACT => '5.0',
         T_CALLABLE => '5.4',
         T_CATCH => '5.0',
-        T_CLONE => '5.0',
         T_FINAL => '5.0',
         T_FINALLY => '5.5',
         T_GOTO => '5.3',
@@ -138,13 +137,15 @@ class PHPCompatibility_Sniffs_PHP_ForbiddenNamesAsInvokedFunctionsSniff extends 
         }
 
         if ($this->supportsAbove($version)) {
-            $error = "'%s' is a reserved keyword introduced in PHP version %s and cannot be invoked as a function (%s)";
-            $data = array(
+            $error     = "'%s' is a reserved keyword introduced in PHP version %s and cannot be invoked as a function (%s)";
+            $errorCode = $this->stringToErrorCode($tokenContentLc).'Found';
+            $data      = array(
                 $tokenContentLc,
                 $version,
                 $tokens[$stackPtr]['type'],
             );
-            $phpcsFile->addError($error, $stackPtr, 'Found', $data);
+
+            $phpcsFile->addError($error, $stackPtr, $errorCode, $data);
         }
     }//end process()
 

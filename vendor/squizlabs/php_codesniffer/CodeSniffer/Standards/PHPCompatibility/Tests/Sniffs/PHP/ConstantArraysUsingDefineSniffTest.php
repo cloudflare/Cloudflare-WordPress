@@ -9,6 +9,11 @@
 /**
  * Constant arrays using define in PHP 7.0 sniff test file
  *
+ * @group constantArraysUsingDefine
+ * @group constants
+ *
+ * @covers PHPCompatibility_Sniffs_PHP_ConstantArraysUsingDefineSniff
+ *
  * @uses BaseSniffTest
  * @package PHPCompatibility
  * @author Wim Godden <wim@cu.be>
@@ -19,8 +24,6 @@ class ConstantArraysUsingDefineSniffTest extends BaseSniffTest
 
     /**
      * Verify that checking for a specific version works
-     *
-     * @group constantArraysUsingDefine
      *
      * @dataProvider dataConstantArraysUsingDefine
      *
@@ -56,8 +59,6 @@ class ConstantArraysUsingDefineSniffTest extends BaseSniffTest
     /**
      * testNoViolation
      *
-     * @group constantArraysUsingDefine
-     *
      * @dataProvider dataNoViolation
      *
      * @param int $line The line number.
@@ -66,7 +67,7 @@ class ConstantArraysUsingDefineSniffTest extends BaseSniffTest
      */
     public function testNoViolation($line)
     {
-        $file = $this->sniffFile(self::TEST_FILE, '5.3');
+        $file = $this->sniffFile(self::TEST_FILE, '5.6');
         $this->assertNoViolation($file, $line);
     }
 
@@ -81,6 +82,14 @@ class ConstantArraysUsingDefineSniffTest extends BaseSniffTest
     {
         return array(
             array(15),
+            array(18),
+            array(19),
+            array(22),
+            array(23),
+            array(26),
+            array(28),
+            array(31),
+            array(32),
         );
     }
 

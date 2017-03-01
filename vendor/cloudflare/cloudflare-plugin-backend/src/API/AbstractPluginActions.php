@@ -116,7 +116,7 @@ abstract class AbstractPluginActions
         $formattedSettings = array();
         foreach ($settingsList as $setting) {
             $value = $this->dataStore->get($setting);
-            if($value === null) {
+            if ($value === null) {
                 //setting hasn't been set yet.
                 $value = $this->api->createPluginSettingObject($setting, null, true, null);
             }
@@ -148,7 +148,7 @@ abstract class AbstractPluginActions
             return $this->api->createAPIError('Unable to update plugin settings');
         }
 
-        if($settingId === Plugin::SETTING_DEFAULT_SETTINGS) {
+        if ($settingId === Plugin::SETTING_DEFAULT_SETTINGS) {
             try {
                 $this->applyDefaultSettings();
             } catch (\Exception $e) {

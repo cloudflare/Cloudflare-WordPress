@@ -9,6 +9,9 @@
 /**
  * Token scope function tests
  *
+ * @group utilityTokenScope
+ * @group utilityFunctions
+ *
  * @uses    BaseClass_MethodTestFrame
  * @package PHPCompatibility
  * @author  Juliette Reinders Folmer <phpcompatibility_nospam@adviesenzo.nl>
@@ -16,12 +19,16 @@
 class BaseClass_TokenScopeTest extends BaseClass_MethodTestFrame
 {
 
-    public $filename = '../sniff-examples/utility-functions/token_has_scope.php';
+    /**
+     * The file name for the file containing the test cases within the
+     * `sniff-examples/utility-functions/` directory.
+     *
+     * @var string
+     */
+    protected $filename = 'token_has_scope.php';
 
     /**
      * testTokenHasScope
-     *
-     * @group utilityFunctions
      *
      * @dataProvider dataTokenHasScope
      *
@@ -84,8 +91,6 @@ class BaseClass_TokenScopeTest extends BaseClass_MethodTestFrame
     /**
      * testInClassScope
      *
-     * @group utilityFunctions
-     *
      * @dataProvider dataInClassScope
      *
      * @covers PHPCompatibility_Sniff::inClassScope
@@ -110,17 +115,16 @@ class BaseClass_TokenScopeTest extends BaseClass_MethodTestFrame
     {
         return array(
             array(181, true), // $property
-            array(185, true), // function
-            array(202, false), // function
-            array(220, true), // function
+            array(185, true), // function in class
+            array(202, false), // global function
+            array(220, true), // function in namespaced class
+            array(391, true), // function in anon class
         );
     }
 
 
     /**
      * testInUseScope
-     *
-     * @group utilityFunctions
      *
      * @dataProvider dataInUseScope
      *

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11
+class ComposerStaticInit7edf9e4d6be29bfc333f724ad3bb768f
 {
     public static $prefixLengthsPsr4 = array (
         'p' => 
@@ -21,7 +21,11 @@ class ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11
         'S' => 
         array (
             'Symfony\\Component\\Yaml\\' => 23,
-            'Symfony\\Component\\EventDispatcher\\' => 34,
+        ),
+        'P' => 
+        array (
+            'Psr\\Log\\' => 8,
+            'PHPCompatibility\\' => 17,
         ),
         'D' => 
         array (
@@ -61,9 +65,13 @@ class ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11
         array (
             0 => __DIR__ . '/..' . '/symfony/yaml',
         ),
-        'Symfony\\Component\\EventDispatcher\\' => 
+        'Psr\\Log\\' => 
         array (
-            0 => __DIR__ . '/..' . '/symfony/event-dispatcher',
+            0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'PHPCompatibility\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/wimg/php-compatibility',
         ),
         'Doctrine\\Instantiator\\' => 
         array (
@@ -77,12 +85,15 @@ class ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11
     );
 
     public static $prefixesPsr0 = array (
+        'S' => 
+        array (
+            'SimplyAdmire\\ComposerPlugins' => 
+            array (
+                0 => __DIR__ . '/..' . '/simplyadmire/composer-plugins',
+            ),
+        ),
         'P' => 
         array (
-            'Psr\\Log\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/psr/log',
-            ),
             'Prophecy\\' => 
             array (
                 0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
@@ -93,17 +104,6 @@ class ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11
             'JohnKary' => 
             array (
                 0 => __DIR__ . '/..' . '/johnkary/phpunit-speedtrap/src',
-            ),
-        ),
-        'G' => 
-        array (
-            'Guzzle\\Tests' => 
-            array (
-                0 => __DIR__ . '/..' . '/guzzle/guzzle/tests',
-            ),
-            'Guzzle' => 
-            array (
-                0 => __DIR__ . '/..' . '/guzzle/guzzle/src',
             ),
         ),
         'C' => 
@@ -214,6 +214,10 @@ class ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11
         'PEAR_Sniffs_WhiteSpace_ObjectOperatorIndentSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/PEAR/Sniffs/WhiteSpace/ObjectOperatorIndentSniff.php',
         'PEAR_Sniffs_WhiteSpace_ScopeClosingBraceSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/PEAR/Sniffs/WhiteSpace/ScopeClosingBraceSniff.php',
         'PEAR_Sniffs_WhiteSpace_ScopeIndentSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/PEAR/Sniffs/WhiteSpace/ScopeIndentSniff.php',
+        'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/Assert.php',
+        'PHPUnit\\Framework\\BaseTestListener' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/BaseTestListener.php',
+        'PHPUnit\\Framework\\TestCase' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/TestCase.php',
+        'PHPUnit\\Framework\\TestListener' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/TestListener.php',
         'PHPUnit_Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit_Extensions_GroupTestSuite' => __DIR__ . '/..' . '/phpunit/phpunit/src/Extensions/GroupTestSuite.php',
         'PHPUnit_Extensions_PhptTestCase' => __DIR__ . '/..' . '/phpunit/phpunit/src/Extensions/PhptTestCase.php',
@@ -579,6 +583,7 @@ class ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11
         'PHP_Token_NEW' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_NS_C' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_NS_SEPARATOR' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
+        'PHP_Token_NULLSAFE_OBJECT_OPERATOR' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_NUM_STRING' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_OBJECT_CAST' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_OBJECT_OPERATOR' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
@@ -616,6 +621,7 @@ class ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11
         'PHP_Token_STRING' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_STRING_CAST' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_STRING_VARNAME' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
+        'PHP_Token_SUPER' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_SWITCH' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_Stream' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token/Stream.php',
         'PHP_Token_Stream_CachingFactory' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token/Stream/CachingFactory.php',
@@ -630,6 +636,7 @@ class ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11
         'PHP_Token_UNSET' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_UNSET_CAST' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_USE' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
+        'PHP_Token_USE_FUNCTION' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_VAR' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_VARIABLE' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
         'PHP_Token_WHERE' => __DIR__ . '/..' . '/phpunit/php-token-stream/src/Token.php',
@@ -807,10 +814,10 @@ class ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit8aae9c960a1a58d09f459f9f8a627f11::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit7edf9e4d6be29bfc333f724ad3bb768f::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit7edf9e4d6be29bfc333f724ad3bb768f::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit7edf9e4d6be29bfc333f724ad3bb768f::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit7edf9e4d6be29bfc333f724ad3bb768f::$classMap;
 
         }, null, ClassLoader::class);
     }
