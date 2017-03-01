@@ -83,29 +83,25 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 
 == Changelog ==
 
-= 3.2.0 - 2017-2-3 =
+= 3.2.0 - 2017-3-1 =
 
 *Added*
 
-* Added Bypass Cache By Cookie button.
-* Redded HTTP/2 Server Push feature behind a flag which is by default off.
+* Bypass Cache By Cookie functionality.
+* HTTP/2 Server Push functionality (disabled by default).
 
 *Changed*
 
-* Lowered the plugin size
-* Automatic Cache Management feature started to purge taxonomies. 
-* Automatic Cache Management feature started to work on sites which use both HTTP and HTTPS at the same time.
-
-*Removed* 
-
-* Removed admin bar disappearing feature from the plugin completely.
-* Removed creating new page rules in Apply Default Settings button.
+* Lowered the plugin size.
+* Automatic Cache Management feature includes purging taxonomies.
+* Automatic Cache Management feature supports sites which use both HTTP and HTTPS.
 
 *Fixed*
 
-* Fixed bug where spinner was loading forever.
-* Fixed bug where the backend errors where not being shown in the frotnend.
-* Fixed issues where IE11 was not working properly.
+* Admin bar disappearing from the plugin.
+* Bug where spinner was loading forever.
+* Bug where the backend errors where not being shown in the frontend.
+* Issues where IE11 was not working properly.
 
 = 3.1.1 - 2016-11-17 =
 
