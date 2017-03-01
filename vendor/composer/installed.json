@@ -1,5 +1,57 @@
 [
     {
+        "name": "johnkary/phpunit-speedtrap",
+        "version": "v1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/johnkary/phpunit-speedtrap.git",
+            "reference": "76a26f8a903a9434608cdad2b41c40cd134ea326"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/johnkary/phpunit-speedtrap/zipball/76a26f8a903a9434608cdad2b41c40cd134ea326",
+            "reference": "76a26f8a903a9434608cdad2b41c40cd134ea326",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*|~4.0"
+        },
+        "time": "2015-09-13 19:01:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "JohnKary": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "John Kary",
+                "email": "john@johnkary.net"
+            }
+        ],
+        "description": "Find slow tests in your PHPUnit test suite",
+        "homepage": "https://github.com/johnkary/phpunit-speedtrap",
+        "keywords": [
+            "phpunit",
+            "profile",
+            "slow"
+        ]
+    },
+    {
         "name": "cloudflare/cf-ip-rewrite",
         "version": "1.0.2",
         "version_normalized": "1.0.2.0",
@@ -131,6 +183,168 @@
             "BSD-3-Clause"
         ],
         "description": "A PHP backend for Cloudflare plugins."
+    },
+    {
+        "name": "phpunit/php-text-template",
+        "version": "1.2.1",
+        "version_normalized": "1.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/sebastianbergmann/php-text-template.git",
+            "reference": "31f8b717e51d9a2afca6c9f046f5d69fc27c8686"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/sebastianbergmann/php-text-template/zipball/31f8b717e51d9a2afca6c9f046f5d69fc27c8686",
+            "reference": "31f8b717e51d9a2afca6c9f046f5d69fc27c8686",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "time": "2015-06-21 13:50:34",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "src/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "BSD-3-Clause"
+        ],
+        "authors": [
+            {
+                "name": "Sebastian Bergmann",
+                "email": "sebastian@phpunit.de",
+                "role": "lead"
+            }
+        ],
+        "description": "Simple template engine.",
+        "homepage": "https://github.com/sebastianbergmann/php-text-template/",
+        "keywords": [
+            "template"
+        ]
+    },
+    {
+        "name": "php-mock/php-mock",
+        "version": "1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/php-mock/php-mock.git",
+            "reference": "bfa2d17d64dbf129073a7ba2051a96ce52749570"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/php-mock/php-mock/zipball/bfa2d17d64dbf129073a7ba2051a96ce52749570",
+            "reference": "bfa2d17d64dbf129073a7ba2051a96ce52749570",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5",
+            "phpunit/php-text-template": "^1"
+        },
+        "replace": {
+            "malkusch/php-mock": "*"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4|^5"
+        },
+        "suggest": {
+            "php-mock/php-mock-mockery": "Allows using PHPMockery for Mockery integration",
+            "php-mock/php-mock-phpunit": "Allows integration into PHPUnit testcase with the trait PHPMock."
+        },
+        "time": "2015-11-11 22:37:09",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "phpmock\\": [
+                    "classes/",
+                    "tests/unit/"
+                ]
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "WTFPL"
+        ],
+        "authors": [
+            {
+                "name": "Markus Malkusch",
+                "email": "markus@malkusch.de",
+                "homepage": "http://markus.malkusch.de",
+                "role": "Developer"
+            }
+        ],
+        "description": "PHP-Mock can mock built-in PHP functions (e.g. time()). PHP-Mock relies on PHP's namespace fallback policy. No further extension is needed.",
+        "homepage": "https://github.com/php-mock/php-mock",
+        "keywords": [
+            "BDD",
+            "TDD",
+            "function",
+            "mock",
+            "stub",
+            "test",
+            "test double"
+        ]
+    },
+    {
+        "name": "php-mock/php-mock-integration",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/php-mock/php-mock-integration.git",
+            "reference": "e83fb65dd20cd3cf250d554cbd4682b96b684f4b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/php-mock/php-mock-integration/zipball/e83fb65dd20cd3cf250d554cbd4682b96b684f4b",
+            "reference": "e83fb65dd20cd3cf250d554cbd4682b96b684f4b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5",
+            "php-mock/php-mock": "^1",
+            "phpunit/php-text-template": "^1"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4|^5"
+        },
+        "time": "2015-10-26 21:21:42",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "phpmock\\integration\\": "classes/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "WTFPL"
+        ],
+        "authors": [
+            {
+                "name": "Markus Malkusch",
+                "email": "markus@malkusch.de",
+                "homepage": "http://markus.malkusch.de",
+                "role": "Developer"
+            }
+        ],
+        "description": "Integration package for PHP-Mock",
+        "homepage": "https://github.com/php-mock/php-mock-integration",
+        "keywords": [
+            "BDD",
+            "TDD",
+            "function",
+            "mock",
+            "stub",
+            "test",
+            "test double"
+        ]
     },
     {
         "name": "symfony/yaml",
@@ -623,49 +837,6 @@
         "keywords": [
             "constructor",
             "instantiate"
-        ]
-    },
-    {
-        "name": "phpunit/php-text-template",
-        "version": "1.2.1",
-        "version_normalized": "1.2.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/sebastianbergmann/php-text-template.git",
-            "reference": "31f8b717e51d9a2afca6c9f046f5d69fc27c8686"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/sebastianbergmann/php-text-template/zipball/31f8b717e51d9a2afca6c9f046f5d69fc27c8686",
-            "reference": "31f8b717e51d9a2afca6c9f046f5d69fc27c8686",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "time": "2015-06-21 13:50:34",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "classmap": [
-                "src/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "BSD-3-Clause"
-        ],
-        "authors": [
-            {
-                "name": "Sebastian Bergmann",
-                "email": "sebastian@phpunit.de",
-                "role": "lead"
-            }
-        ],
-        "description": "Simple template engine.",
-        "homepage": "https://github.com/sebastianbergmann/php-text-template/",
-        "keywords": [
-            "template"
         ]
     },
     {
@@ -1282,175 +1453,6 @@
             "phpunit",
             "testing",
             "xunit"
-        ]
-    },
-    {
-        "name": "johnkary/phpunit-speedtrap",
-        "version": "v1.0.2",
-        "version_normalized": "1.0.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/johnkary/phpunit-speedtrap.git",
-            "reference": "ad242a6e84b0d63d2e50832babad77d6d545bc0a"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/johnkary/phpunit-speedtrap/zipball/ad242a6e84b0d63d2e50832babad77d6d545bc0a",
-            "reference": "ad242a6e84b0d63d2e50832babad77d6d545bc0a",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.6",
-            "phpunit/phpunit": ">=4.7"
-        },
-        "time": "2017-02-13 15:22:35",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "JohnKary": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "John Kary",
-                "email": "john@johnkary.net"
-            }
-        ],
-        "description": "Find slow tests in your PHPUnit test suite",
-        "homepage": "https://github.com/johnkary/phpunit-speedtrap",
-        "keywords": [
-            "phpunit",
-            "profile",
-            "slow"
-        ]
-    },
-    {
-        "name": "php-mock/php-mock",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/php-mock/php-mock.git",
-            "reference": "bfa2d17d64dbf129073a7ba2051a96ce52749570"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/php-mock/php-mock/zipball/bfa2d17d64dbf129073a7ba2051a96ce52749570",
-            "reference": "bfa2d17d64dbf129073a7ba2051a96ce52749570",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5",
-            "phpunit/php-text-template": "^1"
-        },
-        "replace": {
-            "malkusch/php-mock": "*"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^4|^5"
-        },
-        "suggest": {
-            "php-mock/php-mock-mockery": "Allows using PHPMockery for Mockery integration",
-            "php-mock/php-mock-phpunit": "Allows integration into PHPUnit testcase with the trait PHPMock."
-        },
-        "time": "2015-11-11 22:37:09",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "phpmock\\": [
-                    "classes/",
-                    "tests/unit/"
-                ]
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "WTFPL"
-        ],
-        "authors": [
-            {
-                "name": "Markus Malkusch",
-                "email": "markus@malkusch.de",
-                "homepage": "http://markus.malkusch.de",
-                "role": "Developer"
-            }
-        ],
-        "description": "PHP-Mock can mock built-in PHP functions (e.g. time()). PHP-Mock relies on PHP's namespace fallback policy. No further extension is needed.",
-        "homepage": "https://github.com/php-mock/php-mock",
-        "keywords": [
-            "BDD",
-            "TDD",
-            "function",
-            "mock",
-            "stub",
-            "test",
-            "test double"
-        ]
-    },
-    {
-        "name": "php-mock/php-mock-integration",
-        "version": "1.0.0",
-        "version_normalized": "1.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/php-mock/php-mock-integration.git",
-            "reference": "e83fb65dd20cd3cf250d554cbd4682b96b684f4b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/php-mock/php-mock-integration/zipball/e83fb65dd20cd3cf250d554cbd4682b96b684f4b",
-            "reference": "e83fb65dd20cd3cf250d554cbd4682b96b684f4b",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5",
-            "php-mock/php-mock": "^1",
-            "phpunit/php-text-template": "^1"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^4|^5"
-        },
-        "time": "2015-10-26 21:21:42",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "phpmock\\integration\\": "classes/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "WTFPL"
-        ],
-        "authors": [
-            {
-                "name": "Markus Malkusch",
-                "email": "markus@malkusch.de",
-                "homepage": "http://markus.malkusch.de",
-                "role": "Developer"
-            }
-        ],
-        "description": "Integration package for PHP-Mock",
-        "homepage": "https://github.com/php-mock/php-mock-integration",
-        "keywords": [
-            "BDD",
-            "TDD",
-            "function",
-            "mock",
-            "stub",
-            "test",
-            "test double"
         ]
     },
     {
