@@ -4,6 +4,13 @@
  * everything here.
  */
 
+/* fix active-zone-selector being to far from the logo. The selector
+ * still has bad css when using mobile or small screen view.
+ */
+.active-zone-selector__singlezone {
+    margin-left: auto !important;
+}
+
 /* fix WordPress whole div touching the most top of the page */
 .cf-layout__container {
     margin-top: 8px; /* new */      
