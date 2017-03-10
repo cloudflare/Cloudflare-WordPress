@@ -93,91 +93,99 @@ class WordPressClientAPI extends Client
     public function callAPI(Request $request)
     {
         $request = $this->beforeSend($request);
+        $response = $this->sendRequest($request);
+        $response = $this->getPaginatedResults($request, $response);
 
-        $url = add_query_arg($request->getParameters(), $this->getEndpoint().$request->getUrl());
+        return $response;
+    }
 
+
+    /**
+     * @param  Request $request
+     * @return [Array] $response
+     */
+    public function sendRequest(Request $request)
+    {
         $requestParams = array(
             'timeout' => 30,
             'method' => $request->getMethod(),
             'headers' => $request->getHeaders(),
         );
 
-        $isPaginatable = false;
-        if ($requestParams['method'] === 'GET') {
-            $isPaginatable = true;
+        if ($requestParams['method'] !== 'GET') {
+            $requestParams['body'] = json_encode($request->getBody());
+            $requestParams['headers']['Content-Type'] = 'application/json';
         }
 
-        $mergedResponse = null;
+        // Construct URL
+        $url = add_query_arg($request->getParameters(), $this->getEndpoint().$request->getUrl());
 
-        $currentPage = 1;
-        $totalPages = 1;
+        // Send Request
+        $requestResponse = wp_remote_request($url, $requestParams);
 
+        // Check for connection error
+        if (is_wp_error($requestResponse)) {
+            $errorMessage = $requestResponse->get_error_message();
+
+            $this->logAPICall($this->getAPIClientName(), array_merge(array('type' => 'request', 'path' => $url), $requestParams), true);
+            $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'reason' => $requestResponse->get_error_message(), 'code' => $requestResponse->get_error_code(), 'body' => $errorMessage), true);
+
+            return $this->createAPIError($errorMessage);
+        }
+
+        // Check for response error != 2XX
+        if (wp_remote_retrieve_response_code($requestResponse) > 299) {
+            $errorMessage = wp_remote_retrieve_response_message($requestResponse);
+
+            $this->logAPICall($this->getAPIClientName(), array_merge(array('type' => 'request', 'path' => $url), $requestParams), true);
+            $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'reason' => $errorMessage, 'code' => wp_remote_retrieve_response_code($requestResponse)), true);
+
+            return $this->createAPIError($errorMessage);
+        }
+
+        // Decode request to JSON
+        $response = json_decode(wp_remote_retrieve_body($requestResponse), true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            $errorMessage = 'Error decoding client API JSON';
+            $this->logAPICall($errorMessage, array('error' => json_last_error()), true);
+
+            return $this->createAPIError($errorMessage);
+        }
+
+        if (!$this->responseOk($response)) {
+            $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'body' => $response), true);
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param  Request $request
+     * @param  [Array] $response
+     * @return [Array] $paginatedResponse
+     */
+    public function getPaginatedResults(Request $request, $response)
+    {
+        if (strtoupper($request->getMethod()) !== 'GET' || !isset($response['result_info']['total_pages'])) {
+            return $response;
+        }
+        $mergedResponse = $response;
+        $currentPage = 2; // $response already contains page 1
+        $totalPages = $response['result_info']['total_pages'];
         while ($totalPages >= $currentPage) {
-            // Enable pagination
-            if ($isPaginatable) {
-                $params['page'] = $currentPage;
-            }
-
-            if ($requestParams['method'] !== 'GET') {
-                $requestParams['body'] = json_encode($request->getBody());
-                $requestParams['headers']['Content-Type'] = 'application/json';
-            }
-
-            $requestResponse = wp_remote_request($url, $requestParams);
-
-            // Check for connection error
-            if (is_wp_error($requestResponse)) {
-                $errorMessage = $requestResponse->get_error_message();
-
-                $this->logAPICall($this->getAPIClientName(), array_merge(array('type' => 'request', 'path' => $url), $requestParams), true);
-                $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'reason' => $requestResponse->get_error_message(), 'code' => $requestResponse->get_error_code(), 'body' => $errorMessage), true);
-
-                return $this->createAPIError($errorMessage);
-            }
-
-            // Check for response error != 2XX
-            if (wp_remote_retrieve_response_code($requestResponse) > 299) {
-                $errorMessage = wp_remote_retrieve_response_message($requestResponse);
-
-                $this->logAPICall($this->getAPIClientName(), array_merge(array('type' => 'request', 'path' => $url), $requestParams), true);
-                $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'reason' => $errorMessage, 'code' => wp_remote_retrieve_response_code($requestResponse)), true);
-
-                return $this->createAPIError($errorMessage);
-            }
-
-            $response = json_decode(wp_remote_retrieve_body($requestResponse), true);
-
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                $errorMessage = 'Error decoding client API JSON';
-                $this->logAPICall($errorMessage, array('error' => json_last_error()), true);
-
-                return $this->createAPIError($errorMessage);
-            }
-
-            if (!$this->responseOk($response)) {
-                $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'body' => $response), true);
-            }
-
-            if ($isPaginatable && isset($response['result_info'])) {
-                $totalPages = $response['result_info']['total_pages'];
-
-                if (!isset($mergedResponse)) {
-                    $mergedResponse = $response;
-                } else {
-                    $mergedResponse['result'] = array_merge($mergedResponse['result'], $response['result']);
-
-                    // Notify the frontend that pagination is taken care.
-                    $mergedResponse['result_info']['notify'] = 'Backend has taken care of pagination. Output is merged in results.';
-                    $mergedResponse['result_info']['page'] = -1;
-                    $mergedResponse['result_info']['count'] = -1;
-                }
-            } else {
-                $mergedResponse = $response;
-            }
-
-            $currentPage += 1;
+            $parameters = $request->getParameters();
+            $parameters['page'] = $currentPage;
+            $request->setParameters($parameters);
+            $pagedResponse = $this->sendRequest($request);
+            $mergedResponse['result'] = array_merge($mergedResponse['result'], $pagedResponse['result']);
+            
+            // Notify the frontend that pagination is taken care.
+            $mergedResponse['result_info']['notify'] = 'Backend has taken care of pagination. Ouput is merged in results.';
+            $mergedResponse['result_info']['page'] = -1;
+            $mergedResponse['result_info']['count'] = -1;
+            $currentPage++;
         }
-
         return $mergedResponse;
     }
 }
