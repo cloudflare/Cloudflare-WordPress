@@ -87,7 +87,7 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 
 *Fixed*
 
-* Issue where accounts which had more than 20 zones would not show up correcty.
+* Bug where accounts which had more than 20 zones would not show up correctly.
 
 = 3.2.0 - 2017-3-1 =
 
