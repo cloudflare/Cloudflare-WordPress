@@ -27,6 +27,6 @@ class WordPressWrapper
             $site_url = domain_mapping_siteurl($site_url);
         }
 
-        return $site_url;
+        return strtolower($site_url);
     }
 }
