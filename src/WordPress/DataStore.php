@@ -11,6 +11,7 @@ class DataStore implements DataStoreInterface
     const API_KEY = 'cloudflare_api_key';
     const EMAIL = 'cloudflare_api_email';
     const CACHED_DOMAIN_NAME = 'cloudflare_cached_domain_name';
+    const CACHED_ZONE_ID = 'cloudflare_cached_zone_id';
 
     protected $wordPressWrapper;
 
@@ -59,6 +60,18 @@ class DataStore implements DataStoreInterface
     }
 
     /**
+     * @return bool
+     */
+    public function getClientAPICredentialsExist()
+    {
+        if ($this->getClientV4APIKey() && $this->getCloudFlareEmail()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @return client v4 api key for current user
      */
     public function getClientV4APIKey()
@@ -85,6 +98,22 @@ class DataStore implements DataStoreInterface
         }
 
         return $cachedDomainName;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getZoneIdCache()
+    {
+        return $this->get(self::CACHED_ZONE_ID);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function setZoneIdCache($zoneId)
+    {
+        return $this->set(self::CACHED_ZONE_ID, $zoneId);
     }
 
     /**

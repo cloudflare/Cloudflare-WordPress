@@ -73,8 +73,9 @@ class WordPressClientAPI extends Client
     }
 
     /**
-     * @param $urlPattern
-     *
+     * @param $zoneId
+     * @param $body
+     * 
      * @return array
      */
     public function createPageRule($zoneId, $body)
@@ -83,6 +84,42 @@ class WordPressClientAPI extends Client
         $response = $this->callAPI($request);
 
         return $this->responseOk($response);
+    }
+
+    /**
+     * @param $zoneId
+     *
+     * @return array
+     */
+    public function getActivePageRuleList($zoneId)
+    {
+        $request = new Request('GET', 'zones/'.$zoneId.'/pagerules/', array('status' => 'active', 'match' => 'all'), null);
+        $response = $this->callAPI($request);
+
+        return $response;
+    }
+
+    /**
+     * @param $zoneId
+     *
+     * @return bool
+     */
+    public function isCacheEverythingPageRuleExists($zoneId) {
+        $activePageRuleList = $this->getActivePageRuleList($zoneId);
+
+        if ($this->responseOk($activePageRuleList)) {
+            foreach ($activePageRuleList['result'] as $pageRule) {
+                // TODO check if the page rule is for current zone
+                foreach ($pageRule['actions'] as $action) {
+                    error_log(print_r($action, true));
+                    if ($action['id'] === 'cache_level' && $action['value'] === 'cache_everything') {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
