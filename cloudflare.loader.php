@@ -46,16 +46,22 @@ if (is_admin()) {
 }
 
 // Load Automatic Cache Purge
-add_action('switch_theme', array($cloudflareHooks, 'purgeCacheEverything'));
-add_action('customize_save_after', array($cloudflareHooks, 'purgeCacheEverything'));
-
-$cloudflarePurgeActions = array(
+$cloudflarePurgeEverythingActions = array(
     'autoptimize_action_cachepurged',   // Compat with https://wordpress.org/plugins/autoptimize
+    'switch_theme',                     // Switch theme
+    'customize_save_after'              // Edit theme
+);
+
+foreach ($cloudflarePurgeEverythingActions as $action) {
+    add_action($action, array($cloudflareHooks, 'purgeCacheEverything'));
+}
+
+$cloudflarePurgeURLActions = array(
     'deleted_post',                     // Delete a post
     'edit_post',                        // Edit a post - includes leaving comments
     'delete_attachment',                // Delete an attachment - includes re-uploading
 );
 
-foreach ($cloudflarePurgeActions as $action) {
+foreach ($cloudflarePurgeURLActions as $action) {
     add_action($action, array($cloudflareHooks, 'purgeCacheByRevelantURLs'), 10, 2);
 }
