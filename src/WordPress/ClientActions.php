@@ -62,6 +62,9 @@ class ClientActions
                 if ($cf_zone['name'] === $wpDomain) {
                     $found = true;
                     array_push($domain_list, $cf_zone);
+
+                    // Cache Zone Id
+                    $this->dataStore->setZoneIdCache($cf_zone['id']);
                 }
             }
 

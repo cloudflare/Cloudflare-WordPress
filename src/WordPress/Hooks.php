@@ -25,7 +25,11 @@ class Hooks
         $this->integrationContext = new Integration\DefaultIntegration($this->config, $this->integrationAPI, $this->dataStore, $this->logger);
         $this->api = new WordPressClientAPI($this->integrationContext);
         $this->proxy = new Proxy($this->integrationContext);
-    }
+
+        if ($this->shouldShowAdminBarMenuButton()) {
+            $this->showAdminBarMenuButton();    
+        }
+   }        
 
     /**
      * @param \CF\API\APIInterface $api
@@ -104,16 +108,16 @@ class Hooks
         $this->dataStore->clearDataStore();
     }
 
-    public function purgeCacheEverything()
+    public function purgeCacheEverything($ignoreAutomaticCacheManagement = false)
     {
-        if ($this->isPluginSpecificCacheEnabled()) {
+        if ($this->isPluginSpecificCacheEnabled() || $ignoreAutomaticCacheManagement) {
             $wp_domain_list = $this->integrationAPI->getDomainList();
             $wp_domain = $wp_domain_list[0];
             if (count($wp_domain) > 0) {
                 $zoneTag = $this->api->getZoneTag($wp_domain);
 
                 if (isset($zoneTag)) {
-                    $this->api->zonePurgeCache($zoneTag);
+                    return $this->api->zonePurgeCache($zoneTag);
                 }
             }
         }
@@ -241,5 +245,64 @@ class Hooks
     public function http2ServerPushInit()
     {
         HTTP2ServerPush::init();
+    }
+
+    /*********************************** Admin Bar Button ***********************************/
+
+    public function adminBarCachePurgeButtonJS() { 
+        ?>
+        <script type="text/javascript" >
+             jQuery("li#wp-admin-bar-cloudflare-purge-cache .ab-item").on( "click", function() {
+                var data = {
+                  'action': 'cloudflare_admin_bar_purge_cache_button',
+                };
+
+                jQuery.post(ajaxurl, data, function(response) {
+                   alert( response );
+                });
+              });
+          </script> <?php
+        }
+
+    public function adminBarCachePurgeButtonCallback() {
+        $isPurged = $this->purgeCacheEverything(true);
+
+        $responseMessage = __("Cloudflare cache was succsesfully purged");
+        if (!$isPurged) {
+            $responseMessage = __("There was an error purging Cloudflare cache");
+        }        
+        echo $responseMessage;
+
+        // This is required to terminate immediately and return a response message
+        wp_die();
+    } 
+
+    public function addAdminBarMenuButton($wpAdminBar) {
+        $args = array(
+            'id' => 'cloudflare-purge-cache',
+            'title' => 'Cloudflare Purge Cache',
+            'href' => '#'
+        );
+
+        $wpAdminBar->add_node($args);
+    }
+
+    public function shouldShowAdminBarMenuButton() {
+        // TODO add showadminbar cache to not query everytime the page changes
+        if ($this->dataStore->getClientAPICredentialsExist() && $this->dataStore->getZoneIdCache()) {
+            $zoneId = $this->dataStore->getZoneIdCache();
+            $exists = $this->api->isCacheEverythingPageRuleExists($zoneId);
+
+            if ($exists) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function showAdminBarMenuButton() {
+        add_action('admin_bar_menu', array($this, 'addAdminBarMenuButton'), PHP_INT_MAX);
+        add_action( 'admin_footer', array($this, 'adminBarCachePurgeButtonJS') );
+        add_action( 'wp_ajax_cloudflare_admin_bar_purge_cache_button', array($this, 'adminBarCachePurgeButtonCallback') );
     }
 }
