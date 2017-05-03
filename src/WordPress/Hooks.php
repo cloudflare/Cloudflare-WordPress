@@ -113,7 +113,10 @@ class Hooks
                 $zoneTag = $this->api->getZoneTag($wpDomain);
 
                 if (isset($zoneTag)) {
-                    $this->api->zonePurgeCache($zoneTag);
+                    $isOK = $this->api->zonePurgeCache($zoneTag);
+
+                    $isOK = ($isOK) ? 'succeeded' : 'failed';
+                    $this->logger->debug("purgeCacheEverything " . $isOK);
                 }
             }
         }
@@ -149,7 +152,11 @@ class Hooks
             $zoneTag = $this->api->getZoneTag($wpDomain);
 
             if (isset($zoneTag) && !empty($urls)) {
-                $this->api->zonePurgeFiles($zoneTag, $urls);
+                $isOK = $this->api->zonePurgeFiles($zoneTag, $urls);
+
+                $isOK = ($isOK) ? 'succeeded' : 'failed';
+                $this->logger->debug("List of URLs purged are: " . print_r($urls, true));
+                $this->logger->debug("purgeCacheByRevelantURLs " . $isOK);
             }
         }
     }
