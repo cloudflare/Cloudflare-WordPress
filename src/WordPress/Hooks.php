@@ -107,10 +107,10 @@ class Hooks
     public function purgeCacheEverything()
     {
         if ($this->isPluginSpecificCacheEnabled()) {
-            $wp_domain_list = $this->integrationAPI->getDomainList();
-            $wp_domain = $wp_domain_list[0];
-            if (count($wp_domain) > 0) {
-                $zoneTag = $this->api->getZoneTag($wp_domain);
+            $wpDomainList = $this->integrationAPI->getDomainList();
+            $wpDomain = $wpDomainList[0];
+            if (count($wpDomain) > 0) {
+                $zoneTag = $this->api->getZoneTag($wpDomain);
 
                 if (isset($zoneTag)) {
                     $this->api->zonePurgeCache($zoneTag);
@@ -122,9 +122,9 @@ class Hooks
     public function purgeCacheByRevelantURLs($postId)
     {
         if ($this->isPluginSpecificCacheEnabled()) {
-            $wp_domain_list = $this->integrationAPI->getDomainList();
-            $wp_domain = $wp_domain_list[0];
-            if (count($wp_domain) <= 0) {
+            $wpDomainList = $this->integrationAPI->getDomainList();
+            $wpDomain = $wpDomainList[0];
+            if (count($wpDomain) <= 0) {
                 return;
             }
 
@@ -139,14 +139,14 @@ class Hooks
                 return;
             }
 
-            $saved_post = get_post($postId);
-            if (is_a($saved_post, 'WP_Post') == false) {
+            $savedPost = get_post($postId);
+            if (is_a($savedPost, 'WP_Post') == false) {
                 return;
             }
 
             $urls = $this->getPostRelatedLinks($postId);
 
-            $zoneTag = $this->api->getZoneTag($wp_domain);
+            $zoneTag = $this->api->getZoneTag($wpDomain);
 
             if (isset($zoneTag) && !empty($urls)) {
                 $this->api->zonePurgeFiles($zoneTag, $urls);
@@ -157,12 +157,12 @@ class Hooks
     public function getPostRelatedLinks($postId)
     {
         $listofurls = array();
-        $post_type = get_post_type($postId);
+        $postType = get_post_type($postId);
 
         //Purge taxonomies terms URLs
-        $post_type_taxonomies = get_object_taxonomies($post_type);
+        $postTypeTaxonomies = get_object_taxonomies($postType);
 
-        foreach ($post_type_taxonomies as $taxonomy) {
+        foreach ($postTypeTaxonomies as $taxonomy) {
             $terms = get_the_terms($postId, $taxonomy);
 
             if (empty($terms) || is_wp_error($terms)) {
@@ -170,9 +170,9 @@ class Hooks
             }
 
             foreach ($terms as $term) {
-                $term_link = get_term_link($term);
-                if (!is_wp_error($term_link)) {
-                    array_push($listofurls, $term_link);
+                $termLink = get_term_link($term);
+                if (!is_wp_error($termLink)) {
+                    array_push($listofurls, $termLink);
                 }
             }
         }
@@ -185,11 +185,11 @@ class Hooks
         );
 
         // Archives and their feeds
-        if (get_post_type_archive_link($post_type) == true) {
+        if (get_post_type_archive_link($postType) == true) {
             array_push(
                 $listofurls,
-                get_post_type_archive_link($post_type),
-                get_post_type_archive_feed_link($post_type)
+                get_post_type_archive_link($postType),
+                get_post_type_archive_feed_link($postType)
             );
         }
 
@@ -198,9 +198,9 @@ class Hooks
 
         // Also clean URL for trashed post.
         if (get_post_status($postId) == 'trash') {
-            $trashpost = get_permalink($postId);
-            $trashpost = str_replace('__trashed', '', $trashpost);
-            array_push($listofurls, $trashpost, $trashpost.'feed/');
+            $trashPost = get_permalink($postId);
+            $trashPost = str_replace('__trashed', '', $trashPost);
+            array_push($listofurls, $trashPost, $trashPost.'feed/');
         }
 
         // Feeds
