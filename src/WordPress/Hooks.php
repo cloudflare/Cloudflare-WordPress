@@ -216,8 +216,9 @@ class Hooks
 
         // Home Page and (if used) posts page
         array_push($listofurls, home_url('/'));
-        if (get_option('show_on_front') == 'page') {
-            array_push($listofurls, get_permalink(get_option('page_for_posts')));
+        $pageLink = get_permalink(get_option('page_for_posts'));
+        if (is_string($pageLink) && !empty($pageLink) && get_option('show_on_front') == 'page') {
+            array_push($listofurls, $pageLink);
         }
 
         // Purge https and http URLs
