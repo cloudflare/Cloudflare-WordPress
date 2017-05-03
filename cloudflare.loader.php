@@ -12,8 +12,8 @@ if (!defined('ABSPATH')) {
 // Rewrites Cloudflare IP
 $ipRewrite = new IpRewrite();
 
-$is_cf = $ipRewrite->isCloudFlare();
-if ($is_cf) {
+$isCf = $ipRewrite->isCloudFlare();
+if ($isCf) {
     // Fixes Flexible SSL
     if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
         $_SERVER['HTTPS'] = 'on';

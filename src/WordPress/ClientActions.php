@@ -44,29 +44,29 @@ class ClientActions
         $this->cacheDomainName($response);
 
         // Get zone information
-        $cf_zones_list = $this->filterZones($response);
+        $cfZonesList = $this->filterZones($response);
 
-        return $cf_zones_list;
+        return $cfZonesList;
     }
 
     private function filterZones($response)
     {
-        $cf_zones_list = $response;
+        $cfZonesList = $response;
         $wpDomainList = $this->wordpressAPI->getDomainList();
         $wpDomain = $wpDomainList[0];
 
-        $domain_list = array();
-        if ($this->api->responseOk($cf_zones_list)) {
+        $domainList = array();
+        if ($this->api->responseOk($cfZonesList)) {
             $found = false;
-            foreach ($cf_zones_list['result'] as $cf_zone) {
-                if ($cf_zone['name'] === $wpDomain) {
+            foreach ($cfZonesList['result'] as $zone) {
+                if ($zone['name'] === $wpDomain) {
                     $found = true;
-                    array_push($domain_list, $cf_zone);
+                    array_push($domainList, $zone);
                 }
             }
 
             if ($found === false) {
-                array_push($domain_list, array(
+                array_push($domainList, array(
                     'name' => $wpDomain,
                     'plan' => array('name' => ''),
                     'type' => '',
@@ -74,9 +74,9 @@ class ClientActions
                 ));
             }
         }
-        $cf_zones_list['result'] = $domain_list;
+        $cfZonesList['result'] = $domainList;
 
-        return $cf_zones_list;
+        return $cfZonesList;
     }
 
     public function cacheDomainName($response)
