@@ -102,7 +102,7 @@ class Proxy
      */
     public function getJSONBody()
     {
-        return file_get_contents('php://input');
+        return $GLOBALS[Hooks::CLOUDFLARE_JSON];
     }
 
     /**

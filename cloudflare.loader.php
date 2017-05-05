@@ -23,6 +23,12 @@ if ($isCf) {
 // Initiliaze Hooks class which contains WordPress hook functions
 $cloudflareHooks = new \CF\WordPress\Hooks();
 
+/*
+ * php://input can only be read once before PHP 5.6, try to grab it IF the request
+ * is coming from the cloudflare proxy
+ */
+add_action('plugins_loaded', array($cloudflareHooks, 'getCloudflareRequestJSON'));
+
 // Enable HTTP2 Server Push
 if (defined('CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE') && CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE) {
     add_action('init', array($cloudflareHooks, 'http2ServerPushInit'));

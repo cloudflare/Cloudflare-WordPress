@@ -16,6 +16,8 @@ class Hooks
     protected $logger;
     protected $proxy;
 
+    const CLOUDFLARE_JSON = "CLOUDFLARE_JSON";
+
     public function __construct()
     {
         $this->config = new Integration\DefaultConfig(file_get_contents(CLOUDFLARE_PLUGIN_DIR.'config.js', true));
@@ -249,5 +251,12 @@ class Hooks
     public function http2ServerPushInit()
     {
         HTTP2ServerPush::init();
+    }
+
+    public function getCloudflareRequestJSON()
+    {
+        if ($_GET['action'] === 'cloudflare_proxy') {
+            $GLOBALS[CLOUDFLARE_JSON] = file_get_contents('php://input');
+        }
     }
 }
