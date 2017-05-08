@@ -46,7 +46,7 @@ function RestProxyCallback(opts) {
         }
 
         // WordPress Ajax Action
-        opts.parameters['action'] = 'cloudflare_proxy';
+        opts.parameters['action'] = '<?php echo \CF\WordPress\Hooks::WP_AJAX_ACTION; ?>'
 
         if (opts.method.toUpperCase() === 'GET') {
             var clientAPIURL = '<?php echo \CF\API\Client::ENDPOINT; ?>';

@@ -16,6 +16,9 @@ class Hooks
     protected $logger;
     protected $proxy;
 
+    const CLOUDFLARE_JSON = 'CLOUDFLARE_JSON';
+    const WP_AJAX_ACTION = 'cloudflare_proxy';
+
     public function __construct()
     {
         $this->config = new Integration\DefaultConfig(file_get_contents(CLOUDFLARE_PLUGIN_DIR.'config.js', true));
@@ -249,5 +252,17 @@ class Hooks
     public function http2ServerPushInit()
     {
         HTTP2ServerPush::init();
+    }
+
+    /*
+     * php://input can only be read once before PHP 5.6, try to grab it ONLY if the request
+     * is coming from the cloudflare proxy.  We store it in a global so \CF\WordPress\Proxy
+     * can act on the request body later on in the script execution. 
+     */
+    public function getCloudflareRequestJSON()
+    {
+        if ($_GET['action'] === WP_AJAX_ACTION) {
+            $GLOBALS[CLOUDFLARE_JSON] = file_get_contents('php://input');
+        }
     }
 }
