@@ -16,7 +16,8 @@ class Hooks
     protected $logger;
     protected $proxy;
 
-    const CLOUDFLARE_JSON = "CLOUDFLARE_JSON";
+    const CLOUDFLARE_JSON = 'CLOUDFLARE_JSON';
+    const WP_AJAX_ACTION = 'cloudflare_proxy';
 
     public function __construct()
     {
@@ -255,7 +256,7 @@ class Hooks
 
     public function getCloudflareRequestJSON()
     {
-        if ($_GET['action'] === 'cloudflare_proxy') {
+        if ($_GET['action'] === WP_AJAX_ACTION) {
             $GLOBALS[CLOUDFLARE_JSON] = file_get_contents('php://input');
         }
     }

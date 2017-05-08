@@ -98,6 +98,9 @@ class Proxy
     }
 
     /**
+     * Wrapped in a function so it can be
+     * mocked during testing
+     *
      * @return json
      */
     public function getJSONBody()
