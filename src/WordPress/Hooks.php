@@ -254,6 +254,11 @@ class Hooks
         HTTP2ServerPush::init();
     }
 
+    /*
+     * php://input can only be read once before PHP 5.6, try to grab it ONLY if the request
+     * is coming from the cloudflare proxy.  We store it in a global so \CF\WordPress\Proxy
+     * can act on the request body later on in the script execution. 
+     */
     public function getCloudflareRequestJSON()
     {
         if ($_GET['action'] === WP_AJAX_ACTION) {
