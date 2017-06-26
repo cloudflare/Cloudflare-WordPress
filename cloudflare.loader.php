@@ -10,14 +10,18 @@ if (!defined('ABSPATH')) {
 }
 
 // Rewrites Cloudflare IP
-$ipRewrite = new IpRewrite();
+try {
+    $ipRewrite = new IpRewrite();
 
-$isCf = $ipRewrite->isCloudFlare();
-if ($isCf) {
-    // Fixes Flexible SSL
-    if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-        $_SERVER['HTTPS'] = 'on';
+    $isCf = $ipRewrite->isCloudFlare();
+    if ($isCf) {
+        // Fixes Flexible SSL
+        if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+            $_SERVER['HTTPS'] = 'on';
+        }
     }
+} catch (\RuntimeException $e) {
+    error_log($e->getMessage());
 }
 
 // Initiliaze Hooks class which contains WordPress hook functions
