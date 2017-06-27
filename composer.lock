@@ -4,21 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "db1040ec437c179ea27c27584d6e6a8a",
-    "content-hash": "82f6739378e5d4765b46448bd7ee72ef",
+    "content-hash": "f077b156a6c82c8143fd5034dbda00e4",
     "packages": [
         {
             "name": "cloudflare/cf-ip-rewrite",
-            "version": "1.0.2",
+            "version": "1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cloudflare/cf-ip-rewrite.git",
-                "reference": "941aeaade65211b579db65df7a9d89c854e4abf8"
+                "reference": "b71814e2266f90780f2042a38daa3e23f897aaa1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/941aeaade65211b579db65df7a9d89c854e4abf8",
-                "reference": "941aeaade65211b579db65df7a9d89c854e4abf8",
+                "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/b71814e2266f90780f2042a38daa3e23f897aaa1",
+                "reference": "b71814e2266f90780f2042a38daa3e23f897aaa1",
                 "shasum": ""
             },
             "require": {
@@ -50,7 +49,7 @@
                 "cloudflare",
                 "ip rewrite"
             ],
-            "time": "2016-08-17 13:30:43"
+            "time": "2017-06-27T16:39:08+00:00"
         },
         {
             "name": "cloudflare/cloudflare-plugin-backend",
@@ -85,7 +84,7 @@
                 "BSD-3-Clause"
             ],
             "description": "A PHP backend for Cloudflare plugins.",
-            "time": "2017-02-28 18:04:11"
+            "time": "2017-02-28T18:04:11+00:00"
         },
         {
             "name": "psr/log",
@@ -132,7 +131,7 @@
                 "psr",
                 "psr-3"
             ],
-            "time": "2016-10-10 12:19:37"
+            "time": "2016-10-10T12:19:37+00:00"
         },
         {
             "name": "symfony/yaml",
@@ -181,7 +180,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2017-01-21 16:40:50"
+            "time": "2017-01-21T16:40:50+00:00"
         }
     ],
     "packages-dev": [
@@ -237,7 +236,7 @@
                 "constructor",
                 "instantiate"
             ],
-            "time": "2015-06-14 21:17:01"
+            "time": "2015-06-14T21:17:01+00:00"
         },
         {
             "name": "johnkary/phpunit-speedtrap",
@@ -287,7 +286,7 @@
                 "profile",
                 "slow"
             ],
-            "time": "2015-09-13 19:01:00"
+            "time": "2015-09-13T19:01:00+00:00"
         },
         {
             "name": "php-mock/php-mock",
@@ -349,7 +348,7 @@
                 "test",
                 "test double"
             ],
-            "time": "2015-11-11 22:37:09"
+            "time": "2015-11-11T22:37:09+00:00"
         },
         {
             "name": "php-mock/php-mock-integration",
@@ -402,7 +401,7 @@
                 "test",
                 "test double"
             ],
-            "time": "2015-10-26 21:21:42"
+            "time": "2015-10-26T21:21:42+00:00"
         },
         {
             "name": "php-mock/php-mock-phpunit",
@@ -456,7 +455,7 @@
                 "test",
                 "test double"
             ],
-            "time": "2016-06-15 23:36:13"
+            "time": "2016-06-15T23:36:13+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",
@@ -510,7 +509,7 @@
                 "reflection",
                 "static analysis"
             ],
-            "time": "2015-12-27 11:43:31"
+            "time": "2015-12-27T11:43:31+00:00"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -555,7 +554,7 @@
                 }
             ],
             "description": "With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.",
-            "time": "2016-09-30 07:12:33"
+            "time": "2016-09-30T07:12:33+00:00"
         },
         {
             "name": "phpdocumentor/type-resolver",
@@ -602,7 +601,7 @@
                     "email": "me@mikevanriel.com"
                 }
             ],
-            "time": "2016-11-25 06:54:22"
+            "time": "2016-11-25T06:54:22+00:00"
         },
         {
             "name": "phpspec/prophecy",
@@ -665,7 +664,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2016-11-21 14:58:47"
+            "time": "2016-11-21T14:58:47+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -727,7 +726,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2015-10-06 15:47:00"
+            "time": "2015-10-06T15:47:00+00:00"
         },
         {
             "name": "phpunit/php-file-iterator",
@@ -774,7 +773,7 @@
                 "filesystem",
                 "iterator"
             ],
-            "time": "2016-10-03 07:40:28"
+            "time": "2016-10-03T07:40:28+00:00"
         },
         {
             "name": "phpunit/php-text-template",
@@ -815,7 +814,7 @@
             "keywords": [
                 "template"
             ],
-            "time": "2015-06-21 13:50:34"
+            "time": "2015-06-21T13:50:34+00:00"
         },
         {
             "name": "phpunit/php-timer",
@@ -864,7 +863,7 @@
             "keywords": [
                 "timer"
             ],
-            "time": "2017-02-26 11:10:40"
+            "time": "2017-02-26T11:10:40+00:00"
         },
         {
             "name": "phpunit/php-token-stream",
@@ -913,7 +912,7 @@
             "keywords": [
                 "tokenizer"
             ],
-            "time": "2017-02-27 10:12:30"
+            "time": "2017-02-27T10:12:30+00:00"
         },
         {
             "name": "phpunit/phpunit",
@@ -985,7 +984,7 @@
                 "testing",
                 "xunit"
             ],
-            "time": "2017-02-06 05:18:07"
+            "time": "2017-02-06T05:18:07+00:00"
         },
         {
             "name": "phpunit/phpunit-mock-objects",
@@ -1041,7 +1040,7 @@
                 "mock",
                 "xunit"
             ],
-            "time": "2015-10-02 06:51:40"
+            "time": "2015-10-02T06:51:40+00:00"
         },
         {
             "name": "sebastian/comparator",
@@ -1105,7 +1104,7 @@
                 "compare",
                 "equality"
             ],
-            "time": "2017-01-29 09:50:25"
+            "time": "2017-01-29T09:50:25+00:00"
         },
         {
             "name": "sebastian/diff",
@@ -1157,7 +1156,7 @@
             "keywords": [
                 "diff"
             ],
-            "time": "2015-12-08 07:14:41"
+            "time": "2015-12-08T07:14:41+00:00"
         },
         {
             "name": "sebastian/environment",
@@ -1207,7 +1206,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2016-08-18 05:49:44"
+            "time": "2016-08-18T05:49:44+00:00"
         },
         {
             "name": "sebastian/exporter",
@@ -1274,7 +1273,7 @@
                 "export",
                 "exporter"
             ],
-            "time": "2016-06-17 09:04:28"
+            "time": "2016-06-17T09:04:28+00:00"
         },
         {
             "name": "sebastian/global-state",
@@ -1325,7 +1324,7 @@
             "keywords": [
                 "global state"
             ],
-            "time": "2015-10-12 03:26:01"
+            "time": "2015-10-12T03:26:01+00:00"
         },
         {
             "name": "sebastian/recursion-context",
@@ -1378,7 +1377,7 @@
             ],
             "description": "Provides functionality to recursively process PHP variables",
             "homepage": "http://www.github.com/sebastianbergmann/recursion-context",
-            "time": "2015-11-11 19:50:13"
+            "time": "2015-11-11T19:50:13+00:00"
         },
         {
             "name": "sebastian/version",
@@ -1413,7 +1412,7 @@
             ],
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
-            "time": "2015-06-21 13:59:46"
+            "time": "2015-06-21T13:59:46+00:00"
         },
         {
             "name": "simplyadmire/composer-plugins",
@@ -1544,7 +1543,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2017-02-02 03:30:00"
+            "time": "2017-02-02T03:30:00+00:00"
         },
         {
             "name": "webmozart/assert",
@@ -1594,7 +1593,7 @@
                 "check",
                 "validate"
             ],
-            "time": "2016-11-23 20:04:58"
+            "time": "2016-11-23T20:04:58+00:00"
         },
         {
             "name": "wimg/php-compatibility",
@@ -1641,7 +1640,7 @@
                 "phpcs",
                 "standards"
             ],
-            "time": "2017-02-17 17:08:29"
+            "time": "2017-02-17T17:08:29+00:00"
         }
     ],
     "aliases": [],
