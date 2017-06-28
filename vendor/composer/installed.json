@@ -1,104 +1,5 @@
 [
     {
-        "name": "johnkary/phpunit-speedtrap",
-        "version": "v1.0.1",
-        "version_normalized": "1.0.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/johnkary/phpunit-speedtrap.git",
-            "reference": "76a26f8a903a9434608cdad2b41c40cd134ea326"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/johnkary/phpunit-speedtrap/zipball/76a26f8a903a9434608cdad2b41c40cd134ea326",
-            "reference": "76a26f8a903a9434608cdad2b41c40cd134ea326",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "3.7.*|~4.0"
-        },
-        "time": "2015-09-13 19:01:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "JohnKary": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "John Kary",
-                "email": "john@johnkary.net"
-            }
-        ],
-        "description": "Find slow tests in your PHPUnit test suite",
-        "homepage": "https://github.com/johnkary/phpunit-speedtrap",
-        "keywords": [
-            "phpunit",
-            "profile",
-            "slow"
-        ]
-    },
-    {
-        "name": "cloudflare/cf-ip-rewrite",
-        "version": "1.0.2",
-        "version_normalized": "1.0.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/cloudflare/cf-ip-rewrite.git",
-            "reference": "941aeaade65211b579db65df7a9d89c854e4abf8"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/941aeaade65211b579db65df7a9d89c854e4abf8",
-            "reference": "941aeaade65211b579db65df7a9d89c854e4abf8",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^4.8",
-            "squizlabs/php_codesniffer": "2.*"
-        },
-        "time": "2016-08-17 13:30:43",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "CloudFlare\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "CloudFlare",
-                "homepage": "http://www.cloudflare.com/"
-            }
-        ],
-        "description": "Library to rewrite CloudFlare IP Addresses to the end-user IP address",
-        "homepage": "https://github.com/cloudflare/cf-ip-rewrite",
-        "keywords": [
-            "cloudflare",
-            "ip rewrite"
-        ]
-    },
-    {
         "name": "psr/log",
         "version": "1.0.2",
         "version_normalized": "1.0.2.0",
@@ -116,7 +17,7 @@
         "require": {
             "php": ">=5.3.0"
         },
-        "time": "2016-10-10 12:19:37",
+        "time": "2016-10-10T12:19:37+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -170,7 +71,7 @@
             "phpunit/phpunit": "4.8.*",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2017-02-28 18:04:11",
+        "time": "2017-02-28T18:04:11+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -183,6 +84,58 @@
             "BSD-3-Clause"
         ],
         "description": "A PHP backend for Cloudflare plugins."
+    },
+    {
+        "name": "johnkary/phpunit-speedtrap",
+        "version": "v1.0.1",
+        "version_normalized": "1.0.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/johnkary/phpunit-speedtrap.git",
+            "reference": "76a26f8a903a9434608cdad2b41c40cd134ea326"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/johnkary/phpunit-speedtrap/zipball/76a26f8a903a9434608cdad2b41c40cd134ea326",
+            "reference": "76a26f8a903a9434608cdad2b41c40cd134ea326",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "3.7.*|~4.0"
+        },
+        "time": "2015-09-13T19:01:00+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.0-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "JohnKary": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "John Kary",
+                "email": "john@johnkary.net"
+            }
+        ],
+        "description": "Find slow tests in your PHPUnit test suite",
+        "homepage": "https://github.com/johnkary/phpunit-speedtrap",
+        "keywords": [
+            "phpunit",
+            "profile",
+            "slow"
+        ]
     },
     {
         "name": "phpunit/php-text-template",
@@ -202,7 +155,7 @@
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2015-06-21 13:50:34",
+        "time": "2015-06-21T13:50:34+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -256,7 +209,7 @@
             "php-mock/php-mock-mockery": "Allows using PHPMockery for Mockery integration",
             "php-mock/php-mock-phpunit": "Allows integration into PHPUnit testcase with the trait PHPMock."
         },
-        "time": "2015-11-11 22:37:09",
+        "time": "2015-11-11T22:37:09+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -292,61 +245,6 @@
         ]
     },
     {
-        "name": "php-mock/php-mock-integration",
-        "version": "1.0.0",
-        "version_normalized": "1.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/php-mock/php-mock-integration.git",
-            "reference": "e83fb65dd20cd3cf250d554cbd4682b96b684f4b"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/php-mock/php-mock-integration/zipball/e83fb65dd20cd3cf250d554cbd4682b96b684f4b",
-            "reference": "e83fb65dd20cd3cf250d554cbd4682b96b684f4b",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5",
-            "php-mock/php-mock": "^1",
-            "phpunit/php-text-template": "^1"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "^4|^5"
-        },
-        "time": "2015-10-26 21:21:42",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "phpmock\\integration\\": "classes/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "WTFPL"
-        ],
-        "authors": [
-            {
-                "name": "Markus Malkusch",
-                "email": "markus@malkusch.de",
-                "homepage": "http://markus.malkusch.de",
-                "role": "Developer"
-            }
-        ],
-        "description": "Integration package for PHP-Mock",
-        "homepage": "https://github.com/php-mock/php-mock-integration",
-        "keywords": [
-            "BDD",
-            "TDD",
-            "function",
-            "mock",
-            "stub",
-            "test",
-            "test double"
-        ]
-    },
-    {
         "name": "symfony/yaml",
         "version": "v2.8.17",
         "version_normalized": "2.8.17.0",
@@ -364,7 +262,7 @@
         "require": {
             "php": ">=5.3.9"
         },
-        "time": "2017-01-21 16:40:50",
+        "time": "2017-01-21T16:40:50+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -412,7 +310,7 @@
             "reference": "58b3a85e7999757d6ad81c787a1fbf5ff6c628c6",
             "shasum": ""
         },
-        "time": "2015-06-21 13:59:46",
+        "time": "2015-06-21T13:59:46+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -458,7 +356,7 @@
         "suggest": {
             "ext-uopz": "*"
         },
-        "time": "2015-10-12 03:26:01",
+        "time": "2015-10-12T03:26:01+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -508,7 +406,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.4"
         },
-        "time": "2015-11-11 19:50:13",
+        "time": "2015-11-11T19:50:13+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -565,7 +463,7 @@
             "ext-mbstring": "*",
             "phpunit/phpunit": "~4.4"
         },
-        "time": "2016-06-17 09:04:28",
+        "time": "2016-06-17T09:04:28+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -632,7 +530,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8 || ^5.0"
         },
-        "time": "2016-08-18 05:49:44",
+        "time": "2016-08-18T05:49:44+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -684,7 +582,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.8"
         },
-        "time": "2015-12-08 07:14:41",
+        "time": "2015-12-08T07:14:41+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -740,7 +638,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.4"
         },
-        "time": "2017-01-29 09:50:25",
+        "time": "2017-01-29T09:50:25+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -808,7 +706,7 @@
             "phpunit/phpunit": "~4.0",
             "squizlabs/php_codesniffer": "~2.0"
         },
-        "time": "2015-06-14 21:17:01",
+        "time": "2015-06-14T21:17:01+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -866,7 +764,7 @@
         "suggest": {
             "ext-soap": "*"
         },
-        "time": "2015-10-02 06:51:40",
+        "time": "2015-10-02T06:51:40+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -918,7 +816,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.0"
         },
-        "time": "2017-02-26 11:10:40",
+        "time": "2017-02-26T11:10:40+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -966,7 +864,7 @@
         "require": {
             "php": ">=5.3.3"
         },
-        "time": "2016-10-03 07:40:28",
+        "time": "2016-10-03T07:40:28+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1019,7 +917,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.2"
         },
-        "time": "2017-02-27 10:12:30",
+        "time": "2017-02-27T10:12:30+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1080,7 +978,7 @@
             "ext-xdebug": ">=2.2.1",
             "ext-xmlwriter": "*"
         },
-        "time": "2015-10-06 15:47:00",
+        "time": "2015-10-06T15:47:00+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1134,7 +1032,7 @@
             "phpunit/phpunit": "^4.6",
             "sebastian/version": "^1.0.1"
         },
-        "time": "2016-11-23 20:04:58",
+        "time": "2016-11-23T20:04:58+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1185,7 +1083,7 @@
         "require-dev": {
             "phpunit/phpunit": "^4.6"
         },
-        "time": "2015-12-27 11:43:31",
+        "time": "2015-12-27T11:43:31+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1243,7 +1141,7 @@
             "mockery/mockery": "^0.9.4",
             "phpunit/phpunit": "^5.2||^4.8.24"
         },
-        "time": "2016-11-25 06:54:22",
+        "time": "2016-11-25T06:54:22+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1294,7 +1192,7 @@
             "mockery/mockery": "^0.9.4",
             "phpunit/phpunit": "^4.4"
         },
-        "time": "2016-09-30 07:12:33",
+        "time": "2016-09-30T07:12:33+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1342,7 +1240,7 @@
             "phpspec/phpspec": "^2.0",
             "phpunit/phpunit": "^4.8 || ^5.6.5"
         },
-        "time": "2016-11-21 14:58:47",
+        "time": "2016-11-21T14:58:47+00:00",
         "type": "library",
         "extra": {
             "branch-alias": {
@@ -1420,7 +1318,7 @@
         "suggest": {
             "phpunit/php-invoker": "~1.1"
         },
-        "time": "2017-02-06 05:18:07",
+        "time": "2017-02-06T05:18:07+00:00",
         "bin": [
             "phpunit"
         ],
@@ -1456,6 +1354,61 @@
         ]
     },
     {
+        "name": "php-mock/php-mock-integration",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/php-mock/php-mock-integration.git",
+            "reference": "e83fb65dd20cd3cf250d554cbd4682b96b684f4b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/php-mock/php-mock-integration/zipball/e83fb65dd20cd3cf250d554cbd4682b96b684f4b",
+            "reference": "e83fb65dd20cd3cf250d554cbd4682b96b684f4b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5",
+            "php-mock/php-mock": "^1",
+            "phpunit/php-text-template": "^1"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4|^5"
+        },
+        "time": "2015-10-26T21:21:42+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "phpmock\\integration\\": "classes/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "WTFPL"
+        ],
+        "authors": [
+            {
+                "name": "Markus Malkusch",
+                "email": "markus@malkusch.de",
+                "homepage": "http://markus.malkusch.de",
+                "role": "Developer"
+            }
+        ],
+        "description": "Integration package for PHP-Mock",
+        "homepage": "https://github.com/php-mock/php-mock-integration",
+        "keywords": [
+            "BDD",
+            "TDD",
+            "function",
+            "mock",
+            "stub",
+            "test",
+            "test double"
+        ]
+    },
+    {
         "name": "php-mock/php-mock-phpunit",
         "version": "1.1.2",
         "version_normalized": "1.1.2.0",
@@ -1478,7 +1431,7 @@
         "conflict": {
             "phpunit/phpunit-mock-objects": "3.2.0"
         },
-        "time": "2016-06-15 23:36:13",
+        "time": "2016-06-15T23:36:13+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -1535,7 +1488,7 @@
         "require-dev": {
             "phpunit/phpunit": "~4.0"
         },
-        "time": "2017-02-02 03:30:00",
+        "time": "2017-02-02T03:30:00+00:00",
         "bin": [
             "scripts/phpcs",
             "scripts/phpcbf"
@@ -1592,55 +1545,6 @@
         ]
     },
     {
-        "name": "wimg/php-compatibility",
-        "version": "7.1.2",
-        "version_normalized": "7.1.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/wimg/PHPCompatibility.git",
-            "reference": "db947ce9376f1d9adc6fa0be5952241598ba60ea"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/wimg/PHPCompatibility/zipball/db947ce9376f1d9adc6fa0be5952241598ba60ea",
-            "reference": "db947ce9376f1d9adc6fa0be5952241598ba60ea",
-            "shasum": ""
-        },
-        "require": {
-            "ext-tokenizer": "*",
-            "php": ">=5.1.2",
-            "squizlabs/php_codesniffer": "~2.0"
-        },
-        "require-dev": {
-            "satooshi/php-coveralls": "dev-master"
-        },
-        "time": "2017-02-17 17:08:29",
-        "type": "phpcodesniffer-standard",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "PHPCompatibility\\": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "LGPL-3.0"
-        ],
-        "authors": [
-            {
-                "name": "Wim Godden",
-                "role": "lead"
-            }
-        ],
-        "description": "This is a set of sniffs for PHP_CodeSniffer that checks for PHP version compatibility.",
-        "homepage": "http://techblog.wimgodden.be/tag/codesniffer/",
-        "keywords": [
-            "compatibility",
-            "phpcs",
-            "standards"
-        ]
-    },
-    {
         "name": "simplyadmire/composer-plugins",
         "version": "dev-master",
         "version_normalized": "9999999-dev",
@@ -1659,7 +1563,7 @@
             "composer-plugin-api": "^1.0",
             "squizlabs/php_codesniffer": "*"
         },
-        "time": "2016-05-12 11:58:38",
+        "time": "2016-05-12T11:58:38+00:00",
         "type": "composer-plugin",
         "extra": {
             "class": [
@@ -1694,5 +1598,101 @@
             "typo3"
         ],
         "abandoned": true
+    },
+    {
+        "name": "wimg/php-compatibility",
+        "version": "7.1.2",
+        "version_normalized": "7.1.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/wimg/PHPCompatibility.git",
+            "reference": "db947ce9376f1d9adc6fa0be5952241598ba60ea"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/wimg/PHPCompatibility/zipball/db947ce9376f1d9adc6fa0be5952241598ba60ea",
+            "reference": "db947ce9376f1d9adc6fa0be5952241598ba60ea",
+            "shasum": ""
+        },
+        "require": {
+            "ext-tokenizer": "*",
+            "php": ">=5.1.2",
+            "squizlabs/php_codesniffer": "~2.0"
+        },
+        "require-dev": {
+            "satooshi/php-coveralls": "dev-master"
+        },
+        "time": "2017-02-17T17:08:29+00:00",
+        "type": "phpcodesniffer-standard",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "PHPCompatibility\\": ""
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "LGPL-3.0"
+        ],
+        "authors": [
+            {
+                "name": "Wim Godden",
+                "role": "lead"
+            }
+        ],
+        "description": "This is a set of sniffs for PHP_CodeSniffer that checks for PHP version compatibility.",
+        "homepage": "http://techblog.wimgodden.be/tag/codesniffer/",
+        "keywords": [
+            "compatibility",
+            "phpcs",
+            "standards"
+        ]
+    },
+    {
+        "name": "cloudflare/cf-ip-rewrite",
+        "version": "1.0.3",
+        "version_normalized": "1.0.3.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/cloudflare/cf-ip-rewrite.git",
+            "reference": "b71814e2266f90780f2042a38daa3e23f897aaa1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/b71814e2266f90780f2042a38daa3e23f897aaa1",
+            "reference": "b71814e2266f90780f2042a38daa3e23f897aaa1",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^4.8",
+            "squizlabs/php_codesniffer": "2.*"
+        },
+        "time": "2017-06-27T16:39:08+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "CloudFlare\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "CloudFlare",
+                "homepage": "http://www.cloudflare.com/"
+            }
+        ],
+        "description": "Library to rewrite CloudFlare IP Addresses to the end-user IP address",
+        "homepage": "https://github.com/cloudflare/cf-ip-rewrite",
+        "keywords": [
+            "cloudflare",
+            "ip rewrite"
+        ]
     }
 ]

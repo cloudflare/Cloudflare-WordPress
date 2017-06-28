@@ -10,7 +10,6 @@ class IpRewrite
 
     // Found at https://www.cloudflare.com/ips/
     private $cf_ipv4 = array(
-        '199.27.128.0/21',
         '173.245.48.0/20',
         '103.21.244.0/22',
         '103.22.200.0/22',
