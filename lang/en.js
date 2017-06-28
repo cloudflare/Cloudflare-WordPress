@@ -243,7 +243,7 @@
     "container.sslCard.select.flexible": "Flexible",
     "container.sslCard.select.full": "Full",
     "container.sslCard.select.full_strict": "Full Strict",
-    "container.splashPage.heading.speedUp": "Speed up and Optimize your WordPress Site with Cloudflare",
+    "container.splashPage.heading.speedUp": "Speed up and Optimize your {integrationName} Site with Cloudflare",
     "container.splashPage.help.alreadyHaveAccount": "Have an account already? Sign in",
     "container.splashPage.help.here": "here",
     "container.splashPage.button.createFreeAccount": "Create Your Free Account",
