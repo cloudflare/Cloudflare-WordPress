@@ -261,7 +261,7 @@ class Hooks
      */
     public function getCloudflareRequestJSON()
     {
-        if (isset($_GET['action']) && $_GET['action'] === 'cloudflare_proxy') {
+        if (isset($_GET['action']) && $_GET['action'] === self::WP_AJAX_ACTION) {
             $GLOBALS[self::CLOUDFLARE_JSON] = file_get_contents('php://input');
         }
     }
