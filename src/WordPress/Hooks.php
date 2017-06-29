@@ -257,12 +257,12 @@ class Hooks
     /*
      * php://input can only be read once before PHP 5.6, try to grab it ONLY if the request
      * is coming from the cloudflare proxy.  We store it in a global so \CF\WordPress\Proxy
-     * can act on the request body later on in the script execution. 
+     * can act on the request body later on in the script execution.
      */
     public function getCloudflareRequestJSON()
     {
-        if ($_GET['action'] === WP_AJAX_ACTION) {
-            $GLOBALS[CLOUDFLARE_JSON] = file_get_contents('php://input');
+        if ($_GET['action'] === self::WP_AJAX_ACTION) {
+            $GLOBALS[self::CLOUDFLARE_JSON] = file_get_contents('php://input');
         }
     }
 }
