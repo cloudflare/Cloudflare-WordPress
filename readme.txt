@@ -3,7 +3,7 @@ Contributors: jwineman, furkan811, icyapril
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 4.8
-Stable tag: 3.3.0
+Stable tag: 3.3.1
 License: BSD-3-Clause
 
 All of Cloudflare’s performance and security benefits in a simple one-click install of recommended settings specifically developed for WordPress.
@@ -82,6 +82,12 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 1. Cloudflare Plugin
 
 == Changelog ==
+
+= 3.3.1 - 2017-6-29 =
+
+*Fixed*
+
+* Potential bug with using by unchecked $_GET.
 
 = 3.3.0 - 2017-6-29 =
 
