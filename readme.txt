@@ -3,7 +3,7 @@ Contributors: jwineman, furkan811, icyapril
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 4.8
-Stable tag: 3.2.1
+Stable tag: 3.3.0
 License: BSD-3-Clause
 
 All of Cloudflare’s performance and security benefits in a simple one-click install of recommended settings specifically developed for WordPress.
@@ -82,6 +82,27 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 1. Cloudflare Plugin
 
 == Changelog ==
+
+= 3.3.0 - 2017-6-29 =
+
+*Added*
+
+* Added a new Splash Screen
+* Added userConfig.js file allowing custom configurations.
+* Added logs in debug mode for Automatic Cache Purge.
+* Added logs for oversized Server Push HTTP headers.
+
+*Changed*
+
+* Automatic Cache Purge now purges Autoptimize by everything rather than by URL.
+* Updated IP Ranges
+
+*Fixed*
+
+* Bug where domains which had capital letters not working. 
+* Bug where Automatic Cache Purge couldn't purge front page.
+* Bug related to work with IWP.
+* Bug where if PHP is compiled with ipv6-disable flag, it crashed the site.
 
 = 3.2.1 - 2017-3-14 =
 
