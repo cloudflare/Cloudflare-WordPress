@@ -1,5 +1,5 @@
 === Cloudflare ===
-Contributors: jwineman, furkan811, icyapril
+Contributors: jwineman, furkan811, icyapril, manatarms
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 4.8
