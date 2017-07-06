@@ -238,7 +238,7 @@ class Hooks
             $listofurls = array_merge($listofurls, str_replace('http://', 'https://', $listofurls));
         }
 
-        return $listofurls;
+        return apply_filters('cf_get_post_related_links', $listofurls, $postId);
     }
 
     protected function isPluginSpecificCacheEnabled()
