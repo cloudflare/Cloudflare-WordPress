@@ -59,7 +59,7 @@ $cloudflarePurgeEverythingActions = array(
 );
 
 foreach ($cloudflarePurgeEverythingActions as $action) {
-    add_action($action, array($cloudflareHooks, 'purgeCacheEverything'));
+    add_action($action, array($cloudflareHooks, 'purgeCacheEverything'), PHP_INT_MAX);
 }
 
 $cloudflarePurgeURLActions = array(
@@ -69,5 +69,5 @@ $cloudflarePurgeURLActions = array(
 );
 
 foreach ($cloudflarePurgeURLActions as $action) {
-    add_action($action, array($cloudflareHooks, 'purgeCacheByRevelantURLs'), 10, 2);
+    add_action($action, array($cloudflareHooks, 'purgeCacheByRevelantURLs'), PHP_INT_MAX, 2);
 }
