@@ -62,6 +62,23 @@ foreach ($cloudflarePurgeEverythingActions as $action) {
     add_action($action, array($cloudflareHooks, 'purgeCacheEverything'));
 }
 
+/**
+ * You can filter the list of URLs that get purged by Cloudflare after a post is 
+ * modified by implementing a filter for the "cloudflare_purge_by_url" hook.
+ *
+ * @Example:
+ *
+ * /**
+ *  * @param array $urls A list of post related URLs
+ *  * @param integer $post_id the post ID that was modified
+ *  * /
+ * function your_cloudflare_url_filter($urls, $post_id) {
+ *   // modify urls
+ *   return $urls;
+ * }
+ *
+ * add_filter('cloudflare_purge_by_url', your_cloudflare_url_filter, 10, 2);
+ */
 $cloudflarePurgeURLActions = array(
     'deleted_post',                     // Delete a post
     'edit_post',                        // Edit a post - includes leaving comments
