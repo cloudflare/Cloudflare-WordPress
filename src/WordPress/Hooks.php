@@ -151,6 +151,7 @@ class Hooks
             }
 
             $urls = $this->getPostRelatedLinks($postId);
+            $urls = apply_filters('cloudflare_purge_by_url', $urls, $postId);
 
             $zoneTag = $this->api->getZoneTag($wpDomain);
 
