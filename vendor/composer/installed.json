@@ -1650,17 +1650,17 @@
     },
     {
         "name": "cloudflare/cf-ip-rewrite",
-        "version": "1.0.3",
-        "version_normalized": "1.0.3.0",
+        "version": "1.0.4",
+        "version_normalized": "1.0.4.0",
         "source": {
             "type": "git",
             "url": "https://github.com/cloudflare/cf-ip-rewrite.git",
-            "reference": "b71814e2266f90780f2042a38daa3e23f897aaa1"
+            "reference": "48e2ce52e87d3d27cdb662584fccf82efa898bf1"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/b71814e2266f90780f2042a38daa3e23f897aaa1",
-            "reference": "b71814e2266f90780f2042a38daa3e23f897aaa1",
+            "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/48e2ce52e87d3d27cdb662584fccf82efa898bf1",
+            "reference": "48e2ce52e87d3d27cdb662584fccf82efa898bf1",
             "shasum": ""
         },
         "require": {
@@ -1670,7 +1670,7 @@
             "phpunit/phpunit": "^4.8",
             "squizlabs/php_codesniffer": "2.*"
         },
-        "time": "2017-06-27T16:39:08+00:00",
+        "time": "2017-10-10T15:44:33+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

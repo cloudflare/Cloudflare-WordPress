@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "f077b156a6c82c8143fd5034dbda00e4",
+    "content-hash": "efeadcf404fe17ccde840e944270deaf",
     "packages": [
         {
             "name": "cloudflare/cf-ip-rewrite",
-            "version": "1.0.3",
+            "version": "1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cloudflare/cf-ip-rewrite.git",
-                "reference": "b71814e2266f90780f2042a38daa3e23f897aaa1"
+                "reference": "48e2ce52e87d3d27cdb662584fccf82efa898bf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/b71814e2266f90780f2042a38daa3e23f897aaa1",
-                "reference": "b71814e2266f90780f2042a38daa3e23f897aaa1",
+                "url": "https://api.github.com/repos/cloudflare/cf-ip-rewrite/zipball/48e2ce52e87d3d27cdb662584fccf82efa898bf1",
+                "reference": "48e2ce52e87d3d27cdb662584fccf82efa898bf1",
                 "shasum": ""
             },
             "require": {
@@ -49,7 +49,7 @@
                 "cloudflare",
                 "ip rewrite"
             ],
-            "time": "2017-06-27T16:39:08+00:00"
+            "time": "2017-10-10T15:44:33+00:00"
         },
         {
             "name": "cloudflare/cloudflare-plugin-backend",
@@ -1465,7 +1465,7 @@
                 "typo3"
             ],
             "abandoned": true,
-            "time": "2016-05-12 11:58:38"
+            "time": "2016-05-12T11:58:38+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",

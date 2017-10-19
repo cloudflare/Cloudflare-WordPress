@@ -129,4 +129,19 @@ class RewriteTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->ipRewrite->getRewrittenIP());
         $this->assertEquals($this->ipRewrite->getOriginalIP(), $remote_addr);
     }
+
+    public function testRequestFromCloudflareNginxRealIp()
+    {
+        $connecting_ip = '8.8.8.8';
+
+        // REMOTE_ADDR already rewritten by Nginx
+        $_SERVER['REMOTE_ADDR'] = $connecting_ip;
+        $_SERVER['HTTP_CF_CONNECTING_IP'] = $connecting_ip;
+
+        $this->ipRewrite = new IpRewrite();
+
+        $this->assertTrue($this->ipRewrite->isCloudFlare());
+        $this->assertEquals($this->ipRewrite->getRewrittenIP(), $connecting_ip);
+        $this->assertEquals($this->ipRewrite->getOriginalIP(), $connecting_ip);
+    }
 }
