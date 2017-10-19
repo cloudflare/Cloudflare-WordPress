@@ -1,7 +1,7 @@
 {
     "name": "cloudflare/cf-ip-rewrite",
     "description": "Library to rewrite CloudFlare IP Addresses to the end-user IP address",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "homepage": "https://github.com/cloudflare/cf-ip-rewrite",
     "keywords": [
         "ip rewrite",
