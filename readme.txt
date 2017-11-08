@@ -87,7 +87,7 @@ Yes, Cloudflare works with and helps speed up your site even more, if you have V
 
 *Fixed*
 
-* Potential bug with using by unchecked $_GET.
+* Potential bug by using $_GET.
 
 = 3.3.0 - 2017-6-29 =
 
