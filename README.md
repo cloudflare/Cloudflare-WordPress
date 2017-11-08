@@ -77,7 +77,7 @@ For all support inquiries regarding Cloudflare’s WordPress plugin, please logi
 
 ## Contributions
 
-We welcome community contribution to this repository. [CONTRIBUTING.md](CONTRIBUTING.md) will help you start contributing.
+We welcome community contribution to this repository. [CONTRIBUTING.md](CONTRIBUTING.md) will help you start contributing. You can find active problems to work on in [Issues](https://github.com/cloudflare/Cloudflare-WordPress/issues) page.
 
 ## Changelog
 
