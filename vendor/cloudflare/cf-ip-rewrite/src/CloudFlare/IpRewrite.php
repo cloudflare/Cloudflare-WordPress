@@ -49,6 +49,11 @@ class IpRewrite
     {
         if (!isset($_SERVER['HTTP_CF_CONNECTING_IP'])) {
             return false;
+        } else {
+            // Check if original ip has already been restored, e.g. by nginx - assume it was from cloudflare then
+            if ($_SERVER['REMOTE_ADDR'] === $_SERVER['HTTP_CF_CONNECTING_IP']) {
+                return true;
+            }
         }
 
         return $this->isCloudFlareIP();
