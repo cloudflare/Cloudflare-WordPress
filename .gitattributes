@@ -1,0 +1,13 @@
+*.css   text eol=lf
+*.js    text eol=lf
+*.json  text eol=lf
+*.lock  text eol=lf
+*.map   text eol=lf
+*.md    text eol=lf
+*.php   text eol=lf
+*.py    text eol=lf
+*.sh    text eol=lf
+*.svg   text eol=lf
+*.txt   text eol=lf
+*.xml   text eol=lf
+*.yml   text eol=lf
