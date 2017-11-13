@@ -55,7 +55,7 @@ Cloudflare’s plugin for WordPress automatically refreshes the Cloudflare cache
 
 ### Do I need a Cloudflare account to use the plugin?
 
-Yes, on install and activation the plugin, first time users will be asked to enter their email address (used to sign-up for an account at cloudflare.com) and their user API key. This is needed to support all the features offered by the plugin.
+Yes, on install and activation the plugin, first-time users will be asked to enter their email address (used to sign-up for an account at cloudflare.com) and their user API key. This is needed to support all the features offered by the plugin.
 
 ### What settings are applied when I click "Apply Default Settings" in Cloudflare's WordPress plugin?
 
@@ -63,7 +63,7 @@ Yes, on install and activation the plugin, first time users will be asked to ent
 
 ### Does the plugin work if I have Varnish enabled?
 
-Yes, Cloudflare works with, and helps speed up your site even more, if you have Varnish enabled.
+Yes, Cloudflare works with and helps speed up your site even more, if you have Varnish enabled.
 
 ## Support
 

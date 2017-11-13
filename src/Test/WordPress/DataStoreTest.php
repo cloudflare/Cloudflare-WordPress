@@ -71,13 +71,13 @@ namespace CF\Test\WordPress {
             $this->assertTrue($this->dataStore->setDomainNameCache($domain));
         }
 
-        public function testGetCloudFlareEmailReturnsCorrectValue()
+        public function testGetCloudflareEmailReturnsCorrectValue()
         {
             $email = 'email';
 
             $this->mockWordPressWrapper->expects($this->once())->method('getOption')->with(DataStore::EMAIL)->willReturn($email);
 
-            $this->assertEquals($email, $this->dataStore->getCloudFlareEmail());
+            $this->assertEquals($email, $this->dataStore->getCloudflareEmail());
         }
 
         public function testGetPluginSettingCallsGetOption()

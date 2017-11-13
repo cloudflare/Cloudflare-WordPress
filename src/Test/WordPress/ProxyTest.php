@@ -77,9 +77,9 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
         $this->mockProxy->run();
     }
 
-    public function testIsCloudFlareCSRFTokenValidReturnsTrueForGet()
+    public function testIsCloudflareCSRFTokenValidReturnsTrueForGet()
     {
-        $this->assertTrue($this->mockProxy->isCloudFlareCSRFTokenValid('GET', null));
+        $this->assertTrue($this->mockProxy->isCloudflareCSRFTokenValid('GET', null));
     }
 
     public function testCreateRequestGETProxyClient()

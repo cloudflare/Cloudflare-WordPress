@@ -38,10 +38,10 @@ if (is_admin()) {
     //Register proxy AJAX endpoint
     add_action('wp_ajax_cloudflare_proxy', array($cloudflareHooks, 'initProxy'));
 
-    //Add CloudFlare Plugin homepage to admin settings menu
+    //Add Cloudflare Plugin homepage to admin settings menu
     add_action('admin_menu', array($cloudflareHooks, 'cloudflareConfigPage'));
 
-    //Add CloudFlare Plugin homepage to admin settings menu
+    //Add Cloudflare Plugin homepage to admin settings menu
     add_action('plugin_action_links_cloudflare/cloudflare.php', array($cloudflareHooks, 'pluginActionLinks'));
 
     // Load Activation Script

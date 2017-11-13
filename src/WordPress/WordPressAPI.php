@@ -119,7 +119,7 @@ class WordPressAPI implements IntegrationAPIInterface
      */
     public function getUserId()
     {
-        return $this->dataStore->getCloudFlareEmail();
+        return $this->dataStore->getCloudflareEmail();
     }
 
     /**
