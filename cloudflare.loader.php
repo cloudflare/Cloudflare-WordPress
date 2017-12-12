@@ -83,6 +83,7 @@ $cloudflarePurgeURLActions = array(
     'deleted_post',                     // Delete a post
     'edit_post',                        // Edit a post - includes leaving comments
     'delete_attachment',                // Delete an attachment - includes re-uploading
+    'post_update',                      // Update a post
 );
 
 foreach ($cloudflarePurgeURLActions as $action) {
