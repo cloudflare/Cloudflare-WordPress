@@ -2,7 +2,7 @@
 Contributors: jwineman, furkan811, icyapril, manatarms
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
-Tested up to: 4.8
+Tested up to: 4.9.1
 Stable tag: 3.3.2
 License: BSD-3-Clause
 
