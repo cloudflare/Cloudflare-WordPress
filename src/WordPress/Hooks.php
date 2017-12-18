@@ -231,6 +231,19 @@ class Hooks
         if (is_string($pageLink) && !empty($pageLink) && get_option('show_on_front') == 'page') {
             array_push($listofurls, $pageLink);
         }
+        
+        // Attachments
+        if ('attachment' == $postType) {
+            $attachmentUrls = array();
+            foreach (get_intermediate_image_sizes() as $size) {
+                $attachmentSrc = wp_get_attachment_image_src($postId, $size);
+                $attachmentUrls[] = $attachmentSrc[0];
+            }
+            $listofurls = array_merge(
+                $listofurls,
+                array_unique(array_filter($attachmentUrls))
+            );
+        }
 
         // Purge https and http URLs
         if (function_exists('force_ssl_admin') && force_ssl_admin()) {
