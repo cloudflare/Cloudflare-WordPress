@@ -14,6 +14,11 @@ class WordPressClientAPI extends Client
      */
     public function getZoneTag($zone_name)
     {
+	    $zone_tag = wp_cache_get( 'cloudflare/client-api/zone-tag' );
+	    if( false !== $zone_tag ){
+		    return $zone_tag;
+	    }
+
         $request = new Request('GET', 'zones/', array('name' => $zone_name), array());
         $response = $this->callAPI($request);
 
@@ -26,6 +31,8 @@ class WordPressClientAPI extends Client
                 }
             }
         }
+
+	    wp_cache_set( 'cloudflare/client-api/zone-tag', $zone_tag );
 
         return $zone_tag;
     }
