@@ -127,10 +127,10 @@ class Hooks
 
     public function purgeCacheByRevelantURLs($postId)
     {
-    	//allow excluding a purge via filter
-	    if( !apply_filters( 'cloudflare/hooks/purge-relevant-urls', true, $postId ) ){
-		    return;
-	    }
+        //allow excluding a purge via filter
+        if (!apply_filters('cloudflare/hooks/purge-relevant-urls', true, $postId)) {
+            return;
+        }
 
         if ($this->isPluginSpecificCacheEnabled()) {
             $wpDomainList = $this->integrationAPI->getDomainList();
