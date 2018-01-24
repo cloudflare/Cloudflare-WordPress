@@ -31,7 +31,7 @@ Below are Cloudflare maintained repositories the plugins depend on.
 
 ### Dependency Graph
 
-![](https://i.imgur.com/J46MWRB.jpg)
+![](https://i.imgur.com/oXEKYVd.png)
 
 ## WordPress Plugin Specific Details
 
