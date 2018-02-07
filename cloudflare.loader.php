@@ -58,7 +58,7 @@ $cloudflarePurgeEverythingActionsDefault = array(
     'customize_save_after'              // Edit theme
 );
 
-$cloudflarePurgeEverythingActions = apply_filters('cloudflare_purge_everything_actions', $cloudflarePurgeEverythingActionsDefault, 10, 1);
+$cloudflarePurgeEverythingActions = apply_filters('cloudflare_purge_everything_actions', $cloudflarePurgeEverythingActionsDefault);
 
 foreach ($cloudflarePurgeEverythingActions as $action) {
     add_action($action, array($cloudflareHooks, 'purgeCacheEverything'), PHP_INT_MAX);
@@ -88,7 +88,7 @@ $cloudflarePurgeURLActionsDefault = array(
     'delete_attachment',                // Delete an attachment - includes re-uploading
 );
 
-$cloudflarePurgeURLActions = apply_filters('cloudflare_purge_url_actions', $cloudflarePurgeURLActionsDefault, 10, 1);
+$cloudflarePurgeURLActions = apply_filters('cloudflare_purge_url_actions', $cloudflarePurgeURLActionsDefault);
 
 foreach ($cloudflarePurgeURLActions as $action) {
     add_action($action, array($cloudflareHooks, 'purgeCacheByRevelantURLs'), PHP_INT_MAX, 2);
