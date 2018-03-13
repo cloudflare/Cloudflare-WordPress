@@ -1,6 +1,6 @@
 <?php
 
-// TODO: 
+// TODO:
 // Get rid of $GLOBALS and use static variables
 // Make class functions non-static
 // Add debug logs. Need dependency injection of logger to this class
@@ -41,8 +41,8 @@ class HTTP2ServerPush
                 );
 
                 $maxHeaderSize = 3072;
-                if(defined('CLOUDFLARE_HTTP2_SERVER_PUSH_HEADER_SIZE')) {
-                  $maxHeaderSize = absint(CLOUDFLARE_HTTP2_SERVER_PUSH_HEADER_SIZE);
+                if (defined('CLOUDFLARE_HTTP2_SERVER_PUSH_HEADER_SIZE')) {
+                    $maxHeaderSize = absint(CLOUDFLARE_HTTP2_SERVER_PUSH_HEADER_SIZE);
                 };
 
                 // If the current header size is larger than 3KB (3072 bytes)
@@ -54,8 +54,8 @@ class HTTP2ServerPush
                 // +2 comes from the last CRLF since it's two bytes
                 $headerSize = strlen($headerAsString) + strlen($newHeader) + 2;
                 if ($headerSize > $maxHeaderSize) {
-                    if(defined('CLOUDFLARE_HTTP2_SERVER_PUSH_LOG')) {
-                      error_log('Cannot Server Push (header size over 3072 Bytes).');
+                    if (defined('CLOUDFLARE_HTTP2_SERVER_PUSH_LOG')) {
+                        error_log('Cannot Server Push (header size over 3072 Bytes).');
                     }
                     return $src;
                 }
