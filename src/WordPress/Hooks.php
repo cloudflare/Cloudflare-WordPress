@@ -130,7 +130,7 @@ class Hooks
         if ($this->isPluginSpecificCacheEnabled()) {
             $wpDomainList = $this->integrationAPI->getDomainList();
             $wpDomain = $wpDomainList[0];
-            if (empty($wpDomain) || count($wpDomain) <= 0) {
+            if (empty($wpDomain) || (is_array($wpDomain) && count($wpDomain) <= 0) || strlen($wpDomain) <= 0) {
                 return;
             }
 
