@@ -17,7 +17,7 @@ wp_register_style('cf-componentscss', plugins_url('stylesheets/components.css', 
 wp_enqueue_style('cf-componentscss');
 wp_register_style('cf-hackscss', plugins_url('stylesheets/hacks.css', __FILE__), null, $pluginVersion);
 wp_enqueue_style('cf-hackscss');
-wp_enqueue_script('cf-compiledjs', plugins_url('compiled.js', __FILE__), null, $pluginVersion);
+wp_enqueue_script('cf-compiledjs', plugins_url('compiled.min.js', __FILE__), null, $pluginVersion);
 ?>
 <div id="root" class="cloudflare-partners site-wrapper"></div>
 <script>

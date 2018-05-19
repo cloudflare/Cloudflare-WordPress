@@ -45,7 +45,7 @@ Each plugin may use different Frontend [versions]((https://github.com/cloudflare
 * `fonts/`
 * `lang/`
 * `stylesheets/`
-* `compiled.js` which is created when `gulp compress` command is called within Frontend repository.
+* `compiled.min.js` which is created when `gulp compress` command is called within Frontend repository.
 
 ## Translations
 
