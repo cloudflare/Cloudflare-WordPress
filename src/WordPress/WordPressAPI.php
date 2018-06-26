@@ -84,13 +84,13 @@ class WordPressAPI implements IntegrationAPIInterface
      *
      * @param null $userId
      *
-     * @return mixed
+     * @return array
      */
     public function getDomainList($userId = null)
     {
         $cachedDomainName = $this->dataStore->getDomainNameCache();
         if (empty($cachedDomainName)) {
-            return;
+            return array();
         }
 
         return array($cachedDomainName);

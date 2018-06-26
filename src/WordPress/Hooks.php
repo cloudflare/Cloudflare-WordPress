@@ -111,15 +111,17 @@ class Hooks
     {
         if ($this->isPluginSpecificCacheEnabled()) {
             $wpDomainList = $this->integrationAPI->getDomainList();
-            $wpDomain = $wpDomainList[0];
-            if (count($wpDomain) > 0) {
-                $zoneTag = $this->api->getZoneTag($wpDomain);
 
-                if (isset($zoneTag)) {
-                    $isOK = $this->api->zonePurgeCache($zoneTag);
+            if (count($wpDomainList) > 0) {
+                foreach ($wpDomainList as $wpDomain) {
+                    $zoneTag = $this->api->getZoneTag($wpDomain);
 
-                    $isOK = ($isOK) ? 'succeeded' : 'failed';
-                    $this->logger->debug("purgeCacheEverything " . $isOK);
+                    if (isset($zoneTag)) {
+                        $isOK = $this->api->zonePurgeCache($zoneTag);
+
+                        $isOK = ($isOK) ? 'succeeded' : 'failed';
+                        $this->logger->debug("purgeCacheEverything for " . $zoneTag  . " " . $isOK);
+                    }
                 }
             }
         }
