@@ -112,7 +112,7 @@ class Hooks
         if ($this->isPluginSpecificCacheEnabled()) {
             $wpDomainList = $this->integrationAPI->getDomainList();
             $wpDomain = $wpDomainList[0];
-            if (count($wpDomain) > 0) {
+            if ((is_array($wpDomain) || is_object($wpDomain)) && count($wpDomain) > 0) {
                 $zoneTag = $this->api->getZoneTag($wpDomain);
 
                 if (isset($zoneTag)) {
@@ -130,7 +130,7 @@ class Hooks
         if ($this->isPluginSpecificCacheEnabled()) {
             $wpDomainList = $this->integrationAPI->getDomainList();
             $wpDomain = $wpDomainList[0];
-            if (count($wpDomain) <= 0) {
+            if ((is_array($wpDomain) || is_object($wpDomain)) && count($wpDomain) <= 0) {
                 return;
             }
 
