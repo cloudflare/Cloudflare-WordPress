@@ -90,7 +90,7 @@ class WordPressAPI implements IntegrationAPIInterface
     {
         $cachedDomainName = $this->dataStore->getDomainNameCache();
         if (empty($cachedDomainName)) {
-            return [];
+            return array();
         }
 
         return array($cachedDomainName);
