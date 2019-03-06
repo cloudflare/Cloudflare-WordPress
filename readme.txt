@@ -1,9 +1,9 @@
 === Cloudflare ===
-Contributors: jwineman, furkan811, icyapril, manatarms
+Contributors: jwineman, furkan811, icyapril, manatarms, zproser
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 4.9.1
-Stable tag: 3.3.2
+Stable tag: 3.3.3
 License: BSD-3-Clause
 
 All of Cloudflare’s performance and security benefits in a simple one-click install of recommended settings specifically developed for WordPress.
@@ -83,11 +83,18 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 
 == Changelog ==
 
+= 3.3.3 - 2019-3-6 =
+
+*Fixed*
+
+* Bug in Hooks.php causing errors in PHP 7+
+* Bug preventing Autoptimize plugin's optimized asset urls from being used when present and when Cloudflare HTTP/2 Push was enabled
+
 = 3.3.2 - 2017-12-12 =
 
 *Fixed*
 
-* Bug in cf-ip-rewrite 
+* Bug in cf-ip-rewrite
 
 *Added*
 
@@ -115,7 +122,7 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 
 *Fixed*
 
-* Bug where domains which had capital letters not working. 
+* Bug where domains which had capital letters not working.
 * Bug where Automatic Cache Purge couldn't purge front page.
 * Bug related to work with IWP.
 * Bug where if PHP is compiled with ipv6-disable flag, it crashed the site.
