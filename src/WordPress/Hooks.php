@@ -111,8 +111,9 @@ class Hooks
     {
         if ($this->isPluginSpecificCacheEnabled()) {
             $wpDomainList = $this->integrationAPI->getDomainList();
-            $wpDomain = $wpDomainList[0];
-            if (count($wpDomain) > 0) {
+            if (count($wpDomainList) > 0) {
+                $wpDomain = $wpDomainList[0];
+
                 $zoneTag = $this->api->getZoneTag($wpDomain);
 
                 if (isset($zoneTag)) {
@@ -129,10 +130,10 @@ class Hooks
     {
         if ($this->isPluginSpecificCacheEnabled()) {
             $wpDomainList = $this->integrationAPI->getDomainList();
-            $wpDomain = $wpDomainList[0];
-            if (count($wpDomain) <= 0) {
+            if (count($wpDomainList) <= 0) {
                 return;
             }
+            $wpDomain = $wpDomainList[0];
 
             $validPostStatus = array('publish', 'trash');
             $thisPostStatus = get_post_status($postId);
