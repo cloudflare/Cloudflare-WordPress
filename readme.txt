@@ -3,7 +3,7 @@ Contributors: jwineman, furkan811, icyapril, manatarms
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 4.9.1
-Stable tag: 3.3.2
+Stable tag: 3.4.0
 License: BSD-3-Clause
 
 All of Cloudflare’s performance and security benefits in a simple one-click install of recommended settings specifically developed for WordPress.
@@ -83,11 +83,17 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 
 == Changelog ==
 
+= 3.4.0 - 2019-08-29 =
+
+*Added*
+
+* Added support for API Token authentication.
+
 = 3.3.2 - 2017-12-12 =
 
 *Fixed*
 
-* Bug in cf-ip-rewrite 
+* Bug in cf-ip-rewrite
 
 *Added*
 
@@ -115,7 +121,7 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 
 *Fixed*
 
-* Bug where domains which had capital letters not working. 
+* Bug where domains which had capital letters not working.
 * Bug where Automatic Cache Purge couldn't purge front page.
 * Bug related to work with IWP.
 * Bug where if PHP is compiled with ipv6-disable flag, it crashed the site.
