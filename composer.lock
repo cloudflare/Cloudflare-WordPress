@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "efeadcf404fe17ccde840e944270deaf",
+    "content-hash": "8a94e185ea8612d672ab0346af9ccb92",
     "packages": [
         {
             "name": "cloudflare/cf-ip-rewrite",
@@ -53,23 +53,23 @@
         },
         {
             "name": "cloudflare/cloudflare-plugin-backend",
-            "version": "1.1.13",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",
-                "reference": "4ecf7d8f68947cc3e84f6dac93f90a53e5603285"
+                "reference": "d719d4eafff82a4ab92cc0c6ff7b6750ea33d1d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/4ecf7d8f68947cc3e84f6dac93f90a53e5603285",
-                "reference": "4ecf7d8f68947cc3e84f6dac93f90a53e5603285",
+                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/d719d4eafff82a4ab92cc0c6ff7b6750ea33d1d6",
+                "reference": "d719d4eafff82a4ab92cc0c6ff7b6750ea33d1d6",
                 "shasum": ""
             },
             "require": {
                 "psr/log": "^1.0"
             },
             "require-dev": {
-                "guzzle/guzzle": "~3.9",
+                "guzzlehttp/guzzle": "~5.0",
                 "phpunit/phpunit": "4.8.*",
                 "squizlabs/php_codesniffer": "2.*"
             },
@@ -84,7 +84,7 @@
                 "BSD-3-Clause"
             ],
             "description": "A PHP backend for Cloudflare plugins.",
-            "time": "2017-02-28T18:04:11+00:00"
+            "time": "2019-08-29T16:11:12+00:00"
         },
         {
             "name": "psr/log",
@@ -1646,6 +1646,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "cloudflare/cloudflare-plugin-backend": 20,
         "simplyadmire/composer-plugins": 20
     },
     "prefer-stable": false,
