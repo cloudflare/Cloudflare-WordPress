@@ -246,9 +246,15 @@ class Hooks
     protected function isPluginSpecificCacheEnabled()
     {
         $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
+
+        if (! $cacheSettingObject) {
+            return false;
+        }
+
         $cacheSettingValue = $cacheSettingObject[\CF\API\Plugin::SETTING_VALUE_KEY];
 
-        return isset($cacheSettingValue) && $cacheSettingValue !== false && $cacheSettingValue !== 'off';
+        return $cacheSettingValue !== false
+            && $cacheSettingValue !== 'off';
     }
 
     public function http2ServerPushInit()
