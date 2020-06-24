@@ -31,5 +31,14 @@ class PluginRoutes
                 ),
             ),
         ),
+
+        'config' => array(
+            'class' => 'CF\API\AbstractPluginActions',
+            'methods' => array(
+                'GET' => array(
+                    'function' => 'getConfig',
+                ),
+            ),
+        ),
     );
 }
