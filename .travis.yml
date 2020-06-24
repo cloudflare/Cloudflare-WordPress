@@ -7,6 +7,8 @@ php:
     - '7.2'
     - '7.3'
     - '7.4'
+allow_failures:
+    - php: '7.4'
 
 install:
     - composer install
