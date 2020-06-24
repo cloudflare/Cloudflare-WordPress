@@ -3,6 +3,7 @@
 namespace CF\Router;
 
 use CF\API\Request;
+use CF\API\APIInterface;
 use CF\Integration\IntegrationInterface;
 
 class RequestRouter
@@ -21,12 +22,11 @@ class RequestRouter
     }
 
     /**
-     * @param $clientClassName
+     * @param APIInterface $client
      * @param $routes
      */
-    public function addRouter($clientClassName, $routes)
+    public function addRouter(APIInterface $client, $routes)
     {
-        $client = new $clientClassName($this->integrationContext);
         $router = new DefaultRestAPIRouter($this->integrationContext, $client, $routes);
         $this->routerList[$client->getAPIClientName()] = $router;
     }
