@@ -1,5 +1,4 @@
 language: php
-dist: bionic
 
 php:
     - '5.6'
