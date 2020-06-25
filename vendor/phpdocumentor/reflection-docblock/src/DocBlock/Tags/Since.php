@@ -1,37 +1,34 @@
 <?php
-
-declare(strict_types=1);
-
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
+ * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\DocBlock\Tags;
 
+use phpDocumentor\Reflection\Types\Context as TypeContext;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\DescriptionFactory;
-use phpDocumentor\Reflection\Types\Context as TypeContext;
 use Webmozart\Assert\Assert;
-use function preg_match;
 
 /**
  * Reflection class for a {@}since tag in a Docblock.
  */
 final class Since extends BaseTag implements Factory\StaticMethod
 {
-    /** @var string */
     protected $name = 'since';
 
     /**
      * PCRE regular expression matching a version vector.
      * Assumes the "x" modifier.
      */
-    public const REGEX_VECTOR = '(?:
+    const REGEX_VECTOR = '(?:
         # Normal release vectors.
         \d\S*
         |
@@ -43,10 +40,10 @@ final class Since extends BaseTag implements Factory\StaticMethod
         [^\s\:]+\:\s*\$[^\$]+\$
     )';
 
-    /** @var string|null The version vector. */
-    private $version;
+    /** @var string The version vector. */
+    private $version = '';
 
-    public function __construct(?string $version = null, ?Description $description = null)
+    public function __construct($version = null, Description $description = null)
     {
         Assert::nullOrStringNotEmpty($version);
 
@@ -54,41 +51,44 @@ final class Since extends BaseTag implements Factory\StaticMethod
         $this->description = $description;
     }
 
-    public static function create(
-        ?string $body,
-        ?DescriptionFactory $descriptionFactory = null,
-        ?TypeContext $context = null
-    ) : ?self {
+    /**
+     * @return static
+     */
+    public static function create($body, DescriptionFactory $descriptionFactory = null, TypeContext $context = null)
+    {
+        Assert::nullOrString($body);
         if (empty($body)) {
             return new static();
         }
 
         $matches = [];
-        if (!preg_match('/^(' . self::REGEX_VECTOR . ')\s*(.+)?$/sux', $body, $matches)) {
+        if (! preg_match('/^(' . self::REGEX_VECTOR . ')\s*(.+)?$/sux', $body, $matches)) {
             return null;
         }
 
-        Assert::notNull($descriptionFactory);
-
         return new static(
             $matches[1],
-            $descriptionFactory->create($matches[2] ?? '', $context)
+            $descriptionFactory->create(isset($matches[2]) ? $matches[2] : '', $context)
         );
     }
 
     /**
      * Gets the version section of the tag.
+     *
+     * @return string
      */
-    public function getVersion() : ?string
+    public function getVersion()
     {
         return $this->version;
     }
 
     /**
      * Returns a string representation for this tag.
+     *
+     * @return string
      */
-    public function __toString() : string
+    public function __toString()
     {
-        return (string) $this->version . ($this->description ? ' ' . (string) $this->description : '');
+        return $this->version . ($this->description ? ' ' . $this->description->render() : '');
     }
 }

@@ -1,13 +1,5 @@
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Qa workflow](https://github.com/phpDocumentor/ReflectionDocBlock/workflows/Qa%20workflow/badge.svg)
-[![Coveralls Coverage](https://img.shields.io/coveralls/github/phpDocumentor/ReflectionDocBlock.svg)](https://coveralls.io/github/phpDocumentor/ReflectionDocBlock?branch=master)
-[![Scrutinizer Code Coverage](https://img.shields.io/scrutinizer/coverage/g/phpDocumentor/ReflectionDocBlock.svg)](https://scrutinizer-ci.com/g/phpDocumentor/ReflectionDocBlock/?branch=master)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/phpDocumentor/ReflectionDocBlock.svg)](https://scrutinizer-ci.com/g/phpDocumentor/ReflectionDocBlock/?branch=master)
-[![Stable Version](https://img.shields.io/packagist/v/phpdocumentor/reflection-docblock.svg)](https://packagist.org/packages/phpdocumentor/reflection-docblock)
-[![Unstable Version](https://img.shields.io/packagist/vpre/phpdocumentor/reflection-docblock.svg)](https://packagist.org/packages/phpdocumentor/reflection-docblock)
-
-ReflectionDocBlock 
-==================
+The ReflectionDocBlock Component [![Build Status](https://secure.travis-ci.org/phpDocumentor/ReflectionDocBlock.png)](https://travis-ci.org/phpDocumentor/ReflectionDocBlock)
+================================
 
 Introduction
 ------------
@@ -18,12 +10,16 @@ that is 100% compatible with the [PHPDoc standard](http://phpdoc.org/docs/latest
 With this component, a library can provide support for annotations via DocBlocks
 or otherwise retrieve information that is embedded in a DocBlock.
 
+> **Note**: *this is a core component of phpDocumentor and is constantly being
+> optimized for performance.*
+
 Installation
 ------------
 
-```bash
-composer require phpdocumentor/reflection-docblock
-```
+You can install the component in the following ways:
+
+* Use the official Github repository (https://github.com/phpDocumentor/ReflectionDocBlock)
+* Via Composer (http://packagist.org/packages/phpdocumentor/reflection-docblock)
 
 Usage
 -----
@@ -35,8 +31,8 @@ instantiated using its `createInstance` factory method like this:
 $factory  = \phpDocumentor\Reflection\DocBlockFactory::createInstance();
 ```
 
-Then we can use the `create` method of the factory to interpret the DocBlock.
-Please note that it is also possible to provide a class that has the
+Then we can use the `create` method of the factory to interpret the DocBlock. 
+Please note that it is also possible to provide a class that has the 
 `getDocComment()` method, such as an object of type `ReflectionClass`, the
 create method will read that if it exists.
 
@@ -56,20 +52,18 @@ $docblock = $factory->create($docComment);
 ```
 
 The `create` method will yield an object of type `\phpDocumentor\Reflection\DocBlock`
-whose methods can be queried:
+whose methods can be queried as shown in the following example.
 
 ```php
-// Contains the summary for this DocBlock
+// Should contain the summary for this DocBlock
 $summary = $docblock->getSummary();
 
-// Contains \phpDocumentor\Reflection\DocBlock\Description object
+// Contains an object of type \phpDocumentor\Reflection\DocBlock\Description; 
+// you can either cast it to string or use the render method to get a string 
+// representation of the Description.
 $description = $docblock->getDescription();
-
-// You can either cast it to string
-$description = (string) $docblock->getDescription();
-
-// Or use the render method to get a string representation of the Description.
-$description = $docblock->getDescription()->render();
 ```
 
-> For more examples it would be best to review the scripts in the [`/examples` folder](/examples).
+> For more examples it would be best to review the scripts in the `/examples` 
+> folder.
+

@@ -1,13 +1,11 @@
 <?php
-
-declare(strict_types=1);
-
 /**
  * phpDocumentor
  *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * PHP Version 5.5
  *
+ * @copyright 2010-2015 Mike van Riel / Naenius (http://www.naenius.com)
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -20,11 +18,15 @@ interface Element
 {
     /**
      * Returns the Fqsen of the element.
+     *
+     * @return Fqsen
      */
-    public function getFqsen() : Fqsen;
+    public function getFqsen();
 
     /**
      * Returns the name of the element.
+     *
+     * @return string
      */
-    public function getName() : string;
+    public function getName();
 }

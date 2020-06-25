@@ -1,13 +1,12 @@
 <?php
-
-declare(strict_types=1);
-
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
+ * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
  * @link      http://phpdoc.org
  */
 
@@ -19,77 +18,75 @@ use phpDocumentor\Reflection\Type;
 use phpDocumentor\Reflection\TypeResolver;
 use phpDocumentor\Reflection\Types\Context as TypeContext;
 use Webmozart\Assert\Assert;
-use function array_shift;
-use function array_unshift;
-use function implode;
-use function preg_split;
-use function strpos;
-use function substr;
-use const PREG_SPLIT_DELIM_CAPTURE;
 
 /**
  * Reflection class for the {@}param tag in a Docblock.
  */
-final class Param extends TagWithType implements Factory\StaticMethod
+final class Param extends BaseTag implements Factory\StaticMethod
 {
-    /** @var string|null */
-    private $variableName;
+    /** @var string */
+    protected $name = 'param';
+
+    /** @var Type */
+    private $type;
+
+    /** @var string */
+    private $variableName = '';
 
     /** @var bool determines whether this is a variadic argument */
-    private $isVariadic;
+    private $isVariadic = false;
 
-    public function __construct(
-        ?string $variableName,
-        ?Type $type = null,
-        bool $isVariadic = false,
-        ?Description $description = null
-    ) {
-        $this->name         = 'param';
+    /**
+     * @param string $variableName
+     * @param Type $type
+     * @param bool $isVariadic
+     * @param Description $description
+     */
+    public function __construct($variableName, Type $type = null, $isVariadic = false, Description $description = null)
+    {
+        Assert::string($variableName);
+        Assert::boolean($isVariadic);
+
         $this->variableName = $variableName;
-        $this->type         = $type;
-        $this->isVariadic   = $isVariadic;
-        $this->description  = $description;
+        $this->type = $type;
+        $this->isVariadic = $isVariadic;
+        $this->description = $description;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function create(
-        string $body,
-        ?TypeResolver $typeResolver = null,
-        ?DescriptionFactory $descriptionFactory = null,
-        ?TypeContext $context = null
-    ) : self {
+        $body,
+        TypeResolver $typeResolver = null,
+        DescriptionFactory $descriptionFactory = null,
+        TypeContext $context = null
+    ) {
         Assert::stringNotEmpty($body);
-        Assert::notNull($typeResolver);
-        Assert::notNull($descriptionFactory);
+        Assert::allNotNull([$typeResolver, $descriptionFactory]);
 
-        [$firstPart, $body] = self::extractTypeFromBody($body);
-
-        $type         = null;
-        $parts        = preg_split('/(\s+)/Su', $body, 2, PREG_SPLIT_DELIM_CAPTURE);
-        Assert::isArray($parts);
+        $parts = preg_split('/(\s+)/Su', $body, 3, PREG_SPLIT_DELIM_CAPTURE);
+        $type = null;
         $variableName = '';
-        $isVariadic   = false;
+        $isVariadic = false;
 
         // if the first item that is encountered is not a variable; it is a type
-        if ($firstPart && $firstPart[0] !== '$') {
-            $type = $typeResolver->resolve($firstPart, $context);
-        } else {
-            // first part is not a type; we should prepend it to the parts array for further processing
-            array_unshift($parts, $firstPart);
+        if (isset($parts[0]) && (strlen($parts[0]) > 0) && ($parts[0][0] !== '$')) {
+            $type = $typeResolver->resolve(array_shift($parts), $context);
+            array_shift($parts);
         }
 
         // if the next item starts with a $ or ...$ it must be the variable name
-        if (isset($parts[0]) && (strpos($parts[0], '$') === 0 || strpos($parts[0], '...$') === 0)) {
+        if (isset($parts[0]) && (strlen($parts[0]) > 0) && ($parts[0][0] == '$' || substr($parts[0], 0, 4) === '...$')) {
             $variableName = array_shift($parts);
             array_shift($parts);
 
-            Assert::notNull($variableName);
-
-            if (strpos($variableName, '...') === 0) {
-                $isVariadic   = true;
+            if (substr($variableName, 0, 3) === '...') {
+                $isVariadic = true;
                 $variableName = substr($variableName, 3);
             }
 
-            if (strpos($variableName, '$') === 0) {
+            if (substr($variableName, 0, 1) === '$') {
                 $variableName = substr($variableName, 1);
             }
         }
@@ -101,28 +98,44 @@ final class Param extends TagWithType implements Factory\StaticMethod
 
     /**
      * Returns the variable's name.
+     *
+     * @return string
      */
-    public function getVariableName() : ?string
+    public function getVariableName()
     {
         return $this->variableName;
     }
 
     /**
-     * Returns whether this tag is variadic.
+     * Returns the variable's type or null if unknown.
+     *
+     * @return Type|null
      */
-    public function isVariadic() : bool
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * Returns whether this tag is variadic.
+     *
+     * @return boolean
+     */
+    public function isVariadic()
     {
         return $this->isVariadic;
     }
 
     /**
      * Returns a string representation for this tag.
+     *
+     * @return string
      */
-    public function __toString() : string
+    public function __toString()
     {
         return ($this->type ? $this->type . ' ' : '')
-            . ($this->isVariadic() ? '...' : '')
-            . ($this->variableName !== null ? '$' . $this->variableName : '')
-            . ($this->description ? ' ' . $this->description : '');
+        . ($this->isVariadic() ? '...' : '')
+        . '$' . $this->variableName
+        . ($this->description ? ' ' . $this->description : '');
     }
 }

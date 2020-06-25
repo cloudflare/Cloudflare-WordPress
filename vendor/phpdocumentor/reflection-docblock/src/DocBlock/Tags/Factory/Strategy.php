@@ -10,9 +10,9 @@
  * @link      http://phpdoc.org
  */
 
-namespace phpDocumentor\Reflection;
+namespace phpDocumentor\Reflection\DocBlock\Tags\Factory;
 
-interface Type
+interface Strategy
 {
-    public function __toString();
+    public function create($body);
 }

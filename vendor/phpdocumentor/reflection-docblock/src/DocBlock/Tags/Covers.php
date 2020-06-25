@@ -1,77 +1,83 @@
 <?php
-
-declare(strict_types=1);
-
 /**
  * This file is part of phpDocumentor.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @link http://phpdoc.org
+ * @copyright 2010-2015 Mike van Riel<mike@phpdoc.org>
+ * @license   http://www.opensource.org/licenses/mit-license.php MIT
+ * @link      http://phpdoc.org
  */
 
 namespace phpDocumentor\Reflection\DocBlock\Tags;
 
-use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\DescriptionFactory;
 use phpDocumentor\Reflection\Fqsen;
-use phpDocumentor\Reflection\FqsenResolver;
+use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\Types\Context as TypeContext;
+use phpDocumentor\Reflection\FqsenResolver;
 use Webmozart\Assert\Assert;
-use function preg_split;
 
 /**
  * Reflection class for a @covers tag in a Docblock.
  */
 final class Covers extends BaseTag implements Factory\StaticMethod
 {
-    /** @var string */
     protected $name = 'covers';
 
     /** @var Fqsen */
-    private $refers;
+    private $refers = null;
 
     /**
      * Initializes this tag.
+     *
+     * @param Fqsen $refers
+     * @param Description $description
      */
-    public function __construct(Fqsen $refers, ?Description $description = null)
+    public function __construct(Fqsen $refers, Description $description = null)
     {
-        $this->refers      = $refers;
+        $this->refers = $refers;
         $this->description = $description;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function create(
-        string $body,
-        ?DescriptionFactory $descriptionFactory = null,
-        ?FqsenResolver $resolver = null,
-        ?TypeContext $context = null
-    ) : self {
+        $body,
+        DescriptionFactory $descriptionFactory = null,
+        FqsenResolver $resolver = null,
+        TypeContext $context = null
+    )
+    {
+        Assert::string($body);
         Assert::notEmpty($body);
-        Assert::notNull($descriptionFactory);
-        Assert::notNull($resolver);
 
         $parts = preg_split('/\s+/Su', $body, 2);
-        Assert::isArray($parts);
 
         return new static(
             $resolver->resolve($parts[0], $context),
-            $descriptionFactory->create($parts[1] ?? '', $context)
+            $descriptionFactory->create(isset($parts[1]) ? $parts[1] : '', $context)
         );
     }
 
     /**
      * Returns the structural element this tag refers to.
+     *
+     * @return Fqsen
      */
-    public function getReference() : Fqsen
+    public function getReference()
     {
         return $this->refers;
     }
 
     /**
      * Returns a string representation of this tag.
+     *
+     * @return string
      */
-    public function __toString() : string
+    public function __toString()
     {
         return $this->refers . ($this->description ? ' ' . $this->description->render() : '');
     }
