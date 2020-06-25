@@ -9,7 +9,7 @@
     "name": "cloudflare/wordpress-plugin", 
     "require": {
         "cloudflare/cf-ip-rewrite": "^1.0.0", 
-        "cloudflare/cloudflare-plugin-backend": "^1.1", 
+        "cloudflare/cloudflare-plugin-backend": "dev-master#d719d4eafff82a4ab92cc0c6ff7b6750ea33d1d6", 
         "symfony/yaml": "~2.6"
     }, 
     "require-dev": {
@@ -21,7 +21,7 @@
         "simplyadmire/composer-plugins": "@dev"
     }, 
     "scripts": {
-        "format": "php vendor/squizlabs/php_codesniffer/scripts/phpcs -n --standard=phpcs.xml", 
+        "format": "php vendor/squizlabs/php_codesniffer/scripts/phpcs -d date.timezone=UTC -n --standard=phpcs.xml", 
         "test": "php vendor/phpunit/phpunit/phpunit", 
         "post-install-cmd": "@php-compatibility-install", 
         "post-update-cmd": "@php-compatibility-install", 
@@ -30,5 +30,5 @@
     "_comment": [
         "php-compatibility-install comes from https://github.com/wimg/PHPCompatibility/issues/102#issuecomment-255778195"
     ], 
-    "version": "3.3.2"
+    "version": "3.4.1"
 }

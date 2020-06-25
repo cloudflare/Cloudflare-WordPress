@@ -34,8 +34,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testBeforeSendAddsRequestHeaders()
     {
-        $apiKey = 'apiKey';
-        $email = 'email';
+        $apiKey = '41db178adf2ef1c82c84db6ca455457646d33';
+        $email = 'test@email.com';
 
         $this->mockDataStore->method('getClientV4APIKey')->willReturn($apiKey);
         $this->mockDataStore->method('getCloudFlareEmail')->willReturn($email);

@@ -34,6 +34,10 @@ Cloudflare’s web application firewall (WAF), available on all of Cloudflare’
 
 Cloudflare’s plugin for WordPress automatically refreshes the Cloudflare cache upon making changes to your website appearance. This means that you can focus on your website, while we take care of ensuring that the freshest content is always available to your visitors.
 
+### Automatic individual URL cache purge on page/post/custom post type edits
+
+Cloudflare’s plugin for WordPress automatically refreshes the Cloudflare cache of each post/page/custom post type when you update the content.
+
 ### Additional Features
 
 - Header rewrites to prevent a redirect loop when Cloudflare’s Universal SSL is enabled.
