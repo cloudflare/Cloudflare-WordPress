@@ -657,6 +657,42 @@ class PHP_CodeSniffer_Tokenizers_PHP
             }
 
             /*
+                Before PHP 7, the ??= operator was tokenized as
+                T_INLINE_THEN, T_INLINE_THEN, T_EQUAL.
+                Between PHP 7.0 and 7.2, the ??= operator was tokenized as
+                T_COALESCE, T_EQUAL.
+                So look for and combine these tokens in earlier versions.
+            */
+
+            if (($tokenIsArray === false
+                && $token[0] === '?'
+                && isset($tokens[($stackPtr + 1)]) === true
+                && $tokens[($stackPtr + 1)][0] === '?'
+                && isset($tokens[($stackPtr + 2)]) === true
+                && $tokens[($stackPtr + 2)][0] === '=')
+                || ($tokenIsArray === true
+                && $token[0] === T_COALESCE
+                && isset($tokens[($stackPtr + 1)]) === true
+                && $tokens[($stackPtr + 1)][0] === '=')
+            ) {
+                $newToken            = array();
+                $newToken['code']    = T_COALESCE_EQUAL;
+                $newToken['type']    = 'T_COALESCE_EQUAL';
+                $newToken['content'] = '??=';
+                $finalTokens[$newStackPtr] = $newToken;
+
+                $newStackPtr++;
+                $stackPtr++;
+
+                if ($tokenIsArray === false) {
+                    // Pre PHP 7.
+                    $stackPtr++;
+                }
+
+                continue;
+            }
+
+            /*
                 Before PHP 7, the ?? operator was tokenized as
                 T_INLINE_THEN followed by T_INLINE_THEN.
                 So look for and combine these tokens in earlier versions.
@@ -686,6 +722,7 @@ class PHP_CodeSniffer_Tokenizers_PHP
                 $newToken            = array();
                 $newToken['content'] = '?';
 
+                $prevNonEmpty = null;
                 for ($i = ($stackPtr - 1); $i >= 0; $i--) {
                     if (is_array($tokens[$i]) === true) {
                         $tokenType = $tokens[$i][0];
@@ -693,18 +730,31 @@ class PHP_CodeSniffer_Tokenizers_PHP
                         $tokenType = $tokens[$i];
                     }
 
+                    if ($prevNonEmpty === null
+                        && isset(PHP_CodeSniffer_Tokens::$emptyTokens[$tokenType]) === false
+                    ) {
+                        // Found the previous non-empty token.
+                        if ($tokenType === ':' || $tokenType === ',') {
+                            $newToken['code'] = T_NULLABLE;
+                            $newToken['type'] = 'T_NULLABLE';
+                            break;
+                        }
+
+                        $prevNonEmpty = $tokenType;
+                    }
+
                     if ($tokenType === T_FUNCTION) {
                         $newToken['code'] = T_NULLABLE;
                         $newToken['type'] = 'T_NULLABLE';
                         break;
-                    } else if (in_array($tokenType, array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, '{', ';')) === true) {
+                    } else if (in_array($tokenType, array(T_OPEN_TAG, T_OPEN_TAG_WITH_ECHO, '=', '{', ';')) === true) {
                         $newToken['code'] = T_INLINE_THEN;
                         $newToken['type'] = 'T_INLINE_THEN';
 
                         $insideInlineIf[] = $stackPtr;
                         break;
                     }
-                }
+                }//end for
 
                 $finalTokens[$newStackPtr] = $newToken;
                 $newStackPtr++;
@@ -1241,11 +1291,13 @@ class PHP_CodeSniffer_Tokenizers_PHP
                 // it is the start of an array being defined using the short syntax.
                 $isShortArray = false;
                 $allowed      = array(
-                                 T_CLOSE_SQUARE_BRACKET => T_CLOSE_SQUARE_BRACKET,
-                                 T_CLOSE_PARENTHESIS    => T_CLOSE_PARENTHESIS,
-                                 T_VARIABLE             => T_VARIABLE,
-                                 T_OBJECT_OPERATOR      => T_OBJECT_OPERATOR,
-                                 T_STRING               => T_STRING,
+                                 T_CLOSE_SQUARE_BRACKET     => T_CLOSE_SQUARE_BRACKET,
+                                 T_CLOSE_CURLY_BRACKET      => T_CLOSE_CURLY_BRACKET,
+                                 T_CLOSE_PARENTHESIS        => T_CLOSE_PARENTHESIS,
+                                 T_VARIABLE                 => T_VARIABLE,
+                                 T_OBJECT_OPERATOR          => T_OBJECT_OPERATOR,
+                                 T_STRING                   => T_STRING,
+                                 T_CONSTANT_ENCAPSED_STRING => T_CONSTANT_ENCAPSED_STRING,
                                 );
 
                 for ($x = ($i - 1); $x > 0; $x--) {
@@ -1257,13 +1309,6 @@ class PHP_CodeSniffer_Tokenizers_PHP
                         break;
                     }
 
-                    if (isset($tokens[$x]['bracket_opener']) === true
-                        && $x > $tokens[$x]['bracket_opener']
-                    ) {
-                        $x = $tokens[$x]['bracket_opener'];
-                        continue;
-                    }
-
                     if (isset(PHP_CodeSniffer_Tokens::$emptyTokens[$tokens[$x]['code']]) === false) {
                         if (isset($allowed[$tokens[$x]['code']]) === false) {
                             $isShortArray = true;
@@ -1271,7 +1316,7 @@ class PHP_CodeSniffer_Tokenizers_PHP
 
                         break;
                     }
-                }//end for
+                }
 
                 if ($isShortArray === true) {
                     $tokens[$i]['code'] = T_OPEN_SHORT_ARRAY;

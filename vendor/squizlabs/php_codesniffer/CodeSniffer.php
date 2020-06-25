@@ -73,7 +73,7 @@ class PHP_CodeSniffer
      *
      * @var string
      */
-    const VERSION = '2.8.0';
+    const VERSION = '2.9.2';
 
     /**
      * Package stability; either stable, beta or alpha.
@@ -1801,7 +1801,7 @@ class PHP_CodeSniffer
                 $this
             );
 
-            $phpcsFile->addError($error, null);
+            $phpcsFile->addError($error, null, 'Internal.Exception');
         }//end try
 
         $cliValues = $this->cli->getCommandLineValues();

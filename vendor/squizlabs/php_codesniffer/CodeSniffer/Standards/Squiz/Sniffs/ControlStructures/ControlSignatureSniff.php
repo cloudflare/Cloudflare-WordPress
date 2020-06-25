@@ -47,6 +47,7 @@ class Squiz_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
         return array(
                 T_TRY,
                 T_CATCH,
+                T_FINALLY,
                 T_DO,
                 T_WHILE,
                 T_FOR,
@@ -232,13 +233,21 @@ class Squiz_Sniffs_ControlStructures_ControlSignatureSniff implements PHP_CodeSn
             || $tokens[$stackPtr]['code'] === T_ELSEIF
             || $tokens[$stackPtr]['code'] === T_CATCH
         ) {
+            if (isset($tokens[$stackPtr]['scope_opener']) === true
+                && $tokens[$tokens[$stackPtr]['scope_opener']]['code'] === T_COLON
+            ) {
+                // Special case for alternate syntax, where this token is actually
+                // the closer for the previous block, so there is no spacing to check.
+                return;
+            }
+
             $closer = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr - 1), null, true);
             if ($closer === false || $tokens[$closer]['code'] !== T_CLOSE_CURLY_BRACKET) {
                 return;
             }
         } else {
             return;
-        }
+        }//end if
 
         // Single space after closing brace.
         $found = 1;

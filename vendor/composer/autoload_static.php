@@ -4,8 +4,12 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit08b7fe62c42ceedbe4992c5aa654e1de
+class ComposerStaticInit5ae5f57f4aab1fea3bfbc61b579ca92d
 {
+    public static $files = array (
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
+    );
+
     public static $prefixLengthsPsr4 = array (
         'p' => 
         array (
@@ -20,12 +24,13 @@ class ComposerStaticInit08b7fe62c42ceedbe4992c5aa654e1de
         ),
         'S' => 
         array (
+            'Symfony\\Polyfill\\Ctype\\' => 23,
             'Symfony\\Component\\Yaml\\' => 23,
         ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
-            'PHPCompatibility\\' => 17,
+            'Prophecy\\' => 9,
         ),
         'D' => 
         array (
@@ -61,6 +66,10 @@ class ComposerStaticInit08b7fe62c42ceedbe4992c5aa654e1de
         array (
             0 => __DIR__ . '/..' . '/webmozart/assert/src',
         ),
+        'Symfony\\Polyfill\\Ctype\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/polyfill-ctype',
+        ),
         'Symfony\\Component\\Yaml\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/yaml',
@@ -69,9 +78,9 @@ class ComposerStaticInit08b7fe62c42ceedbe4992c5aa654e1de
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
-        'PHPCompatibility\\' => 
+        'Prophecy\\' => 
         array (
-            0 => __DIR__ . '/..' . '/wimg/php-compatibility',
+            0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
         ),
         'Doctrine\\Instantiator\\' => 
         array (
@@ -90,13 +99,6 @@ class ComposerStaticInit08b7fe62c42ceedbe4992c5aa654e1de
             'SimplyAdmire\\ComposerPlugins' => 
             array (
                 0 => __DIR__ . '/..' . '/simplyadmire/composer-plugins',
-            ),
-        ),
-        'P' => 
-        array (
-            'Prophecy\\' => 
-            array (
-                0 => __DIR__ . '/..' . '/phpspec/prophecy/src',
             ),
         ),
         'J' => 
@@ -137,6 +139,7 @@ class ComposerStaticInit08b7fe62c42ceedbe4992c5aa654e1de
         'Generic_Sniffs_ControlStructures_InlineControlStructureSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/ControlStructures/InlineControlStructureSniff.php',
         'Generic_Sniffs_Debug_CSSLintSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/Debug/CSSLintSniff.php',
         'Generic_Sniffs_Debug_ClosureLinterSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/Debug/ClosureLinterSniff.php',
+        'Generic_Sniffs_Debug_ESLintSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/Debug/ESLintSniff.php',
         'Generic_Sniffs_Debug_JSHintSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/Debug/JSHintSniff.php',
         'Generic_Sniffs_Files_ByteOrderMarkSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/Files/ByteOrderMarkSniff.php',
         'Generic_Sniffs_Files_EndFileNewlineSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/Generic/Sniffs/Files/EndFileNewlineSniff.php',
@@ -215,9 +218,12 @@ class ComposerStaticInit08b7fe62c42ceedbe4992c5aa654e1de
         'PEAR_Sniffs_WhiteSpace_ScopeClosingBraceSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/PEAR/Sniffs/WhiteSpace/ScopeClosingBraceSniff.php',
         'PEAR_Sniffs_WhiteSpace_ScopeIndentSniff' => __DIR__ . '/..' . '/squizlabs/php_codesniffer/CodeSniffer/Standards/PEAR/Sniffs/WhiteSpace/ScopeIndentSniff.php',
         'PHPUnit\\Framework\\Assert' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/Assert.php',
+        'PHPUnit\\Framework\\AssertionFailedError' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/AssertionFailedError.php',
         'PHPUnit\\Framework\\BaseTestListener' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/BaseTestListener.php',
+        'PHPUnit\\Framework\\Test' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/Test.php',
         'PHPUnit\\Framework\\TestCase' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/TestCase.php',
         'PHPUnit\\Framework\\TestListener' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/TestListener.php',
+        'PHPUnit\\Framework\\TestSuite' => __DIR__ . '/..' . '/phpunit/phpunit/src/ForwardCompatibility/TestSuite.php',
         'PHPUnit_Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',
         'PHPUnit_Extensions_GroupTestSuite' => __DIR__ . '/..' . '/phpunit/phpunit/src/Extensions/GroupTestSuite.php',
         'PHPUnit_Extensions_PhptTestCase' => __DIR__ . '/..' . '/phpunit/phpunit/src/Extensions/PhptTestCase.php',
@@ -814,10 +820,10 @@ class ComposerStaticInit08b7fe62c42ceedbe4992c5aa654e1de
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit08b7fe62c42ceedbe4992c5aa654e1de::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit08b7fe62c42ceedbe4992c5aa654e1de::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit08b7fe62c42ceedbe4992c5aa654e1de::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit08b7fe62c42ceedbe4992c5aa654e1de::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit5ae5f57f4aab1fea3bfbc61b579ca92d::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit5ae5f57f4aab1fea3bfbc61b579ca92d::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit5ae5f57f4aab1fea3bfbc61b579ca92d::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit5ae5f57f4aab1fea3bfbc61b579ca92d::$classMap;
 
         }, null, ClassLoader::class);
     }
