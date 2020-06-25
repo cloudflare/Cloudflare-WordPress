@@ -30,7 +30,7 @@ $cloudflareHooks = new \CF\WordPress\Hooks();
 add_action('plugins_loaded', array($cloudflareHooks, 'getCloudflareRequestJSON'));
 
 // Enable HTTP2 Server Push
-if (defined('CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE') && CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE) {
+if (defined('CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE') && CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE && !is_admin()) {
     add_action('init', array($cloudflareHooks, 'http2ServerPushInit'));
 }
 

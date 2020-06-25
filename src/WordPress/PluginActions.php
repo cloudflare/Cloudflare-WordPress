@@ -79,7 +79,7 @@ class PluginActions extends AbstractPluginActions
             throw new ZoneSettingFailException();
         }
 
-        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'ipv6', array('value' => 'off'));
+        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'ipv6', array('value' => 'on'));
         if (!$result) {
             throw new ZoneSettingFailException();
         }
