@@ -1,5 +1,5 @@
 === Cloudflare ===
-Contributors: icyapril, manatarms, thillcf, deuill
+Contributors: icyapril, manatarms, thillcf, deuill, epatryk
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 5.2.2
@@ -20,10 +20,13 @@ The easiest way to setup Cloudflare for your WordPress site.
 
 Available on all of Cloudflare’s paid plans, the WAF has built-in rulesets, including rules that mitigate WordPress specific threats and vulnerabilities. These security rules are always kept up-to-date, once the WAF is enabled, you can rest easy knowing your site is protected from even the latest threats.
 
-**Automatic cache purge**
+**Automatic cache purge on website updates**
 
 Occurs when you change the appearance of your website. This means that you can focus on your website, while we ensure that the latest content is always available to your visitors.
-(Note: By default, Cloudflare does not cache HTML, and a cache purge is not required on updating HTML content such as publishing a new blog entry).
+
+**Automatic individual URL cache purge on page/post/custom post type edits**
+
+Cloudflare’s plugin for WordPress automatically refreshes the Cloudflare cache of each post/page/custom post type when you update the content.
 
 = Additional features =
 
