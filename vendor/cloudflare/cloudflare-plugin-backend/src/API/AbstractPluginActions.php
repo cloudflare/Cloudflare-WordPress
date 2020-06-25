@@ -90,7 +90,7 @@ abstract class AbstractPluginActions
         }
 
         //Make a test request to see if the API Key, email are valid
-        $testRequest = new Request('GET', 'user/', array(), array());
+        $testRequest = new Request('GET', 'zones/', array(), array());
         $testResponse = $this->clientAPI->callAPI($testRequest);
         if (!$this->clientAPI->responseOk($testResponse)) {
             //remove bad credentials
@@ -164,6 +164,20 @@ abstract class AbstractPluginActions
 
         return $response;
     }
+
+    /**
+     * For GET /userconfig
+     * @return mixed
+     */
+    public function getConfig()
+    {
+        $response = $this->api->createAPISuccessResponse(
+            []
+        );
+
+        return $response;
+    }
+
 
     /**
      * Children should implement this method to apply the plugin specific default settings.

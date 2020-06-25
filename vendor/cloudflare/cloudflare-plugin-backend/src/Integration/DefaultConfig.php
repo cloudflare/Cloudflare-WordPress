@@ -9,7 +9,7 @@ class DefaultConfig implements ConfigInterface
     /**
      * @param $config from file_get_contents()
      */
-    public function __construct($config)
+    public function __construct($config = "[]")
     {
         $this->config = json_decode($config, true);
     }

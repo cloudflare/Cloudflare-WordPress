@@ -3,12 +3,19 @@
 namespace CF\Router\Test;
 
 use CF\API\Client;
+use CF\API\Request;
+use CF\Integration\DefaultConfig;
+use CF\Integration\DefaultLogger;
 use CF\Integration\DefaultIntegration;
+use CF\Integration\DataStoreInterface;
+use CF\Integration\IntegrationAPIInterface;
 use CF\Router\RequestRouter;
+use CF\Router\DefaultRestAPIRouter;
 
 class RequestRouterTest extends \PHPUnit_Framework_TestCase
 {
     protected $mockConfig;
+    protected $mockClient;
     protected $mockAPI;
     protected $mockIntegration;
     protected $mockDataStore;
@@ -18,21 +25,24 @@ class RequestRouterTest extends \PHPUnit_Framework_TestCase
 
     public function setup()
     {
-        $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
+        $this->mockConfig = $this->getMockBuilder(DefaultConfig::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockAPI = $this->getMockBuilder('CF\Integration\IntegrationAPIInterface')
+        $this->mockClient = $this->getMockBuilder(Client::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockDataStore = $this->getMockBuilder('CF\Integration\DataStoreInterface')
+        $this->mockAPI = $this->getMockBuilder(IntegrationAPIInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockLogger = $this->getMockBuilder('CF\Integration\DefaultLogger')
+        $this->mockDataStore = $this->getMockBuilder(DataStoreInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->mockLogger = $this->getMockBuilder(DefaultLogger::class)
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockIntegration = new DefaultIntegration($this->mockConfig, $this->mockAPI, $this->mockDataStore, $this->mockLogger);
 
-        $this->mockRequest = $this->getMockBuilder('CF\API\Request')
+        $this->mockRequest = $this->getMockBuilder(Request::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -41,8 +51,11 @@ class RequestRouterTest extends \PHPUnit_Framework_TestCase
 
     public function testAddRouterAddsRouter()
     {
-        $this->requestRouter->addRouter('CF\API\Client', null);
-        $this->assertEquals('CF\Router\DefaultRestAPIRouter', get_class($this->requestRouter->getRouterList()[Client::CLIENT_API_NAME]));
+        $clientName = "clientName";
+        $this->mockClient->method('getAPIClientName')->willReturn($clientName);
+
+        $this->requestRouter->addRouter($this->mockClient, null);
+        $this->assertEquals(DefaultRestAPIRouter::class, get_class($this->requestRouter->getRouterList()[$clientName]));
     }
 
     public function testRoutePassesValidRequestToDefaultRestAPIRouter()
