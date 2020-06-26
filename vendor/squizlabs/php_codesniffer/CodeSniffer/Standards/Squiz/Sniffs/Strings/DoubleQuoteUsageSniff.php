@@ -131,13 +131,14 @@ class Squiz_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Snif
         }
 
         $error = 'String %s does not require double quotes; use single quotes instead';
-        $data  = array(str_replace("\n", '\n', $workingString));
+        $data  = array(str_replace(array("\r", "\n"), array('\r', '\n'), $workingString));
         $fix   = $phpcsFile->addFixableError($error, $stackPtr, 'NotRequired', $data);
 
         if ($fix === true) {
             $phpcsFile->fixer->beginChangeset();
             $innerContent = substr($workingString, 1, -1);
             $innerContent = str_replace('\"', '"', $innerContent);
+            $innerContent = str_replace('\\$', '$', $innerContent);
             $phpcsFile->fixer->replaceToken($stackPtr, "'$innerContent'");
             while ($lastStringToken !== $stackPtr) {
                 $phpcsFile->fixer->replaceToken($lastStringToken, '');
