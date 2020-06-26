@@ -1539,7 +1539,7 @@ class PHP_CodeSniffer_File
                     $numTabs = strlen($tokens[$i]['content']);
 
                     $newContent   = '';
-                    $firstTabSize = ($tabWidth - ($currColumn % $tabWidth) + 1);
+                    $firstTabSize = ($tabWidth - (($currColumn - 1) % $tabWidth));
                     $length       = ($firstTabSize + ($tabWidth * ($numTabs - 1)));
                     $currColumn  += $length;
                     $newContent   = str_repeat(' ', $length);
@@ -1763,7 +1763,7 @@ class PHP_CodeSniffer_File
                 }
                 break;
             default:
-                continue;
+                continue 2;
             }//end switch
         }//end for
 
@@ -2258,7 +2258,7 @@ class PHP_CodeSniffer_File
                         // current scope opener, so it must be a string offset.
                         if (PHP_CODESNIFFER_VERBOSITY > 1) {
                             echo str_repeat("\t", $depth);
-                            echo '* ignoring curly brace *'.PHP_EOL;
+                            echo '* ignoring curly brace inside condition *'.PHP_EOL;
                         }
 
                         $ignore++;
@@ -2269,15 +2269,21 @@ class PHP_CodeSniffer_File
                             if (isset(PHP_CodeSniffer_Tokens::$emptyTokens[$tokens[$x]['code']]) === true) {
                                 continue;
                             } else {
-                                // If the first non-whitespace/comment token is a
-                                // variable or object operator then this is an opener
-                                // for a string offset and not a scope.
-                                if ($tokens[$x]['code'] === T_VARIABLE
-                                    || $tokens[$x]['code'] === T_OBJECT_OPERATOR
-                                ) {
+                                // If the first non-whitespace/comment token looks like this
+                                // brace is a string offset, or this brace is mid-way through
+                                // a new statement, it isn't a scope opener.
+                                $disallowed  = PHP_CodeSniffer_Tokens::$assignmentTokens;
+                                $disallowed += array(
+                                                T_VARIABLE         => true,
+                                                T_OBJECT_OPERATOR  => true,
+                                                T_COMMA            => true,
+                                                T_OPEN_PARENTHESIS => true,
+                                               );
+
+                                if (isset($disallowed[$tokens[$x]['code']]) === true) {
                                     if (PHP_CODESNIFFER_VERBOSITY > 1) {
                                         echo str_repeat("\t", $depth);
-                                        echo '* ignoring curly brace *'.PHP_EOL;
+                                        echo '* ignoring curly brace after condition *'.PHP_EOL;
                                     }
 
                                     $ignore++;
@@ -2653,13 +2659,13 @@ class PHP_CodeSniffer_File
      * Returns the declaration names for classes, interfaces, and functions.
      *
      * @param int $stackPtr The position of the declaration token which
-     *                      declared the class, interface or function.
+     *                      declared the class, interface, trait or function.
      *
      * @return string|null The name of the class, interface or function.
      *                     or NULL if the function or class is anonymous.
      * @throws PHP_CodeSniffer_Exception If the specified token is not of type
      *                                   T_FUNCTION, T_CLASS, T_ANON_CLASS,
-     *                                   or T_INTERFACE.
+     *                                   T_TRAIT or T_INTERFACE.
      */
     public function getDeclarationName($stackPtr)
     {
@@ -2669,9 +2675,7 @@ class PHP_CodeSniffer_File
             return null;
         }
 
-        if ($tokenCode === T_FUNCTION
-            && $this->isAnonymousFunction($stackPtr) === true
-        ) {
+        if ($tokenCode === T_CLOSURE) {
             return null;
         }
 
@@ -2752,6 +2756,7 @@ class PHP_CodeSniffer_File
      *         'name'              => '$var',  // The variable name.
      *         'content'           => string,  // The full content of the variable definition.
      *         'pass_by_reference' => boolean, // Is the variable passed by reference?
+     *         'variable_length'   => boolean, // Is the param of variable length through use of `...` ?
      *         'type_hint'         => string,  // The type hint for the variable.
      *         'nullable_type'     => boolean, // Is the variable using a nullable type?
      *        )
@@ -2875,7 +2880,7 @@ class PHP_CodeSniffer_File
                 // If it's null, then there must be no parameters for this
                 // method.
                 if ($currVar === null) {
-                    continue;
+                    continue 2;
                 }
 
                 $vars[$paramCount]            = array();
