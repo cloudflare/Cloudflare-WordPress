@@ -17,5 +17,9 @@ install:
     - composer install
 
 script:
-    - composer format
+    - |
+      composer run-script format || exit_code=$?
+      if (( exit_code > 1 )) ; then
+          exit $exit_code
+      fi
     - composer test
