@@ -149,4 +149,10 @@ class AbstractPluginActionsTest extends \PHPUnit_Framework_TestCase
         $this->mockAbstractPluginActions->expects($this->once())->method('applyDefaultSettings');
         $this->mockAbstractPluginActions->patchPluginSettings();
     }
+
+    public function testGetUserConfigReturnsEmptyJson()
+    {
+        $this->mockAPIClient->expects($this->once())->method('createAPISuccessResponse')->with([]);
+        $this->mockAbstractPluginActions->getConfig();
+    }
 }

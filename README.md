@@ -1,6 +1,6 @@
 # Cloudflare’s Plugin for WordPress
 
-[![Build Status](https://travis-ci.org/cloudflare/Cloudflare-WordPress.svg?branch=master)](https://travis-ci.org/cloudflare/Cloudflare-WordPress)
+![build status](https://github.com/cloudflare/Cloudflare-WordPress/workflows/PHP%20Composer/badge.svg)
 
 Cloudflare’s WordPress plugin brings all of the benefits of Cloudflare into your WordPress dashboard for configuration, including a one-click application of default settings specifically optimized for WordPress.
 
@@ -33,6 +33,10 @@ Cloudflare’s web application firewall (WAF), available on all of Cloudflare’
 ### Automatic cache purge on website updates
 
 Cloudflare’s plugin for WordPress automatically refreshes the Cloudflare cache upon making changes to your website appearance. This means that you can focus on your website, while we take care of ensuring that the freshest content is always available to your visitors.
+
+### Automatic individual URL cache purge on page/post/custom post type edits
+
+Cloudflare’s plugin for WordPress automatically refreshes the Cloudflare cache of each post/page/custom post type when you update the content.
 
 ### Additional Features
 

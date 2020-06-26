@@ -10,9 +10,9 @@
         }
     ],
     "require": {
-        "php": ">=5.5",
-        "phpdocumentor/reflection-common": "^1.0@dev",
-        "phpdocumentor/type-resolver": "^0.2.0",
+        "php": "^5.6 || ^7.0",
+        "phpdocumentor/reflection-common": "^1.0.0",
+        "phpdocumentor/type-resolver": "^0.4.0",
         "webmozart/assert": "^1.0"
     },
     "autoload": {

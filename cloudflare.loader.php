@@ -30,7 +30,7 @@ $cloudflareHooks = new \CF\WordPress\Hooks();
 add_action('plugins_loaded', array($cloudflareHooks, 'getCloudflareRequestJSON'));
 
 // Enable HTTP2 Server Push
-if (defined('CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE') && CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE) {
+if (defined('CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE') && CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE && !is_admin()) {
     add_action('init', array($cloudflareHooks, 'http2ServerPushInit'));
 }
 
@@ -86,6 +86,7 @@ $cloudflarePurgeURLActionsDefault = array(
     'deleted_post',                     // Delete a post
     'edit_post',                        // Edit a post - includes leaving comments
     'delete_attachment',                // Delete an attachment - includes re-uploading
+    'post_updated',                     // Update a post
 );
 
 $cloudflarePurgeURLActions = apply_filters('cloudflare_purge_url_actions', $cloudflarePurgeURLActionsDefault);

@@ -3,6 +3,7 @@
 namespace CF\API;
 
 use Guzzle\Http\Exception\BadResponseException;
+use CF\Integration\IntegrationInterface;
 
 class Client extends AbstractAPIClient
 {
@@ -10,6 +11,8 @@ class Client extends AbstractAPIClient
     const ENDPOINT = 'https://api.cloudflare.com/client/v4/';
     const X_AUTH_KEY = 'X-Auth-Key';
     const X_AUTH_EMAIL = 'X-Auth-Email';
+    const AUTHORIZATION = 'Authorization';
+    const AUTH_KEY_LEN = 37;
 
     /**
      * @param Request $request
@@ -18,11 +21,21 @@ class Client extends AbstractAPIClient
      */
     public function beforeSend(Request $request)
     {
+        $key = $this->data_store->getClientV4APIKey();
         $headers = array(
-            self::X_AUTH_KEY => $this->data_store->getClientV4APIKey(),
-            self::X_AUTH_EMAIL => $this->data_store->getCloudFlareEmail(),
             self::CONTENT_TYPE_KEY => self::APPLICATION_JSON_KEY,
         );
+
+        // Determine authentication method from key format. Global API keys are
+        // always returned in hexadecimal format, while API Tokens are encoded
+        // using a wider range of characters.
+        if (strlen($key) === self::AUTH_KEY_LEN && preg_match('/^[0-9a-f]+$/', $key)) {
+            $headers[self::X_AUTH_EMAIL] = $this->data_store->getCloudFlareEmail();
+            $headers[self::X_AUTH_KEY] = $key;
+        } else {
+            $headers[self::AUTHORIZATION] = "Bearer {$key}";
+        }
+
         $request->setHeaders($headers);
 
         // Remove cfCSRFToken (a custom header) to save bandwidth
@@ -79,7 +92,7 @@ class Client extends AbstractAPIClient
      */
     public function responseOk($response)
     {
-        return $response['success'] === true;
+        return isset($response['success']) ? $response['success'] : false;
     }
 
     /**
