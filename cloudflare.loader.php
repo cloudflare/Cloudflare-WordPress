@@ -52,13 +52,13 @@ if (is_admin()) {
 }
 
 // Load Automatic Cache Purge
-$cloudflarePurgeEverythingActionsDefault = array(
+$cloudflarePurgeEverythingActions = array(
     'autoptimize_action_cachepurged',   // Compat with https://wordpress.org/plugins/autoptimize
     'switch_theme',                     // Switch theme
     'customize_save_after'              // Edit theme
 );
 
-$cloudflarePurgeEverythingActions = apply_filters('cloudflare_purge_everything_actions', $cloudflarePurgeEverythingActionsDefault);
+$cloudflarePurgeEverythingActions = apply_filters('cloudflare_purge_everything_actions', $cloudflarePurgeEverythingActions);
 
 foreach ($cloudflarePurgeEverythingActions as $action) {
     add_action($action, array($cloudflareHooks, 'purgeCacheEverything'), PHP_INT_MAX);
@@ -82,14 +82,14 @@ foreach ($cloudflarePurgeEverythingActions as $action) {
  * add_filter('cloudflare_purge_by_url', your_cloudflare_url_filter, 10, 2);
  */
 
-$cloudflarePurgeURLActionsDefault = array(
+$cloudflarePurgeURLActions = array(
     'deleted_post',                     // Delete a post
     'edit_post',                        // Edit a post - includes leaving comments
     'delete_attachment',                // Delete an attachment - includes re-uploading
     'post_updated',                     // Update a post
 );
 
-$cloudflarePurgeURLActions = apply_filters('cloudflare_purge_url_actions', $cloudflarePurgeURLActionsDefault);
+$cloudflarePurgeURLActions = apply_filters('cloudflare_purge_url_actions', $cloudflarePurgeURLActions);
 
 foreach ($cloudflarePurgeURLActions as $action) {
     add_action($action, array($cloudflareHooks, 'purgeCacheByRevelantURLs'), PHP_INT_MAX, 2);
