@@ -44,7 +44,10 @@ jobs:
     - name: Format
       run: |
         composer run-script format
-        if [ "$?" -eq 1 ]; then exit 0; fi
+        if [ "$?" -eq 1 ]
+        then 
+          $(exit 0)
+        fi
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
