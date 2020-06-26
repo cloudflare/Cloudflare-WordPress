@@ -3,13 +3,22 @@
 Plugin Name: Cloudflare
 Plugin URI: https://blog.cloudflare.com/new-wordpress-plugin/
 Description: Cloudflare speeds up and protects your WordPress site.
-Version: 3.3.2
-Author: John Wineman, Furkan Yilmaz, Junade Ali (Cloudflare Team)
+Version: 3.4.1
+Author: Cloudflare, Inc.
 License: BSD-3-Clause
 */
 
-// To enable HTTP2 Server Push feature, add the following line to wp-config.php file
+// The following constants are available. Add them to wp-config.php to enable.
+
+// To enable HTTP/2 Server Push feature:
 // define('CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE', true);
+
+// Cloudflare has a limit of how many resourses can be pushed by HTTP/2 Server Push
+// (3 KiB by default). Add the following to change that amount:
+// define('CLOUDFLARE_HTTP2_SERVER_PUSH_HEADER_SIZE', 3072);
+
+// To enable error logging when HTTP/2 Server Push header size is exceeded:
+// define('CLOUDFLARE_HTTP2_SERVER_PUSH_LOG', true);
 
 // Exit if accessed directly
 if (!defined('ABSPATH')) {

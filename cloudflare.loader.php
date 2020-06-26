@@ -30,7 +30,7 @@ $cloudflareHooks = new \CF\WordPress\Hooks();
 add_action('plugins_loaded', array($cloudflareHooks, 'getCloudflareRequestJSON'));
 
 // Enable HTTP2 Server Push
-if (defined('CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE') && CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE) {
+if (defined('CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE') && CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE && !is_admin()) {
     add_action('init', array($cloudflareHooks, 'http2ServerPushInit'));
 }
 
@@ -58,12 +58,14 @@ $cloudflarePurgeEverythingActions = array(
     'customize_save_after'              // Edit theme
 );
 
+$cloudflarePurgeEverythingActions = apply_filters('cloudflare_purge_everything_actions', $cloudflarePurgeEverythingActions);
+
 foreach ($cloudflarePurgeEverythingActions as $action) {
     add_action($action, array($cloudflareHooks, 'purgeCacheEverything'), PHP_INT_MAX);
 }
 
 /**
- * You can filter the list of URLs that get purged by Cloudflare after a post is 
+ * You can filter the list of URLs that get purged by Cloudflare after a post is
  * modified by implementing a filter for the "cloudflare_purge_by_url" hook.
  *
  * @Example:
@@ -79,11 +81,15 @@ foreach ($cloudflarePurgeEverythingActions as $action) {
  *
  * add_filter('cloudflare_purge_by_url', your_cloudflare_url_filter, 10, 2);
  */
+
 $cloudflarePurgeURLActions = array(
     'deleted_post',                     // Delete a post
     'edit_post',                        // Edit a post - includes leaving comments
     'delete_attachment',                // Delete an attachment - includes re-uploading
+    'post_updated',                     // Update a post
 );
+
+$cloudflarePurgeURLActions = apply_filters('cloudflare_purge_url_actions', $cloudflarePurgeURLActions);
 
 foreach ($cloudflarePurgeURLActions as $action) {
     add_action($action, array($cloudflareHooks, 'purgeCacheByRevelantURLs'), PHP_INT_MAX, 2);

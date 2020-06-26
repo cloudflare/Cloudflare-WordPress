@@ -3,6 +3,7 @@
 namespace CF\WordPress;
 
 use CF\API;
+use CF\API\Plugin;
 use CF\Integration\IntegrationInterface;
 use CF\Router\RequestRouter;
 
@@ -27,10 +28,11 @@ class Proxy
         $this->wordpressAPI = $integration->getIntegrationAPI();
         $this->wordpressIntegration = $integration;
         $this->wordpressClientAPI = new WordPressClientAPI($this->wordpressIntegration);
+        $this->pluginAPI = new Plugin($this->wordpressIntegration);
 
         $this->requestRouter = new RequestRouter($this->wordpressIntegration);
-        $this->requestRouter->addRouter('\CF\WordPress\WordPressClientAPI', ClientRoutes::$routes);
-        $this->requestRouter->addRouter('\CF\API\Plugin', PluginRoutes::getRoutes(PluginRoutes::$routes));
+        $this->requestRouter->addRouter($this->wordpressClientAPI, ClientRoutes::$routes);
+        $this->requestRouter->addRouter($this->pluginAPI, PluginRoutes::getRoutes(PluginRoutes::$routes));
     }
 
     /**
