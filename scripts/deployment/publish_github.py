@@ -15,11 +15,11 @@ GIT_REPOSITORY_RELEASES = "https://github.com/cloudflare/Cloudflare-WordPress/re
 
 
 def print_shiny(printable):
-    print '=========================================='
-    print
-    print printable
-    print
-    print '=========================================='
+    print('==========================================')
+    print()
+    print(printable)
+    print()
+    print('==========================================')
 
 
 def run_composer_test():
@@ -30,7 +30,7 @@ def read_version():
     with open(COMPOSER_FILE_NAME, 'r+') as f:
         data = json.load(f)
         version = data['version']
-        print "Current version: " + version
+        print("Current version: " + version)
         return version
 
 
@@ -44,7 +44,7 @@ def ask_for_new_version(version):
     v_patch = 0
     suggested_version = "%d.%d.%d" % (v_major, v_minor, v_patch)
 
-    new_version = raw_input("Enter a version number [%s]: " % suggested_version)
+    new_version = input("Enter a version number [%s]: " % suggested_version)
     if new_version == "":
         new_version = suggested_version
 
@@ -110,17 +110,17 @@ def update_version_number_in_cloudflare_php(new_version):
 
 
 def set_version(new_version):
-    print "Will set new version to be %s" % new_version
+    print("Will set new version to be %s" % new_version)
     number_of_files_updated = 0
     number_of_files_updated += update_version_number_in_composer_json(new_version)
     number_of_files_updated += update_version_number_in_readme_txt(new_version)
     number_of_files_updated += update_version_number_in_cloudflare_php(new_version)
     number_of_files_updated += update_version_number_in_config_json(new_version)
     if number_of_files_updated != 4:
-        print "Failed updating version numbers"
+        print("Failed updating version numbers")
         sys.exit()
 
-    print "Version numbers updated to %s" % new_version
+    print("Version numbers updated to %s" % new_version)
 
 
 def git_commit_and_push(new_version):
