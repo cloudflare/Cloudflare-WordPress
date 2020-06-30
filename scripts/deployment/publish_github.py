@@ -110,7 +110,7 @@ def update_version_number_in_cloudflare_php(new_version):
 
 
 def set_version(new_version):
-    print "Will set new version to be %s" % (new_version)
+    print "Will set new version to be %s" % new_version
     number_of_files_updated = 0
     number_of_files_updated += update_version_number_in_composer_json(new_version)
     number_of_files_updated += update_version_number_in_readme_txt(new_version)
@@ -120,7 +120,7 @@ def set_version(new_version):
         print "Failed updating version numbers"
         sys.exit()
 
-    print "Version numbers updated to %s" % (new_version)
+    print "Version numbers updated to %s" % new_version
 
 
 def git_commit_and_push(new_version):
@@ -128,8 +128,8 @@ def git_commit_and_push(new_version):
     subprocess.check_output(['git', 'add', README_FILE_NAME])
     subprocess.check_output(['git', 'add', CLOUDFLARE_PHP_FILE_NAME])
     subprocess.check_output(['git', 'add', CONFIG_FILE_NAME])
-    subprocess.check_output(['git', 'commit', '-m', "Version bump to %s" % (new_version)])
-    subprocess.check_output(['git', 'tag', '-a', "v%s" % (new_version), '-m', "'Tagging version %s'" % (new_version)])
+    subprocess.check_output(['git', 'commit', '-m', "Version bump to %s" % new_version])
+    subprocess.check_output(['git', 'tag', '-a', "v%s" % new_version, '-m', "'Tagging version %s'" % new_version])
     subprocess.check_output(['git', 'push', 'origin', '--tags'])
     subprocess.check_output(['git', 'push', 'origin'])
 
