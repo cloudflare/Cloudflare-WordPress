@@ -70,7 +70,7 @@ class Proxy
             }
         }
 
-        //die is how wordpress ajax keeps the rest of the app from loading during an ajax request
+        //die is how WordPress ajax keeps the rest of the app from loading during an ajax request
         wp_die(json_encode($response));
     }
 
