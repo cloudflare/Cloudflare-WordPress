@@ -106,7 +106,7 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 *Fixed*
 
 * Updated list of contributors.
-* Updated tested Wordpress version to latest (5.2.2).
+* Updated tested WordPress version to latest (5.2.2).
 
 = 3.4.0 - 2019-08-29 =
 
