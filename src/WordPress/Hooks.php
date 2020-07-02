@@ -157,11 +157,15 @@ class Hooks
             $zoneTag = $this->api->getZoneTag($wpDomain);
 
             if (isset($zoneTag) && !empty($urls)) {
-                $isOK = $this->api->zonePurgeFiles($zoneTag, $urls);
+                $chunks = array_chunk($urls, 30);
 
-                $isOK = ($isOK) ? 'succeeded' : 'failed';
-                $this->logger->debug("List of URLs purged are: " . print_r($urls, true));
-                $this->logger->debug("purgeCacheByRevelantURLs " . $isOK);
+                foreach ($chunks as $chunk) {
+                    $isOK = $this->api->zonePurgeFiles($zoneTag, $chunk);
+
+                    $isOK = ($isOK) ? 'succeeded' : 'failed';
+                    $this->logger->debug("List of URLs purged are: " . print_r($chunk, true));
+                    $this->logger->debug("purgeCacheByRevelantURLs " . $isOK);
+                }
             }
         }
     }
