@@ -186,9 +186,9 @@ class WordPressClientAPI extends Client
             $request->setParameters($parameters);
             $pagedResponse = $this->sendRequest($request);
             $mergedResponse['result'] = array_merge($mergedResponse['result'], $pagedResponse['result']);
-            
+
             // Notify the frontend that pagination is taken care.
-            $mergedResponse['result_info']['notify'] = 'Backend has taken care of pagination. Ouput is merged in results.';
+            $mergedResponse['result_info']['notify'] = 'Backend has taken care of pagination. Output is merged in results.';
             $mergedResponse['result_info']['page'] = -1;
             $mergedResponse['result_info']['count'] = -1;
             $currentPage++;

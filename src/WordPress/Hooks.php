@@ -126,7 +126,7 @@ class Hooks
         }
     }
 
-    public function purgeCacheByRevelantURLs($postId)
+    public function purgeCacheByRelevantURLs($postId)
     {
         if ($this->isPluginSpecificCacheEnabled()) {
             $wpDomainList = $this->integrationAPI->getDomainList();
@@ -164,7 +164,7 @@ class Hooks
 
                     $isOK = ($isOK) ? 'succeeded' : 'failed';
                     $this->logger->debug("List of URLs purged are: " . print_r($chunk, true));
-                    $this->logger->debug("purgeCacheByRevelantURLs " . $isOK);
+                    $this->logger->debug("purgeCacheByRelevantURLs " . $isOK);
                 }
             }
         }
@@ -236,7 +236,7 @@ class Hooks
         if (is_string($pageLink) && !empty($pageLink) && get_option('show_on_front') == 'page') {
             array_push($listofurls, $pageLink);
         }
-        
+
         // Attachments
         if ('attachment' == $postType) {
             $attachmentUrls = array();
