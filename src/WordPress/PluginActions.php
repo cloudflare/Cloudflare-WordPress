@@ -24,7 +24,7 @@ class PluginActions extends AbstractPluginActions
 
     public function setClientAPI(APIInterface $clientAPI)
     {
-        // Inheirited from AbstractPluginActions
+        // Inherited from AbstractPluginActions
         $this->clientAPI = $clientAPI;
     }
 

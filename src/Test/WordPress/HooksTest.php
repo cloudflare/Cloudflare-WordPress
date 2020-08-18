@@ -55,7 +55,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase
         $this->hooks->setProxy($this->mockProxy);
     }
 
-    public function testCloudflareConfigPageCallsAddOptionsPageHookIfItExsits()
+    public function testCloudflareConfigPageCallsAddOptionsPageHookIfItExists()
     {
         $mockFunctionExists = $this->getFunctionMock('CF\WordPress', 'function_exists');
         $mockFunctionExists->expects($this->once())->willReturn(true);

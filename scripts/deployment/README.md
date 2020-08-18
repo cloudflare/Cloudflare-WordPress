@@ -1,7 +1,7 @@
 # Releasing New Version Of Cloudflare WordPress Plugin
 
 ## Overview
-Releasing updates to the Cloudflafre WordPress plugin happens in 3 major phases: 
+Releasing updates to the Cloudflare WordPress plugin happens in 3 major phases: 
 
 1. Publishing [a release on GitHub](https://github.com/cloudflare/Cloudflare-WordPress/releases)
 2. Cloning this same release locally by referencing its tag. 
