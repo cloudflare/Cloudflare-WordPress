@@ -69,13 +69,25 @@ abstract class AbstractAPIClient implements APIInterface
                 'type' => 'request',
                 'method' => $request->getMethod(),
                 'path' => $request->getUrl(),
-                'headers' => $request->getHeaders(),
+                'headers' => $this->sanitizeHeaders($request)->getHeaders(),
                 'params' => $request->getParameters(),
                 'body' => $request->getBody(), ), true);
             $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'code' => $e->getCode(), 'body' => $errorMessage, 'stacktrace' => $e->getTraceAsString()), true);
 
             return $this->createAPIError($errorMessage);
         }
+    }
+
+    /**
+     * @param Request $request
+     * @return Request
+     */
+    public function sanitizeHeaders(Request $request)
+    {
+        $request->removeHeader('Authorization');
+        $request->removeHeader('X-Auth-Email');
+        $request->removeHeader('X-Auth-Key');
+        return $request;
     }
 
     /**

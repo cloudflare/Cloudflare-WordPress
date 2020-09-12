@@ -53,12 +53,12 @@
         "source": {
             "type": "git",
             "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",
-            "reference": "d719d4eafff82a4ab92cc0c6ff7b6750ea33d1d6"
+            "reference": "733042d5b96715e883ae77b351fa2fe60e44217d"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/d719d4eafff82a4ab92cc0c6ff7b6750ea33d1d6",
-            "reference": "d719d4eafff82a4ab92cc0c6ff7b6750ea33d1d6",
+            "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/733042d5b96715e883ae77b351fa2fe60e44217d",
+            "reference": "733042d5b96715e883ae77b351fa2fe60e44217d",
             "shasum": ""
         },
         "require": {
@@ -1015,7 +1015,8 @@
         "homepage": "https://github.com/sebastianbergmann/php-token-stream/",
         "keywords": [
             "tokenizer"
-        ]
+        ],
+        "abandoned": true
     },
     {
         "name": "phpunit/phpunit",
