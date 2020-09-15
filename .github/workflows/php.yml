@@ -42,6 +42,7 @@ jobs:
       run: composer install --prefer-dist --no-progress --no-suggest
 
     - name: Format
+      if: matrix.php-versions == '7.3'
       run: |
         composer run-script format || exit_code=$?
         if (( exit_code > 1 )) ; then

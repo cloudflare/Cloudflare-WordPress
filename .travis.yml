@@ -18,8 +18,10 @@ install:
 
 script:
     - |
-      composer run-script format || exit_code=$?
-      if (( exit_code > 1 )) ; then
-          exit $exit_code
+      if [[ $TRAVIS_PHP_VERSION == "7.3" ]]; then
+        composer run-script format || exit_code=$?
+        if (( exit_code > 1 )) ; then
+            exit $exit_code
+        fi
       fi
     - composer test
