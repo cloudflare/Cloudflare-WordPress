@@ -22,12 +22,9 @@
         "phpdocumentor/reflection-docblock": "^3.3.2"
     },
     "scripts": {
-        "format": "php vendor/bin/phpcs -d date.timezone=UTC", 
+        "format": "php vendor/bin/phpcs",
         "test": "php vendor/bin/phpunit"
     }, 
-    "_comment": [
-        "php-compatibility-install comes from https://github.com/wimg/PHPCompatibility/issues/102#issuecomment-255778195"
-    ], 
     "version": "3.5.1",
     "config": {
         "platform": {
