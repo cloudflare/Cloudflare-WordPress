@@ -1015,7 +1015,8 @@
         "homepage": "https://github.com/sebastianbergmann/php-token-stream/",
         "keywords": [
             "tokenizer"
-        ]
+        ],
+        "abandoned": true
     },
     {
         "name": "phpunit/phpunit",
@@ -1744,61 +1745,6 @@
         ],
         "description": "Library that helps with managing the version number of Git-hosted PHP projects",
         "homepage": "https://github.com/sebastianbergmann/version"
-    },
-    {
-        "name": "simplyadmire/composer-plugins",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/SimplyAdmire/ComposerPlugins.git",
-            "reference": "d8380f670694c1c2330b22591ca74adc82cffe19"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/SimplyAdmire/ComposerPlugins/zipball/d8380f670694c1c2330b22591ca74adc82cffe19",
-            "reference": "d8380f670694c1c2330b22591ca74adc82cffe19",
-            "shasum": ""
-        },
-        "require": {
-            "composer-plugin-api": "^1.0",
-            "squizlabs/php_codesniffer": "*"
-        },
-        "time": "2016-05-12T11:58:38+00:00",
-        "type": "composer-plugin",
-        "extra": {
-            "class": [
-                "SimplyAdmire\\ComposerPlugins\\PhpCodesnifferStandardInstallerPlugin"
-            ]
-        },
-        "installation-source": "source",
-        "autoload": {
-            "psr-0": {
-                "SimplyAdmire\\ComposerPlugins": ""
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "LGPL-3.0+"
-        ],
-        "authors": [
-            {
-                "name": "Rens Admiraal",
-                "email": "rens@simplyadmire.com",
-                "role": "lead"
-            }
-        ],
-        "description": "Composer plugin for installing PHP_CodeSniffer standards",
-        "keywords": [
-            "PHP_CodeSniffer",
-            "TYPO3 CMS",
-            "TYPO3 Flow",
-            "TYPO3 Neos",
-            "phpcs",
-            "standards",
-            "typo3"
-        ],
-        "abandoned": true
     },
     {
         "name": "squizlabs/php_codesniffer",

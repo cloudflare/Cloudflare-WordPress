@@ -105,13 +105,6 @@ class ComposerStaticInit6f7979399f910d16693a25d8ea59cb8f
     );
 
     public static $prefixesPsr0 = array (
-        'S' => 
-        array (
-            'SimplyAdmire\\ComposerPlugins' => 
-            array (
-                0 => __DIR__ . '/..' . '/simplyadmire/composer-plugins',
-            ),
-        ),
         'J' => 
         array (
             'JohnKary' => 

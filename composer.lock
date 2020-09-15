@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6064d5a27568081be9ea69c5d8bc3e7",
+    "content-hash": "ab8080ff40a83feebc1c6afe55ba33e6",
     "packages": [
         {
             "name": "cloudflare/cf-ip-rewrite",
@@ -1159,6 +1159,7 @@
             "keywords": [
                 "tokenizer"
             ],
+            "abandoned": true,
             "time": "2017-12-04T08:55:13+00:00"
         },
         {
@@ -1817,59 +1818,6 @@
             "time": "2016-10-03T07:35:21+00:00"
         },
         {
-            "name": "simplyadmire/composer-plugins",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/SimplyAdmire/ComposerPlugins.git",
-                "reference": "d8380f670694c1c2330b22591ca74adc82cffe19"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/SimplyAdmire/ComposerPlugins/zipball/d8380f670694c1c2330b22591ca74adc82cffe19",
-                "reference": "d8380f670694c1c2330b22591ca74adc82cffe19",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.0",
-                "squizlabs/php_codesniffer": "*"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": [
-                    "SimplyAdmire\\ComposerPlugins\\PhpCodesnifferStandardInstallerPlugin"
-                ]
-            },
-            "autoload": {
-                "psr-0": {
-                    "SimplyAdmire\\ComposerPlugins": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Rens Admiraal",
-                    "email": "rens@simplyadmire.com",
-                    "role": "lead"
-                }
-            ],
-            "description": "Composer plugin for installing PHP_CodeSniffer standards",
-            "keywords": [
-                "PHP_CodeSniffer",
-                "TYPO3 CMS",
-                "TYPO3 Flow",
-                "TYPO3 Neos",
-                "phpcs",
-                "standards",
-                "typo3"
-            ],
-            "abandoned": true,
-            "time": "2016-05-12T11:58:38+00:00"
-        },
-        {
             "name": "squizlabs/php_codesniffer",
             "version": "2.9.2",
             "source": {
@@ -2000,8 +1948,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "cloudflare/cloudflare-plugin-backend": 20,
-        "simplyadmire/composer-plugins": 20
+        "cloudflare/cloudflare-plugin-backend": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
