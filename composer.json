@@ -18,7 +18,7 @@
         "phpunit/phpunit": "5.*", 
         "squizlabs/php_codesniffer": "2.*", 
         "phpcompatibility/php-compatibility": "*",
-        "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7",
         "phpdocumentor/reflection-docblock": "^3.3.2"
     }, 
     "scripts": {
