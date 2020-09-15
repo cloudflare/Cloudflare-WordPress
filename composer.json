@@ -22,7 +22,7 @@
         "phpdocumentor/reflection-docblock": "^3.3.2"
     },
     "scripts": {
-        "format": "php vendor/bin/phpcs -d date.timezone=UTC --standard=phpcs.xml", 
+        "format": "php vendor/bin/phpcs -d date.timezone=UTC", 
         "test": "php vendor/bin/phpunit"
     }, 
     "_comment": [
