@@ -86,6 +86,10 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 
 == Changelog ==
 
+= 3.6.0 - 2020-09-17 =
+
+* Bump cloudflare-plugin-backend [#276](https://github.com/cloudflare/Cloudflare-WordPress/pull/276)
+
 = 3.5.1 - 2020-07-02 =
 
 *Fixed*
