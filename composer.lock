@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b6064d5a27568081be9ea69c5d8bc3e7",
+    "content-hash": "29b7f5388592f48e9855bad2e514dd91",
     "packages": [
         {
             "name": "cloudflare/cf-ip-rewrite",
@@ -57,12 +57,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",
-                "reference": "d719d4eafff82a4ab92cc0c6ff7b6750ea33d1d6"
+                "reference": "733042d5b96715e883ae77b351fa2fe60e44217d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/d719d4eafff82a4ab92cc0c6ff7b6750ea33d1d6",
-                "reference": "d719d4eafff82a4ab92cc0c6ff7b6750ea33d1d6",
+                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/733042d5b96715e883ae77b351fa2fe60e44217d",
+                "reference": "733042d5b96715e883ae77b351fa2fe60e44217d",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "BSD-3-Clause"
             ],
             "description": "A PHP backend for Cloudflare plugins.",
-            "time": "2019-08-29T16:11:12+00:00"
+            "time": "2020-09-11T21:13:19+00:00"
         },
         {
             "name": "psr/log",
