@@ -9,7 +9,7 @@
     "name": "cloudflare/wordpress-plugin", 
     "require": {
         "cloudflare/cf-ip-rewrite": "^1.0.0", 
-        "cloudflare/cloudflare-plugin-backend": "dev-master#d719d4eafff82a4ab92cc0c6ff7b6750ea33d1d6", 
+        "cloudflare/cloudflare-plugin-backend": "dev-master#733042d5b96715e883ae77b351fa2fe60e44217d", 
         "symfony/yaml": "~2.6"
     }, 
     "require-dev": {
@@ -29,7 +29,7 @@
     "_comment": [
         "php-compatibility-install comes from https://github.com/wimg/PHPCompatibility/issues/102#issuecomment-255778195"
     ], 
-    "version": "3.5.1",
+    "version": "3.6.0",
     "config": {
         "platform": {
             "php": "5.6.40"
