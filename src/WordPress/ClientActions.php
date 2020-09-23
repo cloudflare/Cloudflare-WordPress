@@ -40,6 +40,15 @@ class ClientActions
         // Call GET /zones
         $response = $this->api->callAPI($this->request);
 
+        // We tried to fetch a zone but it's possible we're using an API token,
+        // So try again with a zone name filterd API call
+        if (!$this->api->responseOk($response)) {
+            $zoneRequest = new Request('GET', 'zones/', array('name' => $this->wordpressAPI->getOriginalDomain()), array());
+            $zoneResponse = $this->api->callAPI($zoneRequest);
+
+            return $zoneResponse;
+        }
+
         // Cache the domain for subdomains
         $this->cacheDomainName($response);
 
