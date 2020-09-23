@@ -7,7 +7,7 @@ from collections import OrderedDict
 
 COMPOSER_FILE_NAME = "composer.json"
 README_FILE_NAME = "readme.txt"
-CONFIG_FILE_NAME = "config.js"
+CONFIG_FILE_NAME = "config.json"
 CLOUDFLARE_PHP_FILE_NAME = "cloudflare.php"
 README_TXT_STABLE_TAG_LINE_NUMBER = 6
 CLOUDFLARE_PHP_VERSION_LINE_NUMBER = 6
