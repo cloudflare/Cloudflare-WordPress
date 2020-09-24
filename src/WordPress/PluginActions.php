@@ -33,8 +33,7 @@ class PluginActions extends AbstractPluginActions
             "container.moresettings.speed" => [
                 "AlwaysOnlineCard",
                 "ImageOptimizationCard",
-                "DevelopmentModeCard",
-                "BypassCacheByCookieCard"
+                "DevelopmentModeCard"
             ],
             "container.moresettings.security" => [
                 "SecurityLevelCard",
