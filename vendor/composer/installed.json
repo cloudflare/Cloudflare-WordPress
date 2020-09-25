@@ -71,7 +71,7 @@
         },
         "time": "2020-09-24T01:04:20+00:00",
         "type": "library",
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-4": {
                 "CF\\": "src/"
