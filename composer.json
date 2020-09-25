@@ -3,32 +3,32 @@
         "psr-4": {
             "CF\\": "src/"
         }
-    }, 
-    "description": "A Cloudflare plugin for WordPress", 
-    "license": "BSD-3-Clause", 
-    "name": "cloudflare/wordpress-plugin", 
+    },
+    "description": "A Cloudflare plugin for WordPress",
+    "license": "BSD-3-Clause",
+    "name": "cloudflare/wordpress-plugin",
     "require": {
-        "cloudflare/cf-ip-rewrite": "^1.0.0", 
-        "cloudflare/cloudflare-plugin-backend": "dev-master#733042d5b96715e883ae77b351fa2fe60e44217d", 
+        "cloudflare/cf-ip-rewrite": "^1.0.0",
+        "cloudflare/cloudflare-plugin-backend": "2.3.0",
         "symfony/yaml": "~2.6"
-    }, 
+    },
     "require-dev": {
-        "johnkary/phpunit-speedtrap": "1.0.1", 
-        "php-mock/php-mock-phpunit": "^1.1", 
-        "phpunit/phpunit": "5.*", 
-        "squizlabs/php_codesniffer": "2.*", 
+        "johnkary/phpunit-speedtrap": "1.0.1",
+        "php-mock/php-mock-phpunit": "^1.1",
+        "phpunit/phpunit": "5.*",
+        "squizlabs/php_codesniffer": "2.*",
         "phpcompatibility/php-compatibility": "*",
         "simplyadmire/composer-plugins": "@dev",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.6.2",
         "phpdocumentor/reflection-docblock": "^3.3.2"
-    }, 
+    },
     "scripts": {
-        "format": "php vendor/bin/phpcs -d date.timezone=UTC --standard=phpcs.xml", 
+        "format": "php vendor/bin/phpcs -d date.timezone=UTC --standard=phpcs.xml",
         "test": "php vendor/bin/phpunit"
-    }, 
+    },
     "_comment": [
         "php-compatibility-install comes from https://github.com/wimg/PHPCompatibility/issues/102#issuecomment-255778195"
-    ], 
+    ],
     "version": "3.6.0",
     "config": {
         "platform": {
