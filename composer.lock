@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8db7936af825a03c5786c788891b9804",
+    "content-hash": "563b4b19cb0bdb3f08a36d8ff5c73165",
     "packages": [
         {
             "name": "cloudflare/cf-ip-rewrite",
@@ -53,7 +53,7 @@
         },
         {
             "name": "cloudflare/cloudflare-plugin-backend",
-            "version": "dev-master",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",
@@ -2001,7 +2001,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "cloudflare/cloudflare-plugin-backend": 20,
         "simplyadmire/composer-plugins": 20
     },
     "prefer-stable": false,

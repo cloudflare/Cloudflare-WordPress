@@ -48,8 +48,8 @@
     },
     {
         "name": "cloudflare/cloudflare-plugin-backend",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
+        "version": "2.3.0",
+        "version_normalized": "2.3.0.0",
         "source": {
             "type": "git",
             "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",

@@ -9,7 +9,7 @@
     "name": "cloudflare/wordpress-plugin",
     "require": {
         "cloudflare/cf-ip-rewrite": "^1.0.0",
-        "cloudflare/cloudflare-plugin-backend": "dev-master#1b3a9e901154df6f89fcd17b3ed036d322b06bfb",
+        "cloudflare/cloudflare-plugin-backend": "2.3.0",
         "symfony/yaml": "~2.6"
     },
     "require-dev": {
