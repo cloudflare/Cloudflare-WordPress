@@ -34,11 +34,14 @@ class AbstractPluginActionsTest extends \PHPUnit_Framework_TestCase
         $this->mockAbstractPluginActions = $this->getMockBuilder('CF\API\AbstractPluginActions')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $this->mockAbstractPluginActions->setRequest($this->mockRequest);
+        $this->mockDefaultIntegration = $this->getMockBuilder('\CF\Integration\DefaultIntegration')
+            ->disableOriginalConstructor()
+            ->getMockForAbstractClass();
         $this->mockAbstractPluginActions->setAPI($this->mockAPIClient);
         $this->mockAbstractPluginActions->setClientAPI($this->mockClientAPI);
         $this->mockAbstractPluginActions->setDataStore($this->mockDataStore);
         $this->mockAbstractPluginActions->setLogger($this->mockLogger);
+        $this->mockAbstractPluginActions->setRequest($this->mockRequest);
     }
 
     public function testPostAccountSaveAPICredentialsReturnsErrorIfMissingApiKey()
@@ -47,6 +50,7 @@ class AbstractPluginActionsTest extends \PHPUnit_Framework_TestCase
             'email' => 'email',
         ));
         $this->mockAPIClient->method('createAPIError')->willReturn(array('success' => false));
+        $this->mockDefaultIntegration->method('getOriginalDomain')->willReturn('name.com');
 
         $response = $this->mockAbstractPluginActions->login();
 
@@ -59,6 +63,7 @@ class AbstractPluginActionsTest extends \PHPUnit_Framework_TestCase
             'apiKey' => 'apiKey',
         ));
         $this->mockAPIClient->method('createAPIError')->willReturn(array('success' => false));
+        $this->mockDefaultIntegration->method('getOriginalDomain')->willReturn('name.com');
 
         $response = $this->mockAbstractPluginActions->login();
 
@@ -130,6 +135,8 @@ class AbstractPluginActionsTest extends \PHPUnit_Framework_TestCase
         ));
         $this->mockDataStore->method('createUserDataStore')->willReturn(true);
         $this->mockClientAPI->method('responseOk')->willReturn(false);
+        $this->mockDefaultIntegration->method('getOriginalDomain')->willReturn('name.com');
+
         $this->mockAPIClient->expects($this->once())->method('createAPIError');
         $this->mockAbstractPluginActions->login();
     }

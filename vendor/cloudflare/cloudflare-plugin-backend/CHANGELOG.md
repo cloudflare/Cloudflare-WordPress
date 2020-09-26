@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.3.0](#2.3.0) - 20120-09-23
+### Fixed
+- Fixed issue #255 Scope test api request to current zone. [#46](https://github.com/cloudflare/cloudflare-plugin-backend/pull/46)
+- Sanitize authentication headers. [#45](https://github.com/cloudflare/cloudflare-plugin-backend/pull/45)
+- Update version of Guzzle, fix issues with Client and tests. [#44](https://github.com/cloudflare/cloudflare-plugin-backend/pull/44)
+- Client.php: Use `self::` prefix for `AUTH_KEY_LEN` constant. [#43](https://github.com/cloudflare/cloudflare-plugin-backend/pull/43)
+
+### Added
+- Added support for API Tokens. [#42](https://github.com/cloudflare/cloudflare-plugin-backend/pull/42)
+
 ## [2.2.0](#2.2.0) - 2017-07-10
 ### Added
 - Added a new route to get config. Returns an empty array by default. [#39](https://github.com/cloudflare/cloudflare-plugin-backend/pull/39)

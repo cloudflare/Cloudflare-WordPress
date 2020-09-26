@@ -28,6 +28,11 @@ The steps should be done in this exact order. Publishing the release on GitHub a
 
 1. Call `git clone --branch LASTEST_TAG https://github.com/cloudflare/CloudFlare-WordPress ~/Desktop/wordpress_before_release`, where LATEST_TAG is the exact GitHub release tag you just created, and  `~/Desktop/wordpress_before_release` is an optional path on your local machine
 - Run `~/Desktop/wordpress_before_release/scripts/deployment/trim_code_for_release.sh ~/Desktop/wordpress_before_release`, replacing the path as necessary - this utility script removes all unnecessary folders and files, making the directory suitable for publishing to SVN / WordPress
+2. Manually copy over config.json and composer.json. This is required in [PluginActions.php](https://github.com/cloudflare/Cloudflare-WordPress/blob/master/src/WordPress/PluginActions.php#L215)
+
+    `cp ~/Desktop/wordpress_before_release/config.json ~/Desktop/wordpress_before_release/src/Wordpress/config.json`
+     
+    `cp ~/Desktop/wordpress_before_release/composer.json ~/Desktop/wordpress_before_release/src/Wordpress/composer.json`
 
 ### 3. SVN Release
 

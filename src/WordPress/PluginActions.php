@@ -3,18 +3,54 @@
 namespace CF\WordPress;
 
 use CF\API\APIInterface;
-use CF\API\Request;
-use CF\API\Plugin;
-use CF\Integration\DefaultIntegration;
-use CF\API\Exception\ZoneSettingFailException;
-use CF\WordPress\Constants\Plans;
 use CF\API\AbstractPluginActions;
+use CF\API\Exception\ZoneSettingFailException;
+use CF\API\Plugin;
+use CF\API\Request;
+use CF\Integration\DefaultIntegration;
+use CF\WordPress\Constants\Plans;
 
 class PluginActions extends AbstractPluginActions
 {
     protected $api;
     protected $clientAPI;
+    protected $composer;
     protected $request;
+    protected $userConfig;
+
+    const CONFIG = [
+        "debug" => false,
+        "featureManagerIsFullZoneProvisioningEnabled" => false,
+        "isDNSPageEnabled" => false,
+        "isSubdomainCheckEnabled" => true,
+        "useHostAPILogin" => false,
+        "homePageCards" => [
+            "ApplyDefaultSettingsCard",
+            "PurgeCacheCard",
+            "PluginSpecificCacheCard"
+        ],
+        "moreSettingsCards" => [
+            "container.moresettings.speed" => [
+                "AlwaysOnlineCard",
+                "ImageOptimizationCard",
+                "DevelopmentModeCard"
+            ],
+            "container.moresettings.security" => [
+                "SecurityLevelCard",
+                "WAFCard",
+                "AdvanceDDoSCard",
+                "AutomaticHTTPSRewritesCard"
+            ]
+        ],
+        "locale" => "en",
+        "integrationName" => "wordpress"
+    ];
+
+    const BANNED_KEYS = [
+        'isDNSPageEnabled',
+        'useHostAPILogin',
+        'integrationName',
+    ];
 
     public function __construct(DefaultIntegration $defaultIntegration, APIInterface $api, Request $request)
     {
@@ -131,5 +167,57 @@ class PluginActions extends AbstractPluginActions
                 throw new ZoneSettingFailException();
             }
         }
+    }
+
+    public function getConfig()
+    {
+        $this->getUserConfig();
+        $this->getComposerJson();
+
+        //Clone the config to manipulate
+        $config = array_merge(array(), self::CONFIG);
+
+        //Add version from composer.json to the config
+        $config['version'] = $this->composer['version'];
+
+        //This removes all the banned keys from the userConfig so we don't over write them
+        $this->userConfig = array_diff_key($this->userConfig, array_flip(self::BANNED_KEYS));
+
+        //Merge and intersect userConfig with default config and return response
+        $response = array_intersect_key($this->userConfig + $config, $config);
+
+        return $this->api->createAPISuccessResponse($response);
+    }
+
+    public function getUserConfig()
+    {
+        if ($this->userConfig === null) {
+            //Need to suppress the File not found error with @
+            $userConfigContent = @file_get_contents(dirname(__FILE__) . '/config.json');
+
+            //Need to set an empty array for merge into config so it doesnt throw a type error
+            $this->userConfig = [];
+            //If we did find a config decode it
+            if ($userConfigContent) {
+                $this->userConfig = json_decode($userConfigContent, true);
+            }
+        }
+    }
+
+    public function setUserConfig($userConfig)
+    {
+        $this->userConfig = $userConfig;
+    }
+
+    public function getComposerJson()
+    {
+        if ($this->composer === null) {
+            $this->composer = json_decode(file_get_contents(dirname(__FILE__) . '/composer.json'), true);
+        }
+    }
+
+    public function setComposerJson($composer)
+    {
+        $this->composer = $composer;
     }
 }
