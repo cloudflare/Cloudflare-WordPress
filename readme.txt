@@ -6,27 +6,29 @@ Tested up to: 5.5.1
 Stable tag: 3.7.0
 License: BSD-3-Clause
 
-All of Cloudflare’s performance and security benefits in a simple one-click install of recommended settings specifically developed for WordPress.
+All of Cloudflare’s performance and security benefits in a simple one-click install.
 
 == Description ==
 
 = What this plugin can do for you =
 
+**Automatic Platform Optimization (APO)**
+
+Take your WordPress site's performance to the next level with Automatic Platform Optimizations (APO). APO allows Cloudflare to serve your entire WordPress site from its edge network ensuring consistently, fast performance for visitors no matter where they are. Find out more in our [announcement blog](https://blog.cloudflare.com/automatic-platform-optimizations-starting-with-wordpress/).
+
 **One-click WordPress-optimized settings**
 
-The easiest way to setup Cloudflare for your WordPress site.
+The easiest way to setup Cloudflare for your WordPress site. Let us configure Cloudflare with the tried and true settings for an optimal experience.
 
 **Web application firewall (WAF) rulesets**
 
-Available on all of Cloudflare’s paid plans, the WAF has built-in rulesets, including rules that mitigate WordPress specific threats and vulnerabilities. These security rules are always kept up-to-date, once the WAF is enabled, you can rest easy knowing your site is protected from even the latest threats.
+Available on all of Cloudflare’s [paid plans](https://www.cloudflare.com/plans/), the WAF has built-in rulesets, including rules specifically tailored to mitigate WordPress threats and vulnerabilities. These security rules are always kept up-to-date, once the WAF is enabled, you can rest easy knowing your site is protected from even the latest threats.
 
 **Automatic cache purge on website updates**
 
-Occurs when you change the appearance of your website. This means that you can focus on your website, while we ensure that the latest content is always available to your visitors.
+If you don't take advantage of the performance benefits of Automatic Platform Optimization for WordPress, using the CLoudflare plugin still ensures that changes to the appearance of your website purge the cache. This means that you can focus on your website, while we ensure that the latest content is always available to your visitors.
 
-**Automatic individual URL cache purge on page/post/custom post type edits**
-
-Cloudflare’s plugin for WordPress automatically refreshes the Cloudflare cache of each post/page/custom post type when you update the content.
+Additionally, Cloudflare’s plugin for WordPress automatically refreshes the Cloudflare cache of static content for each post/page/custom post type when you update the content.
 
 = Additional features =
 
@@ -57,20 +59,23 @@ Make sure your PHP version is 5.3.10 or higher.
 
 = Once Activated =
 
-1. Go to cloudflare.com
-2. Login with your cloudflare account. (If you don’t have a Cloudflare account first sign up for Cloudflare)
-3. Press your account name on top right corner and select “My Settings”
-4. Scroll down to “API Key” → “Global API Key” → View API Key
-5. Copy the API key
-6. Return back to WordPress Cloudflare Plugin page
-7. Enter your email address and paste your API key
-8. Press Login.
+1. Go to https://dash.cloudflare.com
+2. Login with your cloudflare account. If you don’t have a Cloudflare account, first sign up for Cloudflare.
+3. Navigate to the [API Tokens section](https://dash.cloudflare.com/profile/api-tokens) of the user profile (found in the top right corner fo the dashboard). 
+4. Select 'Create Token'
+5. Select the 'WordPress' Template
+6. Select the Account and Zone to grant the plugin access to
+7. Then select "Continue to Summary" and "Create Token" 
+8. Copy your API Token
+9. Return back to WordPress Cloudflare Plugin page
+10. Enter your email address and paste your API Token
+11. Press Login.
 
 == Frequently Asked Questions ==
 
 = Do I need a Cloudflare account to use the plugin? =
 
-Yes, on install and activation the plugin, first time users will be asked to enter their email address (used to sign-up for an account at cloudflare.com) and their user API key. This is needed to support all the features offered by the plugin.
+Yes, on install and activation the plugin, first time users will be asked to enter their email address (used to sign-up for an account at cloudflare.com) and either an API Token or their API key. This is needed to support all the features offered by the plugin.
 
 = What settings are applied when I click "Apply Default Settings" in Cloudflare's WordPress plugin? =
 
