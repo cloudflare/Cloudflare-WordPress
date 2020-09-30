@@ -14,7 +14,7 @@ All of Cloudflare’s performance and security benefits in a simple one-click in
 
 **Automatic Platform Optimization (APO)**
 
-Take your WordPress site's performance to the next level with Automatic Platform Optimizations (APO). APO allows Cloudflare to serve your entire WordPress site from its edge network ensuring consistently, fast performance for visitors no matter where they are. Find out more in our [announcement blog](https://blog.cloudflare.com/automatic-platform-optimizations-starting-with-wordpress/).
+Take your WordPress site's performance to the next level with Automatic Platform Optimizations (APO). APO allows Cloudflare to serve your entire WordPress site from its edge network ensuring consistent, fast performance for visitors no matter where they are. Find out more in our [announcement blog](https://blog.cloudflare.com/automatic-platform-optimizations-starting-with-wordpress/).
 
 **One-click WordPress-optimized settings**
 
