@@ -109,7 +109,7 @@ class Hooks
 
     public function purgeCacheEverything()
     {
-        if ($this->isPluginSpecificCacheEnabled()) {
+        if ($this->isPluginSpecificCacheEnabled() || $this->isAutomaticPlatformOptimizationEnabled()) {
             $wpDomainList = $this->integrationAPI->getDomainList();
             if (count($wpDomainList) > 0) {
                 $wpDomain = $wpDomainList[0];
@@ -128,7 +128,7 @@ class Hooks
 
     public function purgeCacheByRelevantURLs($postId)
     {
-        if ($this->isPluginSpecificCacheEnabled()) {
+        if ($this->isPluginSpecificCacheEnabled() || $this->isAutomaticPlatformOptimizationEnabled()) {
             $wpDomainList = $this->integrationAPI->getDomainList();
             if (!count($wpDomainList)) {
                 return;
@@ -274,6 +274,20 @@ class Hooks
             && $cacheSettingValue !== 'off';
     }
 
+    protected function isAutomaticPlatformOptimizationEnabled()
+    {
+        $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_AUTOMATIC_PLATFORM_OPTIMIZATION);
+
+        if (! $cacheSettingObject) {
+            return false;
+        }
+
+        $cacheSettingValue = $cacheSettingObject[\CF\API\Plugin::SETTING_VALUE_KEY];
+
+        return $cacheSettingValue !== false
+            && $cacheSettingValue !== 'off';
+    }
+
     public function http2ServerPushInit()
     {
         HTTP2ServerPush::init();
@@ -289,5 +303,15 @@ class Hooks
         if (isset($_GET['action']) && $_GET['action'] === self::WP_AJAX_ACTION) {
             $GLOBALS[self::CLOUDFLARE_JSON] = file_get_contents('php://input');
         }
+    }
+
+    public function initAutomaticPlatformOptimization()
+    {
+      // add header unconditionally so we can detect plugin is activated
+      if (!is_user_logged_in() ) {
+        header( 'cf-edge-cache: cache,platform=wordpress' );
+      } else {
+        header( 'cf-edge-cache: no-cache' );
+      }
     }
 }
