@@ -27,13 +27,13 @@ class PluginActions extends AbstractPluginActions
         "homePageCards" => [
             "ApplyDefaultSettingsCard",
             "AutomaticPlatformOptimizationCard",
-            "PurgeCacheCard",
-            "PluginSpecificCacheCard"
+            "PurgeCacheCard"
         ],
         "moreSettingsCards" => [
             "container.moresettings.speed" => [
                 "AlwaysOnlineCard",
                 "ImageOptimizationCard",
+                "PluginSpecificCacheCard",
                 "DevelopmentModeCard"
             ],
             "container.moresettings.security" => [
