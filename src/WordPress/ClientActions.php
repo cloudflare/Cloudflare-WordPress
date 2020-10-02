@@ -90,10 +90,10 @@ class ClientActions
 
     public function cacheDomainName($response)
     {
-        // Check if domain name needs to cached
+        // Check if domain name needs to be cached
         $wpDomain = $this->wordpressAPI->getOriginalDomain();
         $cachedDomainList = $this->wordpressAPI->getDomainList();
-        $cachedDomain = $cachedDomainList[0];
+        $cachedDomain = isset($cachedDomainList[0]) ? $cachedDomainList[0] : '';
 
         if (Utils::getRegistrableDomain($wpDomain) !== $cachedDomain) {
             // If it's not a subdomain cache the current domain
