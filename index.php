@@ -3,7 +3,7 @@ if (!defined('ABSPATH')) { // Exit if accessed directly
     exit;
 }
 
-$config = new CF\Integration\DefaultConfig(file_get_contents('config.js', true));
+$config = new CF\Integration\DefaultConfig(file_get_contents('config.json', true));
 $logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
 $dataStore = new CF\WordPress\DataStore($logger);
 $wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);

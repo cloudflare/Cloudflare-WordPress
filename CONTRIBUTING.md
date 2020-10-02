@@ -19,11 +19,11 @@ We welcome community contribution to this repository. To help add functionality 
 
 Cloudflare has multiple plugins using shared codebases. 
 
-[WordPress](https://github.com/cloudflare/Cloudflare-WordPress), [CPanel](https://github.com/cloudflare/CloudFlare-CPanel), [Magento](https://github.com/cloudflare/CloudFlare-Magento) are the main repositories of the plugins. Every plugin has a config.js file which allows them to control the frontend of the plugin. 
+[WordPress](https://github.com/cloudflare/Cloudflare-WordPress), [CPanel](https://github.com/cloudflare/CloudFlare-CPanel), [Magento](https://github.com/cloudflare/CloudFlare-Magento) are the main repositories of the plugins. Every plugin has a config.json file which allows them to control the frontend of the plugin.
 
 Below are Cloudflare maintained repositories the plugins depend on. 
 
-* [cloudflare-frontend](https://github.com/cloudflare/CloudFlare-FrontEnd) is a generic frontend used in plugins. You can add/remove cards simply by editing [config](https://github.com/cloudflare/CloudFlare-FrontEnd/blob/master/config.js) file.
+* [cloudflare-frontend](https://github.com/cloudflare/CloudFlare-FrontEnd) is a generic frontend used in plugins. You can add/remove cards simply by editing [config](https://github.com/cloudflare/cloudflare-plugin-frontend/blob/master/config.json.sample) file.
 * [cf-ui](https://github.com/cloudflare/cf-ui) is a Cloudflare UI Framework where cloudflare-frontend is using. 
 * [cloudflare-plugin-backend](https://github.com/cloudflare/cloudflare-plugin-backend) is a generic backend plugins use.
 * [cf-ip-rewrite](https://github.com/cloudflare/cf-ip-rewrite) allows to rewrite Cloudflare IP's in Application level. 
