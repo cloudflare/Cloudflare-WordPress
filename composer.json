@@ -9,7 +9,7 @@
     "name": "cloudflare/wordpress-plugin",
     "require": {
         "cloudflare/cf-ip-rewrite": "^1.0.0",
-        "cloudflare/cloudflare-plugin-backend": "2.3.0",
+        "cloudflare/cloudflare-plugin-backend": "2.4.0",
         "symfony/yaml": "~2.6"
     },
     "require-dev": {
@@ -29,7 +29,7 @@
     "_comment": [
         "php-compatibility-install comes from https://github.com/wimg/PHPCompatibility/issues/102#issuecomment-255778195"
     ],
-    "version": "3.7.0",
+    "version": "3.8.0",
     "config": {
         "platform": {
             "php": "5.6.40"

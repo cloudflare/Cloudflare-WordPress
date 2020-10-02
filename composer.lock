@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "26ee9835041bfbe85a95ab63a2565137",
+    "content-hash": "4634c9a4fa6d892ff1b8f0f22e31ca31",
     "packages": [
         {
             "name": "cloudflare/cf-ip-rewrite",
@@ -53,16 +53,16 @@
         },
         {
             "name": "cloudflare/cloudflare-plugin-backend",
-            "version": "2.3.0",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",
-                "reference": "1b3a9e901154df6f89fcd17b3ed036d322b06bfb"
+                "reference": "3b1fc84ad9ebeb0611e1e6a63a03a767ad95136b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/1b3a9e901154df6f89fcd17b3ed036d322b06bfb",
-                "reference": "1b3a9e901154df6f89fcd17b3ed036d322b06bfb",
+                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/3b1fc84ad9ebeb0611e1e6a63a03a767ad95136b",
+                "reference": "3b1fc84ad9ebeb0611e1e6a63a03a767ad95136b",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "BSD-3-Clause"
             ],
             "description": "A PHP backend for Cloudflare plugins.",
-            "time": "2020-09-24T01:04:20+00:00"
+            "time": "2020-10-02T03:20:01+00:00"
         },
         {
             "name": "psr/log",

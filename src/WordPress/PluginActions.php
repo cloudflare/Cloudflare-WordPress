@@ -26,13 +26,14 @@ class PluginActions extends AbstractPluginActions
         "useHostAPILogin" => false,
         "homePageCards" => [
             "ApplyDefaultSettingsCard",
-            "PurgeCacheCard",
-            "PluginSpecificCacheCard"
+            "AutomaticPlatformOptimizationCard",
+            "PurgeCacheCard"
         ],
         "moreSettingsCards" => [
             "container.moresettings.speed" => [
                 "AlwaysOnlineCard",
                 "ImageOptimizationCard",
+                "PluginSpecificCacheCard",
                 "DevelopmentModeCard"
             ],
             "container.moresettings.security" => [
