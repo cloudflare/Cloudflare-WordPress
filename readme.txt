@@ -3,7 +3,7 @@ Contributors: icyapril, manatarms, thillcf, deuill, epatryk
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 5.5.1
-Stable tag: 3.7.0
+Stable tag: 3.8.0
 License: BSD-3-Clause
 
 All of Cloudflare’s performance and security benefits in a simple one-click install.
@@ -61,11 +61,11 @@ Make sure your PHP version is 5.3.10 or higher.
 
 1. Go to https://dash.cloudflare.com
 2. Login with your cloudflare account. If you don’t have a Cloudflare account, first sign up for Cloudflare.
-3. Navigate to the [API Tokens section](https://dash.cloudflare.com/profile/api-tokens) of the user profile (found in the top right corner of the dashboard). 
+3. Navigate to the [API Tokens section](https://dash.cloudflare.com/profile/api-tokens) of the user profile (found in the top right corner of the dashboard).
 4. Select 'Create Token'
 5. Select the 'WordPress' Template
 6. Select the Account and Zone to grant the plugin access to
-7. Then select "Continue to Summary" and "Create Token" 
+7. Then select "Continue to Summary" and "Create Token"
 8. Copy your API Token
 9. Return back to WordPress Cloudflare Plugin page
 10. Enter your email address and paste your API Token
@@ -90,6 +90,11 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 1. Cloudflare Plugin
 
 == Changelog ==
+
+= 3.8.0 - 2020-10-01 =
+
+* Added APO support
+* Renamed Automatic Cache Management card to Auto Purge Content On Update
 
 = 3.7.0 - 2020-09-25 =
 
