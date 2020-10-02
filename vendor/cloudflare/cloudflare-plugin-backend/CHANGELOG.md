@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [2.4.0](#2.4.0) - 20120-10-01
+### Added
+- Added APO support [#48](https://github.com/cloudflare/cloudflare-plugin-backend/pull/48)
+
 ## [2.3.0](#2.3.0) - 20120-09-23
 ### Fixed
 - Fixed issue #255 Scope test api request to current zone. [#46](https://github.com/cloudflare/cloudflare-plugin-backend/pull/46)
