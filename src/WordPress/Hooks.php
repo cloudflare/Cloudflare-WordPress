@@ -307,11 +307,15 @@ class Hooks
 
     public function initAutomaticPlatformOptimization()
     {
-      // add header unconditionally so we can detect plugin is activated
-      if (!is_user_logged_in() ) {
-        header( 'cf-edge-cache: cache,platform=wordpress' );
-      } else {
-        header( 'cf-edge-cache: no-cache' );
-      }
+        if (wp_doing_cron()) {
+            return;
+        }
+
+        // add header unconditionally so we can detect plugin is activated
+        if (!is_user_logged_in()) {
+            header('cf-edge-cache: cache,platform=wordpress');
+        } else {
+            header('cf-edge-cache: no-cache');
+        }
     }
 }
