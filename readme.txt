@@ -3,7 +3,7 @@ Contributors: icyapril, manatarms, thillcf, deuill, epatryk
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 5.5.1
-Stable tag: 3.8.3
+Stable tag: 3.8.4
 License: BSD-3-Clause
 
 All of Cloudflare’s performance and security benefits in a simple one-click install.
@@ -86,6 +86,14 @@ Yes, on install and activation of the plugin, first time users will be asked to 
 Yes, Cloudflare works with, and helps speed up your site even more, if you have Varnish enabled.
 
 == Screenshots ==
+
+== Changelog ==
+
+= 3.8.4 - 2020-10-13 =
+
+* Added composer's type=wordpress-plugin for Bedrock users
+* Fixed typo in readme.txt
+* Fix modify header exception thrown during wp-cron
 
 1. Cloudflare Plugin
 
