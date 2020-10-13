@@ -26,7 +26,7 @@ Available on all of Cloudflare’s [paid plans](https://www.cloudflare.com/plans
 
 **Automatic cache purge on website updates**
 
-If you don't take advantage of the performance benefits of Automatic Platform Optimization for WordPress, using the CLoudflare plugin still ensures that changes to the appearance of your website purge the cache. This means that you can focus on your website, while we ensure that the latest static content is always available to your visitors.
+If you don't take advantage of the performance benefits of Automatic Platform Optimization for WordPress, using the Cloudflare plugin still ensures that changes to the appearance of your website purge the cache. This means that you can focus on your website, while we ensure that the latest static content is always available to your visitors.
 
 Additionally, Cloudflare’s plugin for WordPress automatically refreshes the Cloudflare cache of static content for each post/page/custom post type when you update the content.
 
