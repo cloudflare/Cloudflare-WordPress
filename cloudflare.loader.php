@@ -97,6 +97,7 @@ $cloudflarePurgeURLActions = array(
     'edit_post',                        // Edit a post - includes leaving comments
     'delete_attachment',                // Delete an attachment - includes re-uploading
     'post_updated',                     // Update a post
+    'comment_post',                     // Post a comment
 );
 
 $cloudflarePurgeURLActions = apply_filters('cloudflare_purge_url_actions', $cloudflarePurgeURLActions);
