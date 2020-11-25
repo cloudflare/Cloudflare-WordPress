@@ -191,6 +191,7 @@
     "container.automaticplatformoptimization.title": "Automatic Platform Optimization",
     "container.automaticplatformoptimization.description": "Improve the performance of your WordPress site. Automatic Platform Optimization for WordPress serves your WordPress site from Cloudflare's edge network and caches third party fonts. Get the benefits of a static site without any changes to how you manage your site. This results in consistent, fast TTFB and content loading faster.",
     "container.automaticplatformoptimization.drawer.help": "For more information about how APO provides better performance to your WordPress site, see [this](https://support.cloudflare.com/hc/en-us/articles/360049822312) support article.",
+    "container.automaticplatformoptimization.description_hostnames": "**Note:** APO runs against the following list of hostnames:\n\n_{hostnames}_",
     "container.purgeCacheCard.dropdown": "Purge Cache",
     "container.purgeCacheCard.button": "Purge Everything",
     "container.purgeCacheCard.title": "Purge Cache",
