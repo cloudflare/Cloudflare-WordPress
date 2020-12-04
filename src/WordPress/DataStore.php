@@ -87,6 +87,10 @@ class DataStore implements DataStoreInterface
      */
     public function getDomainNameCache()
     {
+        if (defined('CLOUDFLARE_DOMAIN_NAME')) {
+            return CLOUDFLARE_DOMAIN_NAME;
+        }
+
         $cachedDomainName = $this->get(self::CACHED_DOMAIN_NAME);
         if (empty($cachedDomainName)) {
             return;
@@ -100,6 +104,10 @@ class DataStore implements DataStoreInterface
      */
     public function setDomainNameCache($domainName)
     {
+        if (defined('CLOUDFLARE_DOMAIN_NAME')) {
+            return;
+        }
+
         return $this->set(self::CACHED_DOMAIN_NAME, $domainName);
     }
 
