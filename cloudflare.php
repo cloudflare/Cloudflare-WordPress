@@ -10,6 +10,10 @@ License: BSD-3-Clause
 
 // The following constants are available. Add them to wp-config.php to enable.
 
+// To configure Cloudflare credentials via environment vars (defined elsewhere)
+// define('CLOUDFLARE_EMAIL', $_ENV['CLOUDFLARE_EMAIL']);
+// define('CLOUDFLARE_API_KEY', $_ENV['CLOUDFLARE_API_KEY']);
+
 // To enable HTTP/2 Server Push feature:
 // define('CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE', true);
 
