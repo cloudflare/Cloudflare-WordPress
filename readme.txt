@@ -3,7 +3,7 @@ Contributors: icyapril, manatarms, thillcf, deuill, epatryk
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 5.5.1
-Stable tag: 3.8.6
+Stable tag: 3.8.7
 License: BSD-3-Clause
 
 All of Cloudflare’s performance and security benefits in a simple one-click install.
@@ -88,6 +88,12 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 == Screenshots ==
 
 == Changelog ==
+
+= 3.8.7 - 2020-12-07 =
+
+* Purge taxonomy feed URLs
+* Fix changing APO settings (cf, wordpress, plugin) when running on subdomain
+* Fix setting hostname override
 
 = 3.8.6 - 2020-11-19 =
 
