@@ -192,6 +192,8 @@
     "container.automaticplatformoptimization.description": "Improve the performance of your WordPress site. Automatic Platform Optimization for WordPress serves your WordPress site from Cloudflare's edge network and caches third party fonts. Get the benefits of a static site without any changes to how you manage your site. This results in consistent, fast TTFB and content loading faster.",
     "container.automaticplatformoptimization.drawer.help": "For more information about how APO provides better performance to your WordPress site, see [this](https://support.cloudflare.com/hc/en-us/articles/360049822312) support article.",
     "container.automaticplatformoptimization.description_hostnames": "**Note:** APO runs against the following list of hostnames:\n\n_{hostnames}_",
+    "container.automaticplatformoptimization.cache_by_device_type": "Cache By Device Type",
+    "container.automaticplatformoptimization.cache_by_device_type_note": "**Note:** Changing Cache By Device Type setting will invalidate Cache. The setting is applied to all hostnames",
     "container.purgeCacheCard.dropdown": "Purge Cache",
     "container.purgeCacheCard.button": "Purge Everything",
     "container.purgeCacheCard.title": "Purge Cache",
@@ -272,7 +274,7 @@
     "constants.plans.biz": "Business plan",
     "constants.plans.ent": "Enterprise plan",
     "errors.noActiveZoneSelected": "It looks like your domain {domain} is not provisioned with Cloudflare. Please continue to {link} to secure and speed up your website.",
-    "warning.usingSubdomain": "You are using a subdomain for your site, but any Cloudflare settings applied via this plugin will be applied to your original domain as well.",
+    "warning.usingSubdomain": "You are using a subdomain for your site, apart from the APO feature, any Cloudflare settings applied via this plugin will be applied to your original domain as well.",
     "warning.developmentmode": "Development mode enabled, all traffic will bypass the Cloudflare cache.",
     "utils.utils.lastmodifieddate": "This settings was last changed {date}"
 }
