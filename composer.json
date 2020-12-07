@@ -6,7 +6,7 @@
     },
     "description": "A Cloudflare plugin for WordPress",
     "license": "BSD-3-Clause",
-    "name": "cloudflare/wordpress-plugin",
+    "name": "theblockcrypto/cloudflare-wordpress",
     "type": "wordpress-plugin",
     "require": {
         "cloudflare/cf-ip-rewrite": "^1.0.0",
