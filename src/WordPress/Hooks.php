@@ -175,7 +175,7 @@ class Hooks
         $listofurls = array();
         $postType = get_post_type($postId);
 
-        //Purge taxonomies terms URLs
+        //Purge taxonomies terms and feeds URLs
         $postTypeTaxonomies = get_object_taxonomies($postType);
 
         foreach ($postTypeTaxonomies as $taxonomy) {
@@ -187,8 +187,10 @@ class Hooks
 
             foreach ($terms as $term) {
                 $termLink = get_term_link($term);
-                if (!is_wp_error($termLink)) {
+                $termFeedLink = get_term_feed_link($term->term_id, $term->taxonomy);
+                if (!is_wp_error($termLink) && !is_wp_error($termFeedLink)) {
                     array_push($listofurls, $termLink);
+                    array_push($listofurls, $termFeedLink);
                 }
             }
         }
