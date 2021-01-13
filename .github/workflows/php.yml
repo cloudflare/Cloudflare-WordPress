@@ -18,6 +18,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Cache Composer dependencies
+      uses: actions/cache@v2
+      with:
+        path: /tmp/composer-cache
+        key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
@@ -29,8 +35,11 @@ jobs:
       run: composer validate
 
     - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress --no-suggest --verbose
+      uses: php-actions/composer@v5
+      with:
+        command: install
+        args: --prefer-dist --no-progress --no-suggest --verbose
+        version: 1
 
     - name: Format
       run: |
