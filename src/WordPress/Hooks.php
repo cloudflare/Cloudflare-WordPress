@@ -245,7 +245,7 @@ class Hooks
         $this->logger->debug("page_number_max $page_number_max");
 
         foreach (range(1, $page_number_max) as $page_number) {
-          array_push($listofurls, home_url(sprintf('/page/%s/', $page_number)));
+            array_push($listofurls, home_url(sprintf('/page/%s/', $page_number)));
         }
 
         $pageLink = get_permalink(get_option('page_for_posts'));
@@ -325,15 +325,15 @@ class Hooks
     {
       // it could be too late to set the headers,
       // return early without triggering a warning in logs
-      if (headers_sent()) {
-        return;
-      }
+        if (headers_sent()) {
+            return;
+        }
 
       // add header unconditionally so we can detect plugin is activated
-      if (!is_user_logged_in() ) {
-        header( 'cf-edge-cache: cache,platform=wordpress' );
-      } else {
-        header( 'cf-edge-cache: no-cache' );
-      }
+        if (!is_user_logged_in()) {
+            header('cf-edge-cache: cache,platform=wordpress');
+        } else {
+            header('cf-edge-cache: no-cache');
+        }
     }
 }
