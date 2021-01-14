@@ -23,7 +23,7 @@ jobs:
       uses: actions/cache@v2
       with:
         path: /tmp/composer-cache
-        key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
+        key: ${{ runner.os }}-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}
 
 
     - name: Validate composer.json and composer.lock
