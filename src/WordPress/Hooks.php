@@ -234,20 +234,6 @@ class Hooks
 
         // Home Page and (if used) posts page
         array_push($listofurls, home_url('/'));
-
-        // Refresh pagination
-        $total_posts_count = wp_count_posts()->publish;
-        $posts_per_page = get_option('posts_per_page');
-        $page_number_max = ceil($total_posts_count / $posts_per_page);
-
-        $this->logger->debug("total_posts_count $total_posts_count");
-        $this->logger->debug("posts_per_page  $posts_per_page");
-        $this->logger->debug("page_number_max $page_number_max");
-
-        foreach (range(1, $page_number_max) as $page_number) {
-          array_push($listofurls, home_url(sprintf('/page/%s/', $page_number)));
-        }
-
         $pageLink = get_permalink(get_option('page_for_posts'));
         if (is_string($pageLink) && !empty($pageLink) && get_option('show_on_front') == 'page') {
             array_push($listofurls, $pageLink);
