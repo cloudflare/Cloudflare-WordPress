@@ -24,12 +24,6 @@ jobs:
         path: /tmp/composer-cache
         key: ${{ runner.os }}-${{ hashFiles('**/composer.lock') }}
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php_version: ${{ matrix.php-versions }}
-      env:
-        update: true
 
     - name: Validate composer.json and composer.lock
       uses: php-actions/composer@v5
