@@ -57,4 +57,8 @@ jobs:
     - name: Run test suite
       # Skip testing on PHP 7.4, because php-mock required by PHP 5.6 breaks on 7.4+
       if: matrix.php-versions < '7.4'
-      run: composer run-script test
+      uses: php-actions/composer@v5
+      with:
+        command: composer run-script test
+        php_version: ${{ matrix.php-versions }}
+        version: 1
