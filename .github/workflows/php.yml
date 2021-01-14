@@ -32,7 +32,10 @@ jobs:
         update: true
 
     - name: Validate composer.json and composer.lock
-      run: composer validate
+      uses: php-actions/composer@v5
+      with:
+        command: validate
+        version: 1
 
     - name: Install dependencies
       uses: php-actions/composer@v5
