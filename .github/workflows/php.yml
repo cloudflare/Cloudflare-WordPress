@@ -27,7 +27,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: ${{ matrix.php-versions }}
+        php_version: ${{ matrix.php-versions }}
       env:
         update: true
 
@@ -35,6 +35,7 @@ jobs:
       uses: php-actions/composer@v5
       with:
         command: validate
+        php_version: ${{ matrix.php-versions }}
         version: 1
 
     - name: Install dependencies
@@ -42,14 +43,19 @@ jobs:
       with:
         command: install
         args: --prefer-dist --no-progress --no-suggest --verbose
+        php_version: ${{ matrix.php-versions }}
         version: 1
 
     - name: Format
-      run: |
-        composer run-script format || exit_code=$?
-        if (( exit_code > 1 )) ; then
-            exit $exit_code
-        fi
+      uses: php-actions/composer@v5
+      with:
+        command: |
+          composer run-script format || exit_code=$?
+          if (( exit_code > 1 )) ; then
+              exit $exit_code
+          fi
+        php_version: ${{ matrix.php-versions }}
+        version: 1
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
