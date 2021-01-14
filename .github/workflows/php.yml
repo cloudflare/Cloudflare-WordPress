@@ -43,11 +43,7 @@ jobs:
     - name: Format
       uses: php-actions/composer@v5
       with:
-        command: |
-          composer run-script format || exit_code=$?
-          if (( exit_code > 1 )) ; then
-              exit $exit_code
-          fi
+        command: run-script format
         php_version: ${{ matrix.php-versions }}
         version: 1
 
@@ -59,6 +55,6 @@ jobs:
       if: matrix.php-versions < '7.4'
       uses: php-actions/composer@v5
       with:
-        command: composer run-script test
+        command: run-script test
         php_version: ${{ matrix.php-versions }}
         version: 1
