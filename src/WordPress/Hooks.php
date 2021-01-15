@@ -311,15 +311,15 @@ class Hooks
     {
       // it could be too late to set the headers,
       // return early without triggering a warning in logs
-      if (headers_sent()) {
-        return;
-      }
+        if (headers_sent()) {
+            return;
+        }
 
       // add header unconditionally so we can detect plugin is activated
-      if (!is_user_logged_in() ) {
-        header( 'cf-edge-cache: cache,platform=wordpress' );
-      } else {
-        header( 'cf-edge-cache: no-cache' );
-      }
+        if (!is_user_logged_in()) {
+            header('cf-edge-cache: cache,platform=wordpress');
+        } else {
+            header('cf-edge-cache: no-cache');
+        }
     }
 }

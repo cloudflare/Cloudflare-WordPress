@@ -12,32 +12,41 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
+      fail-fast: false
       matrix:
         php-versions: ['5.6', '7.0', '7.1', '7.2', '7.3', '7.4']
 
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup PHP
-      uses: shivammathur/setup-php@v2
+    - name: Cache Composer dependencies
+      uses: actions/cache@v2
       with:
-        php-version: ${{ matrix.php-versions }}
-      env:
-        update: true
+        path: /tmp/composer-cache
+        key: ${{ runner.os }}-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}
+
 
     - name: Validate composer.json and composer.lock
-      run: composer validate
+      uses: php-actions/composer@v5
+      with:
+        command: validate
+        php_version: ${{ matrix.php-versions }}
+        version: 1
 
     - name: Install dependencies
-      if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress --no-suggest --verbose
+      uses: php-actions/composer@v5
+      with:
+        command: install
+        args: --prefer-dist --no-progress --no-suggest --verbose
+        php_version: ${{ matrix.php-versions }}
+        version: 1
 
     - name: Format
-      run: |
-        composer run-script format || exit_code=$?
-        if (( exit_code > 1 )) ; then
-            exit $exit_code
-        fi
+      uses: php-actions/composer@v5
+      with:
+        command: run-script format
+        php_version: ${{ matrix.php-versions }}
+        version: 1
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
@@ -45,4 +54,8 @@ jobs:
     - name: Run test suite
       # Skip testing on PHP 7.4, because php-mock required by PHP 5.6 breaks on 7.4+
       if: matrix.php-versions < '7.4'
-      run: composer run-script test
+      uses: php-actions/composer@v5
+      with:
+        command: run-script test
+        php_version: ${{ matrix.php-versions }}
+        version: 1
