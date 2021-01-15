@@ -86,3 +86,4 @@ We welcome community contribution to this repository. [CONTRIBUTING.md](CONTRIBU
 ## Changelog
 
 See [changelog](https://wordpress.org/plugins/cloudflare/changelog/)
+
