@@ -13,7 +13,7 @@ License: BSD-3-Clause
 // To enable HTTP/2 Server Push feature:
 // define('CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE', true);
 
-// Cloudflare has a limit of how many resourses can be pushed by HTTP/2 Server Push
+// Cloudflare has a limit of how many resources can be pushed by HTTP/2 Server Push
 // (3 KiB by default). Add the following to change that amount:
 // define('CLOUDFLARE_HTTP2_SERVER_PUSH_HEADER_SIZE', 3072);
 
