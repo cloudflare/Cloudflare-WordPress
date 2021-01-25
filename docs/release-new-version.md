@@ -14,8 +14,8 @@ to what code changes have been made since the last release.
 ## Prepare to release
 
 Ensure all desired changes are merged into master from their feature and bugfix
-branches. Ensuring that CI is all passing. If it is not, do not create a new
-release.
+branches. Ensure that CI is all passing. If it is not, do not create a new
+release -- fix any failures or violations.
 
 ### Create a new GitHub release
 
