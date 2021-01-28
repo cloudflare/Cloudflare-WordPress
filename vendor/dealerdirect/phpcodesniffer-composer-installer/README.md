@@ -10,6 +10,8 @@
 [![Latest Version on Packagist][packagist-version-shield]][packagist-version]
 [![Packagist][packagist-shield]][packagist]
 
+[![Contributor Covenant][code-of-conduct-shield]][code-of-conduct]
+
 This composer installer plugin allows for easy installation of [PHP_CodeSniffer][codesniffer] coding standards (rulesets).
 
 No more symbolic linking of directories, checking out repositories on specific locations or changing
@@ -19,7 +21,7 @@ _Note: This plugin is compatible with both version 2.x and 3.x of_ [PHP_CodeSnif
 
 ## Usage
 
-Installation can be done with [composer], by requiring this package as a development dependency:
+Installation can be done with [Composer][composer], by requiring this package as a development dependency:
 
 ```bash
 composer require --dev dealerdirect/phpcodesniffer-composer-installer
@@ -225,17 +227,17 @@ THE SOFTWARE.
 
 [awesome-shield]: https://img.shields.io/badge/awesome%3F-yes-brightgreen.svg
 [changelog]: https://github.com/Dealerdirect/phpcodesniffer-composer-installer/releases
+[code-of-conduct-shield]: https://img.shields.io/badge/Contributor%20Covenant-v2.0-ff69b4.svg
+[code-of-conduct]: CODE_OF_CONDUCT.md
 [codesniffer]: https://github.com/squizlabs/PHP_CodeSniffer
 [composer-manual-scripts]: https://getcomposer.org/doc/articles/scripts.md
 [composer]: https://getcomposer.org/
 [contributing-guidelines]: CONTRIBUTING.md
 [contributors]: https://github.com/Dealerdirect/phpcodesniffer-composer-installer/graphs/contributors
-[dealerdirectcom]: http://www.dealerdirect.com/en
 [definition-ci]: https://en.wikipedia.org/wiki/Continuous_integration
 [frenck]: https://github.com/frenck
-[get-in-touch]: https://www.dealerdirect.com/en/contact
-[license-shield]: https://img.shields.io/github/license/dealerdirect/phpcodesniffer-composer-installer.svg
 [last-updated-shield]: https://img.shields.io/github/last-commit/Dealerdirect/phpcodesniffer-composer-installer.svg
+[license-shield]: https://img.shields.io/github/license/dealerdirect/phpcodesniffer-composer-installer.svg
 [packagist-shield]: https://img.shields.io/packagist/dt/dealerdirect/phpcodesniffer-composer-installer.svg
 [packagist-version-shield]: https://img.shields.io/packagist/v/dealerdirect/phpcodesniffer-composer-installer.svg
 [packagist-version]: https://packagist.org/packages/dealerdirect/phpcodesniffer-composer-installer
@@ -247,4 +249,3 @@ THE SOFTWARE.
 [travis]: https://travis-ci.org/Dealerdirect/phpcodesniffer-composer-installer
 [tutorial]: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Coding-Standard-Tutorial
 [using-composer-plugins]: https://getcomposer.org/doc/articles/plugins.md#using-plugins
-[vacancies]: https://www.dealerdirect.com/en/vacancies
