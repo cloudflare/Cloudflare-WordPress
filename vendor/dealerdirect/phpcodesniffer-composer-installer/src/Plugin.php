@@ -15,7 +15,7 @@ use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Package\AliasPackage;
 use Composer\Package\PackageInterface;
-use Composer\Package\RootpackageInterface;
+use Composer\Package\RootPackageInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
@@ -122,6 +122,20 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         $this->io = $io;
 
         $this->init();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
     }
 
     /**
@@ -253,6 +267,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
     {
         // Check if we found installed paths to set.
         if (count($this->installedPaths) !== 0) {
+            sort($this->installedPaths);
             $paths = implode(',', $this->installedPaths);
             $arguments = array('--config-set', self::PHPCS_CONFIG_KEY, $paths);
             $configMessage = sprintf(
@@ -488,7 +503,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface
         );
 
         if (
-            ! $this->composer->getPackage() instanceof RootpackageInterface
+            ! $this->composer->getPackage() instanceof RootPackageInterface
             && $this->composer->getPackage()->getType() === self::PACKAGE_TYPE
         ) {
             $codingStandardPackages[] = $this->composer->getPackage();
