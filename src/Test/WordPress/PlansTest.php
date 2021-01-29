@@ -8,7 +8,6 @@ class PlansTest extends \PHPUnit\Framework\TestCase
 {
     public function setup(): void
     {
-
     }
 
     public function testPlanNeedsUpgradeAllCases()
