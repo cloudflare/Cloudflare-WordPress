@@ -2,6 +2,8 @@
 
 namespace phpmock\integration;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Tests MockDelegateFunctionBuilder.
  *
@@ -10,7 +12,7 @@ namespace phpmock\integration;
  * @license http://www.wtfpl.net/txt/copying/ WTFPL
  * @see MockDelegateFunctionBuilder
  */
-class MockDelegateFunctionBuilderTest extends \PHPUnit_Framework_TestCase
+class MockDelegateFunctionBuilderTest extends TestCase
 {
 
     /**
@@ -34,14 +36,14 @@ class MockDelegateFunctionBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new MockDelegateFunctionBuilder();
 
-        $builder->build(create_function('', ''));
+        $builder->build('f0');
         $class1 = $builder->getFullyQualifiedClassName();
 
-        $builder->build(create_function('$a', ''));
+        $builder->build('f1');
         $class2 = $builder->getFullyQualifiedClassName();
         
         $builder2 = new MockDelegateFunctionBuilder();
-        $builder2->build(create_function('$a, $b', ''));
+        $builder2->build('f2');
         $class3 = $builder2->getFullyQualifiedClassName();
         
         $this->assertNotEquals($class1, $class2);
@@ -56,13 +58,12 @@ class MockDelegateFunctionBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testSameSignaturesProduceSameClass()
     {
-        $signature = '$a';
         $builder   = new MockDelegateFunctionBuilder();
 
-        $builder->build(create_function($signature, ''));
+        $builder->build('f1');
         $class1 = $builder->getFullyQualifiedClassName();
         
-        $builder->build(create_function($signature, ''));
+        $builder->build('f1');
         $class2 = $builder->getFullyQualifiedClassName();
         
         $this->assertEquals($class1, $class2);
@@ -74,6 +75,8 @@ class MockDelegateFunctionBuilderTest extends \PHPUnit_Framework_TestCase
      * @test
      * @backupStaticAttributes enabled
      * @dataProvider provideTestBackupStaticAttributes
+     *
+     * @doesNotPerformAssertions
      */
     public function testBackupStaticAttributes()
     {
@@ -100,6 +103,8 @@ class MockDelegateFunctionBuilderTest extends \PHPUnit_Framework_TestCase
      * @test
      * @runInSeparateProcess
      * @dataProvider provideTestDeserializationInNewProcess
+     *
+     * @doesNotPerformAssertions
      */
     public function testDeserializationInNewProcess($data)
     {

@@ -2,6 +2,8 @@
 
 namespace phpmock\integration;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Tests MockDelegateFunction.
  *
@@ -10,15 +12,16 @@ namespace phpmock\integration;
  * @license http://www.wtfpl.net/txt/copying/ WTFPL
  * @see MockDelegateFunction
  */
-class MockDelegateFunctionTest extends \PHPUnit_Framework_TestCase
+class MockDelegateFunctionTest extends TestCase
 {
+    use TestCaseTrait;
     
     /**
      * @var string The class name of a generated class.
      */
     private $className;
     
-    protected function setUp()
+    protected function setUpCompat()
     {
         parent::setUp();
         

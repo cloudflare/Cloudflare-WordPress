@@ -11,12 +11,12 @@ namespace phpmock\functions;
  */
 abstract class AbstractSleepFunction implements FunctionProvider
 {
-    
+
     /**
      * @var Incrementable[] Observing Incrementables.
      */
     private $incrementables = [];
-    
+
     /**
      * Sets the Incrementable objects.
      *
@@ -27,7 +27,7 @@ abstract class AbstractSleepFunction implements FunctionProvider
     {
         $this->incrementables = $incrementables;
     }
-    
+
     /**
      * Returns the sleep() mock function.
      *
@@ -45,7 +45,7 @@ abstract class AbstractSleepFunction implements FunctionProvider
     }
 
     /**
-     * Converts the sleep() paramater into seconds.
+     * Converts the sleep() parameter into seconds.
      *
      * @param int $amount Amount of time units.
      * @return mixed Seconds.

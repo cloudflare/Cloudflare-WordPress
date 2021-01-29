@@ -4,6 +4,7 @@ namespace phpmock\generator;
 
 use phpmock\Mock;
 use phpmock\MockRegistry;
+use SebastianBergmann\Template\Template;
 
 /**
  * Generates the mock function.
@@ -15,22 +16,22 @@ use phpmock\MockRegistry;
  */
 class MockFunctionGenerator
 {
-    
+
     /**
      * @var string The internal name for optional parameters.
      */
     const DEFAULT_ARGUMENT = "optionalParameter";
- 
+
     /**
      * @var Mock The mock.
      */
     private $mock;
-    
+
     /**
-     * @var \Text_Template The function template.
+     * @var Template The function template.
      */
     private $template;
-    
+
     /**
      * Sets the mock.
      *
@@ -39,9 +40,9 @@ class MockFunctionGenerator
     public function __construct(Mock $mock)
     {
         $this->mock     = $mock;
-        $this->template = new \Text_Template(__DIR__ . "/function.tpl");
+        $this->template = new Template(__DIR__ . '/function.tpl');
     }
-    
+
     /**
      * Defines the mock function.
      *
@@ -66,7 +67,7 @@ class MockFunctionGenerator
 
         eval($definition);
     }
-    
+
     /**
      * Removes optional arguments.
      *
@@ -80,7 +81,7 @@ class MockFunctionGenerator
             }
         }
     }
-    
+
     /**
      * Calls the enabled mock, or the built-in function otherwise.
      *
@@ -102,7 +103,6 @@ class MockFunctionGenerator
         if (empty($mock)) {
             // call the built-in function if the mock was not enabled.
             return call_user_func_array($functionName, $arguments);
-        
         } else {
             // call the mock function.
             return $mock->call($arguments);

@@ -7,6 +7,8 @@ You'll find these integrations:
 
 - [php-mock/php-mock-mockery](https://github.com/php-mock/php-mock-mockery) - Mockery integration
 
+- [php-mock/php-mock-prophecy](https://github.com/php-mock/php-mock-prophecy) - Prophecy (phpspec) integration
+
 # License and authors
 
 This project is free and under the WTFPL.

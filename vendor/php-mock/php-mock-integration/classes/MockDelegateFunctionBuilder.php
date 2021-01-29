@@ -3,6 +3,7 @@
 namespace phpmock\integration;
 
 use phpmock\generator\ParameterBuilder;
+use SebastianBergmann\Template\Template;
 
 /**
  * Defines a MockDelegateFunction.
@@ -26,7 +27,7 @@ class MockDelegateFunctionBuilder
     private $namespace;
     
     /**
-     * @var \Text_Template The MockDelegateFunction template.
+     * @var Template The MockDelegateFunction template.
      */
     private $template;
     
@@ -35,7 +36,7 @@ class MockDelegateFunctionBuilder
      */
     public function __construct()
     {
-        $this->template = new \Text_Template(__DIR__ . "/MockDelegateFunction.tpl");
+        $this->template = new Template(__DIR__ . '/MockDelegateFunction.tpl');
     }
     
     /**
@@ -56,7 +57,7 @@ class MockDelegateFunctionBuilder
          * to the generated class.
          */
         $hash = md5($signatureParameters);
-        $this->namespace = __NAMESPACE__.$hash;
+        $this->namespace = __NAMESPACE__ . $hash;
         if (class_exists($this->getFullyQualifiedClassName())) {
             return;
         }

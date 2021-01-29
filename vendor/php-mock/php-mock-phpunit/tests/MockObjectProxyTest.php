@@ -2,8 +2,16 @@
 
 namespace phpmock\phpunit;
 
-use \PHPUnit_Framework_MockObject_Builder_InvocationMocker as InvocationMocker;
 use phpmock\integration\MockDelegateFunctionBuilder;
+use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
+use PHPUnit\Framework\MockObject\ConfigurableMethod;
+use PHPUnit\Framework\MockObject\InvocationHandler;
+use PHPUnit\Framework\MockObject\Matcher\Invocation;
+use PHPUnit\Framework\MockObject\Matcher\MethodName;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub\MatcherCollection;
+use PHPUnit\Framework\TestCase;
+use SebastianBergmann\Type\Type;
 
 /**
  * Tests MockObjectProxyTest.
@@ -14,9 +22,9 @@ use phpmock\integration\MockDelegateFunctionBuilder;
  * @see MockObjectProxy
  * @requires PHPUnit 4.5.0
  */
-class MockObjectProxyTest extends \PHPUnit_Framework_TestCase
+class MockObjectProxyTest extends TestCase
 {
- 
+
     /**
      * Tests expects()
      *
@@ -24,22 +32,58 @@ class MockObjectProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testExpects()
     {
-        $matcher = $this->getMock(\PHPUnit_Framework_MockObject_Matcher_Invocation::class);
-        
-        $invocationMocker = $this->getMock(InvocationMocker::class, [], [], '', false);
-        $invocationMocker->expects($this->once())->method("method")
-                ->with(MockDelegateFunctionBuilder::METHOD)->willReturn($invocationMocker);
-        
-        $prophecy = $this->prophesize(\PHPUnit_Framework_MockObject_MockObject::class);
+        $matcher = $this->getMockBuilder(Invocation::class)->getMock();
+
+        $methods = class_exists(ConfigurableMethod::class)
+            ? new ConfigurableMethod(
+                MockDelegateFunctionBuilder::METHOD,
+                $this->prophesize(Type::class)->reveal()
+            )
+            : [MockDelegateFunctionBuilder::METHOD];
+
+        if (class_exists(\PHPUnit\Runner\Version::class)
+            && version_compare(\PHPUnit\Runner\Version::id(), '8.4.0') >= 0
+        ) {
+            $invocationHandler = new InvocationHandler([$methods], false);
+            $invocationMocker = $invocationHandler->expects($matcher);
+        } else {
+            $invocationMocker = new InvocationMocker(
+                $this->prophesize(MatcherCollection::class)->reveal(),
+                $this->prophesize(Invocation::class)->reveal(),
+                $methods
+            );
+        }
+
+        $prophecy = $this->prophesize(MockObject::class);
         $prophecy->expects($matcher)->willReturn($invocationMocker);
         $mock = $prophecy->reveal();
-        
+
         $proxy = new MockObjectProxy($mock);
-        
+
         $result = $proxy->expects($matcher);
         $this->assertEquals($invocationMocker, $result);
+
+        $this->assertSame(
+            (new MethodName(MockDelegateFunctionBuilder::METHOD))->toString(),
+            $this->getMethodMatcher($invocationMocker)->toString()
+        );
     }
-    
+
+    private function getMethodMatcher($invocationMocker)
+    {
+        if (class_exists(\PHPUnit\Runner\Version::class)
+            && version_compare(\PHPUnit\Runner\Version::id(), '8.4.0') >= 0
+        ) {
+            $reflection = new \ReflectionClass(InvocationMocker::class);
+            $property = $reflection->getProperty('matcher');
+            $property->setAccessible(true);
+            return $property->getValue($invocationMocker)->getMethodNameRule();
+        }
+
+        return $invocationMocker->getMatcher()->methodNameMatcher ??
+            $invocationMocker->getMatcher()->getMethodNameMatcher();
+    }
+
     /**
      * Tests delegation of __phpunit_hasMatchers().
      *
@@ -52,16 +96,16 @@ class MockObjectProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testHasMatcher()
     {
-        $prophecy = $this->prophesize(\PHPUnit_Framework_MockObject_MockObject::class);
-        $prophecy->__phpunit_hasMatchers()->willReturn("foo");
+        $prophecy = $this->prophesize(MockObject::class);
+        $prophecy->__phpunit_hasMatchers()->willReturn(true);
         $mock = $prophecy->reveal();
-        
+
         $proxy = new MockObjectProxy($mock);
-        
+
         $result = $proxy->__phpunit_hasMatchers();
-        $this->assertEquals("foo", $result);
+        $this->assertTrue($result);
     }
-    
+
     /**
      * Tests calling the proxy forwards the call to the subject.
      *
@@ -71,29 +115,49 @@ class MockObjectProxyTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider provideTestProxiedMethods
      */
-    public function testProxiedMethods($method, array $arguments = [], $expected = "foo")
+    public function testProxiedMethods($method, array $arguments = [], $expected = null)
     {
-        $prophecy = $this->prophesize(\PHPUnit_Framework_MockObject_MockObject::class);
-        call_user_func_array([$prophecy, $method], $arguments)->willReturn($expected);
+        $prophecy = $this->prophesize(MockObject::class);
+        if ($expected) {
+            call_user_func_array([$prophecy, $method], $arguments)->willReturn($expected)->shouldBeCalledTimes(1);
+        } else {
+            call_user_func_array([$prophecy, $method], $arguments)->shouldBeCalledTimes(1);
+        }
         $mock = $prophecy->reveal();
-        
+
         $proxy = new MockObjectProxy($mock);
-        
+
         $result = call_user_func_array([$proxy, $method], $arguments);
-        $this->assertEquals($expected, $result);
+
+        if ($expected) {
+            $this->assertSame($expected, $result);
+        }
     }
 
     /**
      * Returns the test cases for testProxiedMethods().
      *
      * @return array Test cases.
+     *
+     * @SuppressWarnings(PHPMD)
      */
     public function provideTestProxiedMethods()
     {
-        return [
-            ["__phpunit_getInvocationMocker"],
-            ["__phpunit_setOriginalObject", ["bar"]],
-            ["__phpunit_verify"],
-        ];
+        $return = [];
+        if (class_exists(\PHPUnit\Runner\Version::class)
+            && version_compare(\PHPUnit\Runner\Version::id(), '8.4.0') >= 0
+        ) {
+            $return[] = ['__phpunit_getInvocationHandler', [], new InvocationHandler([], false)];
+        } else {
+            $return[] = [
+                '__phpunit_getInvocationMocker',
+                [],
+                new \PHPUnit\Framework\MockObject\InvocationMocker([], true)
+            ];
+        }
+
+        $return[] = ['__phpunit_setOriginalObject', ['bar']];
+        $return[] = ['__phpunit_verify', [true]];
+        return $return;
     }
 }

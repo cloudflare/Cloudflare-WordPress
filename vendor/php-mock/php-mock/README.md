@@ -1,7 +1,7 @@
 # PHP-Mock: mocking built-in PHP functions
 
 PHP-Mock is a testing library which mocks non deterministic built-in PHP functions like
-`time()` or `rand()`. This is achived by [PHP's namespace fallback policy](http://php.net/manual/en/language.namespaces.fallback.php):
+`time()` or `rand()`. This is achieved by [PHP's namespace fallback policy](http://php.net/manual/en/language.namespaces.fallback.php):
 
 > PHP will fall back to global functions […]
 > if a namespaced function […] does not exist.
@@ -11,8 +11,6 @@ to be in a **non global namespace** context and call the function
 **unqualified**:
 
 ```php
-<?php
-
 namespace foo;
 
 $time = time(); // This call can be mocked, a call to \time() can't.
@@ -26,10 +24,11 @@ $time = time(); // This call can be mocked, a call to \time() can't.
 
 * The mock has to be defined before the first call to the unqualified function
   in the tested class. This is documented in [Bug #68541](https://bugs.php.net/bug.php?id=68541).
-  In most cases you can ignore this restriction. But if you happen to run into
+  In most cases, you can ignore this restriction but if you happen to run into
   this issue you can call [`Mock::define()`](http://php-mock.github.io/php-mock/api/class-phpmock.Mock.html#_define)
   before that first call. This would define a side effectless namespaced
-  function which can be enabled later.
+  function which can be enabled later. Another effective
+  approach is running your test in an isolated process.
 
 ## Alternatives
 
@@ -54,7 +53,7 @@ there are alternative techniques to mock built-in PHP functions:
 Use [Composer](https://getcomposer.org/):
 
 ```sh
-composer require php-mock/php-mock
+composer require --dev php-mock/php-mock
 ```
 
 
@@ -69,7 +68,7 @@ for these testing frameworks:
 
 - [php-mock/php-mock-prophecy](https://github.com/php-mock/php-mock-prophecy) - Prophecy (phpspec) integration
 
-**Note:** If you plan to use one of the above mentioned testing frameworks. You can skip
+**Note:** If you plan to use one of the above mentioned testing frameworks you can skip
 reading any further and just go to the particular integration project.
 
 ## PHP-Mock API
@@ -90,7 +89,7 @@ object. You can do this with the fluent API of [`MockBuilder`](http://php-mock.g
   sets the concrete mock implementation.
 
 * [`MockBuilder::setFunctionProvider()`](http://php-mock.github.io/php-mock/api/class-phpmock.MockBuilder.html#_setFunctionProvider)
-  sets alternativly to `MockBuilder::setFunction()` the mock implementation as a
+  sets, alternativly to `MockBuilder::setFunction()`, the mock implementation as a
   [`FunctionProvider`](http://php-mock.github.io/php-mock/api/class-phpmock.functions.FunctionProvider.html):
 
    * [`FixedValueFunction`](http://php-mock.github.io/php-mock/api/class-phpmock.functions.FixedValueFunction.html)
@@ -125,8 +124,6 @@ This example illustrates mocking of the unqualified function `time()` in the
 namespace `foo`:
 
 ```php
-<?php
-
 namespace foo;
 
 use phpmock\MockBuilder;
@@ -157,8 +154,6 @@ Instead of setting the mock function with `MockBuilder::setFunction()` you could
 use the existing [`FixedValueFunction`](http://php-mock.github.io/php-mock/api/class-phpmock.functions.FixedValueFunction.html):
 
 ```php
-<?php
-
 namespace foo;
 
 use phpmock\MockBuilder;
@@ -202,8 +197,6 @@ Furthermore they increase the amount of time in the mocked `date()`, `time()` an
 `microtime()`:
 
 ```php
-<?php
-
 namespace foo;
 
 use phpmock\environment\SleepEnvironmentBuilder;
@@ -238,8 +231,6 @@ E.g. a `new Spy(__NAMESPACE__ , "rand")` would create a spy which basically
 proxies PHP's built-in `rand()`:
 
 ```php
-<?php
-
 namespace foo;
 
 use phpmock\spy\Spy;
@@ -269,5 +260,3 @@ This library was inspired by Fabian Schmengler's article
 
 If you like PHP-Mock and feel generous donate a few Bitcoins here:
 [1335STSwu9hST4vcMRppEPgENMHD2r1REK](bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK)
-
-[![Build Status](https://travis-ci.org/php-mock/php-mock.svg?branch=master)](https://travis-ci.org/php-mock/php-mock)
