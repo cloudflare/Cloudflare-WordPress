@@ -2,9 +2,9 @@ name: PHP Composer
 
 on:
   push:
-    branches: [ master ]
+    branches: [ '*' ]
   pull_request:
-    branches: [ master ]
+    branches: [ '*' ]
 
 jobs:
   build:
@@ -52,7 +52,7 @@ jobs:
       uses: nanasess/setup-php@master
       with:
         php-version: ${{ matrix.php-versions }}
-      run: for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
+        run: for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
