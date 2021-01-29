@@ -4,8 +4,13 @@ namespace CF\Test\WordPress;
 
 use CF\WordPress\Constants\Plans;
 
-class PlansTest extends \PHPUnit_Framework_TestCase
+class PlansTest extends \PHPUnit\Framework\TestCase
 {
+    public function setup(): void
+    {
+
+    }
+
     public function testPlanNeedsUpgradeAllCases()
     {
         // FREE_PLAN

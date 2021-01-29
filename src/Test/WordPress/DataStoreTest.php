@@ -5,13 +5,13 @@ namespace CF\Test\WordPress {
     use CF\WordPress\DataStore;
     use CF\API\Plugin;
 
-    class DataStoreTest extends \PHPUnit_Framework_TestCase
+    class DataStoreTest extends \PHPUnit\Framework\TestCase
     {
         protected $dataStore;
         protected $mockLogger;
         protected $mockWordPressWrapper;
 
-        public function setup()
+        public function setup(): void
         {
             $this->mockLogger = $this->getMockBuilder('CF\Integration\DefaultLogger')
                 ->disableOriginalConstructor()

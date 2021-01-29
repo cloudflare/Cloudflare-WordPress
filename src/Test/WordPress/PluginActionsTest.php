@@ -7,7 +7,7 @@ use CF\WordPress\Constants\Plans;
 use CF\WordPress\PluginActions;
 use phpmock\phpunit\PHPMock;
 
-class PluginActionsTest extends \PHPUnit_Framework_TestCase
+class PluginActionsTest extends \PHPUnit\Framework\TestCase
 {
     use PHPMock;
 
@@ -23,7 +23,7 @@ class PluginActionsTest extends \PHPUnit_Framework_TestCase
     private $mockRequest;
     private $pluginActions;
 
-    public function setup()
+    public function setup(): void
     {
         $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
             ->disableOriginalConstructor()

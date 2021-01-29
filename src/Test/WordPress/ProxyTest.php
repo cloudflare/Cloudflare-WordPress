@@ -5,7 +5,7 @@ namespace CF\Test\WordPress;
 use CF\Integration\DefaultIntegration;
 use phpmock\phpunit\PHPMock;
 
-class ProxyTest extends \PHPUnit_Framework_TestCase
+class ProxyTest extends \PHPUnit\Framework\TestCase
 {
     use PHPMock;
 
@@ -17,7 +17,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
     protected $mockDefaultIntegration;
     protected $mockRequestRouter;
 
-    public function setup()
+    public function setup(): void
     {
         $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
             ->disableOriginalConstructor()
