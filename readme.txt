@@ -4,6 +4,7 @@ Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 5.5.1
 Stable tag: 3.8.10
+Requires PHP: 7.2
 License: BSD-3-Clause
 
 All of Cloudflare’s performance and security benefits in a simple one-click install.
