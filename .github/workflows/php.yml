@@ -29,7 +29,6 @@ jobs:
         path: /tmp/composer-cache
         key: ${{ runner.os }}-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}
 
-
     - name: Validate composer.json and composer.lock
       uses: php-actions/composer@v5
       with:
@@ -45,6 +44,13 @@ jobs:
         php_version: ${{ matrix.php-versions }}
         version: 1
 
+    - name: Remove intentional crash test in dependency
+      uses: php-actions/composer@v5
+      with:
+        command: run-script clean-crash-test
+        php_version: ${{ matrix.php-versions }}
+        version: 1
+
     - name: Format
       uses: php-actions/composer@v5
       with:
@@ -54,9 +60,6 @@ jobs:
 
     - name: PHP syntax check
       run: php -v; for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
-
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
 
     - name: Run test suite
       # Skip testing on PHP 7.4, because php-mock required by PHP 5.6 breaks on 7.4+
