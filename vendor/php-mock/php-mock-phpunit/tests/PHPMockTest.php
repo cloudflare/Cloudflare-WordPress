@@ -3,6 +3,7 @@
 namespace phpmock\phpunit;
 
 use phpmock\AbstractMockTest;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * Tests PHPMock.
@@ -16,22 +17,22 @@ class PHPMockTest extends AbstractMockTest
 {
 
     use PHPMock;
-    
+
     protected function defineFunction($namespace, $functionName)
     {
         self::defineFunctionMock($namespace, $functionName);
     }
-    
+
     protected function mockFunction($namespace, $functionName, callable $function)
     {
         $mock = $this->getFunctionMock($namespace, $functionName);
         $mock->expects($this->any())->willReturnCallback($function);
     }
-    
+
     protected function disableMocks()
     {
     }
-    
+
     /**
      * Tests building a mock with arguments.
      *
@@ -41,10 +42,10 @@ class PHPMockTest extends AbstractMockTest
     {
         $time = $this->getFunctionMock(__NAMESPACE__, "sqrt");
         $time->expects($this->once())->with(9)->willReturn(2);
-        
+
         $this->assertEquals(2, sqrt(9));
     }
-    
+
     /**
      * Tests failing an expectation.
      *
@@ -58,7 +59,7 @@ class PHPMockTest extends AbstractMockTest
 
             $time->__phpunit_verify();
             $this->fail("Expectation should fail");
-        } catch (\PHPUnit_Framework_ExpectationFailedException $e) {
+        } catch (ExpectationFailedException $e) {
             time(); // satisfy the expectation
         }
     }

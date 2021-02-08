@@ -4,9 +4,9 @@ namespace CF\Test\WordPress;
 
 use CF\WordPress\Utils;
 
-class UtilsTest extends \PHPUnit_Framework_TestCase
+class UtilsTest extends \PHPUnit\Framework\TestCase
 {
-    public function setup()
+    public function setup(): void
     {
     }
 

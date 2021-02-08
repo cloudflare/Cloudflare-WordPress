@@ -9,11 +9,20 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
     - name: Build
       uses: php-actions/composer@v5
       with:
         command: install
         version: 1
+
+    - name: Remove intentional crash test in dependency
+      uses: php-actions/composer@v5
+      with:
+        command: run-script clean-crash-test
+        php_version: ${{ matrix.php-versions }}
+        version: 1
+
     - name: WordPress Plugin Deploy
       id: deploy
       uses: 10up/action-wordpress-plugin-deploy@stable
@@ -23,6 +32,7 @@ jobs:
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         SLUG: cloudflare
+
     - name: Upload release asset
       uses: actions/upload-release-asset@v1
       env:

@@ -3,6 +3,7 @@
 namespace phpmock\phpunit;
 
 use phpmock\Mock;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Tests MockDisabler.
@@ -12,7 +13,7 @@ use phpmock\Mock;
  * @license http://www.wtfpl.net/txt/copying/ WTFPL
  * @see MockDisabler
  */
-class MockDisablerTest extends \PHPUnit_Framework_TestCase
+class MockDisablerTest extends TestCase
 {
 
     /**

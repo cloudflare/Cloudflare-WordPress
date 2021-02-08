@@ -12,11 +12,11 @@ use phpmock\functions\FunctionProvider;
  * namespace foo;
  *
  * use phpmock\MockBuilder;
- * use phpmock\FixedValueFunction;
+ * use phpmock\functions\FixedValueFunction;
  *
  * $builder = new MockBuilder();
  * $builder->setNamespace(__NAMESPACE__)
- *         ->setName(__NAMESPACE__)
+ *         ->setName("time")
  *         ->setFunctionProvider(new FixedValueFunction(1417011228));
  *
  * $mock = $builder->build();
@@ -39,22 +39,22 @@ use phpmock\functions\FunctionProvider;
  */
 class MockBuilder
 {
-    
+
     /**
      * @var string namespace for the mock function.
      */
     private $namespace;
-    
+
     /**
      * @var string function name of the mocked function.
      */
     private $name;
-    
+
     /**
      * @var callable The function mock.
      */
     private $function;
-    
+
     /**
      * Sets the mock namespace.
      *
@@ -66,7 +66,7 @@ class MockBuilder
         $this->namespace = $namespace;
         return $this;
     }
-    
+
     /**
      * Sets the mocked function name.
      *
@@ -78,9 +78,13 @@ class MockBuilder
         $this->name = $name;
         return $this;
     }
-    
+
     /**
      * Sets the mock function.
+     *
+     * Use this method if you want to set the mocked behaviour with
+     * a callable. Alternatively, you can use {@link setFunctionProvider()}
+     * to set it with a {@link FunctionProvider}.
      *
      * @param callable $function The mock function.
      * @return MockBuilder
@@ -91,9 +95,13 @@ class MockBuilder
         $this->function = $function;
         return $this;
     }
-    
+
     /**
      * Sets the mock function.
+     *
+     * Use this method if you want to set the mocked behaviour with
+     * a {@link FunctionProvider}. Alternatively, you can use
+     * {@link setFunction()} to set it with a callable.
      *
      * @param FunctionProvider $provider The mock function provider.
      * @return MockBuilder
@@ -103,7 +111,7 @@ class MockBuilder
     {
         return $this->setFunction($provider->getCallable());
     }
-    
+
     /**
      * Builds a mock.
      *

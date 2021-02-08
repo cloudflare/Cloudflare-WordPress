@@ -14,9 +14,9 @@
         "symfony/yaml": "~2.6"
     },
     "require-dev": {
-        "johnkary/phpunit-speedtrap": "1.0.1",
-        "php-mock/php-mock-phpunit": "^1.1",
-        "phpunit/phpunit": "5.*",
+        "johnkary/phpunit-speedtrap": "^3",
+        "php-mock/php-mock-phpunit": "^2",
+        "phpunit/phpunit": "^8",
         "squizlabs/php_codesniffer": "2.*",
         "phpcompatibility/php-compatibility": "*",
         "simplyadmire/composer-plugins": "@dev",
@@ -25,15 +25,16 @@
     },
     "scripts": {
         "format": "php vendor/bin/phpcs -d date.timezone=UTC --standard=phpcs.xml",
-        "test": "php vendor/bin/phpunit"
+        "test": "php vendor/bin/phpunit",
+        "clean-crash-test": "rm vendor/phpunit/php-code-coverage/tests/_files/Crash.php"
     },
     "_comment": [
         "php-compatibility-install comes from https://github.com/wimg/PHPCompatibility/issues/102#issuecomment-255778195"
     ],
-    "version": "3.8.10",
+    "version": "4.0.0",
     "config": {
         "platform": {
-            "php": "5.6.40"
+            "php": "7.2"
         }
     }
 }

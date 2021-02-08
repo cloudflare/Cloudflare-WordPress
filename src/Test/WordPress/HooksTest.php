@@ -6,7 +6,7 @@ use CF\WordPress\Hooks;
 use CF\Integration\DefaultIntegration;
 use phpmock\phpunit\PHPMock;
 
-class HooksTest extends \PHPUnit_Framework_TestCase
+class HooksTest extends \PHPUnit\Framework\TestCase
 {
     use PHPMock;
 
@@ -19,7 +19,7 @@ class HooksTest extends \PHPUnit_Framework_TestCase
     protected $mockDefaultIntegration;
     protected $mockProxy;
 
-    public function setup()
+    public function setup(): void
     {
         $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
             ->disableOriginalConstructor()

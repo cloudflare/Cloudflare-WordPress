@@ -2,6 +2,8 @@
 
 namespace phpmock\generator;
 
+use ReflectionFunction;
+
 /**
  * Builder for the mocked function parameters.
  *
@@ -32,32 +34,29 @@ class ParameterBuilder
     {
         if (!function_exists($functionName)) {
             return;
-
         }
-        $function            = new \ReflectionFunction($functionName);
+        $function            = new ReflectionFunction($functionName);
         $signatureParameters = [];
         $bodyParameters      = [];
         foreach ($function->getParameters() as $reflectionParameter) {
             if ($this->isVariadic($reflectionParameter)) {
                 break;
-
             }
             $parameter = $reflectionParameter->isPassedByReference()
                 ? "&$$reflectionParameter->name"
                 : "$$reflectionParameter->name";
-            
+
             $signatureParameter = $reflectionParameter->isOptional()
                 ? sprintf("%s = '%s'", $parameter, MockFunctionGenerator::DEFAULT_ARGUMENT)
                 : $parameter;
 
             $signatureParameters[] = $signatureParameter;
             $bodyParameters[]      = $parameter;
-
         }
         $this->signatureParameters = implode(", ", $signatureParameters);
         $this->bodyParameters      = implode(", ", $bodyParameters);
     }
-    
+
     /**
      * Returns whether a parameter is variadic.
      *
@@ -70,15 +69,13 @@ class ParameterBuilder
         if ($parameter->name == "...") {
             // This is a variadic C-implementation before PHP-5.6.
             return true;
-
         }
         if (method_exists($parameter, "isVariadic")) {
             return $parameter->isVariadic();
-            
         }
         return false;
     }
-    
+
     /**
      * Returns the signature's parameters.
      *
@@ -88,7 +85,7 @@ class ParameterBuilder
     {
         return $this->signatureParameters;
     }
-    
+
     /**
      * Returns the body's parameter access list.
      *

@@ -6,7 +6,7 @@ use CF\API\Request;
 use CF\WordPress\ClientActions;
 use CF\Integration\DefaultIntegration;
 
-class ClientActionsTest extends \PHPUnit_Framework_TestCase
+class ClientActionsTest extends \PHPUnit\Framework\TestCase
 {
     private $mockClientAPI;
     private $mockConfig;
@@ -15,7 +15,7 @@ class ClientActionsTest extends \PHPUnit_Framework_TestCase
     private $mockLogger;
     private $mockDefaultIntegration;
 
-    public function setup()
+    public function setup(): void
     {
         $this->mockClientAPI = $this->getMockBuilder('CF\API\Client')
             ->disableOriginalConstructor()

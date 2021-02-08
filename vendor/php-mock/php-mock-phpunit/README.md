@@ -26,12 +26,10 @@ PHPUnit mock:
 
 namespace foo;
 
-use phpmock\phpunit\PHPMock;
-
-class BuiltinTest extends \PHPUnit_Framework_TestCase
+class BuiltinTest extends \PHPUnit\Framework\TestCase
 {
 
-    use PHPMock;
+    use \phpmock\phpunit\PHPMock;
 
     public function testTime()
     {

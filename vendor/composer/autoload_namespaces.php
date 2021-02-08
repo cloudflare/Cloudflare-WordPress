@@ -7,6 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'SimplyAdmire\\ComposerPlugins' => array($vendorDir . '/simplyadmire/composer-plugins'),
-    'JohnKary' => array($vendorDir . '/johnkary/phpunit-speedtrap/src'),
     'CloudFlare\\' => array($vendorDir . '/cloudflare/cf-ip-rewrite/src'),
 );

@@ -1,23 +1,25 @@
 # phpunit-speedtrap
 
-SpeedTrap reports on slow-running tests in your PHPUnit test suite right in your console.
+[![Build Status](https://travis-ci.org/johnkary/phpunit-speedtrap.svg?branch=master)](https://travis-ci.org/johnkary/phpunit-speedtrap)
 
-Many factors affect test execution time. A test not properly isolated from variable latency (database, network, etc.) and even basic load on your test machine will cause test times to fluctuate.
+SpeedTrap reports on slow-running PHPUnit tests right in the console.
 
-SpeedTrap helps you **identify slow tests** but cannot tell you **why** those tests are slow. For that you should check out [Blackfire.io](https://blackfire.io) for easy profiling your test suite, or another PHPUnit listener [PHPUnit\_Listener\_XHProf](https://github.com/sebastianbergmann/phpunit-testlistener-xhprof), to help identify specifically which methods in your call stack are slow.
+Many factors affect test execution time. A test not properly isolated from variable latency (database, network, etc.) and even basic load on the test machine will cause test execution times to fluctuate.
+
+SpeedTrap helps **identify slow tests** but cannot explain **why** those tests are slow. For that consider using [Blackfire.io](https://blackfire.io) to profile the test suite, or another PHPUnit listener [PHPUnit\_Listener\_XHProf](https://github.com/sebastianbergmann/phpunit-testlistener-xhprof), to specifically identify slow code.
 
 ![Screenshot of terminal using SpeedTrap](http://i.imgur.com/Zr34giR.png)
 
 ## Installation
 
-SpeedTrap is installable via [Composer](http://getcomposer.org) and should be added as a `require-dev` dependency:
+SpeedTrap is installed using [Composer](http://getcomposer.org). Add it as a `require-dev` dependency:
 
     composer require --dev johnkary/phpunit-speedtrap
 
 
 ## Usage
 
-Enable with all defaults by adding the following to your test suite's `phpunit.xml` file:
+Enable with all defaults by adding the following code to your project's `phpunit.xml` file:
 
 ```xml
 <phpunit bootstrap="vendor/autoload.php">
@@ -28,16 +30,16 @@ Enable with all defaults by adding the following to your test suite's `phpunit.x
 </phpunit>
 ```
 
-Now run your test suite as normal. If tests run that exceed the slowness threshold (500ms by default), SpeedTrap will report on them in the console after the suite completes.
+Now run the test suite. If one or more test executions exceed the slowness threshold (500ms by default), SpeedTrap will report on those tests in the console after all tests have completed.
 
-## Configuration
+## Config Parameters
 
-SpeedTrap has two configurable parameters:
+SpeedTrap also supports these parameters:
 
-* **slowThreshold** - Number of milliseconds a test takes to execute before being considered "slow" (Default: 500ms)
+* **slowThreshold** - Number of milliseconds when a test is considered "slow" (Default: 500ms)
 * **reportLength** - Number of slow tests included in the report (Default: 10 tests)
 
-These configuration parameters are set in `phpunit.xml` when adding the listener:
+Each parameter is set in `phpunit.xml`:
 
 ```xml
 <phpunit bootstrap="vendor/autoload.php">
@@ -60,30 +62,121 @@ These configuration parameters are set in `phpunit.xml` when adding the listener
 </phpunit>
 ```
 
-This allows you to set your own criteria for "slow" tests, and how many you care to know about.
+## Custom slowness threshold per-test case
 
-## Custom slow threshold per-test method
+Some projects have a few complex tests that take a long time to run. It is possible to set a different slowness threshold for individual test cases.
 
-You may have a few tests in your suite that take a little bit longer to run, and want to have a higher slow threshold than the rest of your suite.
-
-You can use the annotation `@slowThreshold` to set a custom slow threshold on a per-test method basis. This number can be higher or lower than the default threshold and will be used in place of the default threshold for that specific test.
+The annotation `@slowThreshold` can set a custom slowness threshold for each test case. This number may be higher or lower than the default threshold and is used instead of the default threshold for that specific test.
 
 ```php
-class SomeTestCase extends \PHPUnit_Framework_TestCase
+class SomeTestCase extends PHPUnit\Framework\TestCase
 {
     /**
      * @slowThreshold 5000
      */
     public function testLongRunningProcess()
     {
-        // Code to exercise your long-running SUT
+        // Code that takes a longer time to execute
     }
 }
 ```
 
+## Disable slowness profiling using an environment variable
+
+SpeedTrapListener profiles for slow tests when enabled in phpunit.xml. But using an environment variable named `PHPUNIT_SPEEDTRAP` can enable or disable the listener.
+
+    $ PHPUNIT_SPEEDTRAP="disabled" ./vendor/bin/phpunit
+
+#### Use case: Disable profiling in development, but profile with Travis CI
+
+Travis CI is popular for running tests in the cloud after pushing new code to a repository.
+
+Step 1) Enable SpeedTrapListener in phpunit.xml, but set `PHPUNIT_SPEEDTRAP="disabled"` to disable profiling when running tests.
+
+```xml
+<phpunit bootstrap="vendor/autoload.php">
+...
+    <php>
+        <env name="PHPUNIT_SPEEDTRAP" value="disabled" />
+    </php>
+
+    <listeners>
+        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
+    </listeners>
+</phpunit>
+```
+
+Step 2) Configure `.travis.yml` with `PHPUNIT_SPEEDTRAP="enabled"` to profile for slow tests when running on Travis CI:
+
+```yaml
+language: php
+
+php:
+  - 7.3
+
+env:
+  - PHPUNIT_SPEEDTRAP="enabled"
+```
+
+Step 3) View the Travis CI build output and read the slowness report printed in the console.
+
+[Travis CI Documentation - Environment Variables](https://docs.travis-ci.com/user/environment-variables)
+
+#### Use case: Enable profiling in development, but disable with Travis CI
+
+Step 1) Enable SpeedTrapListener in phpunit.xml. The slowness report will output during all test suite executions.
+
+```xml
+<phpunit bootstrap="vendor/autoload.php">
+...
+    <listeners>
+        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
+    </listeners>
+</phpunit>
+```
+
+Step 2) Configure `.travis.yml` with `PHPUNIT_SPEEDTRAP="disabled"` to turn off profiling when running on Travis CI:
+
+```yaml
+language: php
+
+php:
+  - 7.3
+
+env:
+  - PHPUNIT_SPEEDTRAP="disabled"
+```
+
+Step 3) View the Travis CI build output and confirm the slowness report is not printed in the console.
+
+#### Use case: Only enable SpeedTrapListener on demand via command-line
+
+Useful when you only want to profile slow tests once in a while.
+
+Step 1) Setup phpunit.xml to enable SpeedTrapListener, but disable slowness profiling by setting `PHPUNIT_SPEEDTRAP="disabled"` like this:
+
+```xml
+<phpunit bootstrap="vendor/autoload.php">
+...
+    <php>
+        <env name="PHPUNIT_SPEEDTRAP" value="disabled" />
+    </php>
+
+    <listeners>
+        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener" />
+    </listeners>
+</phpunit>
+```
+
+Step 2) When executing `phpunit` from the command-line, enable slowness profiling only for this run by passing the environment variable `PHPUNIT_SPEEDTRAP="enabled"` like this:
+
+```bash
+$ PHPUNIT_SPEEDTRAP=enabled ./vendor/bin/phpunit
+```
+
 ## Inspiration
 
-This project was inspired by Rspec's `-p` option that displays feedback about slow tests.
+SpeedTrap was inspired by [RSpec's](https://github.com/rspec/rspec) `--profile` option that displays feedback about slow tests.
 
 ## License
 

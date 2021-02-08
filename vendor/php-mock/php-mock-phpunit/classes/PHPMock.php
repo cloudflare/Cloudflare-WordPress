@@ -5,22 +5,21 @@ namespace phpmock\phpunit;
 use phpmock\integration\MockDelegateFunctionBuilder;
 use phpmock\MockBuilder;
 use phpmock\Deactivatable;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
- * Adds building a function mock functionality into PHPUnit_Framework_TestCase.
+ * Adds building a function mock functionality into \PHPUnit\Framework\TestCase.
  *
- * Use this trait in your PHPUnit_Framework_TestCase:
+ * Use this trait in your \PHPUnit\Framework\TestCase:
  * <code>
  * <?php
  *
  * namespace foo;
  *
- * use phpmock\phpunit\PHPMock;
- *
- * class FooTest extends \PHPUnit_Framework_TestCase
+ * class FooTest extends \PHPUnit\Framework\TestCase
  * {
  *
- *     use PHPMock;
+ *     use \phpmock\phpunit\PHPMock;
  *
  *     public function testBar()
  *     {
@@ -37,30 +36,6 @@ use phpmock\Deactivatable;
  */
 trait PHPMock
 {
-
-    /**
-     * Returns a builder object to create mock objects using a fluent interface.
-     *
-     * This method exists in PHPUnit_Framework_TestCase.
-     *
-     * @param string $className Name of the class to mock.
-     * @return \PHPUnit_Framework_MockObject_MockBuilder
-     * @see \PHPUnit_Framework_TestCase::getMockBuilder()
-     * @internal
-     */
-    abstract protected function getMockBuilder($className);
-
-    /**
-     * Returns the test result.
-     *
-     * This method exists in PHPUnit_Framework_TestCase.
-     *
-     * @return \PHPUnit_Framework_TestResult The test result.
-     * @see \PHPUnit_Framework_TestCase::getTestResultObject()
-     * @internal
-     */
-    abstract protected function getTestResultObject();
-
     /**
      * Returns the enabled function mock.
      *
@@ -69,31 +44,44 @@ trait PHPMock
      * @param string $namespace The function namespace.
      * @param string $name      The function name.
      *
-     * @return \PHPUnit_Framework_MockObject_MockObject The PHPUnit mock.
+     * @return MockObject The PHPUnit mock.
      */
     public function getFunctionMock($namespace, $name)
     {
         $delegateBuilder = new MockDelegateFunctionBuilder();
         $delegateBuilder->build($name);
-        
-        $mock = $this->getMockBuilder($delegateBuilder->getFullyQualifiedClassName())->getMockForAbstractClass();
-        
-        $mock->__phpunit_getInvocationMocker()->addMatcher(new DefaultArgumentRemover());
-        
+
+        $builder = $this->getMockBuilder($delegateBuilder->getFullyQualifiedClassName());
+        if (is_callable([$builder, 'addMethods'])) {
+            $builder->addMethods([$name]);
+        }
+        $mock = $builder->getMockForAbstractClass();
+        $this->addMatcher($mock, $name);
+
         $functionMockBuilder = new MockBuilder();
         $functionMockBuilder->setNamespace($namespace)
                             ->setName($name)
                             ->setFunctionProvider($mock);
-                
+
         $functionMock = $functionMockBuilder->build();
         $functionMock->enable();
-        
+
         $this->registerForTearDown($functionMock);
-        
+
         $proxy = new MockObjectProxy($mock);
         return $proxy;
     }
-    
+
+    private function addMatcher($mock, $name)
+    {
+        if (is_callable([$mock, '__phpunit_getInvocationHandler'])) {
+            $mocker = $mock->__phpunit_getInvocationHandler()->expects(new DefaultArgumentRemover());
+            $mocker->method($name);
+            return;
+        }
+        $mock->__phpunit_getInvocationMocker()->addMatcher(new DefaultArgumentRemover());
+    }
+
     /**
      * Automatically disable function mocks after the test was run.
      *
@@ -108,7 +96,7 @@ trait PHPMock
         $result = $this->getTestResultObject();
         $result->addListener(new MockDisabler($deactivatable));
     }
-    
+
     /**
      * Defines the mocked function in the given namespace.
      *
