@@ -26,7 +26,7 @@
     "scripts": {
         "format": "php vendor/bin/phpcs -d date.timezone=UTC --standard=phpcs.xml",
         "test": "php vendor/bin/phpunit",
-        "clean-crash-test": "rm vendor/phpunit/php-code-coverage/tests/_files/Crash.php"
+        "clean-crash-test": "rm -f vendor/phpunit/php-code-coverage/tests/_files/Crash.php"
     },
     "_comment": [
         "php-compatibility-install comes from https://github.com/wimg/PHPCompatibility/issues/102#issuecomment-255778195"
