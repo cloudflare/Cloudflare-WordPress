@@ -91,7 +91,7 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 
 == Changelog ==
 
-= 4.0.0 - 2021-02-03 =
+= 4.0.0 - 2021-02-09 =
 
 * Drop support for PHP 5.6, 7.0 and 7.1
 
