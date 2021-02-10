@@ -14,13 +14,7 @@ jobs:
       uses: php-actions/composer@v5
       with:
         command: install
-        version: 1
-        php_version: 7.4
-
-    - name: Remove intentional crash test in dependency
-      uses: php-actions/composer@v5
-      with:
-        command: run-script clean-crash-test
+        dev: no
         version: 1
         php_version: 7.4
 
