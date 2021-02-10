@@ -48,8 +48,11 @@ jobs:
       uses: php-actions/composer@v5
       with:
         command: run-script clean-crash-test
-        php_version: ${{ matrix.php-versions }}
         version: 1
+        php_version: 7.4
+
+    - name: PHP syntax check
+      run: for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
 
     - name: Format
       uses: php-actions/composer@v5
@@ -57,9 +60,6 @@ jobs:
         command: run-script format
         php_version: ${{ matrix.php-versions }}
         version: 1
-
-    - name: PHP syntax check
-      run: for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
 
     - name: Run test suite
       uses: php-actions/composer@v5
