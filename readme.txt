@@ -1,9 +1,10 @@
 === Cloudflare ===
-Contributors: icyapril, manatarms, thillcf, deuill, epatryk
+Contributors: icyapril, manatarms, thillcf, deuill, epatryk, jacobbednarz
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
-Tested up to: 5.5.1
-Stable tag: 3.8.6
+Tested up to: 5.6
+Stable tag: 4.1.0
+Requires PHP: 7.2
 License: BSD-3-Clause
 
 All of Cloudflare’s performance and security benefits in a simple one-click install.
@@ -43,7 +44,8 @@ Additionally, Cloudflare’s plugin for WordPress automatically refreshes the Cl
 == Installation ==
 
 = Prerequisite =
-Make sure your PHP version is 5.3.10 or higher.
+
+Make sure your PHP version is 7.2 or higher.
 
 = From your WordPress Dashboard =
 
@@ -88,6 +90,33 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 == Screenshots ==
 
 == Changelog ==
+
+= 4.1.0 - 2021-02-11 =
+
+* Removed development dependencies from vendor directory
+* Update CLOUDFLARE_MIN_PHP_VERSION to match the plugin requirements
+
+= 4.0.0 - 2021-02-09 =
+
+* Drop support for PHP 5.6, 7.0 and 7.1
+
+= 3.8.10 - 2021-01-29 =
+
+* Add Jacob to maintainers list
+
+= 3.8.9 - 2021-01-14 =
+
+* Revert Add pagination purging
+
+= 3.8.8 - 2021-01-13 =
+
+* Add pagination purging
+
+= 3.8.7 - 2020-12-07 =
+
+* Purge taxonomy feed URLs
+* Fix changing APO settings (cf, wordpress, plugin) when running on subdomain
+* Fix setting hostname override
 
 = 3.8.6 - 2020-11-19 =
 

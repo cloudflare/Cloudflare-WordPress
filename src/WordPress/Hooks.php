@@ -175,7 +175,7 @@ class Hooks
         $listofurls = array();
         $postType = get_post_type($postId);
 
-        //Purge taxonomies terms URLs
+        //Purge taxonomies terms and feeds URLs
         $postTypeTaxonomies = get_object_taxonomies($postType);
 
         foreach ($postTypeTaxonomies as $taxonomy) {
@@ -187,8 +187,10 @@ class Hooks
 
             foreach ($terms as $term) {
                 $termLink = get_term_link($term);
-                if (!is_wp_error($termLink)) {
+                $termFeedLink = get_term_feed_link($term->term_id, $term->taxonomy);
+                if (!is_wp_error($termLink) && !is_wp_error($termFeedLink)) {
                     array_push($listofurls, $termLink);
+                    array_push($listofurls, $termFeedLink);
                 }
             }
         }
@@ -309,15 +311,15 @@ class Hooks
     {
       // it could be too late to set the headers,
       // return early without triggering a warning in logs
-      if (headers_sent()) {
-        return;
-      }
+        if (headers_sent()) {
+            return;
+        }
 
       // add header unconditionally so we can detect plugin is activated
-      if (!is_user_logged_in() ) {
-        header( 'cf-edge-cache: cache,platform=wordpress' );
-      } else {
-        header( 'cf-edge-cache: no-cache' );
-      }
+        if (!is_user_logged_in()) {
+            header('cf-edge-cache: cache,platform=wordpress');
+        } else {
+            header('cf-edge-cache: no-cache');
+        }
     }
 }

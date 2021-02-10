@@ -134,7 +134,7 @@ class HTTP2ServerPush
                 $ext = pathinfo($src, PATHINFO_EXTENSION);
                 if ($ext === 'js') {
                     return 'script';
-                } else if ($ext === 'css') {
+                } elseif ($ext === 'css') {
                     return 'style';
                 }
                 return '';

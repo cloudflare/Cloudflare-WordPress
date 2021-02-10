@@ -4,7 +4,7 @@ namespace CF\Test\WordPress;
 
 use CF\WordPress\WordPressAPI;
 
-class WordPressAPITest extends \PHPUnit_Framework_TestCase
+class WordPressAPITest extends \PHPUnit\Framework\TestCase
 {
     private $mockClientAPI;
     private $mockConfig;
@@ -14,7 +14,7 @@ class WordPressAPITest extends \PHPUnit_Framework_TestCase
     private $mockWordPressClientAPI;
     private $mockWordPressWrapper;
 
-    public function setup()
+    public function setup(): void
     {
         $this->mockClientAPI = $this->getMockBuilder('CF\API\Client')
             ->disableOriginalConstructor()

@@ -1,0 +1,13 @@
+/.git
+/.github
+/scripts
+/docs
+
+.distignore
+.gitignore
+.editorconfig
+CONTRIBUTING.md
+docker-compose.yaml
+Dockerfile.wordpress
+phpcs.xml
+phpunit.xml
