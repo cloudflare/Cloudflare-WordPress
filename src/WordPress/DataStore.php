@@ -39,6 +39,10 @@ class DataStore implements DataStoreInterface
      */
     public function createUserDataStore($client_api_key, $email, $unique_id, $user_key)
     {
+        if (defined('CLOUDFLARE_API_KEY') && defined('CLOUDFLARE_EMAIL')) {
+            return true;
+        }
+
         // Clear options
         $this->set(self::API_KEY, '');
         $this->set(self::EMAIL, '');
@@ -63,6 +67,10 @@ class DataStore implements DataStoreInterface
      */
     public function getClientV4APIKey()
     {
+        if (defined('CLOUDFLARE_API_KEY') && CLOUDFLARE_API_KEY !== '') {
+            return CLOUDFLARE_API_KEY;
+        }
+
         return $this->get(self::API_KEY);
     }
 
@@ -79,6 +87,10 @@ class DataStore implements DataStoreInterface
      */
     public function getDomainNameCache()
     {
+        if (defined('CLOUDFLARE_DOMAIN_NAME') && CLOUDFLARE_DOMAIN_NAME !== '') {
+            return CLOUDFLARE_DOMAIN_NAME;
+        }
+
         $cachedDomainName = $this->get(self::CACHED_DOMAIN_NAME);
         if (empty($cachedDomainName)) {
             return;
@@ -92,6 +104,10 @@ class DataStore implements DataStoreInterface
      */
     public function setDomainNameCache($domainName)
     {
+        if (defined('CLOUDFLARE_DOMAIN_NAME') && CLOUDFLARE_DOMAIN_NAME !== '') {
+            return;
+        }
+
         return $this->set(self::CACHED_DOMAIN_NAME, $domainName);
     }
 
@@ -100,6 +116,10 @@ class DataStore implements DataStoreInterface
      */
     public function getCloudFlareEmail()
     {
+        if (defined('CLOUDFLARE_EMAIL') && CLOUDFLARE_EMAIL !== '') {
+            return CLOUDFLARE_EMAIL;
+        }
+
         return $this->get(self::EMAIL);
     }
 
