@@ -67,7 +67,7 @@ class DataStore implements DataStoreInterface
      */
     public function getClientV4APIKey()
     {
-        if (defined('CLOUDFLARE_API_KEY')) {
+        if (defined('CLOUDFLARE_API_KEY') && CLOUDFLARE_API_KEY !== '') {
             return CLOUDFLARE_API_KEY;
         }
 
@@ -87,7 +87,7 @@ class DataStore implements DataStoreInterface
      */
     public function getDomainNameCache()
     {
-        if (defined('CLOUDFLARE_DOMAIN_NAME')) {
+        if (defined('CLOUDFLARE_DOMAIN_NAME') && CLOUDFLARE_DOMAIN_NAME !== '') {
             return CLOUDFLARE_DOMAIN_NAME;
         }
 
@@ -104,7 +104,7 @@ class DataStore implements DataStoreInterface
      */
     public function setDomainNameCache($domainName)
     {
-        if (defined('CLOUDFLARE_DOMAIN_NAME')) {
+        if (defined('CLOUDFLARE_DOMAIN_NAME') && CLOUDFLARE_DOMAIN_NAME !== '') {
             return;
         }
 
@@ -116,7 +116,7 @@ class DataStore implements DataStoreInterface
      */
     public function getCloudFlareEmail()
     {
-        if (defined('CLOUDFLARE_EMAIL')) {
+        if (defined('CLOUDFLARE_EMAIL') && CLOUDFLARE_EMAIL !== '') {
             return CLOUDFLARE_EMAIL;
         }
 
