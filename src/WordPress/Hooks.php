@@ -325,10 +325,7 @@ class Hooks
 
     public function purgeCacheOnCommentStatusChange($new_status, $old_status, $comment)
     {
-        if (!is_object($comment)) {
-            return; // nothing to do
-        }
-        if (empty($comment->comment_post_ID)) {
+        if (!isset($comment->comment_post_ID) || empty($comment->comment_post_ID)) {
             return; // nothing to do
         }
 
