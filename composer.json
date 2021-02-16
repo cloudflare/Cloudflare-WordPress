@@ -10,10 +10,10 @@
     "type": "wordpress-plugin",
     "require": {
         "cloudflare/cf-ip-rewrite": "^1.0.0",
-        "cloudflare/cloudflare-plugin-backend": "2.4.0",
-        "symfony/yaml": "~2.6"
+        "cloudflare/cloudflare-plugin-backend": "2.4.0"
     },
     "require-dev": {
+        "symfony/yaml": "~2.6",
         "johnkary/phpunit-speedtrap": "^3",
         "php-mock/php-mock-phpunit": "^2",
         "phpunit/phpunit": "^8",
