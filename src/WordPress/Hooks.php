@@ -322,4 +322,33 @@ class Hooks
             header('cf-edge-cache: no-cache');
         }
     }
+
+    public function purgeCacheOnCommentStatusChange($new_status, $old_status, $comment)
+    {
+        if (!isset($comment->comment_post_ID) || empty($comment->comment_post_ID)) {
+            return; // nothing to do
+        }
+
+      // in case the comment status changed, and either old or new status is "approved", we need to purge cache for the corresponding post
+        if (($old_status != $new_status) && (($old_status === 'approved') || ($new_status === 'approved'))) {
+            $this->purgeCacheByRelevantURLs($comment->comment_post_ID);
+            return;
+        }
+    }
+
+    public function purgeCacheOnNewComment($comment_id, $comment_status, $comment_data)
+    {
+        if ($comment_status != 1) {
+            return; // if comment is not approved, stop
+        }
+        if (!is_array($comment_data)) {
+            return; // nothing to do
+        }
+        if (!array_key_exists('comment_post_ID', $comment_data)) {
+            return; // nothing to do
+        }
+
+      // all clear, we ne need to purge cache related to this post id
+        $this->purgeCacheByRelevantURLs($comment_data['comment_post_ID']);
+    }
 }
