@@ -3,7 +3,7 @@ Contributors: icyapril, manatarms, thillcf, deuill, epatryk, jacobbednarz
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 5.6
-Stable tag: 4.1.0
+Stable tag: 4.2.0
 Requires PHP: 7.2
 License: BSD-3-Clause
 
@@ -90,6 +90,12 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 == Screenshots ==
 
 == Changelog ==
+
+= 4.2.0 - 2021-03-02 =
+
+* Allow configuration of Cloudflare credentials via environment variables
+* Prevent purging of cache before comments have been moderated
+* Remove unnecessary symfony/yaml dependency
 
 = 4.1.0 - 2021-02-11 =
 
