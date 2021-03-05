@@ -3,7 +3,7 @@ Contributors: icyapril, manatarms, thillcf, deuill, epatryk, jacobbednarz
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 5.6
-Stable tag: 4.2.0
+Stable tag: 4.2.1
 Requires PHP: 7.2
 License: BSD-3-Clause
 
@@ -90,6 +90,10 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 == Screenshots ==
 
 == Changelog ==
+
+= 4.2.1 - 2021-03-05 =
+
+* Deprecate REST dashboard analytics
 
 = 4.2.0 - 2021-03-02 =
 
