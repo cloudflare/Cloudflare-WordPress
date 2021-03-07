@@ -53,6 +53,9 @@ class PluginActions extends AbstractPluginActions
         'integrationName',
     ];
 
+    const USER_CONFIG_PATH = '/../../config.json';
+    const COMPOSER_CONFIG_PATH = '/../../composer.json';
+
     public function __construct(DefaultIntegration $defaultIntegration, APIInterface $api, Request $request)
     {
         parent::__construct($defaultIntegration, $api, $request);
@@ -193,13 +196,13 @@ class PluginActions extends AbstractPluginActions
     public function getUserConfig()
     {
         if ($this->userConfig === null) {
-            //Need to suppress the File not found error with @
-            $userConfigContent = @file_get_contents(dirname(__FILE__) . '/config.json');
+            if (file_exists(dirname(__FILE__) . self::USER_CONFIG_PATH)) {
+                $userConfigContent = file_get_contents(dirname(__FILE__) . self::USER_CONFIG_PATH);
+            }
 
-            //Need to set an empty array for merge into config so it doesnt throw a type error
+            // Need to set an empty array for merge into config so it doesnt throw a type error
             $this->userConfig = [];
-            //If we did find a config decode it
-            if ($userConfigContent) {
+            if (!empty($userConfigContent)) {
                 $this->userConfig = json_decode($userConfigContent, true);
             }
         }
@@ -212,8 +215,8 @@ class PluginActions extends AbstractPluginActions
 
     public function getComposerJson()
     {
-        if ($this->composer === null) {
-            $this->composer = json_decode(file_get_contents(dirname(__FILE__) . '/composer.json'), true);
+        if ($this->composer === null && file_exists(dirname(__FILE__) . self::COMPOSER_CONFIG_PATH)) {
+            $this->composer = json_decode(file_get_contents(dirname(__FILE__) . self::COMPOSER_CONFIG_PATH), true);
         }
     }
 
