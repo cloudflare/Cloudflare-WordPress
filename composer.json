@@ -31,7 +31,7 @@
     "_comment": [
         "php-compatibility-install comes from https://github.com/wimg/PHPCompatibility/issues/102#issuecomment-255778195"
     ],
-    "version": "4.2.1",
+    "version": "4.2.2",
     "config": {
         "platform": {
             "php": "7.2"
