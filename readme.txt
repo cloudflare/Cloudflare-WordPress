@@ -83,6 +83,17 @@ Yes, on install and activation of the plugin, first time users will be asked to 
 
  You can review the recommended settings that are applied [here](https://support.cloudflare.com/hc/en-us/articles/227342487).
 
+= What do I do if Cloudflare does not detect the WordPress plugin for use with APO (Automatic Platform Optimization) =
+
+ APO works best when the WordPress plugin is used. We do not recommend using APO without the plugin installed. If you face issues with Cloudflare detecting the plugin then follow these steps:
+ 1. Go to Cloudflare WordPress plugin
+ 2. Disable APO in the card
+ 3. Enable APO in the card (will set proper settings for APO feature)
+ 4. Clear any server cache used via other plugins (WP Rocket being an example)
+ 5. Verify that your origin starts serving response header “cf-edge-cache: cache,platform=wordpress”
+
+ You can read more about APO with WordPress [here](https://support.cloudflare.com/hc/en-us/articles/360049822312)
+
 = Does the plugin work if I have Varnish enabled? =
 
 Yes, Cloudflare works with, and helps speed up your site even more, if you have Varnish enabled.
