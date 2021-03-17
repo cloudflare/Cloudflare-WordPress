@@ -10,11 +10,16 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix:
         php-versions: ['7.2', '7.3', '7.4']
+        experimental: [false]
+        include:
+          - php-versions: '8.0'
+            experimental: true
+
 
     steps:
     - uses: actions/checkout@v2
