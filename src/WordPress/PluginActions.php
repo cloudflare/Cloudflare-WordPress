@@ -87,7 +87,7 @@ class PluginActions extends AbstractPluginActions
             throw new ZoneSettingFailException();
         }
 
-        $currentPlan = $details['result']['plan']['legacy_id'];
+        $currentPlan = $details['result']['plan']['legacy_id'] ?? 'free';
 
         $result &= $this->clientAPI->changeZoneSettings($zoneId, 'security_level', array('value' => 'medium'));
         if (!$result) {
