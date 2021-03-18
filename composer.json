@@ -8,15 +8,9 @@
     "license": "BSD-3-Clause",
     "name": "cloudflare/wordpress-plugin",
     "type": "wordpress-plugin",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/cloudflare/cloudflare-plugin-backend"
-        }
-    ],
     "require": {
         "cloudflare/cf-ip-rewrite": "^1.0.0",
-        "cloudflare/cloudflare-plugin-backend": "dev-master"
+        "cloudflare/cloudflare-plugin-backend": "2.5.0"
     },
     "require-dev": {
         "symfony/yaml": "~2.6",
