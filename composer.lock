@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "17da64254e81854a17f3ef9a0062da6e",
+    "content-hash": "bba63bdcf25887db27ef9e07acdf23cd",
     "packages": [
         {
             "name": "cloudflare/cf-ip-rewrite",
@@ -53,16 +53,16 @@
         },
         {
             "name": "cloudflare/cloudflare-plugin-backend",
-            "version": "2.4.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",
-                "reference": "3b1fc84ad9ebeb0611e1e6a63a03a767ad95136b"
+                "reference": "c403ae5d9408bf83396ba7ffc1d08fe3cde6b75d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/3b1fc84ad9ebeb0611e1e6a63a03a767ad95136b",
-                "reference": "3b1fc84ad9ebeb0611e1e6a63a03a767ad95136b",
+                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/c403ae5d9408bf83396ba7ffc1d08fe3cde6b75d",
+                "reference": "c403ae5d9408bf83396ba7ffc1d08fe3cde6b75d",
                 "shasum": ""
             },
             "require": {
@@ -79,12 +79,25 @@
                     "CF\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "test": [
+                    "vendor/bin/phpunit"
+                ],
+                "lint": [
+                    "vendor/bin/phpcs -n --standard=PSR2 --extensions=php src/"
+                ],
+                "format": [
+                    "vendor/bin/phpcbf --standard=PSR2 --extensions=php src/"
+                ]
+            },
             "license": [
                 "BSD-3-Clause"
             ],
             "description": "A PHP backend for Cloudflare plugins.",
-            "time": "2020-10-02T03:20:01+00:00"
+            "support": {
+                "source": "https://github.com/cloudflare/cloudflare-plugin-backend/tree/v2.5.0"
+            },
+            "time": "2021-03-18T20:28:57+00:00"
         },
         {
             "name": "psr/log",
@@ -2300,7 +2313,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "cloudflare/cloudflare-plugin-backend": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],
