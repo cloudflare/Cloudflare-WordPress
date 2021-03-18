@@ -162,6 +162,8 @@
     "container.automaticplatformoptimization.description_hostnames": "**Note:** APO runs against the following list of hostnames:\n\n_{hostnames}_",
     "container.automaticplatformoptimization.cache_by_device_type": "Cache By Device Type",
     "container.automaticplatformoptimization.cache_by_device_type_note": "**Note:** Changing Cache By Device Type setting will invalidate Cache. The setting is applied to all hostnames",
+    "container.automaticplatformoptimization.apo_header_note": "cf-edge-cache response header is missing! Please clear any server cache used via other plugins.",
+    "container.automaticplatformoptimization.apo_configuration_note": "We detected feature misconfiguration!\n\nPlease disable and enable APO to save proper settings.",
     "container.purgeCacheCard.dropdown": "Purge Cache",
     "container.purgeCacheCard.button": "Purge Everything",
     "container.purgeCacheCard.title": "Purge Cache",
