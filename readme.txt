@@ -108,6 +108,7 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 * Stop sending `cfCRSFToken` to remote API
 * Add warnings for incorrectly configured Automatic Platform Optimization
 * Purge posts that go from public to private
+* Purge pagination for first 3 pages
 
 = 4.2.2 - 2021-03-08 =
 
