@@ -89,7 +89,7 @@ class Proxy
                 $path = API\Plugin::ENDPOINT . $_GET['proxyURL'];
             }
         } else {
-            $path = $body['proxyURL'];
+            $path = $body['proxyURL'] ?? '';
         }
 
         unset($parameters['proxyURLType']);

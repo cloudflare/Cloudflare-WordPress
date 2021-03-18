@@ -94,11 +94,10 @@ class PluginActionsTest extends \PHPUnit\Framework\TestCase
         $this->pluginActions->applyDefaultSettings();
     }
 
-    /**
-     * @expectedException CF\API\Exception\ZoneSettingFailException
-     */
     public function testReturnApplyDefaultSettingsZoneDetailsThrowsZoneSettingFailException()
     {
+        $this->expectException('\CF\API\Exception\ZoneSettingFailException');
+
         $this->mockRequest->method('getUrl')->willReturn('/plugin/:id/settings/default_settings');
 
         $this->mockWordPressClientAPI->method('zoneGetDetails')->willReturn(false);
@@ -106,11 +105,10 @@ class PluginActionsTest extends \PHPUnit\Framework\TestCase
         $this->pluginActions->applyDefaultSettings();
     }
 
-    /**
-     * @expectedException CF\API\Exception\ZoneSettingFailException
-     */
     public function testReturnApplyDefaultSettingsChangeZoneSettingsThrowsZoneSettingFailException()
     {
+        $this->expectException('\CF\API\Exception\ZoneSettingFailException');
+
         $this->mockRequest->method('getUrl')->willReturn('/plugin/:id/settings/default_settings');
 
         $this->mockWordPressClientAPI->method('zoneGetDetails')->willReturn(false);
@@ -118,6 +116,7 @@ class PluginActionsTest extends \PHPUnit\Framework\TestCase
         $this->mockWordPressClientAPI->method('zoneGetDetails')->willReturn(true);
         $this->mockWordPressClientAPI->method('responseOk')->willReturn(true);
         $this->mockWordPressClientAPI->method('changeZoneSettings')->willReturn(false);
+
 
         $this->pluginActions->applyDefaultSettings();
     }
