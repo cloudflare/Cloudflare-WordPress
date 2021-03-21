@@ -96,6 +96,7 @@ $cloudflarePurgeURLActions = array(
     'deleted_post',                     // Delete a post
     'delete_attachment',                // Delete an attachment - includes re-uploading
     'post_updated',                     // Update a post
+    'clean_post_cache',                 // Clean a post from the WordPress object cache
 );
 
 $cloudflarePurgeURLActions = apply_filters('cloudflare_purge_url_actions', $cloudflarePurgeURLActions);
