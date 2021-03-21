@@ -354,6 +354,13 @@ class Hooks
         }
     }
 
+    public function purgeCacheOnPostStatusChange($new_status, $old_status, $post)
+    {
+        if ('publish' === $new_status || 'publish' === $old_status) {
+            $this->purgeCacheByRelevantURLs($post->ID);
+        }
+    }
+
     public function purgeCacheOnCommentStatusChange($new_status, $old_status, $comment)
     {
         if (!isset($comment->comment_post_ID) || empty($comment->comment_post_ID)) {
