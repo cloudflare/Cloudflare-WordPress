@@ -100,7 +100,7 @@ $cloudflarePurgeURLActions = array(
 $cloudflarePurgeURLActions = apply_filters('cloudflare_purge_url_actions', $cloudflarePurgeURLActions);
 
 foreach ($cloudflarePurgeURLActions as $action) {
-    add_action($action, array($cloudflareHooks, 'purgeCacheByRelevantURLs'), PHP_INT_MAX, 4);
+    add_action($action, array($cloudflareHooks, 'purgeCacheByRelevantURLs'), PHP_INT_MAX);
 }
 
 /**
