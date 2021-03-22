@@ -3,7 +3,7 @@ Contributors: icyapril, manatarms, thillcf, deuill, epatryk, jacobbednarz
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 5.6
-Stable tag: 4.3.0
+Stable tag: 4.4.0
 Requires PHP: 7.2
 License: BSD-3-Clause
 
@@ -101,6 +101,12 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 == Screenshots ==
 
 == Changelog ==
+
+= 4.4.0 - 2021-03-23 =
+
+* Purge posts when transitioning to or from the 'published' state
+* Remove conditional logic for subdomain, allow to activate APO feature on the subdomain
+* Further work to autocorrect APO settings
 
 = 4.3.0 - 2021-03-19 =
 
