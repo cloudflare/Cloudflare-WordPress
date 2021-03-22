@@ -126,7 +126,7 @@ class Hooks
         }
     }
 
-    public function purgeCacheByRelevantURLs($postId, ...$args)
+    public function purgeCacheByRelevantURLs($postId)
     {
         if ($this->isPluginSpecificCacheEnabled() || $this->isAutomaticPlatformOptimizationEnabled()) {
             $wpDomainList = $this->integrationAPI->getDomainList();
@@ -135,36 +135,13 @@ class Hooks
             }
             $wpDomain = $wpDomainList[0];
 
-            $validPostStatus = array('publish', 'trash', 'private');
-            $thisPostStatus = get_post_status($postId);
-
-            if (get_permalink($postId) != true || !in_array($thisPostStatus, $validPostStatus)) {
-                return;
-            }
-
-            // We don't need to purge for private posts, except when they were just transitioned from public.
-            if ('private' === $thisPostStatus) {
-                // The action that fires on transition of status is "post_updated", which will have the old version
-                // in the extra args. If that arg is not there we can bail out.
-                if (! isset($args[1])) {
-                    return;
-                }
-                /**
-                 * @var \WP_Post $before Previous version of post.
-                 */
-                list(, $before) = $args;
-
-                if ('private' === $before->post_status) {
-                    return;
-                }
-            }
-
-            if (is_int(wp_is_post_autosave($postId)) ||  is_int(wp_is_post_revision($postId))) {
+            // Do not purge for autosaves or updates to post revisions.
+            if (wp_is_post_autosave($postId) || wp_is_post_revision($postId)) {
                 return;
             }
 
             $savedPost = get_post($postId);
-            if (is_a($savedPost, 'WP_Post') == false) {
+            if (!is_a($savedPost, 'WP_Post')) {
                 return;
             }
 
@@ -351,6 +328,13 @@ class Hooks
             header('cf-edge-cache: cache,platform=wordpress');
         } else {
             header('cf-edge-cache: no-cache');
+        }
+    }
+
+    public function purgeCacheOnPostStatusChange($new_status, $old_status, $post)
+    {
+        if ('publish' === $new_status || 'publish' === $old_status) {
+            $this->purgeCacheByRelevantURLs($post->ID);
         }
     }
 

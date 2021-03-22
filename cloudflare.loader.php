@@ -95,14 +95,18 @@ foreach ($cloudflarePurgeEverythingActions as $action) {
 $cloudflarePurgeURLActions = array(
     'deleted_post',                     // Delete a post
     'delete_attachment',                // Delete an attachment - includes re-uploading
-    'post_updated',                     // Update a post
 );
 
 $cloudflarePurgeURLActions = apply_filters('cloudflare_purge_url_actions', $cloudflarePurgeURLActions);
 
 foreach ($cloudflarePurgeURLActions as $action) {
-    add_action($action, array($cloudflareHooks, 'purgeCacheByRelevantURLs'), PHP_INT_MAX, 4);
+    add_action($action, array($cloudflareHooks, 'purgeCacheByRelevantURLs'), PHP_INT_MAX);
 }
+
+/**
+ * Register action to account for post status changes
+ */
+add_action('transition_post_status', array($cloudflareHooks, 'purgeCacheOnPostStatusChange'), PHP_INT_MAX, 3);
 
 /**
  * Register two new actions which account for comment status before purging cache
