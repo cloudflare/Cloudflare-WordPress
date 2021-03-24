@@ -1,0 +1,76 @@
+name: "\U0001F41B Bug report"
+description: "When something isn't working as expected or documented"
+title: ""
+labels: ["kind/bug", "needs-triage"]
+issue_body: true
+body:
+- type: checkboxes
+  attributes:
+    label: Confirmation
+    description: |
+      Please make sure to have followed the following checks before opening a 
+      new issue. 
+    options:
+      - label: My issue isn't already found on the issue tracker.
+        required: true
+      - label: I have replicated my issue using the latest version of the plugin and it is still present.
+        required: true
+- type: input
+  attributes:
+    label: WordPress version
+    description: |
+      What version of WordPress are you running? This is available in the 
+      WordPress dashboard.
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: Cloudflare-WordPress version
+    description: |
+      What version of the plugin are you running? This is available in the 
+      WordPress dashboard > Plugins > Cloudflare > Settings.
+  validations:
+    required: true
+- type: input
+  attributes:
+    label: PHP version
+    description: |
+      What version of PHP are you running?
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Expected result
+    description: What did you expect to happen?
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Actual result
+    description: What actually happened?
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Steps to reproduce
+    description: How can your issue be replicated?
+    placeholder: |
+      1. ...
+      2. ...
+      3. ...
+  validations:
+    required: true
+- type: textarea
+  attributes:
+    label: Additional factoids
+    description: Is there any other important information you'd like to share?
+  validations:
+    required: false
+- type: textarea
+  attributes:
+    label: References
+    description: |
+    Are there any other GitHub issues (open or closed) or Pull Requests that 
+    should be linked here? 
+  validations:
+    required: false
