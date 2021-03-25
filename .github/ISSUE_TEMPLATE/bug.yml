@@ -70,7 +70,7 @@ body:
   attributes:
     label: References
     description: |
-    Are there any other GitHub issues (open or closed) or Pull Requests that 
-    should be linked here? 
+      Are there any other GitHub issues (open or closed) or Pull Requests that 
+      should be linked here? 
   validations:
     required: false
