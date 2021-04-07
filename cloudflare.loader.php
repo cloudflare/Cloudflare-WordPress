@@ -105,6 +105,10 @@ foreach ($cloudflarePurgeURLActions as $action) {
 
 /**
  * Register action to account for post status changes
+ * This includes
+ * - publish => publish transitions (editing a published post: no actual status change but the hook runs nevertheless)
+ * - manually publishing/unpublishing a post
+ * - WordPress automatically publishing a scheduled post at the appropriate time
  */
 add_action('transition_post_status', array($cloudflareHooks, 'purgeCacheOnPostStatusChange'), PHP_INT_MAX, 3);
 
