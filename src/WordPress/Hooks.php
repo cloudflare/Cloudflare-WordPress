@@ -5,6 +5,7 @@ namespace CF\WordPress;
 use CF\API\APIInterface;
 use CF\Integration;
 use Psr\Log\LoggerInterface;
+use WP_Taxonomy;
 
 class Hooks
 {
@@ -173,6 +174,12 @@ class Hooks
         $postTypeTaxonomies = get_object_taxonomies($postType);
 
         foreach ($postTypeTaxonomies as $taxonomy) {
+            //Only if taxonomy is public
+            $taxonomy_data = get_taxonomy($taxonomy);
+            if ($taxonomy_data instanceof WP_Taxonomy && false === $taxonomy_data->public) {
+                continue;
+            }
+
             $terms = get_the_terms($postId, $taxonomy);
 
             if (empty($terms) || is_wp_error($terms)) {
