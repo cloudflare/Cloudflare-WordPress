@@ -274,6 +274,9 @@ class Hooks
             $listofurls = array_merge($listofurls, str_replace('http://', 'https://', $listofurls));
         }
 
+        // Clean array if row empty
+        $listofurls = array_filter($listofurls);
+
         return $listofurls;
     }
 
