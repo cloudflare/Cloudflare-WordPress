@@ -174,7 +174,7 @@ class Hooks
         $postTypeTaxonomies = get_object_taxonomies($postType);
 
         foreach ($postTypeTaxonomies as $taxonomy) {
-            //Only if taxonomy is public
+            // Only if taxonomy is public
             $taxonomy_data = get_taxonomy($taxonomy);
             if ($taxonomy_data instanceof WP_Taxonomy && false === $taxonomy_data->public) {
                 continue;
