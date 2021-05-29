@@ -21,7 +21,8 @@
         "phpcompatibility/php-compatibility": "*",
         "simplyadmire/composer-plugins": "*",
         "dealerdirect/phpcodesniffer-composer-installer": "*",
-        "phpdocumentor/reflection-docblock": "*"
+        "phpdocumentor/reflection-docblock": "*",
+        "symfony/polyfill-intl-idn": "*"
     },
     "scripts": {
         "format": "php vendor/bin/phpcs -d date.timezone=UTC --standard=phpcs.xml",
