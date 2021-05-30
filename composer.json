@@ -10,7 +10,8 @@
     "type": "wordpress-plugin",
     "require": {
         "cloudflare/cf-ip-rewrite": "^1.0.0",
-        "cloudflare/cloudflare-plugin-backend": "2.5.0"
+        "cloudflare/cloudflare-plugin-backend": "2.5.0",
+        "symfony/polyfill-intl-idn": "*"
     },
     "require-dev": {
         "symfony/yaml": "~2.6",
@@ -22,7 +23,7 @@
         "simplyadmire/composer-plugins": "*",
         "dealerdirect/phpcodesniffer-composer-installer": "*",
         "phpdocumentor/reflection-docblock": "*",
-        "symfony/polyfill-intl-idn": "*"
+        "psy/psysh": "@stable"
     },
     "scripts": {
         "format": "php vendor/bin/phpcs -d date.timezone=UTC --standard=phpcs.xml",

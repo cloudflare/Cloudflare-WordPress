@@ -1,6 +1,13 @@
 version: '3'
 
 services:
+    mitmproxy:
+        image: mitmproxy/mitmproxy
+        ports:
+        - "9080:9080"
+        - "9081:9081"
+        command: ["mitmweb", "--web-host", "0.0.0.0", "--web-port", "9080", "--listen-port", "9081"]
+
     db:
         image: mysql:5.7
         volumes:
@@ -15,15 +22,18 @@ services:
     wordpress:
         depends_on:
         - db
+        - mitmproxy
         build:
             dockerfile: Dockerfile.wordpress
             context: .
         volumes:
         - ./:/var/www/html/wp-content/plugins/cloudflare
         ports:
-        - "8000:80"
+        - "9999:80"
         restart: always
         environment:
+            # HTTP_PROXY: mitmproxy:9081
+            # HTTPS_PROXY: mitmproxy:9081
             WORDPRESS_DB_HOST: db:3306
             WORDPRESS_DB_USER: wordpress
             WORDPRESS_DB_PASSWORD: wordpress
@@ -39,10 +49,9 @@ services:
         image: adminer
         restart: always
         ports:
-        - 8080:8080
+        - 9010:8080
         depends_on:
         - db
 
 volumes:
     db_data: {}
-
