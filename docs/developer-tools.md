@@ -15,12 +15,14 @@ use ...
 // do a few lines of actual work here
 ```
 
-While this works, it's annoying to do over and over again. Instead, we include
-PsySH within the development dependencies so after running
-`composer install --dev`, you will be able to use `psysh` and have a fully
-loaded shell where you can play with snippets without the overhead of managing
-these files. There is also a bunch of other cool features to take advantage of;
-check out the website for more details!
+While this works, it's annoying to do over and over again. Instead, we recommend
+installing `psysh` and have a fully loaded shell where you can play with
+snippets without the overhead of managing these files. Install is as straight
+forward as `composer g require psy/psysh:@stable`. There is also a bunch of
+other cool features to take advantage of; check out the website for more details!
+
+This isn't included in the development dependencies due to too many conflicts
+with other packages.
 
 ## Docker
 
