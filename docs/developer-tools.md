@@ -34,6 +34,7 @@ WordPress running on Apache, MITMProxy and Adminer containers.
 Port mapping is as follows:
 
 - MySQL: `3306`
+  - Adminer UI: `9010`
 - WordPress: `9999`
 - MITMProxy:
   - Web UI: `9080` (only accessible from 127.0.0.1, not a domain)
