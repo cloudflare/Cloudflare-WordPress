@@ -259,7 +259,7 @@ class Hooks
             $attachmentUrls = array();
             foreach (get_intermediate_image_sizes() as $size) {
                 $attachmentSrc = wp_get_attachment_image_src($postId, $size);
-                if ($attachmentSrc) {
+                if (is_array($attachmentSrc) && !empty($attachmentSrc)) {
                     $attachmentUrls[] = $attachmentSrc[0];
                 }
             }
