@@ -17,7 +17,14 @@ jobs:
         dev: no
         version: 1
         php_version: 7.4
-
+        
+    - name: Remove PHP 8 symfony/polyfill-intl-idn bootstrap
+      uses: php-actions/composer@v5
+      with:
+        command: run-script remove-php-8-symfony-polyfill-bootstraps
+        version: 1
+        php_version: 7.4
+        
     - name: WordPress Plugin Deploy
       id: deploy
       uses: 10up/action-wordpress-plugin-deploy@stable
