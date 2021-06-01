@@ -3,7 +3,7 @@ Contributors: icyapril, manatarms, thillcf, deuill, epatryk, jacobbednarz
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 5.6
-Stable tag: 4.4.0
+Stable tag: 4.5.0
 Requires PHP: 7.2
 License: BSD-3-Clause
 
@@ -101,6 +101,14 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 == Screenshots ==
 
 == Changelog ==
+
+= 4.5.0 - 2021-06-02 =
+
+* Document unintuitive `transition_post_status` WP hook behavior
+* Only purge public taxonomies while clearing any empty values from the list
+* Better handling of cases where `wp_get_attachment_image_src` is false and not a usable array
+* Support activation of IDN domains
+* Improve development experience by shipping a Docker Compose file with more tooling and documentation
 
 = 4.4.0 - 2021-03-23 =
 
