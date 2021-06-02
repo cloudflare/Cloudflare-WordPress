@@ -56,13 +56,12 @@ jobs:
         version: 1
         php_version: ${{ matrix.php-versions }}
 
-    - name: Remove PHP 8 symfony/polyfill-intl-idn bootstrap
-      uses: php-actions/composer@v5
-      if: ${{ matrix.php-versions != '8.0' }}
+    - name: Remove unsupported PHP 8 symfony/polyfill return types
+      uses: jacobtomlinson/gha-find-replace@master
       with:
-        command: run-script remove-php-8-symfony-polyfill-bootstraps
-        version: 1
-        php_version: ${{ matrix.php-versions }}
+        find: ": string\\|false"
+        replace: ""
+        include: "vendor/symfony/polyfill-intl-(idn|normalizer)/bootstrap80\\.php"
 
     - name: PHP syntax check
       run: for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
