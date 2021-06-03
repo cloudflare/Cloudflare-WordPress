@@ -17,14 +17,14 @@ jobs:
         dev: no
         version: 1
         php_version: 7.4
-        
-    - name: Remove PHP 8 symfony/polyfill-intl-idn bootstrap
-      uses: php-actions/composer@v5
+
+    - name: Remove unsupported PHP 8 symfony/polyfill return types
+      uses: jacobtomlinson/gha-find-replace@master
       with:
-        command: run-script remove-php-8-symfony-polyfill-bootstraps
-        version: 1
-        php_version: 7.4
-        
+        find: ": string\\|false"
+        replace: ""
+        include: "vendor/symfony/polyfill-intl-(idn|normalizer)/bootstrap80\\.php"
+
     - name: WordPress Plugin Deploy
       id: deploy
       uses: 10up/action-wordpress-plugin-deploy@stable
