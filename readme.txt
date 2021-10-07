@@ -51,31 +51,24 @@ Cloudflare’s WAF is available on all our [paid plans](https://www.cloudflare.c
 
 Make sure your PHP version is 7.2 or higher.
 
-= From your WordPress Dashboard =
+= Speed Up Your WordPress Site with Cloudflare APO =
 
-1. Visit “Plugins” → Add New
-2. Search for Cloudflare
-3. Activate Cloudflare from your Plugins page.
+https://www.youtube.com/watch?v=XJ0f5SawEFI&t=20s
 
-= From WordPress.org =
+= Getting Started =
 
-1. Download Cloudflare
-2. Upload the “cloudflare” directory to your “/wp-content/plugins/” directory, using ftp, sftp, scp etc.
-3. Activate Cloudflare from your Plugins page.
+**Setting up Cloudflare APO**
 
-= Once Activated =
+If you’re currently utilizing Cloudflare’s free plan you can add APO to your plan for just $5/month. If you are on Cloudflare’s Pro Plan Cloudflare APO is already included in your subscription. We recommend you start with our [APO developer documentation](https://developers.cloudflare.com/automatic-platform-optimization/get-started) which includes all the information you need to get APO up and running.
 
-1. Go to https://dash.cloudflare.com
-2. Login with your cloudflare account. If you don’t have a Cloudflare account, first sign up for Cloudflare.
-3. Navigate to the [API Tokens section](https://dash.cloudflare.com/profile/api-tokens) of the user profile (found in the top right corner of the dashboard).
-4. Select 'Create Token'
-5. Select the 'WordPress' Template
-6. Select the Account and Zone to grant the plugin access to
-7. Then select "Continue to Summary" and "Create Token"
-8. Copy your API Token
-9. Return back to WordPress Cloudflare Plugin page
-10. Enter your email address and paste your API Token
-11. Press Login.
+**How to check if APO is working**
+Using [Uptrends](https://www.uptrends.com/tools/http-response-header-check) you can verify if Cloudflare APO is working by checking to see if APO response headers are present. You can follow along in this [video](https://youtu.be/XJ0f5SawEFI?t=318).
+
+**APO Support Resource can be found [here](https://developers.cloudflare.com/automatic-platform-optimization/)**
+
+**Get Started with Cloudflare SSL [here](https://support.cloudflare.com/hc/en-us/articles/360023792171-Getting-Started-with-Cloudflare-SSL)**
+
+**View our Cloudflare APO blog post [here](https://blog.cloudflare.com/automatic-platform-optimizations-starting-with-wordpress/)**
 
 == Frequently Asked Questions ==
 
