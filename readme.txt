@@ -29,11 +29,11 @@ APO intelligently caches your HTML pages and will automatically purge content fr
 
 **What you get with Cloudflare APO**
 
-APO is a $5 add-on with Cloudflare’s free plan and comes with an unlimited amount of subdomains. With APO you also get to leverage many of the other benefits of Cloudflare such as **Free DNS, Free Automated SSL Certificates, Free DDoS Mitigation, and more.** APO is free for all paid plan users so if you have Cloudflare Pro or Business already you can just turn it on. You can compare all our plans [here](https://www.cloudflare.com/pg-lp/speed-up-wordpress-with-cloudflare-apo/). 
+APO is a $5 add-on with Cloudflare’s free plan and comes with an unlimited amount of subdomains. With APO you also get to leverage many of the other benefits of Cloudflare such as **Free DNS, Free Automated SSL Certificates, Free DDoS Mitigation, and more.** APO is free for all paid plan users so if you have Cloudflare Pro or Business already you can just turn it on. You can compare all our plans [here](https://www.cloudflare.com/plans/?utm_source=promo&utm_medium=social&utm_term=&utm_content=&utm_campaign=g421o-pl-apo-wordpress-plans). 
 
 **Protect your WordPress site with Cloudflare’s Web Application Firewall (WAF)**
 
-Cloudflare’s WAF is available on all our [paid plans](https://www.cloudflare.com/plans/) and comes with built-in rulesets, specifically tailored to mitigate WordPress threats and vulnerabilities. These security rules are regularly updated by our team of experts. At the flip of a switch, you’ll have your WAF up and running without any difficult adjustments to your site. With over 26 million internet properties under our protection, you can sleep easy knowing Cloudflare has your back.
+Cloudflare’s WAF is available on all our [paid plans](https://www.cloudflare.com/plans/?utm_source=promo&utm_medium=social&utm_term=&utm_content=&utm_campaign=g421o-pl-apo-wordpress-plans) and comes with built-in rulesets, specifically tailored to mitigate WordPress threats and vulnerabilities. These security rules are regularly updated by our team of experts. At the flip of a switch, you’ll have your WAF up and running without any difficult adjustments to your site. With over 26 million internet properties under our protection, you can sleep easy knowing Cloudflare has your back.
 
 = Additional features =
 
