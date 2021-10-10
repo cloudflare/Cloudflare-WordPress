@@ -19,11 +19,12 @@ jobs:
         php_version: 7.4
 
     - name: Remove unsupported PHP 8 symfony/polyfill return types
-      uses: jacobtomlinson/gha-find-replace@master
+      uses: jacobtomlinson/gha-find-replace@v2
       with:
-        find: ": string\\|false"
-        replace: ""
-        include: "vendor/symfony/polyfill-intl-(idn|normalizer)/bootstrap80\\.php"
+        find: ": string|false"
+        replace: " "
+        include: "**/symfony/polyfill-intl-{idn,normalizer}/bootstrap80.php"
+        regex: false
 
     - name: WordPress Plugin Deploy
       id: deploy
