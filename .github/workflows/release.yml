@@ -22,9 +22,8 @@ jobs:
       uses: jacobtomlinson/gha-find-replace@master
       with:
         find: ": string\\|false"
-        replace: ""
+        replace: " "
         include: "vendor/symfony/polyfill-intl-(idn|normalizer)/bootstrap80\\.php"
-        regex: false
 
     - name: WordPress Plugin Deploy
       id: deploy
