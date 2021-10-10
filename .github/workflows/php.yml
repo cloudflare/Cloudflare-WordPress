@@ -59,9 +59,10 @@ jobs:
     - name: Remove unsupported PHP 8 symfony/polyfill return types
       uses: jacobtomlinson/gha-find-replace@master
       with:
-        find: ": string\\|false"
+        find: ": string|false"
         replace: " "
         include: "vendor/symfony/polyfill-intl-(idn|normalizer)/bootstrap80\\.php"
+        regex: false
 
     - name: PHP syntax check
       run: for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
