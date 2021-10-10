@@ -62,6 +62,7 @@ jobs:
         find: ": string\\|false"
         replace: ""
         include: "vendor/symfony/polyfill-intl-(idn|normalizer)/bootstrap80\\.php"
+        regex: true
 
     - name: PHP syntax check
       run: for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
