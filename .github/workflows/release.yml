@@ -24,7 +24,7 @@ jobs:
         find: ": string\\|false"
         replace: ""
         include: "vendor/symfony/polyfill-intl-(idn|normalizer)/bootstrap80\\.php"
-        regex: true
+        regex: false
 
     - name: WordPress Plugin Deploy
       id: deploy
