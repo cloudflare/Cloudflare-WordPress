@@ -161,8 +161,28 @@ class Hooks
                     $this->logger->debug("List of URLs purged are: " . print_r($chunk, true));
                     $this->logger->debug("purgeCacheByRelevantURLs " . $isOK);
                 }
+
+                // Purge cache on mobile if APO Cache By Device Type
+                if ($this->isAutomaticPlatformOptimizationCacheByDeviceTypeEnabled()) {
+                    foreach ($chunks as $chunk) {
+                        $isOK = $this->api->zonePurgeFiles($zoneTag, array_map(array($this, 'toPurgeCacheOnMobile'), $chunk));
+
+                        $isOK = ($isOK) ? 'succeeded' : 'failed';
+                        $this->logger->debug("List of URLs purged on mobile are: " . print_r($chunk, true));
+                        $this->logger->debug("purgeCacheByRelevantURLs " . $isOK);
+                    }
+                }
             }
         }
+    }
+
+    protected function toPurgeCacheOnMobile($url)
+    {
+        //Purge cache on mobile
+        $headers = array("CF-Device-Type" => "mobile");
+        $purge_object = array("url" => $url, "headers" => $headers);
+        $json = json_decode(json_encode($purge_object, JSON_FORCE_OBJECT));
+        return $json;
     }
 
     public function getPostRelatedLinks($postId)
@@ -299,6 +319,20 @@ class Hooks
     protected function isAutomaticPlatformOptimizationEnabled()
     {
         $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_AUTOMATIC_PLATFORM_OPTIMIZATION);
+
+        if (! $cacheSettingObject) {
+            return false;
+        }
+
+        $cacheSettingValue = $cacheSettingObject[\CF\API\Plugin::SETTING_VALUE_KEY];
+
+        return $cacheSettingValue !== false
+            && $cacheSettingValue !== 'off';
+    }
+
+    protected function isAutomaticPlatformOptimizationCacheByDeviceTypeEnabled()
+    {
+        $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_AUTOMATIC_PLATFORM_OPTIMIZATION_CACHE_BY_DEVICE_TYPE);
 
         if (! $cacheSettingObject) {
             return false;
