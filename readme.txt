@@ -13,23 +13,27 @@ All of Cloudflare’s performance and security benefits in a simple one-click in
 
 = What this plugin can do for you =
 
+https://www.youtube.com/watch?v=DWANhxoDxFI?feature=youtu.be
+
 **Automatic Platform Optimization (APO)**
 
-Take your WordPress site's performance to the next level with Automatic Platform Optimizations (APO). APO allows Cloudflare to serve your entire WordPress site from its edge network ensuring consistent, fast performance for visitors no matter where they are. Find out more in our [announcement blog](https://blog.cloudflare.com/automatic-platform-optimizations-starting-with-wordpress/).
+Speed up your WordPress site by up to 300% with Cloudflare’s Automatic Platform Optimization (APO) plugin. APO allows Cloudflare to serve your entire WordPress site from our edge network of over 250+ data centers worldwide ensuring fast & reliable performance for your visitors no matter where they are. 
 
-**One-click WordPress-optimized settings**
+Optimizing your WordPress site with multiple plugins can be overwhelming. Take your WordPress site’s performance to the next level by switching to a single plugin for CDN, intelligent caching, and other key WordPress optimizations with Cloudflare (APO). Visit our [announcement blog](https://blog.cloudflare.com/automatic-platform-optimizations-starting-with-wordpress/) to learn more about APO. 
 
-The easiest way to setup Cloudflare for your WordPress site. Let us configure Cloudflare with the tried and true settings for an optimal experience.
+**What makes APO different from other caching plugins?**
 
-**Web application firewall (WAF) rulesets**
+The key differentiating factor between Cloudflare APO and other traditional page caching and CDN solutions is its ability to directly cache static HTML at Cloudflare’s edge. Every other plugin and CDN will cache your static assets (images, javascript, CSS), but none help you cache the actual content on your site (the HTML) using a massive edge network like Cloudflare’s.
 
-Available on all of Cloudflare’s [paid plans](https://www.cloudflare.com/plans/), the WAF has built-in rulesets, including rules specifically tailored to mitigate WordPress threats and vulnerabilities. These security rules are always kept up-to-date, once the WAF is enabled, you can rest easy knowing your site is protected from even the latest threats.
+APO intelligently caches your HTML pages and will automatically purge content from the cache that you update, so users will always see the latest content without compromising the performance of pages that haven't been recently updated
 
-**Automatic cache purge on website updates**
+**What you get with Cloudflare APO**
 
-If you don't take advantage of the performance benefits of Automatic Platform Optimization for WordPress, using the Cloudflare plugin still ensures that changes to the appearance of your website purge the cache. This means that you can focus on your website, while we ensure that the latest static content is always available to your visitors.
+APO is a $5 add-on with Cloudflare’s free plan and comes with an unlimited amount of subdomains. With APO you also get to leverage many of the other benefits of Cloudflare such as **Free DNS, Free Automated SSL Certificates, Free DDoS Mitigation, and more.** APO is free for all paid plan users so if you have Cloudflare Pro or Business already you can just turn it on. You can compare all our plans [here](https://www.cloudflare.com/plans/?utm_source=promo&utm_medium=social&utm_term=&utm_content=&utm_campaign=g421o-pl-apo-wordpress-plans). 
 
-Additionally, Cloudflare’s plugin for WordPress automatically refreshes the Cloudflare cache of static content for each post/page/custom post type when you update the content.
+**Protect your WordPress site with Cloudflare’s Web Application Firewall (WAF)**
+
+Cloudflare’s WAF is available on all our [paid plans](https://www.cloudflare.com/plans/?utm_source=promo&utm_medium=social&utm_term=&utm_content=&utm_campaign=g421o-pl-apo-wordpress-plans) and comes with built-in rulesets, specifically tailored to mitigate WordPress threats and vulnerabilities. These security rules are regularly updated by our team of experts. At the flip of a switch, you’ll have your WAF up and running without any difficult adjustments to your site. With over 26 million internet properties under our protection, you can sleep easy knowing Cloudflare has your back.
 
 = Additional features =
 
@@ -47,31 +51,24 @@ Additionally, Cloudflare’s plugin for WordPress automatically refreshes the Cl
 
 Make sure your PHP version is 7.2 or higher.
 
-= From your WordPress Dashboard =
+= Speed Up Your WordPress Site with Cloudflare APO =
 
-1. Visit “Plugins” → Add New
-2. Search for Cloudflare
-3. Activate Cloudflare from your Plugins page.
+https://www.youtube.com/watch?v=XJ0f5SawEFI&t=20s
 
-= From WordPress.org =
+= Getting Started =
 
-1. Download Cloudflare
-2. Upload the “cloudflare” directory to your “/wp-content/plugins/” directory, using ftp, sftp, scp etc.
-3. Activate Cloudflare from your Plugins page.
+**Setting up Cloudflare APO**
 
-= Once Activated =
+If you’re currently utilizing Cloudflare’s free plan you can add APO to your plan for just $5/month. If you are on Cloudflare’s Pro Plan Cloudflare APO is already included in your subscription. We recommend you start with our [APO developer documentation](https://developers.cloudflare.com/automatic-platform-optimization/get-started) which includes all the information you need to get APO up and running.
 
-1. Go to https://dash.cloudflare.com
-2. Login with your cloudflare account. If you don’t have a Cloudflare account, first sign up for Cloudflare.
-3. Navigate to the [API Tokens section](https://dash.cloudflare.com/profile/api-tokens) of the user profile (found in the top right corner of the dashboard).
-4. Select 'Create Token'
-5. Select the 'WordPress' Template
-6. Select the Account and Zone to grant the plugin access to
-7. Then select "Continue to Summary" and "Create Token"
-8. Copy your API Token
-9. Return back to WordPress Cloudflare Plugin page
-10. Enter your email address and paste your API Token
-11. Press Login.
+**How to check if APO is working**
+Using [Uptrends](https://www.uptrends.com/tools/http-response-header-check) you can verify if Cloudflare APO is working by checking to see if APO response headers are present. You can follow along in this [video](https://youtu.be/XJ0f5SawEFI?t=318).
+
+**APO Support Resource can be found [here](https://developers.cloudflare.com/automatic-platform-optimization/)**
+
+**Get Started with Cloudflare SSL [here](https://support.cloudflare.com/hc/en-us/articles/360023792171-Getting-Started-with-Cloudflare-SSL)**
+
+**View our Cloudflare APO blog post [here](https://blog.cloudflare.com/automatic-platform-optimizations-starting-with-wordpress/)**
 
 == Frequently Asked Questions ==
 
