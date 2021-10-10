@@ -57,11 +57,12 @@ jobs:
         php_version: ${{ matrix.php-versions }}
 
     - name: Remove unsupported PHP 8 symfony/polyfill return types
-      uses: jacobtomlinson/gha-find-replace@v1
+      uses: jacobtomlinson/gha-find-replace@v2
       with:
-        find: ": string\\|false"
-        replace: ""
-        include: "vendor/symfony/polyfill-intl-(idn|normalizer)/bootstrap80\\.php"
+        find: ": string|false"
+        replace: " "
+        include: "**/symfony/polyfill-intl-{idn,normalizer}/bootstrap80.php"
+        regex: false
 
     - name: PHP syntax check
       run: for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
