@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44e8e8dbeecd283355cd4353b8ea868a",
+    "content-hash": "076dac3b2cf7f0f4d508a9efce3219d9",
     "packages": [
         {
             "name": "cloudflare/cf-ip-rewrite",
@@ -53,16 +53,16 @@
         },
         {
             "name": "cloudflare/cloudflare-plugin-backend",
-            "version": "2.5.0",
+            "version": "2.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cloudflare/cloudflare-plugin-backend.git",
-                "reference": "9d2668cffa2aaad8aea75dac9b2e017ebab35dd4"
+                "reference": "6af901b5969120bf42fb51e68ab822285839ef9c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/9d2668cffa2aaad8aea75dac9b2e017ebab35dd4",
-                "reference": "9d2668cffa2aaad8aea75dac9b2e017ebab35dd4",
+                "url": "https://api.github.com/repos/cloudflare/cloudflare-plugin-backend/zipball/6af901b5969120bf42fb51e68ab822285839ef9c",
+                "reference": "6af901b5969120bf42fb51e68ab822285839ef9c",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,10 @@
                 "BSD-3-Clause"
             ],
             "description": "A PHP backend for Cloudflare plugins.",
-            "time": "2021-03-18T22:38:57+00:00"
+            "support": {
+                "source": "https://github.com/cloudflare/cloudflare-plugin-backend/tree/v2.6.0"
+            },
+            "time": "2021-10-10T23:15:44+00:00"
         },
         {
             "name": "psr/log",
@@ -2204,59 +2207,6 @@
             "description": "Library that helps with managing the version number of Git-hosted PHP projects",
             "homepage": "https://github.com/sebastianbergmann/version",
             "time": "2016-10-03T07:35:21+00:00"
-        },
-        {
-            "name": "simplyadmire/composer-plugins",
-            "version": "2.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/SimplyAdmire/ComposerPlugins.git",
-                "reference": "d8380f670694c1c2330b22591ca74adc82cffe19"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/SimplyAdmire/ComposerPlugins/zipball/d8380f670694c1c2330b22591ca74adc82cffe19",
-                "reference": "d8380f670694c1c2330b22591ca74adc82cffe19",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.0",
-                "squizlabs/php_codesniffer": "*"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": [
-                    "SimplyAdmire\\ComposerPlugins\\PhpCodesnifferStandardInstallerPlugin"
-                ]
-            },
-            "autoload": {
-                "psr-0": {
-                    "SimplyAdmire\\ComposerPlugins": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-3.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Rens Admiraal",
-                    "email": "rens@simplyadmire.com",
-                    "role": "lead"
-                }
-            ],
-            "description": "Composer plugin for installing PHP_CodeSniffer standards",
-            "keywords": [
-                "PHP_CodeSniffer",
-                "TYPO3 CMS",
-                "TYPO3 Flow",
-                "TYPO3 Neos",
-                "phpcs",
-                "standards",
-                "typo3"
-            ],
-            "abandoned": true,
-            "time": "2016-05-12T11:58:38+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",
