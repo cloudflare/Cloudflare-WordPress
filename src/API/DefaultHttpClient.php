@@ -45,7 +45,10 @@ class DefaultHttpClient implements HttpClientInterface
      */
     public function createGuzzleRequest(Request $request)
     {
-        $bodyType = (($request->getHeaders()[self::CONTENT_TYPE_KEY] === self::APPLICATION_JSON_KEY) ? 'json' : 'body');
+        $bodyType = 'body';
+        if (isset($request->getHeaders()[self::CONTENT_TYPE_KEY]) && $request->getHeaders()[self::CONTENT_TYPE_KEY] === self::APPLICATION_JSON_KEY) {
+            $bodyType = 'json';
+        }
 
         $requestOptions = array(
             'headers' => $request->getHeaders(),

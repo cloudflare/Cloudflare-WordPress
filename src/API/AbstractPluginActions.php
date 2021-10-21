@@ -148,7 +148,7 @@ abstract class AbstractPluginActions
         $settingId = $path_array[3];
 
         $body = $this->request->getBody();
-        $value = $body['value'];
+        $value = $body['value'] ?? "";
         $options = $this->dataStore->set($settingId, $this->api->createPluginSettingObject($settingId, $value, true, true));
 
         if (!isset($options)) {

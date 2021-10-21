@@ -30,7 +30,7 @@ class Host extends AbstractAPIClient
 
         $body = $request->getBody();
         $user_key_actions = array('zone_set', 'full_zone_set');
-        if (in_array(strtolower($body['act']), $user_key_actions)) {
+        if (in_array(strtolower($body['act'] ?? ""), $user_key_actions)) {
             $body['user_key'] = $this->data_store->getHostAPIUserKey();
         }
         $body['host_key'] = $this->integrationAPI->getHostAPIKey();
