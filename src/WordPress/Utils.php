@@ -4,6 +4,8 @@ namespace CF\WordPress;
 
 class Utils
 {
+    const COMPOSER_CONFIG_PATH = '/../../composer.json';
+
     /**
      * @param $haystack
      * @param $needle
@@ -40,5 +42,13 @@ class Utils
         // does not work with multiple subdomain
         // sub1.sub2.domain.com -> sub2.domain.com
         return preg_replace('/^[^.]*.\s*/', '', $domainName);
+    }
+
+    public static function getComposerJson(): array
+    {
+        if (!file_exists(dirname(__FILE__) . self::COMPOSER_CONFIG_PATH)) {
+            return [];
+        }
+        return json_decode(file_get_contents(dirname(__FILE__) . self::COMPOSER_CONFIG_PATH), true);
     }
 }

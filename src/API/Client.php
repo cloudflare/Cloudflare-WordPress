@@ -4,6 +4,7 @@ namespace CF\API;
 
 use Guzzle\Http\Exception\BadResponseException;
 use CF\Integration\IntegrationInterface;
+use CF\WordPress\Utils;
 
 class Client extends AbstractAPIClient
 {
@@ -13,6 +14,7 @@ class Client extends AbstractAPIClient
     const X_AUTH_EMAIL = 'X-Auth-Email';
     const AUTHORIZATION = 'Authorization';
     const AUTH_KEY_LEN = 37;
+    const USER_AGENT = 'User-Agent';
 
     /**
      * @param Request $request
@@ -25,6 +27,9 @@ class Client extends AbstractAPIClient
         $headers = array(
             self::CONTENT_TYPE_KEY => self::APPLICATION_JSON_KEY,
         );
+
+        $composer = Utils::getComposerJson();
+        $headers[self::USER_AGENT] =  'wordpress/' . $GLOBALS['wp_version'] . '; cloudflare-wordpress-plugin/' . $composer['version'];
 
         // Determine authentication method from key format. Global API keys are
         // always returned in hexadecimal format, while API Tokens are encoded
