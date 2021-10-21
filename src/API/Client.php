@@ -30,7 +30,8 @@ class Client extends AbstractAPIClient
 
         $composer = Utils::getComposerJson();
         $version = $composer['version'] ?? 'unknown';
-        $headers[self::USER_AGENT] =  'wordpress/' . $GLOBALS['wp_version'] . '; cloudflare-wordpress-plugin/' . $version;
+        $wp_version = $GLOBALS['wp_version'] ?? 'unknown';
+        $headers[self::USER_AGENT] =  'wordpress/' . $wp_version . '; cloudflare-wordpress-plugin/' . $version;
 
         // Determine authentication method from key format. Global API keys are
         // always returned in hexadecimal format, while API Tokens are encoded
