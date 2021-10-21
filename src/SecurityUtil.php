@@ -11,9 +11,6 @@ class SecurityUtil
     {
         if (function_exists('random_bytes')) {
             $randBytes = random_bytes(16);
-        } elseif (function_exists('mcrypt_create_iv')) {
-            srand();
-            $randBytes = mcrypt_create_iv(16);
         } elseif (function_exists('openssl_random_pseudo_bytes')) {
             $wasItSecure = false;
             $randBytes = openssl_random_pseudo_bytes(16, $wasItSecure);
