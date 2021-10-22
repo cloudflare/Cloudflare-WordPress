@@ -62,7 +62,7 @@ class ClientActionsTest extends \PHPUnit\Framework\TestCase
                     'name' => $responseDomain,
                 ),
             ),
-         );
+        );
 
         $request = new Request(null, null, null, null);
         $clientActions = new ClientActions($this->mockDefaultIntegration, $this->mockClientAPI, $request);
