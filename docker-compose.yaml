@@ -41,9 +41,9 @@ services:
             WORDPRESS_CONFIG_EXTRA: |
                define('WP_HOME', 'http://wordpress.lol:9999');
                define('WP_SITEURL', 'http://wordpress.lol:9999');
-               define('CLOUDFLARE_EMAIL', 'myemail@mail.com');
-               define('CLOUDFLARE_API_KEY', 'sj7RQrrRxD1ED5W312NVoDpJIOd7XbFgpEM7zTRa');
-               define('CLOUDFLARE_DOMAIN_NAME', 'mywebsite.com');
+               # define('CLOUDFLARE_EMAIL', 'myemail@mail.com');
+               # define('CLOUDFLARE_API_KEY', 'sj7RQrrRxD1ED5W312NVoDpJIOd7XbFgpEM7zTRa');
+               # define('CLOUDFLARE_DOMAIN_NAME', 'mywebsite.com');
 
     adminer:
         image: adminer
