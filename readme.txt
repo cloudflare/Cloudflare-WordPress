@@ -3,7 +3,7 @@ Contributors: icyapril, manatarms, thillcf, deuill, epatryk, jacobbednarz
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 5.7
-Stable tag: 4.6.0
+Stable tag: 4.7.0
 Requires PHP: 7.2
 License: BSD-3-Clause
 
@@ -17,9 +17,9 @@ https://www.youtube.com/watch?v=DWANhxoDxFI?feature=youtu.be
 
 **Automatic Platform Optimization (APO)**
 
-Speed up your WordPress site by up to 300% with Cloudflare’s Automatic Platform Optimization (APO) plugin. APO allows Cloudflare to serve your entire WordPress site from our edge network of over 250+ data centers worldwide ensuring fast & reliable performance for your visitors no matter where they are. 
+Speed up your WordPress site by up to 300% with Cloudflare’s Automatic Platform Optimization (APO) plugin. APO allows Cloudflare to serve your entire WordPress site from our edge network of over 250+ data centers worldwide ensuring fast & reliable performance for your visitors no matter where they are.
 
-Optimizing your WordPress site with multiple plugins can be overwhelming. Take your WordPress site’s performance to the next level by switching to a single plugin for CDN, intelligent caching, and other key WordPress optimizations with Cloudflare (APO). Visit our [announcement blog](https://blog.cloudflare.com/automatic-platform-optimizations-starting-with-wordpress/) to learn more about APO. 
+Optimizing your WordPress site with multiple plugins can be overwhelming. Take your WordPress site’s performance to the next level by switching to a single plugin for CDN, intelligent caching, and other key WordPress optimizations with Cloudflare (APO). Visit our [announcement blog](https://blog.cloudflare.com/automatic-platform-optimizations-starting-with-wordpress/) to learn more about APO.
 
 **What makes APO different from other caching plugins?**
 
@@ -29,7 +29,7 @@ APO intelligently caches your HTML pages and will automatically purge content fr
 
 **What you get with Cloudflare APO**
 
-APO is a $5 add-on with Cloudflare’s free plan and comes with an unlimited amount of subdomains. With APO you also get to leverage many of the other benefits of Cloudflare such as **Free DNS, Free Automated SSL Certificates, Free DDoS Mitigation, and more.** APO is free for all paid plan users so if you have Cloudflare Pro or Business already you can just turn it on. You can compare all our plans [here](https://www.cloudflare.com/plans/?utm_source=promo&utm_medium=social&utm_term=&utm_content=&utm_campaign=g421o-pl-apo-wordpress-plans). 
+APO is a $5 add-on with Cloudflare’s free plan and comes with an unlimited amount of subdomains. With APO you also get to leverage many of the other benefits of Cloudflare such as **Free DNS, Free Automated SSL Certificates, Free DDoS Mitigation, and more.** APO is free for all paid plan users so if you have Cloudflare Pro or Business already you can just turn it on. You can compare all our plans [here](https://www.cloudflare.com/plans/?utm_source=promo&utm_medium=social&utm_term=&utm_content=&utm_campaign=g421o-pl-apo-wordpress-plans).
 
 **Protect your WordPress site with Cloudflare’s Web Application Firewall (WAF)**
 
@@ -98,6 +98,10 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 == Screenshots ==
 
 == Changelog ==
+
+= 4.7.0 - 2021-10-28 =
+
+* Merge cloudflare-plugin-backend into Cloudflare-WordPress repository
 
 = 4.6.0 - 2021-10-11 =
 
