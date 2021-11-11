@@ -2,9 +2,6 @@
 
 namespace CF\API\Test;
 
-use GuzzleHttp;
-use GuzzleHttp\Message\RequestInterface;
-use GuzzleHttp\Message\ResponseInterface;
 use CF\Integration\DefaultIntegration;
 use CF\Integration\DefaultLogger;
 use CF\Integration\DataStoreInterface;

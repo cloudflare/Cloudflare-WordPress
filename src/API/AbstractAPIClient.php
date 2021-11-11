@@ -62,7 +62,7 @@ abstract class AbstractAPIClient implements APIInterface
             $response = $this->getPaginatedResults($request, $response);
 
             return $response;
-        } catch (RequestException $e) {
+        } catch (\Exception $e) {
             $errorMessage = $this->getErrorMessage($e);
 
             $this->logAPICall($this->getAPIClientName(), array(
