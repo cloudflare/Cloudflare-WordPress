@@ -38,7 +38,7 @@ class DefaultHttpClient implements HttpClientInterface
         $response_body = json_decode($response['body']);
 
         if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new \Exception('Error decoding client API JSON', $response);
+            throw new \Exception('Error decoding client API JSON', json_last_error());
         }
 
         return $response_body;
