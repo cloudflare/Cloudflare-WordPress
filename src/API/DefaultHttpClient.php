@@ -31,7 +31,7 @@ class DefaultHttpClient implements HttpClientInterface
 
         $response = wp_remote_request($url, $requestOptions);
 
-        if(is_wp_error($response)) {
+        if (is_wp_error($response)) {
             throw new \Exception('Request error', $response->get_error_code);
         }
 
@@ -66,7 +66,7 @@ class DefaultHttpClient implements HttpClientInterface
     public function createRequestUrl(Request $request)
     {
         $url = $this->endpoint . $request->getUrl();
-        foreach($request->getParameters() as $key => $value) {
+        foreach ($request->getParameters() as $key => $value) {
             $url = add_query_arg($key, $value, $url);
         }
 
