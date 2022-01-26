@@ -12,7 +12,7 @@
         "cloudflare/cf-ip-rewrite": "^1.0.0",
         "symfony/polyfill-intl-idn": "*",
         "psr/log": "^1.0",
-        "guzzlehttp/guzzle": "~5.0"
+        "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "symfony/yaml": "~2.6",
