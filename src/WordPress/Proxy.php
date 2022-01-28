@@ -82,7 +82,7 @@ class Proxy
         $body = json_decode($jsonInput, true);
         $path = null;
 
-        if (strtoupper($method === 'GET')) {
+        if (strtoupper($method) === 'GET') {
             if ($_GET['proxyURLType'] === 'CLIENT') {
                 $path = API\Client::ENDPOINT . $_GET['proxyURL'];
             } elseif ($_GET['proxyURLType'] === 'PLUGIN') {
