@@ -3,67 +3,73 @@
 namespace CF\API;
 
 use CF\API\Request;
-use GuzzleHttp;
-use GuzzleHttp\Exception\RequestException;
 
 class DefaultHttpClient implements HttpClientInterface
 {
     const CONTENT_TYPE_KEY = 'Content-Type';
     const APPLICATION_JSON_KEY = 'application/json';
 
-    protected $client;
+    protected $endpoint;
 
     /**
      * @param String $endpoint
      */
     public function __construct($endpoint)
     {
-        $this->client = new GuzzleHttp\Client(['base_url' => $endpoint]);
+        $this->endpoint = $endpoint;
     }
 
     /**
      * @param  Request $request
-     * @throws RequestException
+     * @throws \Exception
      * @return Array $response
      */
     public function send(Request $request)
     {
-        $apiRequest = $this->createGuzzleRequest($request);
+        $requestOptions = $this->createRequestOptions($request);
+        $url = $this->createRequestUrl($request);
 
-        $response = $this->client->send($apiRequest)->json();
+        $response = wp_remote_request($url, $requestOptions);
 
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new RequestException('Error decoding client API JSON', $response);
+        if (is_wp_error($response)) {
+            throw new \Exception('Request error', $response->get_error_code);
         }
 
-        return $response;
+        $response_body = json_decode($response['body']);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new \Exception('Error decoding client API JSON', json_last_error());
+        }
+
+        return $response_body;
     }
 
     /**
      * @param  Request $request
-     * @return GuzzleHttp\Message\RequestInterface $request
+     * @return array $requestOptions
      */
-    public function createGuzzleRequest(Request $request)
+    public function createRequestOptions(Request $request)
     {
-        $bodyType = 'body';
-        if (isset($request->getHeaders()[self::CONTENT_TYPE_KEY]) && $request->getHeaders()[self::CONTENT_TYPE_KEY] === self::APPLICATION_JSON_KEY) {
-            $bodyType = 'json';
-        }
-
         $requestOptions = array(
+            'method' => $request->getMethod(),
             'headers' => $request->getHeaders(),
-            'query' => $request->getParameters(),
-            $bodyType => $request->getBody(),
+            'body' => $request->getBody(),
         );
 
-        return $this->client->createRequest($request->getMethod(), $request->getUrl(), $requestOptions);
+        return $requestOptions;
     }
 
     /**
-     * @param GuzzleHttpClient $client
+     * @param  Request $request
+     * @return string $url
      */
-    public function setClient($client)
+    public function createRequestUrl(Request $request)
     {
-        $this->client = $client;
+        $url = $this->endpoint . $request->getUrl();
+        foreach ($request->getParameters() as $key => $value) {
+            $url = add_query_arg($key, $value, $url);
+        }
+
+        return $url;
     }
 }

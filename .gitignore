@@ -1,3 +1,4 @@
 *.DS_Store
 vendor/
 xdebug/*
+.phpunit.result.cache

@@ -2,7 +2,6 @@
 
 namespace CF\API;
 
-use Guzzle\Http\Exception\BadResponseException;
 use CF\Integration\IntegrationInterface;
 use CF\WordPress\Utils;
 
