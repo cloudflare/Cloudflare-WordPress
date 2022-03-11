@@ -141,6 +141,11 @@ class Hooks
                 return;
             }
 
+            $postType = get_post_type_object(get_post_type($postId));
+            if (!$postType->public || !$postType->publicly_queryable) {
+                return;
+            }
+
             $savedPost = get_post($postId);
             if (!is_a($savedPost, 'WP_Post')) {
                 return;
