@@ -156,6 +156,13 @@ class Hooks
 
             $zoneTag = $this->api->getZoneTag($wpDomain);
 
+            // Don't attempt to purge anything outside of the provided zone.
+            foreach ($urls as $key => $url) {
+                if (parse_url($url, PHP_URL_HOST) !== $wpDomain) {
+                    unset($urls[$key]);
+                }
+            }
+
             if (isset($zoneTag) && !empty($urls)) {
                 $chunks = array_chunk($urls, 30);
 
