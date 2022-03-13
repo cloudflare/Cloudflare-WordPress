@@ -20,6 +20,16 @@ class Hooks
     const CLOUDFLARE_JSON = 'CLOUDFLARE_JSON';
     const WP_AJAX_ACTION = 'cloudflare_proxy';
 
+    // See https://developers.cloudflare.com/cache/about/default-cache-behavior/
+    const CLOUDFLARE_CACHABLE_EXTENSIONS = [
+        "7z", "csv", "gif", "midi", "png", "tif", "zip", "avi", "doc", "gz",
+        "mkv", "ppt", "tiff", "zst", "avif", "docx", "ico", "mp3", "pptx",
+        "ttf", "apk", "dmg", "iso", "mp4", "ps", "webm", "bin", "ejs", "jar",
+        "ogg", "rar", "webp", "bmp", "eot", "jpg", "otf", "svg", "woff", "bz2",
+        "eps", "jpeg", "pdf", "svgz", "woff2", "class", "exe", "js", "pict",
+        "swf", "xls", "css", "flac", "mid", "pls", "tar", "xlsx"
+    ];
+
     public function __construct()
     {
         $this->config = new Integration\DefaultConfig(file_get_contents(CLOUDFLARE_PLUGIN_DIR . 'config.json', true));
@@ -155,6 +165,14 @@ class Hooks
             $urls = apply_filters('cloudflare_purge_by_url', $urls, $postId);
 
             $zoneTag = $this->api->getZoneTag($wpDomain);
+
+            // Fetch the page rules and should we not have any hints of cache
+            // all behaviour or APO, filter out the non-cacheable URLs.
+            $hasCacheOverride = $this->pageRuleContainsCacheEverythingAction($this->api->getPageRules($zoneTag, "active"));
+            if (!$hasCacheOverride && !$this->isAutomaticPlatformOptimizationEnabled()) {
+                $this->logger->debug("cache everything behaviour and APO not found, filtering URLs to only be those that are cacheable by default");
+                $urls = array_filter($urls, array($this, "pathHasCachableFileExtension"));
+            }
 
             // Don't attempt to purge anything outside of the provided zone.
             foreach ($urls as $key => $url) {
