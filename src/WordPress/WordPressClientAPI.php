@@ -96,6 +96,25 @@ class WordPressClientAPI extends Client
     }
 
     /**
+     * Returns all page rules in the desired state. Defaults to active.
+     *
+     * @param mixed $zoneId
+     * @param string $status
+     * @return array
+     */
+    public function getPageRules($zoneId, $status = "active")
+    {
+        $request = new Request('GET', 'zones/' . $zoneId . "/pagerules?status=$status", array(), null);
+        $response = $this->callAPI($request);
+
+        if ($this->responseOk($response)) {
+            return $response["result"];
+        }
+
+        return [];
+    }
+
+    /**
      * @param Request $request
      *
      * @return array|mixed
