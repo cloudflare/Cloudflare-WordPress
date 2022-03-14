@@ -10,15 +10,15 @@ class UtilsTest extends \PHPUnit\Framework\TestCase
     {
     }
 
-    public function testEndsWith()
+    public function testStrEndsWith()
     {
-        $this->assertFalse(Utils::endsWith('abcdef', 'ab'));
-        $this->assertFalse(Utils::endsWith('abcdef', 'cd'));
-        $this->assertTrue(Utils::endsWith('abcdef', 'ef'));
-        $this->assertTrue(Utils::endsWith('abcdef', 'abcdef'));
-        $this->assertTrue(Utils::endsWith('abcdef', ''));
-        $this->assertFalse(Utils::endsWith('', 'abcdef'));
-        $this->assertTrue(Utils::endsWith('', ''));
+        $this->assertFalse(Utils::strEndsWith('abcdef', 'ab'));
+        $this->assertFalse(Utils::strEndsWith('abcdef', 'cd'));
+        $this->assertTrue(Utils::strEndsWith('abcdef', 'ef'));
+        $this->assertTrue(Utils::strEndsWith('abcdef', 'abcdef'));
+        $this->assertFalse(Utils::strEndsWith('abcdef', ''));
+        $this->assertFalse(Utils::strEndsWith('', 'abcdef'));
+        $this->assertFalse(Utils::strEndsWith('', ''));
     }
 
     public function testIsSubdomainOf()

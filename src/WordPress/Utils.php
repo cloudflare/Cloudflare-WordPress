@@ -12,9 +12,13 @@ class Utils
      *
      * @return bool
      */
-    public static function endsWith($haystack, $needle)
+    public static function strEndsWith($haystack, $needle)
     {
-        return $needle === '' || (($temp = strlen($haystack) - strlen($needle)) >= 0 && strpos($haystack, $needle, $temp) !== false);
+        if (empty($haystack) || empty($needle)) {
+            return false;
+        }
+        $needle_len = strlen($needle);
+        return ($needle_len === 0 || 0 === substr_compare($haystack, $needle, -$needle_len));
     }
 
     public static function isSubdomainOf($subDomainName, $domainName)
@@ -29,9 +33,9 @@ class Utils
             return false;
         }
 
-        return self::endsWith($subDomainName, $domainName) &&
-                $subDomainName !== $domainName &&
-                $subDomainName[$dotPosition] == '.';
+        return self::strEndsWith($subDomainName, $domainName) &&
+            $subDomainName !== $domainName &&
+            $subDomainName[$dotPosition] == '.';
     }
 
     public static function getRegistrableDomain($domainName)

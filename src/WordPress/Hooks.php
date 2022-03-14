@@ -20,9 +20,19 @@ class Hooks
     const CLOUDFLARE_JSON = 'CLOUDFLARE_JSON';
     const WP_AJAX_ACTION = 'cloudflare_proxy';
 
+    // See https://developers.cloudflare.com/cache/about/default-cache-behavior/
+    const CLOUDFLARE_CACHABLE_EXTENSIONS = [
+        "7z", "csv", "gif", "midi", "png", "tif", "zip", "avi", "doc", "gz",
+        "mkv", "ppt", "tiff", "zst", "avif", "docx", "ico", "mp3", "pptx",
+        "ttf", "apk", "dmg", "iso", "mp4", "ps", "webm", "bin", "ejs", "jar",
+        "ogg", "rar", "webp", "bmp", "eot", "jpg", "otf", "svg", "woff", "bz2",
+        "eps", "jpeg", "pdf", "svgz", "woff2", "class", "exe", "js", "pict",
+        "swf", "xls", "css", "flac", "mid", "pls", "tar", "xlsx"
+    ];
+
     public function __construct()
     {
-        $this->config = new Integration\DefaultConfig(file_get_contents(CLOUDFLARE_PLUGIN_DIR.'config.json', true));
+        $this->config = new Integration\DefaultConfig(file_get_contents(CLOUDFLARE_PLUGIN_DIR . 'config.json', true));
         $this->logger = new Integration\DefaultLogger($this->config->getValue('debug'));
         $this->dataStore = new DataStore($this->logger);
         $this->integrationAPI = new WordPressAPI($this->dataStore);
@@ -78,12 +88,12 @@ class Hooks
 
     public function cloudflareIndexPage()
     {
-        include CLOUDFLARE_PLUGIN_DIR.'index.php';
+        include CLOUDFLARE_PLUGIN_DIR . 'index.php';
     }
 
     public function pluginActionLinks($links)
     {
-        $links[] = '<a href="'.get_admin_url(null, 'options-general.php?page=cloudflare').'">Settings</a>';
+        $links[] = '<a href="' . get_admin_url(null, 'options-general.php?page=cloudflare') . '">Settings</a>';
 
         return $links;
     }
@@ -97,7 +107,7 @@ class Hooks
     {
         if (version_compare($GLOBALS['wp_version'], CLOUDFLARE_MIN_WP_VERSION, '<')) {
             deactivate_plugins(basename(CLOUDFLARE_PLUGIN_DIR));
-            wp_die('<p><strong>Cloudflare</strong> plugin requires WordPress version '.CLOUDFLARE_MIN_WP_VERSION.' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
+            wp_die('<p><strong>Cloudflare</strong> plugin requires WordPress version ' . CLOUDFLARE_MIN_WP_VERSION . ' or greater.</p>', 'Plugin Activation Error', array('response' => 200, 'back_link' => true));
         }
 
         return true;
@@ -141,6 +151,11 @@ class Hooks
                 return;
             }
 
+            $postType = get_post_type_object(get_post_type($postId));
+            if (!$postType->public || !$postType->publicly_queryable) {
+                return;
+            }
+
             $savedPost = get_post($postId);
             if (!is_a($savedPost, 'WP_Post')) {
                 return;
@@ -150,6 +165,21 @@ class Hooks
             $urls = apply_filters('cloudflare_purge_by_url', $urls, $postId);
 
             $zoneTag = $this->api->getZoneTag($wpDomain);
+
+            // Fetch the page rules and should we not have any hints of cache
+            // all behaviour or APO, filter out the non-cacheable URLs.
+            $hasCacheOverride = $this->pageRuleContainsCacheEverythingAction($this->api->getPageRules($zoneTag, "active"));
+            if (!$hasCacheOverride && !$this->isAutomaticPlatformOptimizationEnabled()) {
+                $this->logger->debug("cache everything behaviour and APO not found, filtering URLs to only be those that are cacheable by default");
+                $urls = array_filter($urls, array($this, "pathHasCachableFileExtension"));
+            }
+
+            // Don't attempt to purge anything outside of the provided zone.
+            foreach ($urls as $key => $url) {
+                if (parse_url($url, PHP_URL_HOST) !== $wpDomain) {
+                    unset($urls[$key]);
+                }
+            }
 
             if (isset($zoneTag) && !empty($urls)) {
                 $chunks = array_chunk($urls, 30);
@@ -239,7 +269,7 @@ class Hooks
         if (get_post_status($postId) == 'trash') {
             $trashPost = get_permalink($postId);
             $trashPost = str_replace('__trashed', '', $trashPost);
-            array_push($listofurls, $trashPost, $trashPost.'feed/');
+            array_push($listofurls, $trashPost, $trashPost . 'feed/');
         }
 
         // Feeds
@@ -306,7 +336,7 @@ class Hooks
     {
         $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
 
-        if (! $cacheSettingObject) {
+        if (!$cacheSettingObject) {
             return false;
         }
 
@@ -320,7 +350,7 @@ class Hooks
     {
         $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_AUTOMATIC_PLATFORM_OPTIMIZATION);
 
-        if (! $cacheSettingObject) {
+        if (!$cacheSettingObject) {
             return false;
         }
 
@@ -334,7 +364,7 @@ class Hooks
     {
         $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_AUTOMATIC_PLATFORM_OPTIMIZATION_CACHE_BY_DEVICE_TYPE);
 
-        if (! $cacheSettingObject) {
+        if (!$cacheSettingObject) {
             return false;
         }
 
@@ -363,13 +393,13 @@ class Hooks
 
     public function initAutomaticPlatformOptimization()
     {
-      // it could be too late to set the headers,
-      // return early without triggering a warning in logs
+        // it could be too late to set the headers,
+        // return early without triggering a warning in logs
         if (headers_sent()) {
             return;
         }
 
-      // add header unconditionally so we can detect plugin is activated
+        // add header unconditionally so we can detect plugin is activated
         if (!is_user_logged_in()) {
             header('cf-edge-cache: cache,platform=wordpress');
         } else {
@@ -390,7 +420,7 @@ class Hooks
             return; // nothing to do
         }
 
-      // in case the comment status changed, and either old or new status is "approved", we need to purge cache for the corresponding post
+        // in case the comment status changed, and either old or new status is "approved", we need to purge cache for the corresponding post
         if (($old_status != $new_status) && (($old_status === 'approved') || ($new_status === 'approved'))) {
             $this->purgeCacheByRelevantURLs($comment->comment_post_ID);
             return;
@@ -409,7 +439,53 @@ class Hooks
             return; // nothing to do
         }
 
-      // all clear, we ne need to purge cache related to this post id
+        // all clear, we ne need to purge cache related to this post id
         $this->purgeCacheByRelevantURLs($comment_data['comment_post_ID']);
+    }
+
+    /**
+     * pageRuleContainsCacheEverythingAction accepts an array of page rules and
+     * determines whether there are any hints of overriding page rules that
+     * would trigger the "cache everything" behaviour.
+     *
+     * @param mixed $pagerules
+     * @return bool
+     */
+    protected function pageRuleContainsCacheEverythingAction($pagerules)
+    {
+        if (!is_array($pagerules)) {
+            return false;
+        }
+
+        foreach ($pagerules as $pagerule) {
+            foreach ($pagerule["actions"] as $action) {
+                if ($action["id"] == "cache_level" && $action["value"] == "cache_everything") {
+                    return true;
+                }
+            }
+        }
+
+
+        return false;
+    }
+
+    /**
+     * pathHasCachableFileExtension takes a string of a URL and evaluates if it
+     * has a file extension that Cloudflare caches by default.
+     *
+     * @param mixed $value
+     * @return bool
+     */
+    private function pathHasCachableFileExtension($value)
+    {
+        $parsed_url = parse_url($value, PHP_URL_PATH);
+
+        foreach (self::CLOUDFLARE_CACHABLE_EXTENSIONS as $ext) {
+            if (Utils::strEndsWith($parsed_url, "." . $ext)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
