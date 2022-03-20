@@ -165,10 +165,11 @@ class Hooks
             $urls = apply_filters('cloudflare_purge_by_url', $urls, $postId);
 
             $zoneTag = $this->api->getZoneTag($wpDomain);
+            $activePageRules = $this->api->getPageRules($zoneTag, "active");
 
             // Fetch the page rules and should we not have any hints of cache
             // all behaviour or APO, filter out the non-cacheable URLs.
-            $hasCacheOverride = $this->pageRuleContainsCacheEverythingAction($this->api->getPageRules($zoneTag, "active"));
+            $hasCacheOverride = $this->pageRuleContains($activePageRules, "cache_level", "cache_everything");
             if (!$hasCacheOverride && !$this->isAutomaticPlatformOptimizationEnabled()) {
                 $this->logger->debug("cache everything behaviour and APO not found, filtering URLs to only be those that are cacheable by default");
                 $urls = array_filter($urls, array($this, "pathHasCachableFileExtension"));
@@ -179,6 +180,12 @@ class Hooks
                 if (!Utils::strEndsWith(parse_url($url, PHP_URL_HOST), $wpDomain)) {
                     unset($urls[$key]);
                 }
+            }
+
+            $hasAlwaysUseHTTPSOverrideDisabled = $this->pageRuleContains($activePageRules, "always_use_https", "off");
+            if ($this->zoneSettingAlwaysUseHTTPSEnabled($zoneTag) && !$hasAlwaysUseHTTPSOverrideDisabled) {
+                $this->logger->debug("always_use_https is enabled without page rule overrides present, removing HTTP based URLs");
+                $urls = array_filter($urls, array($this, "urlIsHTTPS"));
             }
 
             if (isset($zoneTag) && !empty($urls)) {
@@ -444,14 +451,15 @@ class Hooks
     }
 
     /**
-     * pageRuleContainsCacheEverythingAction accepts an array of page rules and
-     * determines whether there are any hints of overriding page rules that
-     * would trigger the "cache everything" behaviour.
+     * Accepts a page rule key and value to check if it exists in the page rules
+     * provided.
      *
      * @param mixed $pagerules
+     * @param mixed $key
+     * @param mixed $value
      * @return bool
      */
-    protected function pageRuleContainsCacheEverythingAction($pagerules)
+    private function pageRuleContains($pagerules, $key, $value)
     {
         if (!is_array($pagerules)) {
             return false;
@@ -459,7 +467,7 @@ class Hooks
 
         foreach ($pagerules as $pagerule) {
             foreach ($pagerule["actions"] as $action) {
-                if ($action["id"] == "cache_level" && $action["value"] == "cache_everything") {
+                if ($action["id"] == $key && $action["value"] == $value) {
                     return true;
                 }
             }
@@ -468,6 +476,13 @@ class Hooks
 
         return false;
     }
+
+    private function zoneSettingAlwaysUseHTTPSEnabled($zoneTag)
+    {
+        $settings = $this->api->getZoneSetting($zoneTag, "always_use_https");
+        return $settings["value"] == "on";
+    }
+
 
     /**
      * pathHasCachableFileExtension takes a string of a URL and evaluates if it
@@ -484,6 +499,23 @@ class Hooks
             if (Utils::strEndsWith($parsed_url, "." . $ext)) {
                 return true;
             }
+        }
+
+        return false;
+    }
+
+    /**
+     * urlIsHTTPS determines if a scheme used for a URL is HTTPS.
+     *
+     * @param mixed $value
+     * @return bool
+     */
+    private function urlIsHTTPS($value)
+    {
+        $parsed_scheme = parse_url($value, PHP_URL_SCHEME);
+
+        if ($parsed_scheme == "https") {
+            return true;
         }
 
         return false;

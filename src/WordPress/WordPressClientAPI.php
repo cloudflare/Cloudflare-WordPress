@@ -83,6 +83,21 @@ class WordPressClientAPI extends Client
     }
 
     /**
+     * @param $zoneId
+     * @param $settingName
+     * @param $params
+     *
+     * @return bool
+     */
+    public function getZoneSetting($zoneId, $settingName)
+    {
+        $request = new Request('GET', 'zones/' . $zoneId . '/settings/' . $settingName, array(), null);
+        $response = $this->callAPI($request);
+
+        return $response["result"];
+    }
+
+    /**
      * @param $urlPattern
      *
      * @return array
