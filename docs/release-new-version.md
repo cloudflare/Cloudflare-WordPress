@@ -8,8 +8,12 @@ projects, update them and commit the changes.
 ### Update readme.txt and plugin version references
 
 WordPress uses the readme.txt heavily for metadata about the plugin. You will
-need to bump the version number and update `== Changelog ==` section according
-to what code changes have been made since the last release.
+need to update `== Changelog ==` section according to what code changes have
+been made since the last release.
+
+To bump all the places where the plugin version is defined, run
+`scripts/bump-plugin-version.sh x.x.x` (replacing x.x.x) with your proposed
+version number.
 
 ## Prepare to release
 
