@@ -164,6 +164,10 @@ class Hooks
             $urls = $this->getPostRelatedLinks($postId);
             $urls = apply_filters('cloudflare_purge_by_url', $urls, $postId);
 
+            if (empty($urls)) {
+                return;
+            }
+
             $zoneTag = $this->api->getZoneTag($wpDomain);
             $activePageRules = $this->api->getPageRules($zoneTag, "active");
 
@@ -175,17 +179,17 @@ class Hooks
                 $urls = array_filter($urls, array($this, "pathHasCachableFileExtension"));
             }
 
+            $hasAlwaysUseHTTPSOverrideDisabled = $this->pageRuleContains($activePageRules, "always_use_https", "off");
+            if ($this->zoneSettingAlwaysUseHTTPSEnabled($zoneTag) && !$hasAlwaysUseHTTPSOverrideDisabled) {
+                $this->logger->debug("always_use_https is enabled without page rule overrides present, removing HTTP based URLs");
+                $urls = array_filter($urls, array($this, "urlIsHTTPS"));
+            }
+
             // Don't attempt to purge anything outside of the provided zone.
             foreach ($urls as $key => $url) {
                 if (!Utils::strEndsWith(parse_url($url, PHP_URL_HOST), $wpDomain)) {
                     unset($urls[$key]);
                 }
-            }
-
-            $hasAlwaysUseHTTPSOverrideDisabled = $this->pageRuleContains($activePageRules, "always_use_https", "off");
-            if ($this->zoneSettingAlwaysUseHTTPSEnabled($zoneTag) && !$hasAlwaysUseHTTPSOverrideDisabled) {
-                $this->logger->debug("always_use_https is enabled without page rule overrides present, removing HTTP based URLs");
-                $urls = array_filter($urls, array($this, "urlIsHTTPS"));
             }
 
             if (isset($zoneTag) && !empty($urls)) {
