@@ -152,7 +152,7 @@ class Hooks
             }
 
             $postType = get_post_type_object(get_post_type($postId));
-            if (!$postType->public || !$postType->publicly_queryable) {
+            if (!is_post_type_viewable($postType)) {
                 return;
             }
 
