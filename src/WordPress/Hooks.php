@@ -173,6 +173,9 @@ class Hooks
                 return;
             }
 
+            // Filter by unique urls
+            $urls = array_values(array_unique($urls));
+
             $zoneTag = $this->api->getZoneTag($wpDomain);
             $activePageRules = $this->api->getPageRules($zoneTag, "active");
 
