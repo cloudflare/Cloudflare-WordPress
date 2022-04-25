@@ -137,7 +137,7 @@ class Hooks
         }
     }
 
-    public function purgeCacheByRelevantURLs($postId)
+    public function purgeCacheByRelevantURLs($postIds)
     {
         if ($this->isPluginSpecificCacheEnabled() || $this->isAutomaticPlatformOptimizationEnabled()) {
             $wpDomainList = $this->integrationAPI->getDomainList();
@@ -146,23 +146,28 @@ class Hooks
             }
             $wpDomain = $wpDomainList[0];
 
-            // Do not purge for autosaves or updates to post revisions.
-            if (wp_is_post_autosave($postId) || wp_is_post_revision($postId)) {
-                return;
-            }
+            $postIds = (array) $postIds;
+            $urls = [];
+            foreach ($postIds as $postId) {
+                // Do not purge for autosaves or updates to post revisions.
+                if (wp_is_post_autosave($postId) || wp_is_post_revision($postId)) {
+                    continue;
+                }
 
-            $postType = get_post_type_object(get_post_type($postId));
-            if (!is_post_type_viewable($postType)) {
-                return;
-            }
+                $postType = get_post_type_object(get_post_type($postId));
+                if (!is_post_type_viewable($postType)) {
+                    continue;
+                }
 
-            $savedPost = get_post($postId);
-            if (!is_a($savedPost, 'WP_Post')) {
-                return;
-            }
+                $savedPost = get_post($postId);
+                if (!is_a($savedPost, 'WP_Post')) {
+                    continue;
+                }
 
-            $urls = $this->getPostRelatedLinks($postId);
-            $urls = apply_filters('cloudflare_purge_by_url', $urls, $postId);
+                $urls = array_values(array_unique(array_merge($urls, $this->getPostRelatedLinks($postId))));
+                $urls = apply_filters('cloudflare_purge_by_url', $urls, $postId);
+            }
+            $urls = apply_filters('cloudflare_purge_by_urls', $urls, $postIds);
 
             if (empty($urls)) {
                 return;
