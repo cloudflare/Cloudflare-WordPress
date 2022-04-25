@@ -169,12 +169,12 @@ class Hooks
             }
             $urls = apply_filters('cloudflare_purge_by_urls', $urls, $postIds);
 
-            if (empty($urls)) {
+            if (!is_array($urls) || empty($urls)) {
                 return;
             }
 
             // Filter by unique urls
-            $urls = array_values(array_unique($urls));
+            $urls = array_values(array_filter(array_unique($urls)));
 
             $zoneTag = $this->api->getZoneTag($wpDomain);
             $activePageRules = $this->api->getPageRules($zoneTag, "active");
