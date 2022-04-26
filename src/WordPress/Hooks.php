@@ -346,7 +346,7 @@ class Hooks
         }
 
         // Clean array if row empty
-        $listofurls = array_values(array_unique(array_filter($listofurls)));
+        $listofurls = array_values(array_filter(array_unique($listofurls)));
 
         return $listofurls;
     }
