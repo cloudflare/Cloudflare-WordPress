@@ -164,7 +164,7 @@ class Hooks
                     continue;
                 }
 
-                $urls = array_merge($urls, $this->getPostRelatedLinks($postId));
+                $urls = array_values(array_unique(array_merge($urls, $this->getPostRelatedLinks($postId))));
                 $urls = apply_filters('cloudflare_purge_by_url', $urls, $postId);
             }
             $urls = apply_filters('cloudflare_purge_by_urls', $urls, $postIds);
@@ -334,9 +334,12 @@ class Hooks
             }
             $listofurls = array_merge(
                 $listofurls,
-                array_unique(array_filter($attachmentUrls))
+                $attachmentUrls
             );
         }
+
+        // Clean array and get unique values
+        $listofurls = array_values(array_filter(array_unique($listofurls)));
 
         // Purge https and http URLs
         if (function_exists('force_ssl_admin') && force_ssl_admin()) {
@@ -344,9 +347,6 @@ class Hooks
         } elseif (!is_ssl() && function_exists('force_ssl_content') && force_ssl_content()) {
             $listofurls = array_merge($listofurls, str_replace('http://', 'https://', $listofurls));
         }
-
-        // Clean array if row empty
-        $listofurls = array_values(array_filter(array_unique($listofurls)));
 
         return $listofurls;
     }
