@@ -164,7 +164,7 @@ class Hooks
                     continue;
                 }
 
-                $urls = array_values(array_unique(array_merge($urls, $this->getPostRelatedLinks($postId))));
+                $urls = array_merge($urls, $this->getPostRelatedLinks($postId));
                 $urls = apply_filters('cloudflare_purge_by_url', $urls, $postId);
             }
             $urls = apply_filters('cloudflare_purge_by_urls', $urls, $postIds);
@@ -346,7 +346,7 @@ class Hooks
         }
 
         // Clean array if row empty
-        $listofurls = array_filter($listofurls);
+        $listofurls = array_values(array_unique(array_filter($listofurls)));
 
         return $listofurls;
     }
