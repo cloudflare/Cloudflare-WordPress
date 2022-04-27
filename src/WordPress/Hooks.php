@@ -145,6 +145,10 @@ class Hooks
                 return;
             }
             $wpDomain = $wpDomainList[0];
+            $zoneTag = $this->api->getZoneTag($wpDomain);
+            if (!isset($zoneTag)) {
+                return;
+            }
 
             $postIds = (array) $postIds;
             $urls = [];
@@ -169,14 +173,20 @@ class Hooks
             }
             $urls = apply_filters('cloudflare_purge_by_urls', $urls, $postIds);
 
-            if (!is_array($urls) || empty($urls)) {
+            // Don't attempt to purge anything outside of the provided zone.
+            foreach ($urls as $key => $url) {
+                if (!Utils::strEndsWith(parse_url($url, PHP_URL_HOST), $wpDomain)) {
+                    unset($urls[$key]);
+                }
+            }
+
+            if (empty($urls)) {
                 return;
             }
 
             // Filter by unique urls
             $urls = array_values(array_filter(array_unique($urls)));
 
-            $zoneTag = $this->api->getZoneTag($wpDomain);
             $activePageRules = $this->api->getPageRules($zoneTag, "active");
 
             // Fetch the page rules and should we not have any hints of cache
@@ -193,14 +203,7 @@ class Hooks
                 $urls = array_filter($urls, array($this, "urlIsHTTPS"));
             }
 
-            // Don't attempt to purge anything outside of the provided zone.
-            foreach ($urls as $key => $url) {
-                if (!Utils::strEndsWith(parse_url($url, PHP_URL_HOST), $wpDomain)) {
-                    unset($urls[$key]);
-                }
-            }
-
-            if (isset($zoneTag) && !empty($urls)) {
+            if (!empty($urls)) {
                 $chunks = array_chunk($urls, 30);
 
                 foreach ($chunks as $chunk) {
