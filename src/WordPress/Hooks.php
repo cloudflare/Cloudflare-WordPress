@@ -168,8 +168,8 @@ class Hooks
                     continue;
                 }
 
-                $urls = array_values(array_unique(array_merge($urls, $this->getPostRelatedLinks($postId))));
-                $urls = apply_filters('cloudflare_purge_by_url', $urls, $postId);
+                $relatedUrls = apply_filters('cloudflare_purge_by_url', $this->getPostRelatedLinks($postId), $postId);
+                $urls = array_merge($urls, $relatedUrls);
             }
 
             // Don't attempt to purge anything outside of the provided zone.
