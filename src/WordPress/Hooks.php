@@ -171,7 +171,6 @@ class Hooks
                 $urls = array_values(array_unique(array_merge($urls, $this->getPostRelatedLinks($postId))));
                 $urls = apply_filters('cloudflare_purge_by_url', $urls, $postId);
             }
-            $urls = apply_filters('cloudflare_purge_by_urls', $urls, $postIds);
 
             // Don't attempt to purge anything outside of the provided zone.
             foreach ($urls as $key => $url) {
@@ -204,6 +203,7 @@ class Hooks
             }
 
             if (!empty($urls)) {
+                do_action('cloudflare_purge_by_urls', $urls, $postIds);
                 $chunks = array_chunk($urls, 30);
 
                 foreach ($chunks as $chunk) {
