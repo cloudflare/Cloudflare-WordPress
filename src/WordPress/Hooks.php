@@ -179,9 +179,8 @@ class Hooks
                 $urls = array_filter($urls, array($this, "pathHasCachableFileExtension"));
             }
 
-            $hasAlwaysUseHTTPSOverrideDisabled = $this->pageRuleContains($activePageRules, "always_use_https", "off");
-            if ($this->zoneSettingAlwaysUseHTTPSEnabled($zoneTag) && !$hasAlwaysUseHTTPSOverrideDisabled) {
-                $this->logger->debug("always_use_https is enabled without page rule overrides present, removing HTTP based URLs");
+            if ($this->zoneSettingAlwaysUseHTTPSEnabled($zoneTag)) {
+                $this->logger->debug("zone level always_use_https is enabled, removing HTTP based URLs");
                 $urls = array_filter($urls, array($this, "urlIsHTTPS"));
             }
 
@@ -471,6 +470,17 @@ class Hooks
 
         foreach ($pagerules as $pagerule) {
             foreach ($pagerule["actions"] as $action) {
+                // always_use_https can only be toggled on for a URL but doesn't
+                // have a value so we merely check the presence of the key
+                // instead.
+                if ($action["id"] == "always_use_https" && $key == "always_use_https") {
+                    return true;
+                }
+
+                if (!array_key_exists("value", $action)) {
+                    continue;
+                }
+
                 if ($action["id"] == $key && $action["value"] == $value) {
                     return true;
                 }
