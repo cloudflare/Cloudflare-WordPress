@@ -203,7 +203,7 @@ class Hooks
             }
 
             if (!empty($urls)) {
-                do_action('cloudflare_purge_by_urls', $urls, $postIds);
+                do_action('cloudflare_purged_urls', $urls, $postIds);
                 $chunks = array_chunk($urls, 30);
 
                 foreach ($chunks as $chunk) {
