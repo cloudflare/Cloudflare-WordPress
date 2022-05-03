@@ -117,3 +117,8 @@ add_action('transition_post_status', array($cloudflareHooks, 'purgeCacheOnPostSt
  */
 add_action('transition_comment_status', array($cloudflareHooks, 'purgeCacheOnCommentStatusChange'), PHP_INT_MAX, 3);
 add_action('comment_post', array($cloudflareHooks, 'purgeCacheOnNewComment'), PHP_INT_MAX, 3);
+
+/**
+ * Register an action which accounts for taxonomy term (category or tag) changes
+ */
+add_action('clean_term_cache', array($cloudflareHooks, 'purgeCacheOnTermChange'), PHP_INT_MAX, 3);
