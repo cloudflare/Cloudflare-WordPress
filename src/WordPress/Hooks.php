@@ -6,6 +6,7 @@ use CF\API\APIInterface;
 use CF\Integration;
 use Psr\Log\LoggerInterface;
 use WP_Taxonomy;
+use WP_Query;
 
 class Hooks
 {
@@ -483,7 +484,7 @@ class Hooks
             )
         );
 
-        $query = new \WP_Query($args);
+        $query = new WP_Query($args);
         if (!empty($query->posts)) {
             $this->purgeCacheByRelevantURLs($query->posts);
         }
