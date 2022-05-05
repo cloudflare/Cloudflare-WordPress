@@ -1,5 +1,7 @@
 /.git
 /.github
+/.vscode
+/xdebug
 /scripts
 /docs
 
@@ -9,5 +11,6 @@
 CONTRIBUTING.md
 docker-compose.yaml
 Dockerfile.wordpress
+docker_tag
 phpcs.xml
 phpunit.xml
