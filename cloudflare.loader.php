@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 use CloudFlare\IpRewrite;
 
@@ -55,10 +55,10 @@ if (is_admin()) {
     add_action('plugin_action_links_cloudflare/cloudflare.php', array($cloudflareHooks, 'pluginActionLinks'));
 
     // Load Activation Script
-    register_activation_hook(CLOUDFLARE_PLUGIN_DIR.'cloudflare.php', array($cloudflareHooks, 'activate'));
+    register_activation_hook(CLOUDFLARE_PLUGIN_DIR . 'cloudflare.php', array($cloudflareHooks, 'activate'));
 
     // Load Deactivation Script
-    register_deactivation_hook(CLOUDFLARE_PLUGIN_DIR.'cloudflare.php', array($cloudflareHooks, 'deactivate'));
+    register_deactivation_hook(CLOUDFLARE_PLUGIN_DIR . 'cloudflare.php', array($cloudflareHooks, 'deactivate'));
 }
 
 // Load Automatic Cache Purge
@@ -93,8 +93,8 @@ foreach ($cloudflarePurgeEverythingActions as $action) {
  */
 
 $cloudflarePurgeURLActions = array(
-    'deleted_post',                     // Delete a post
-    'delete_attachment',                // Delete an attachment - includes re-uploading
+    'clean_post_cache', // https://developer.wordpress.org/reference/functions/clean_post_cache/
+    'clean_attachment_cache', // https://developer.wordpress.org/reference/functions/clean_attachment_cache/
 );
 
 $cloudflarePurgeURLActions = apply_filters('cloudflare_purge_url_actions', $cloudflarePurgeURLActions);
