@@ -154,7 +154,7 @@ class Hooks
             $urls = [];
             foreach ($postIds as $postId) {
                 // Do not purge for autosaves or updates to post revisions.
-                if (wp_is_post_autosave($postId) || wp_is_post_revision($postId)) {
+                if (wp_is_post_autosave($postId) || wp_is_post_revision($postId) || get_post_status($postId) === 'auto-draft') {
                     continue;
                 }
 
