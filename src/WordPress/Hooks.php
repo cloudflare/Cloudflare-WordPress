@@ -159,7 +159,7 @@ class Hooks
                 }
 
                 // Do no purge for non-published posts (auto-draft, draft)
-                if (get_post_status($postId) !== 'publish') {
+                if (!in_array(get_post_status($postId), ['publish', 'private', 'password'])) {
                     continue;
                 }
 
