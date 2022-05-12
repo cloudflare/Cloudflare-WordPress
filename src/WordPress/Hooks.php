@@ -158,7 +158,7 @@ class Hooks
                     continue;
                 }
                 
-                // Moved up so $sabedPost can be used earlier.
+                // Moved up so $savedPost can be used earlier.
                 $savedPost = get_post($postId);
                 if (!is_a($savedPost, 'WP_Post')) {
                     continue;
