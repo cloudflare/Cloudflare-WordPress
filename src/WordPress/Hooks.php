@@ -157,20 +157,14 @@ class Hooks
                 if (wp_is_post_autosave($postId) || wp_is_post_revision($postId)) {
                     continue;
                 }
-                
-                // Moved up so $savedPost can be used earlier.
-                $savedPost = get_post($postId);
-                if (!is_a($savedPost, 'WP_Post')) {
-                    continue;
-                }
-                
-                // Purge entire cache when nav menu is modified. Do it only with first nav_menu - each nav menu item is saved separately.
-                if ((is_nav_menu_item($postId) && $savedPost->menu_order == 1)) {
-                    $this->purgeCacheEverything();
-                }
 
                 $postType = get_post_type_object(get_post_type($postId));
                 if (!is_post_type_viewable($postType)) {
+                    continue;
+                }
+
+                $savedPost = get_post($postId);
+                if (!is_a($savedPost, 'WP_Post')) {
                     continue;
                 }
 

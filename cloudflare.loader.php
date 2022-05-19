@@ -65,7 +65,8 @@ if (is_admin()) {
 $cloudflarePurgeEverythingActions = array(
     'autoptimize_action_cachepurged',   // Compat with https://wordpress.org/plugins/autoptimize
     'switch_theme',                     // Switch theme
-    'customize_save_after'              // Edit theme
+    'customize_save_after',             // Edit theme
+    'wp_update_nav_menu'                // Update nav menu
 );
 
 $cloudflarePurgeEverythingActions = apply_filters('cloudflare_purge_everything_actions', $cloudflarePurgeEverythingActions);
