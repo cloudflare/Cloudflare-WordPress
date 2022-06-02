@@ -187,10 +187,18 @@ class Hooks
             $urls = array_values(array_filter(array_unique($urls)));
 
             $activePageRules = $this->api->getPageRules($zoneTag, "active");
+            $hasCacheOverride = $this->pageRuleContains($activePageRules, "cache_level", "cache_everything");
+
+            // Should we not have a 'cache_everything' page rule override, feeds
+            // shouldn't be attempted to be purged as they are not cachable by
+            // default.
+            if (!$hasCacheOverride) {
+                $this->logger->debug("cache everything behaviour found, filtering out feeds URLs");
+                $urls = array_filter($urls, array($this, "pathIsForFeeds"));
+            }
 
             // Fetch the page rules and should we not have any hints of cache
             // all behaviour or APO, filter out the non-cacheable URLs.
-            $hasCacheOverride = $this->pageRuleContains($activePageRules, "cache_level", "cache_everything");
             if (!$hasCacheOverride && !$this->isAutomaticPlatformOptimizationEnabled()) {
                 $this->logger->debug("cache everything behaviour and APO not found, filtering URLs to only be those that are cacheable by default");
                 $urls = array_filter($urls, array($this, "pathHasCachableFileExtension"));
@@ -527,6 +535,21 @@ class Hooks
         }
 
         return false;
+    }
+
+    /**
+     * pathIsForFeeds accepts a string URL and checks if the path matches any
+     * known feed paths such as "/feed", "/feed/", "/feed/rdf/", "/feed/rss/",
+     * "/feed/atom/", "/author/foo/feed", "/comments/feed", "/shop/feed",
+     * "/tag/.../feed/", etc.
+     *
+     * @param mixed $value
+     * @return bool
+     */
+    private function pathIsForFeeds($value)
+    {
+        $parsed_url = parse_url($value, PHP_URL_PATH);
+        return (bool) preg_match('/\/feed(?:\/(?:atom\/?|r(?:df|ss)\/?)?)?$/', $parsed_url);
     }
 
     /**
