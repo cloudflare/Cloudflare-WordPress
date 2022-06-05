@@ -194,7 +194,7 @@ class Hooks
             // default.
             if (!$hasCacheOverride) {
                 $this->logger->debug("cache everything behaviour found, filtering out feeds URLs");
-                $urls = array_filter($urls, array($this, "pathIsForFeeds"));
+                $urls = array_filter($urls, array($this, "pathIsNotForFeeds"));
             }
 
             // Fetch the page rules and should we not have any hints of cache
@@ -538,7 +538,7 @@ class Hooks
     }
 
     /**
-     * pathIsForFeeds accepts a string URL and checks if the path matches any
+     * pathIsNotForFeeds accepts a string URL and checks if the path doesn't matches any
      * known feed paths such as "/feed", "/feed/", "/feed/rdf/", "/feed/rss/",
      * "/feed/atom/", "/author/foo/feed", "/comments/feed", "/shop/feed",
      * "/tag/.../feed/", etc.
@@ -546,10 +546,10 @@ class Hooks
      * @param mixed $value
      * @return bool
      */
-    private function pathIsForFeeds($value)
+    private function pathIsNotForFeeds($value)
     {
         $parsed_url = parse_url($value, PHP_URL_PATH);
-        return (bool) preg_match('/\/feed(?:\/(?:atom\/?|r(?:df|ss)\/?)?)?$/', $parsed_url);
+        return (bool) !preg_match('/\/feed(?:\/(?:atom\/?|r(?:df|ss)\/?)?)?$/', $parsed_url);
     }
 
     /**
