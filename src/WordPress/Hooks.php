@@ -429,7 +429,8 @@ class Hooks
         }
 
         // add header unconditionally so we can detect plugin is activated
-        if (!is_user_logged_in()) {
+        $cache = apply_filters('cloudflare_use_cache', !is_user_logged_in());
+        if ($cache) {
             header('cf-edge-cache: cache,platform=wordpress');
         } else {
             header('cf-edge-cache: no-cache');
