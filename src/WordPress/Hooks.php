@@ -174,7 +174,11 @@ class Hooks
 
             // Don't attempt to purge anything outside of the provided zone.
             foreach ($urls as $key => $url) {
-                $url_to_test = is_array($url) ? $url['url'] : $url;
+                $url_to_test = $url;
+                if(is_array($url) && !!$url['url'] ){
+                    $url_to_test = $url['url'];
+                }
+
                 if (!Utils::strEndsWith(parse_url($url_to_test, PHP_URL_HOST), $wpDomain)) {
                     unset($urls[$key]);
                 }
