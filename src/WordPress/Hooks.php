@@ -519,7 +519,7 @@ class Hooks
     private function zoneSettingAlwaysUseHTTPSEnabled($zoneTag)
     {
         $settings = $this->api->getZoneSetting($zoneTag, "always_use_https");
-        return $settings["value"] == "on";
+        return !empty($settings["value"]) && $settings["value"] == "on";
     }
 
 
