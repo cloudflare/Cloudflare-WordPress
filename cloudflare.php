@@ -46,4 +46,6 @@ if (version_compare(PHP_VERSION, CLOUDFLARE_MIN_PHP_VERSION, '<')) {
 
 // Plugin uses namespaces. To support old PHP version which doesn't support
 // namespaces we load everything in "cloudflare.loader.php"
-require_once CLOUDFLARE_PLUGIN_DIR . 'cloudflare.loader.php';
+add_action('init', function () {
+    require_once CLOUDFLARE_PLUGIN_DIR . 'cloudflare.loader.php';
+});
