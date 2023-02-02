@@ -277,6 +277,13 @@ class Hooks
                     array_push($listofurls, $termLink);
                     array_push($listofurls, $termFeedLink);
                 }
+                $categories = get_ancestors($term->term_id, 'category');
+                foreach($categories as $category) {
+                    $category_url = get_category_link($category);
+                    if (!is_wp_error($category_url)) {
+                        array_push($listofurls, $category_url);
+                    }
+                }
             }
         }
 
