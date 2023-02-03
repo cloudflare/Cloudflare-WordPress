@@ -360,6 +360,14 @@ class Hooks
             );
         }
 
+        $customUrls = $this->config->getValue('customUrls');
+        if($customUrls && count($customUrls)) {
+            $listofurls = array_merge(
+                $listofurls,
+                $customUrls
+            );
+        }
+        
         // Clean array and get unique values
         $listofurls = array_values(array_filter(array_unique($listofurls)));
 
