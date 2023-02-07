@@ -6,6 +6,7 @@ use CF\API\APIInterface;
 use CF\Integration;
 use Psr\Log\LoggerInterface;
 use WP_Taxonomy;
+use WP_Query;
 
 class Hooks
 {
@@ -476,6 +477,31 @@ class Hooks
 
         // all clear, we ne need to purge cache related to this post id
         $this->purgeCacheByRelevantURLs($comment_data['comment_post_ID']);
+    }
+
+    public function purgeCacheOnTermChange($ids, $taxonomy, $clean_taxonomy)
+    {
+        $args = array(
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+            'fields' => 'ids',
+            'no_found_rows' => true,
+            'update_post_term_cache' => false,
+            'update_post_meta_cache' => false,
+            'tax_query' => array(
+                array(
+                    'taxonomy' => $taxonomy,
+                    'field' => 'term_id',
+                    'terms' => $ids,
+                    'operator' => 'IN'
+                )
+            )
+        );
+
+        $query = new WP_Query($args);
+        if (!empty($query->posts)) {
+            $this->purgeCacheByRelevantURLs($query->posts);
+        }
     }
 
     /**
