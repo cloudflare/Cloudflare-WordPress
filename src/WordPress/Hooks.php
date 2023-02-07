@@ -137,7 +137,7 @@ class Hooks
         }
     }
 
-    public function initScheduleQueuePurge()
+    public function initCronScheduleQueuePurge()
     {
         // Add a new interval for cron purge
         add_filter('cron_schedules', function ($schedules) {
@@ -157,7 +157,7 @@ class Hooks
         add_action('cloudflare_cron_purge_queue', array($this, 'cronPurgeQueue'));
     }
 
-    public function queuePostIdPurge($postIds)
+    public function cronQueuePostIdPurge($postIds)
     {
         $queued = get_option('cloudflare_related_urls', []);
         foreach ($postIds as $postId) {
@@ -198,7 +198,11 @@ class Hooks
 
     public function purgeCacheByRelevantURLs($postIds)
     {
-        return $this->queuePostIdPurge((array) $postIds);
+        if (apply_filters('cloudflare_purge_on_cron', false)) {
+            return $this->cronQueuePostIdPurge((array) $postIds);
+        } else {
+            return $this->purgeCacheByPostIds($postIds);
+        }
     }
 
     public function purgeCacheByPostIds($postIds)
