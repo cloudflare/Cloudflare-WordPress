@@ -139,20 +139,23 @@ class Hooks
 
     public function initCronScheduleQueuePurge()
     {
+        if (!apply_filters('cloudflare_purge_on_cron', false)) {
+            return;
+        }
+
         // Add a new interval for cron purge
         add_filter('cron_schedules', function ($schedules) {
             $default = array(
                 'interval'  => 60,
                 'display'   => __('Every Minute', 'cloudflare')
             );
-            $schedules['cloudflare_purge_cron_interval'] = apply_filters('cloudflare_purge_schedule', $default);
+            $schedules['cloudflare_cron_purge_interval'] = apply_filters('cloudflare_cron_purge_interval', $default);
             return $schedules;
         });
 
         // Schedule an action if it's not already scheduled
         if (!wp_next_scheduled('cloudflare_cron_purge_queue')) {
-            // wp_schedule_event(time(), 'every_minute', 'cloudflare_cron_purge_queue');
-            wp_schedule_event(time(), 'cloudflare_purge_cron_interval', 'cloudflare_cron_purge_queue');
+            wp_schedule_event(time(), 'cloudflare_cron_purge_interval', 'cloudflare_cron_purge_queue');
         }
         add_action('cloudflare_cron_purge_queue', array($this, 'cronPurgeQueue'));
     }
@@ -176,21 +179,6 @@ class Hooks
         if (empty($queued)) {
             return;
         }
-
-        // // need to rate limit purges 1200 requests every 5 minutes
-        // $now = time();
-        // $start = get_option('cloudflare_related_urls_purge_window', $now);
-
-
-
-        // $next_five_min = strtotime('+ 5 minutes', $now);
-        // //d();
-        // update_option('cloudflare_related_urls_purge_window', $now);
-        // update_option('cloudflare_related_urls_next_purge_window', $next_five_min);
-
-
-        // // todo, purge oldest time() pages first
-
         // empty queue so next cron run doesn't get same urls
         update_option('cloudflare_related_urls', [], false);
         $this->purgeCacheByPostIds(array_keys($queued));
