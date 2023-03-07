@@ -234,10 +234,25 @@ class Hooks
                         $isOK = ($isOK) ? 'succeeded' : 'failed';
                         $this->logger->debug("List of URLs purged on mobile are: " . print_r($chunk, true));
                         $this->logger->debug("purgeCacheByRelevantURLs " . $isOK);
+
+                        $isOK = $this->api->zonePurgeFiles($zoneTag, array_map(array($this, 'toPurgeCacheOnTablet'), $chunk));
+
+                        $isOK = ($isOK) ? 'succeeded' : 'failed';
+                        $this->logger->debug("List of URLs purged on tablet are: " . print_r($chunk, true));
+                        $this->logger->debug("purgeCacheByRelevantURLs " . $isOK);
                     }
                 }
             }
         }
+    }
+
+    protected function toPurgeCacheOnTablet($url)
+    {
+        //Purge cache on tablet
+        $headers = array("CF-Device-Type" => "tablet");
+        $purge_object = array("url" => $url, "headers" => $headers);
+        $json = json_decode(json_encode($purge_object, JSON_FORCE_OBJECT));
+        return $json;
     }
 
     protected function toPurgeCacheOnMobile($url)
