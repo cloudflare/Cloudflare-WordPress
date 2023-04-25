@@ -14,6 +14,7 @@ class DataStore implements DataStoreInterface
     const CACHED_DOMAIN_NAME = 'cloudflare_cached_domain_name';
 
     protected $wordPressWrapper;
+    public $logger;
 
     /**
      * @param DefaultLogger $logger

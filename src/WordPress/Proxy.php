@@ -17,6 +17,8 @@ class Proxy
     protected $wordpressIntegration;
     protected $requestRouter;
 
+    public $pluginAPI;
+
     /**
      * @param IntegrationInterface $integration
      */
