@@ -35,4 +35,9 @@ class WordPressWrapper
 
         return strtolower($site_url);
     }
+
+    public function currentUserCan($capabilities)
+    {
+        return current_user_can($capabilities);
+    }
 }
