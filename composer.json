@@ -32,10 +32,13 @@
   "_comment": [
     "php-compatibility-install comes from https://github.com/wimg/PHPCompatibility/issues/102#issuecomment-255778195"
   ],
-  "version": "4.12.2",
+  "version": "4.12.3",
   "config": {
     "platform": {
       "php": "7.2"
+    },
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
   }
 }
