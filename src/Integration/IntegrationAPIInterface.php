@@ -53,4 +53,9 @@ interface IntegrationAPIInterface
      * @return mixed
      */
     public function getUserId();
+
+    /**
+     * @return boolean
+     */
+    public function isCurrentUserAdministrator();
 }

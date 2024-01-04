@@ -53,6 +53,10 @@ class Proxy
 
     public function run()
     {
+        if (!$this->wordpressAPI->isCurrentUserAdministrator()) {
+            return;
+        }
+
         header('Content-Type: application/json');
 
         $request = $this->createRequest();

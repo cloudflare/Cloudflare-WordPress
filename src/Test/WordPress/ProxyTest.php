@@ -55,6 +55,7 @@ class ProxyTest extends \PHPUnit\Framework\TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
         $_GET['proxyURL'] = 'proxyUrl';
         $_GET['proxyURLType'] = 'proxyUrlType';
+        $this->mockWordPressAPI->method('isCurrentUserAdministrator')->willReturn(true);
         $this->mockRequestRouter->expects($this->once())->method('route');
         $mockWPDie = $this->getFunctionMock('CF\WordPress', 'wp_die');
         $this->mockProxy->run();
@@ -72,6 +73,7 @@ class ProxyTest extends \PHPUnit\Framework\TestCase
         $mockFileGetContents->expects($this->any())->willReturn($jsonBody);
         $mockWPVerifyNonce = $this->getFunctionMock('CF\WordPress', 'wp_verify_nonce');
         $mockWPVerifyNonce->expects($this->once())->willReturn(true);
+        $this->mockWordPressAPI->method('isCurrentUserAdministrator')->willReturn(true);
         $this->mockRequestRouter->expects($this->once())->method('route');
         $mockWPDie = $this->getFunctionMock('CF\WordPress', 'wp_die');
         $this->mockProxy->run();

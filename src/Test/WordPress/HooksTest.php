@@ -76,6 +76,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase
 
     public function testInitProxyCallsProxyRun()
     {
+        $this->mockWordPressAPI->method('isCurrentUserAdministrator')->willReturn(true);
         $this->mockProxy->expects($this->once())->method('run');
         $this->hooks->initProxy();
     }
