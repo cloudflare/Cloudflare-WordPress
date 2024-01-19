@@ -3,7 +3,7 @@ Contributors: icyapril, manatarms, thillcf, deuill, epatryk, jacobbednarz
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 6.2
-Stable tag: 4.12.3
+Stable tag: 4.12.4
 Requires PHP: 7.2
 License: BSD-3-Clause
 
@@ -98,6 +98,10 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 == Screenshots ==
 
 == Changelog ==
+= 4.12.4 - 2024-01-19 =
+
+* Fix "creation of dynamic property is deprecated" notice
+
 = 4.12.3 - 2024-01-04 =
 
 * Prevent usage of `cloudflare_proxy` action on /admin-ajax endpoint for non-Administrator users
