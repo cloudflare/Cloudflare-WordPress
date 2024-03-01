@@ -22,7 +22,7 @@ class WordPressClientAPI extends Client
             return $zone_tag;
         }
 
-        $request = new Request('GET', 'zones/', array('name' => $zone_name), array());
+        $request = new Request('GET', 'zones/', array('name' => $zone_name, 'status' => 'active'), null);
         $response = $this->callAPI($request);
 
         $zone_tag = null;
