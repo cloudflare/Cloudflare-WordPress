@@ -3,7 +3,7 @@ Contributors: icyapril, manatarms, thillcf, deuill, epatryk, jacobbednarz
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 3.4
 Tested up to: 6.2
-Stable tag: 4.12.4
+Stable tag: 4.12.5
 Requires PHP: 7.2
 License: BSD-3-Clause
 
@@ -98,6 +98,11 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 == Screenshots ==
 
 == Changelog ==
+= 4.12.5 - 2024-03-04 =
+
+* Upgrade cloudflare-plugin-frontend to v3.8.0 (#535)
+* Retrieve the Wordpress domain only from the active zone (#532)
+
 = 4.12.4 - 2024-01-19 =
 
 * Fix "creation of dynamic property is deprecated" notice
