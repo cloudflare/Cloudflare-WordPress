@@ -5,6 +5,7 @@ namespace CF\Integration;
 use Psr\Log\AbstractLogger;
 use Psr\Log\LogLevel;
 use Psr\Log\LoggerInterface;
+use Stringable;
 
 class DefaultLogger extends AbstractLogger implements LoggerInterface
 {
@@ -24,25 +25,25 @@ class DefaultLogger extends AbstractLogger implements LoggerInterface
      * Logs with an arbitrary level.
      *
      * @param mixed  $level
-     * @param string $message
+     * @param Stringable|string $message
      * @param array  $context
      */
-    public function log($level, $message, array $context = array())
+    public function log($level, Stringable|string $message, array $context = []): void
     {
-        return error_log(self::PREFIX.' '.strtoupper($level).': '.$message.' '.
+        error_log(self::PREFIX.' '.strtoupper($level).': '.$message.' '.
             (!empty($context) ? print_r($context, true) : ''));
     }
 
     /**
      * Detailed debug information.
      *
-     * @param string $message
+     * @param Stringable|string $message
      * @param array  $context
      */
-    public function debug($message, array $context = array())
+    public function debug(Stringable|string $message, array $context = []): void
     {
         if ($this->debug) {
-            return $this->log(LogLevel::DEBUG, $message, $context);
+            $this->log(LogLevel::DEBUG, $message, $context);
         }
     }
 }
