@@ -1,6 +1,8 @@
 <?php
 
-require_once __DIR__.'/vendor/autoload.php';
+if (!class_exists('CloudFlare\IpRewrite')) {
+	require_once __DIR__.'/vendor/autoload.php';
+}
 
 use CloudFlare\IpRewrite;
 
