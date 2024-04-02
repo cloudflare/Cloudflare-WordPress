@@ -11,7 +11,7 @@
   "require": {
     "cloudflare/cf-ip-rewrite": "^1.0.0",
     "symfony/polyfill-intl-idn": "*",
-    "psr/log": "^1.0"
+    "psr/log": "^1.0 || ^3.0"
   },
   "require-dev": {
     "symfony/yaml": "~2.6",
@@ -40,5 +40,8 @@
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
     }
+  },
+  "extra": {
+    "installer-name": "cloudflare"
   }
 }
