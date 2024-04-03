@@ -43,6 +43,7 @@ if (defined('CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE') && CLOUDFLARE_HTTP2_SERVER_PU
 }
 
 add_action('init', array($cloudflareHooks, 'initAutomaticPlatformOptimization'));
+add_action('init', array($cloudflareHooks, 'initCronScheduleQueuePurge'));
 
 if (is_admin()) {
     //Register proxy AJAX endpoint
