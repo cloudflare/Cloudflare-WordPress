@@ -161,6 +161,6 @@ class WordPressAPI implements IntegrationAPIInterface
      */
     public function isCurrentUserAdministrator()
     {
-        return $this->wordPressWrapper->currentUserCan('administrator');
+        return $this->wordPressWrapper->currentUserCan('manage_options');
     }
 }
