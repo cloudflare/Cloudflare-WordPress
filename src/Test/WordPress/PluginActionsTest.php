@@ -69,7 +69,7 @@ class PluginActionsTest extends \PHPUnit\Framework\TestCase
         );
         $this->mockWordPressClientAPI->method('responseOk')->willReturn(true);
         $this->mockWordPressClientAPI->method('changeZoneSettings')->willReturn(true);
-        $this->mockWordPressClientAPI->expects($this->exactly(16))->method('changeZoneSettings');
+        $this->mockWordPressClientAPI->expects($this->exactly(15))->method('changeZoneSettings');
 
         $this->pluginActions->applyDefaultSettings();
     }
@@ -89,7 +89,7 @@ class PluginActionsTest extends \PHPUnit\Framework\TestCase
         );
         $this->mockWordPressClientAPI->method('responseOk')->willReturn(true);
         $this->mockWordPressClientAPI->method('changeZoneSettings')->willReturn(true);
-        $this->mockWordPressClientAPI->expects($this->exactly(14))->method('changeZoneSettings');
+        $this->mockWordPressClientAPI->expects($this->exactly(13))->method('changeZoneSettings');
 
         $this->pluginActions->applyDefaultSettings();
     }

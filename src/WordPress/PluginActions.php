@@ -99,11 +99,6 @@ class PluginActions extends AbstractPluginActions
             throw new ZoneSettingFailException();
         }
 
-        $result &= $this->clientAPI->changeZoneSettings($zoneId, 'minify', array('value' => array('css' => 'on', 'html' => 'on', 'js' => 'on')));
-        if (!$result) {
-            throw new ZoneSettingFailException();
-        }
-
         $result &= $this->clientAPI->changeZoneSettings($zoneId, 'browser_cache_ttl', array('value' => 14400));
         if (!$result) {
             throw new ZoneSettingFailException();
