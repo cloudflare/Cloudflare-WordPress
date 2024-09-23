@@ -137,7 +137,63 @@ class Hooks
         }
     }
 
+    public function initCronScheduleQueuePurge()
+    {
+        if (!apply_filters('cloudflare_purge_on_cron', false)) {
+            return;
+        }
+
+        // Add a new interval for cron purge
+        add_filter('cron_schedules', function ($schedules) {
+            $default = array(
+                'interval'  => 60,
+                'display'   => __('Every Minute', 'cloudflare')
+            );
+            $schedules['cloudflare_cron_purge_interval'] = apply_filters('cloudflare_cron_purge_interval', $default);
+            return $schedules;
+        });
+
+        // Schedule an action if it's not already scheduled
+        if (!wp_next_scheduled('cloudflare_cron_purge_queue')) {
+            wp_schedule_event(time(), 'cloudflare_cron_purge_interval', 'cloudflare_cron_purge_queue');
+        }
+        add_action('cloudflare_cron_purge_queue', array($this, 'cronPurgeQueue'));
+    }
+
+    public function cronQueuePostIdPurge($postIds)
+    {
+        $queued = get_option('cloudflare_related_urls', []);
+        foreach ($postIds as $postId) {
+            if (isset($queued[$postId])) {
+                continue;
+            }
+            $queued[$postId] = time();
+        }
+        update_option('cloudflare_related_urls', $queued, false);
+        return true;
+    }
+
+    public function cronPurgeQueue()
+    {
+        $queued = get_option('cloudflare_related_urls', []);
+        if (empty($queued)) {
+            return;
+        }
+        // empty queue so next cron run doesn't get same urls
+        update_option('cloudflare_related_urls', [], false);
+        $this->purgeCacheByPostIds(array_keys($queued));
+    }
+
     public function purgeCacheByRelevantURLs($postIds)
+    {
+        if (apply_filters('cloudflare_purge_on_cron', false)) {
+            return $this->cronQueuePostIdPurge((array) $postIds);
+        } else {
+            return $this->purgeCacheByPostIds($postIds);
+        }
+    }
+
+    public function purgeCacheByPostIds($postIds)
     {
         if ($this->isPluginSpecificCacheEnabled() || $this->isAutomaticPlatformOptimizationEnabled()) {
             $wpDomainList = $this->integrationAPI->getDomainList();
