@@ -52,7 +52,7 @@ jobs:
                   php_version: ${{ matrix.php-versions }}
 
             - name: PHP syntax check
-              run: for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
+              run: for f in $(find . -name '*.php' -not -path ); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
 
             - name: Format
               uses: php-actions/composer@v6
