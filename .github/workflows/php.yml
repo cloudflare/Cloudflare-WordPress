@@ -1,78 +1,69 @@
 name: PHP Composer
 
 on:
-  push:
-    branches: [ '*' ]
-  pull_request:
-    branches: [ '*' ]
+    push:
+        branches: ["*"]
+    pull_request:
+        branches: ["*"]
 
 jobs:
-  build:
+    build:
+        runs-on: ubuntu-latest
+        continue-on-error: ${{ matrix.experimental }}
+        strategy:
+            fail-fast: false
+            matrix:
+                php-versions: ["8.0", "8.1", "8.2", "8.3"]
+                experimental: [false]
 
-    runs-on: ubuntu-latest
-    continue-on-error: ${{ matrix.experimental }}
-    strategy:
-      fail-fast: false
-      matrix:
-        php-versions: ['8.0', '8.1', '8.2', '8.3']
-        experimental: [false]
+        steps:
+            - uses: actions/checkout@v4
 
-    steps:
-    - uses: actions/checkout@v2
+            - uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php-versions }}
 
-    - uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-versions }}
+            - name: Cache Composer dependencies
+              uses: actions/cache@v4
+              with:
+                  path: /tmp/composer-cache
+                  key: ${{ runner.os }}-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}
 
-    - name: Cache Composer dependencies
-      uses: actions/cache@v2
-      with:
-        path: /tmp/composer-cache
-        key: ${{ runner.os }}-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}
+            - name: Validate composer.json and composer.lock
+              uses: php-actions/composer@v6
+              with:
+                  command: validate
+                  php_version: ${{ matrix.php-versions }}
+                  version: 2
 
-    - name: Validate composer.json and composer.lock
-      uses: php-actions/composer@v5
-      with:
-        command: validate
-        php_version: ${{ matrix.php-versions }}
-        version: 1
+            - name: Install dependencies
+              uses: php-actions/composer@v6
+              with:
+                  command: install
+                  args: --prefer-dist --no-progress --no-suggest --verbose
+                  php_version: ${{ matrix.php-versions }}
+                  version: 2
 
-    - name: Install dependencies
-      uses: php-actions/composer@v5
-      with:
-        command: install
-        args: --prefer-dist --no-progress --no-suggest --verbose
-        php_version: ${{ matrix.php-versions }}
-        version: 1
+            - name: Remove intentional crash test in dependency
+              uses: php-actions/composer@v6
+              with:
+                  command: run-script clean-crash-test
+                  version: 2
+                  php_version: ${{ matrix.php-versions }}
 
-    - name: Remove intentional crash test in dependency
-      uses: php-actions/composer@v5
-      with:
-        command: run-script clean-crash-test
-        version: 1
-        php_version: ${{ matrix.php-versions }}
+            - name: PHP syntax check
+              run: for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
 
-    - name: Remove unsupported PHP 8 symfony/polyfill return types
-      uses: jacobtomlinson/gha-find-replace@v2
-      with:
-        find: ": string|false"
-        replace: " "
-        include: "**/symfony/polyfill-intl-{idn,normalizer}/bootstrap80.php"
-        regex: false
+            - name: Format
+              uses: php-actions/composer@v6
+              with:
+                  command: run-script format
+                  php_version: ${{ matrix.php-versions }}
+                  version: 2
 
-    - name: PHP syntax check
-      run: for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
-
-    - name: Format
-      uses: php-actions/composer@v5
-      with:
-        command: run-script format
-        php_version: ${{ matrix.php-versions }}
-        version: 1
-
-    - name: Run test suite
-      uses: php-actions/composer@v5
-      with:
-        command: run-script test
-        php_version: ${{ matrix.php-versions }}
-        version: 1
+            - name: Run test suite
+              uses: php-actions/composer@v6
+              with:
+                  command: run-script test
+                  php_version: ${{ matrix.php-versions }}
+                  version: 2

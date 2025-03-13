@@ -8,23 +8,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Build
-      uses: php-actions/composer@v5
+      uses: php-actions/composer@v6
       with:
         command: install
         dev: no
         version: 1
-        php_version: 7.4
-
-    - name: Remove unsupported PHP 8 symfony/polyfill return types
-      uses: jacobtomlinson/gha-find-replace@v2
-      with:
-        find: ": string|false"
-        replace: " "
-        include: "**/symfony/polyfill-intl-{idn,normalizer}/bootstrap80.php"
-        regex: false
+        php_version: 8.0
 
     - name: WordPress Plugin Deploy
       id: deploy
