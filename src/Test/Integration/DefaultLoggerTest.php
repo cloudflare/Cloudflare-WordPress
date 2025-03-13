@@ -10,7 +10,7 @@ class DefaultLoggerTest extends \PHPUnit\Framework\TestCase
     {
         $logger = new DefaultLogger(true);
         $returnValue = $logger->debug('');
-        $this->assertTrue($returnValue);
+        $this->assertNull($returnValue);
 
         $logger = new DefaultLogger(false);
         $returnValue = $logger->debug('');
