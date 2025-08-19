@@ -1,47 +1,47 @@
 name: Release plugin
 on:
-  release:
-    types: [published]
+    release:
+        types: [published]
 jobs:
-  release:
-    name: New release
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    release:
+        name: New release
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
 
-    - name: Build
-      uses: php-actions/composer@v5
-      with:
-        command: install
-        dev: no
-        version: 1
-        php_version: 7.4
+            - name: Build
+              uses: php-actions/composer@v5
+              with:
+                  command: install
+                  dev: no
+                  version: 1
+                  php_version: 8.3
 
-    - name: Remove unsupported PHP 8 symfony/polyfill return types
-      uses: jacobtomlinson/gha-find-replace@v2
-      with:
-        find: ": string|false"
-        replace: " "
-        include: "**/symfony/polyfill-intl-{idn,normalizer}/bootstrap80.php"
-        regex: false
+            - name: Remove unsupported PHP 8 symfony/polyfill return types
+              uses: jacobtomlinson/gha-find-replace@v2
+              with:
+                  find: ": string|false"
+                  replace: " "
+                  include: "**/symfony/polyfill-intl-{idn,normalizer}/bootstrap80.php"
+                  regex: false
 
-    - name: WordPress Plugin Deploy
-      id: deploy
-      uses: 10up/action-wordpress-plugin-deploy@stable
-      with:
-        generate-zip: true
-      env:
-        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-        SLUG: cloudflare
+            - name: WordPress Plugin Deploy
+              id: deploy
+              uses: 10up/action-wordpress-plugin-deploy@stable
+              with:
+                  generate-zip: true
+              env:
+                  SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+                  SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+                  SLUG: cloudflare
 
-    - name: Upload release asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ${{ github.workspace }}/cloudflare.zip
-        asset_name: cloudflare.zip
-        asset_content_type: application/zip
+            - name: Upload release asset
+              uses: actions/upload-release-asset@v1
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              with:
+                  upload_url: ${{ github.event.release.upload_url }}
+                  asset_path: ${{ github.workspace }}/cloudflare.zip
+                  asset_name: cloudflare.zip
+                  asset_content_type: application/zip
