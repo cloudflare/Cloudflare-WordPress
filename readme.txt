@@ -102,6 +102,7 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 = 4.13.0 - 2025-10-21 =
 
 * Fix: Bumping required PHP version to 7.4 and updating relevant code to support this change.
+* Fix: Upgraded symfony/yaml dependency to ^5.4
 * Fix: Update various meta information.
 
 = 4.12.8 - 2024-08-08 =
