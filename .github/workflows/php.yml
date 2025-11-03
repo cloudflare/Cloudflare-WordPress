@@ -18,7 +18,7 @@ jobs:
         php-versions: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - uses: shivammathur/setup-php@v2
       with:
@@ -31,14 +31,14 @@ jobs:
         key: ${{ runner.os }}-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}
 
     - name: Validate composer.json and composer.lock
-      uses: php-actions/composer@v5
+      uses: php-actions/composer@v6
       with:
         command: validate
         php_version: ${{ matrix.php-versions }}
         version: 1
 
     - name: Install dependencies
-      uses: php-actions/composer@v5
+      uses: php-actions/composer@v6
       with:
         command: install
         args: --prefer-dist --no-progress --no-suggest --verbose
@@ -46,7 +46,7 @@ jobs:
         version: 1
 
     - name: Remove intentional crash test in dependency
-      uses: php-actions/composer@v5
+      uses: php-actions/composer@v6
       with:
         command: run-script clean-crash-test
         version: 1
@@ -64,14 +64,14 @@ jobs:
       run: for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
 
     - name: Format
-      uses: php-actions/composer@v5
+      uses: php-actions/composer@v6
       with:
         command: run-script format
         php_version: ${{ matrix.php-versions }}
         version: 1
 
     - name: Run test suite
-      uses: php-actions/composer@v5
+      uses: php-actions/composer@v6
       with:
         command: run-script test
         php_version: ${{ matrix.php-versions }}
