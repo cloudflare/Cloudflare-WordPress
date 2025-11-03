@@ -1,10 +1,10 @@
 === Cloudflare ===
-Contributors: icyapril, manatarms, thillcf, deuill, epatryk, jacobbednarz
+Contributors: cloudflare, barrykooij, defries
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
-Requires at least: 3.4
-Tested up to: 6.2
-Stable tag: 4.12.8
-Requires PHP: 7.2
+Requires at least: 5.0
+Tested up to: 6.8.3
+Stable tag: 4.13.0
+Requires PHP: 7.4
 License: BSD-3-Clause
 
 All of Cloudflare’s performance and security benefits in a simple one-click install.
@@ -49,7 +49,7 @@ Cloudflare’s WAF is available on all our [paid plans](https://www.cloudflare.c
 
 = Prerequisite =
 
-Make sure your PHP version is 7.2 or higher.
+Make sure your PHP version is 7.4 or higher.
 
 = Speed Up Your WordPress Site with Cloudflare APO =
 
@@ -98,6 +98,13 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 == Screenshots ==
 
 == Changelog ==
+
+= 4.13.0 - 2025-10-21 =
+
+* Fix: Bumping required PHP version to 7.4 and updating relevant code to support this change.
+* Fix: Upgraded symfony/yaml dependency to ^5.4
+* Fix: Update various meta information.
+
 = 4.12.8 - 2024-08-08 =
 
 * Prevent default settings from enabling Auto Minify due to deprecation (#547)

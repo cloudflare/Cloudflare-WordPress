@@ -3,8 +3,8 @@
 Plugin Name: Cloudflare
 Plugin URI: https://blog.cloudflare.com/new-wordpress-plugin/
 Description: Cloudflare speeds up and protects your WordPress site.
-Version: 4.12.8
-Requires PHP: 7.2
+Version: 4.13.0
+Requires PHP: 7.4
 Author: Cloudflare, Inc.
 License: BSD-3-Clause
 */
@@ -31,7 +31,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
-define('CLOUDFLARE_MIN_PHP_VERSION', '7.2');
+define('CLOUDFLARE_MIN_PHP_VERSION', '7.4');
 define('CLOUDFLARE_MIN_WP_VERSION', '3.4');
 define('CLOUDFLARE_PLUGIN_DIR', plugin_dir_path(__FILE__));
 

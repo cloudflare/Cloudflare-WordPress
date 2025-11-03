@@ -14,7 +14,7 @@
     "psr/log": "^1.0"
   },
   "require-dev": {
-    "symfony/yaml": "~2.6",
+    "symfony/yaml": "^5.4",
     "johnkary/phpunit-speedtrap": "*",
     "php-mock/php-mock-phpunit": "*",
     "phpunit/phpunit": "*",
@@ -32,10 +32,10 @@
   "_comment": [
     "php-compatibility-install comes from https://github.com/wimg/PHPCompatibility/issues/102#issuecomment-255778195"
   ],
-  "version": "4.12.8",
+  "version": "4.13.0",
   "config": {
     "platform": {
-      "php": "7.2"
+      "php": "7.4"
     },
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true

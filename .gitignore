@@ -2,3 +2,4 @@
 vendor/
 xdebug/*
 .phpunit.result.cache
+.idea
