@@ -2,9 +2,9 @@ name: PHP Composer
 
 on:
   push:
-    branches: [ '*' ]
+    branches: [ '**' ]
   pull_request:
-    branches: [ '*' ]
+    branches: [ '**' ]
 
 jobs:
   build:
@@ -14,42 +14,36 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        experimental: [false]
         php-versions: ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-versions }}
 
     - name: Cache Composer dependencies
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: /tmp/composer-cache
         key: ${{ runner.os }}-${{ matrix.php-versions }}-${{ hashFiles('**/composer.lock') }}
 
     - name: Validate composer.json and composer.lock
-      uses: php-actions/composer@v5
+      uses: php-actions/composer@v6
       with:
         command: validate
         php_version: ${{ matrix.php-versions }}
-        version: 1
+        version: 2
 
-    - name: Install dependencies
-      uses: php-actions/composer@v5
+    - name: Install dependencies (no-dev for lint)
+      uses: php-actions/composer@v6
       with:
         command: install
-        args: --prefer-dist --no-progress --no-suggest --verbose
+        args: --no-dev --prefer-dist --no-progress --no-suggest --verbose
         php_version: ${{ matrix.php-versions }}
-        version: 1
-
-    - name: Remove intentional crash test in dependency
-      uses: php-actions/composer@v5
-      with:
-        command: run-script clean-crash-test
-        version: 1
-        php_version: ${{ matrix.php-versions }}
+        version: 2
 
     - name: Remove unsupported PHP 8 symfony/polyfill return types
       uses: jacobtomlinson/gha-find-replace@v2
@@ -62,16 +56,31 @@ jobs:
     - name: PHP syntax check
       run: for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
 
+    - name: Install dependencies (second pass with dev)
+      uses: php-actions/composer@v6
+      with:
+          command: install
+          args: --prefer-dist --no-progress --no-suggest --verbose
+          php_version: ${{ matrix.php-versions }}
+          version: 2
+
+    - name: Remove intentional crash test in dependency
+      uses: php-actions/composer@v6
+      with:
+          command: run-script clean-crash-test
+          version: 2
+          php_version: ${{ matrix.php-versions }}
+
     - name: Format
-      uses: php-actions/composer@v5
+      uses: php-actions/composer@v6
       with:
         command: run-script format
         php_version: ${{ matrix.php-versions }}
-        version: 1
+        version: 2
 
     - name: Run test suite
-      uses: php-actions/composer@v5
+      uses: php-actions/composer@v6
       with:
         command: run-script test
         php_version: ${{ matrix.php-versions }}
-        version: 1
+        version: 2
