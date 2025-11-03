@@ -37,20 +37,13 @@ jobs:
         php_version: ${{ matrix.php-versions }}
         version: 2
 
-    - name: Install dependencies
+    - name: Install dependencies (no-dev for lint)
       uses: php-actions/composer@v6
       with:
         command: install
-        args: --prefer-dist --no-progress --no-suggest --verbose
+        args: --no-dev --prefer-dist --no-progress --no-suggest --verbose
         php_version: ${{ matrix.php-versions }}
         version: 2
-
-    - name: Remove intentional crash test in dependency
-      uses: php-actions/composer@v6
-      with:
-        command: run-script clean-crash-test
-        version: 2
-        php_version: ${{ matrix.php-versions }}
 
     - name: Remove unsupported PHP 8 symfony/polyfill return types
       uses: jacobtomlinson/gha-find-replace@v2
@@ -62,6 +55,21 @@ jobs:
 
     - name: PHP syntax check
       run: for f in $(find . -name '*.php'); do php -l $f; RETVAL=$?; if [ $RETVAL -ne 0 ]; then exit $RETVAL; fi; done
+
+    - name: Install dependencies (second pass with dev)
+      uses: php-actions/composer@v6
+      with:
+          command: install
+          args: --prefer-dist --no-progress --no-suggest --verbose
+          php_version: ${{ matrix.php-versions }}
+          version: 2
+
+    - name: Remove intentional crash test in dependency
+      uses: php-actions/composer@v6
+      with:
+          command: run-script clean-crash-test
+          version: 2
+          php_version: ${{ matrix.php-versions }}
 
     - name: Format
       uses: php-actions/composer@v6
