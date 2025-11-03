@@ -35,7 +35,7 @@ jobs:
       with:
         command: validate
         php_version: ${{ matrix.php-versions }}
-        version: 1
+        version: 2
 
     - name: Install dependencies
       uses: php-actions/composer@v6
@@ -43,13 +43,13 @@ jobs:
         command: install
         args: --prefer-dist --no-progress --no-suggest --verbose
         php_version: ${{ matrix.php-versions }}
-        version: 1
+        version: 2
 
     - name: Remove intentional crash test in dependency
       uses: php-actions/composer@v6
       with:
         command: run-script clean-crash-test
-        version: 1
+        version: 2
         php_version: ${{ matrix.php-versions }}
 
     - name: Remove unsupported PHP 8 symfony/polyfill return types
@@ -68,11 +68,11 @@ jobs:
       with:
         command: run-script format
         php_version: ${{ matrix.php-versions }}
-        version: 1
+        version: 2
 
     - name: Run test suite
       uses: php-actions/composer@v6
       with:
         command: run-script test
         php_version: ${{ matrix.php-versions }}
-        version: 1
+        version: 2
