@@ -15,7 +15,7 @@
 # Allows direct access to specific files only
 
 # Cloudflare JS and CSS
-<FilesMatch "^.+(js|css)$">
+<FilesMatch "^.+\.(js|css)$">
         # Apache 2.2
         <IfModule !mod_authz_core.c>
                 Allow from all
@@ -28,7 +28,7 @@
 </FilesMatch>
 
 # Cloudflare images
-<FilesMatch "^.+(png|svg|gif|jpg|webp)$">
+<FilesMatch "^.+\.(png|svg|gif|jpg|webp)$">
         # Apache 2.2
         <IfModule !mod_authz_core.c>
                 Allow from all
@@ -41,7 +41,7 @@
 </FilesMatch>
 
 # Cloudflare fonts
-<FilesMatch "^.+(eot|ttf||otf|woff|woff2)$">
+<FilesMatch "^.+\.(eot|ttf|otf|woff|woff2)$">
         # Apache 2.2
         <IfModule !mod_authz_core.c>
                 Allow from all
