@@ -1,6 +1,6 @@
 <?php
 
-namespace CF\Integration;
+namespace Cloudflare\APO\Integration;
 
 class DefaultConfig implements ConfigInterface
 {

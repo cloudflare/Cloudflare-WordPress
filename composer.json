@@ -1,7 +1,7 @@
 {
   "autoload": {
     "psr-4": {
-      "CF\\": "src/"
+      "Cloudflare\\APO\\": "src/"
     }
   },
   "description": "A Cloudflare plugin for WordPress",

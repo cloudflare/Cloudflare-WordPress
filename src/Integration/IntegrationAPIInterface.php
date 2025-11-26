@@ -1,8 +1,8 @@
 <?php
 
-namespace CF\Integration;
+namespace Cloudflare\APO\Integration;
 
-use CF\DNSRecord;
+use Cloudflare\APO\DNSRecord;
 
 interface IntegrationAPIInterface
 {

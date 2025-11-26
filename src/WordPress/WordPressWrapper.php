@@ -1,6 +1,6 @@
 <?php
 
-namespace CF\WordPress;
+namespace Cloudflare\APO\WordPress;
 
 use Symfony\Polyfill\Tests\Intl\Idn;
 

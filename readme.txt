@@ -99,6 +99,9 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 
 == Changelog ==
 
+= 4.14.0 - 2025-12-xx =
+* Fix: Updated namespace CF to Cloudfare\APO implementation to resolve and prevent namespace conflicts with other plugins.
+
 = 4.13.0 - 2025-10-21 =
 
 * Fix: Bumping required PHP version to 7.4 and updating relevant code to support this change.

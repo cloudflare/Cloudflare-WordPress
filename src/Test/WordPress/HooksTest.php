@@ -1,9 +1,9 @@
 <?php
 
-namespace CF\Test\WordPress;
+namespace Cloudflare\APO\Test\WordPress;
 
-use CF\WordPress\Hooks;
-use CF\Integration\DefaultIntegration;
+use Cloudflare\APO\WordPress\Hooks;
+use Cloudflare\APO\Integration\DefaultIntegration;
 use phpmock\phpunit\PHPMock;
 
 class HooksTest extends \PHPUnit\Framework\TestCase
@@ -21,27 +21,27 @@ class HooksTest extends \PHPUnit\Framework\TestCase
 
     public function setup(): void
     {
-        $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
+        $this->mockConfig = $this->getMockBuilder('Cloudflare\APO\Integration\DefaultConfig')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockDataStore = $this->getMockBuilder('CF\WordPress\DataStore')
+        $this->mockDataStore = $this->getMockBuilder('Cloudflare\APO\WordPress\DataStore')
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockLogger = $this->getMockBuilder('\Psr\Log\LoggerInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockProxy = $this->getMockBuilder('CF\WordPress\Proxy')
+        $this->mockProxy = $this->getMockBuilder('Cloudflare\APO\WordPress\Proxy')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
+        $this->mockWordPressAPI = $this->getMockBuilder('Cloudflare\APO\WordPress\WordPressAPI')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockWordPressClientAPI = $this->getMockBuilder('CF\WordPress\WordPressClientAPI')
+        $this->mockWordPressClientAPI = $this->getMockBuilder('Cloudflare\APO\WordPress\WordPressClientAPI')
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);
 
-        $this->hooks = $this->getMockBuilder('\CF\WordPress\Hooks')
+        $this->hooks = $this->getMockBuilder('\Cloudflare\APO\WordPress\Hooks')
             ->disableOriginalConstructor()
             ->setMethods(array('__construct')) // This is a hack to make the tests work
             ->getMock();
@@ -57,17 +57,17 @@ class HooksTest extends \PHPUnit\Framework\TestCase
 
     public function testCloudflareConfigPageCallsAddOptionsPageHookIfItExists()
     {
-        $mockFunctionExists = $this->getFunctionMock('CF\WordPress', 'function_exists');
+        $mockFunctionExists = $this->getFunctionMock('Cloudflare\APO\WordPress', 'function_exists');
         $mockFunctionExists->expects($this->once())->willReturn(true);
-        $mock__ = $this->getFunctionMock('CF\WordPress', '__');
-        $mockAddOptionsPage = $this->getFunctionMock('CF\WordPress', 'add_options_page');
+        $mock__ = $this->getFunctionMock('Cloudflare\APO\WordPress', '__');
+        $mockAddOptionsPage = $this->getFunctionMock('Cloudflare\APO\WordPress', 'add_options_page');
         $mockAddOptionsPage->expects($this->once());
         $this->hooks->cloudflareConfigPage();
     }
 
     public function testPluginActionLinksGetAdminUrl()
     {
-        $mockGetAdminUrl = $this->getFunctionMock('CF\WordPress', 'get_admin_url');
+        $mockGetAdminUrl = $this->getFunctionMock('Cloudflare\APO\WordPress', 'get_admin_url');
         $url = 'options-general.php?page=cloudflare';
         $link = '<a href="'.$url.'">Settings</a>';
         $mockGetAdminUrl->expects($this->once())->with(null, $url)->willReturn($url);

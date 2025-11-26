@@ -1,9 +1,9 @@
 <?php
 
-namespace CF\WordPress;
+namespace Cloudflare\APO\WordPress;
 
-use CF\API\Client;
-use CF\API\Request;
+use Cloudflare\APO\API\Client;
+use Cloudflare\APO\API\Request;
 use Symfony\Polyfill\Tests\Intl\Idn;
 
 class WordPressClientAPI extends Client

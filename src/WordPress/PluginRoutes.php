@@ -1,8 +1,8 @@
 <?php
 
-namespace CF\WordPress;
+namespace Cloudflare\APO\WordPress;
 
-class PluginRoutes extends \CF\API\PluginRoutes
+class PluginRoutes extends \Cloudflare\APO\API\PluginRoutes
 {
     /**
      * @param $routeList
@@ -12,7 +12,7 @@ class PluginRoutes extends \CF\API\PluginRoutes
     public static function getRoutes($routeList)
     {
         foreach ($routeList as $routePath => $route) {
-            $route['class'] = '\CF\WordPress\PluginActions';
+            $route['class'] = '\Cloudflare\APO\WordPress\PluginActions';
             $routeList[$routePath] = $route;
         }
 

@@ -1,9 +1,9 @@
 <?php
 
-namespace CF\API\Test;
+namespace Cloudflare\APO\API\Test;
 
-use CF\API\Client;
-use CF\Integration\DefaultIntegration;
+use Cloudflare\APO\API\Client;
+use Cloudflare\APO\Integration\DefaultIntegration;
 
 class ClientTest extends \PHPUnit\Framework\TestCase
 {
@@ -16,15 +16,15 @@ class ClientTest extends \PHPUnit\Framework\TestCase
 
     public function setup(): void
     {
-        $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
+        $this->mockConfig = $this->getMockBuilder('Cloudflare\APO\Integration\DefaultConfig')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockAPI = $this->getMockBuilder('CF\Integration\IntegrationAPIInterface')
+        $this->mockAPI = $this->getMockBuilder('Cloudflare\APO\Integration\IntegrationAPIInterface')
             ->getMock();
-        $this->mockDataStore = $this->getMockBuilder('CF\Integration\DataStoreInterface')
+        $this->mockDataStore = $this->getMockBuilder('Cloudflare\APO\Integration\DataStoreInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockLogger = $this->getMockBuilder('CF\Integration\DefaultLogger')
+        $this->mockLogger = $this->getMockBuilder('Cloudflare\APO\Integration\DefaultLogger')
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockCpanelIntegration = new DefaultIntegration($this->mockConfig, $this->mockAPI, $this->mockDataStore, $this->mockLogger);
@@ -40,7 +40,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
         $this->mockDataStore->method('getClientV4APIKey')->willReturn($apiKey);
         $this->mockDataStore->method('getCloudFlareEmail')->willReturn($email);
 
-        $request = new \CF\API\Request(null, null, null, null);
+        $request = new \Cloudflare\APO\API\Request(null, null, null, null);
         $beforeSendRequest = $this->mockClientAPI->beforeSend($request);
 
         $actualRequestHeaders = $beforeSendRequest->getHeaders();

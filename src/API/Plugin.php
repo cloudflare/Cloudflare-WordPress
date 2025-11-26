@@ -1,8 +1,8 @@
 <?php
 
-namespace CF\API;
+namespace Cloudflare\APO\API;
 
-use CF\Integration\IntegrationInterface;
+use Cloudflare\APO\Integration\IntegrationInterface;
 
 class Plugin extends Client
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace CF\Integration\Test;
+namespace Cloudflare\APO\Integration\Test;
 
-use CF\Integration\DefaultConfig;
+use Cloudflare\APO\Integration\DefaultConfig;
 
 class DefaultConfigTest extends \PHPUnit\Framework\TestCase
 {

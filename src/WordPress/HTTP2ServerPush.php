@@ -4,7 +4,7 @@
 // Get rid of $GLOBALS and use static variables
 // Make class functions non-static
 // Add debug logs. Need dependency injection of logger to this class
-namespace CF\WordPress;
+namespace Cloudflare\APO\WordPress;
 
 class HTTP2ServerPush
 {
@@ -26,21 +26,21 @@ class HTTP2ServerPush
         $autoptimize_js_enabled = (get_option('autoptimize_js') && get_option('autoptimize_js') === 'on');
         $autoptimize_css_enabled = (get_option('autoptimize_css') && get_option('autoptimize_css') === 'on');
 
-        add_action('wp_head', array('\CF\WordPress\HTTP2ServerPush', 'http2ResourceHints'), 99, 1);
+        add_action('wp_head', array('\Cloudflare\APO\WordPress\HTTP2ServerPush', 'http2ResourceHints'), 99, 1);
 
         // If Autoptimize exists, prefer the optimized assets it emits over usual WordPress enqueued scripts
         if (class_exists('autoptimizeMain')) {
-            add_filter('autoptimize_filter_cache_getname', array('\CF\WordPress\HTTP2ServerPush', 'http2LinkPreloadHeader'), 99, 1);
+            add_filter('autoptimize_filter_cache_getname', array('\Cloudflare\APO\WordPress\HTTP2ServerPush', 'http2LinkPreloadHeader'), 99, 1);
             if (!$autoptimize_js_enabled) {
-                add_filter('script_loader_src', array('\CF\WordPress\HTTP2ServerPush', 'http2LinkPreloadHeader'), 99, 1);
+                add_filter('script_loader_src', array('\Cloudflare\APO\WordPress\HTTP2ServerPush', 'http2LinkPreloadHeader'), 99, 1);
             }
             if (!$autoptimize_css_enabled) {
-                add_filter('style_loader_src', array('\CF\WordPress\HTTP2ServerPush', 'http2LinkPreloadHeader'), 99, 1);
+                add_filter('style_loader_src', array('\Cloudflare\APO\WordPress\HTTP2ServerPush', 'http2LinkPreloadHeader'), 99, 1);
             }
         } else {
             // Autoptimize plugin is not activated, so fallback to the usual WordPress script and style queues
-            add_filter('script_loader_src', array('\CF\WordPress\HTTP2ServerPush', 'http2LinkPreloadHeader'), 99, 1);
-            add_filter('style_loader_src', array('\CF\WordPress\HTTP2ServerPush', 'http2LinkPreloadHeader'), 99, 1);
+            add_filter('script_loader_src', array('\Cloudflare\APO\WordPress\HTTP2ServerPush', 'http2LinkPreloadHeader'), 99, 1);
+            add_filter('style_loader_src', array('\Cloudflare\APO\WordPress\HTTP2ServerPush', 'http2LinkPreloadHeader'), 99, 1);
         }
     }
 

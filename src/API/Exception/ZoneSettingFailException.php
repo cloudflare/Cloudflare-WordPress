@@ -1,6 +1,6 @@
 <?php
 
-namespace CF\API\Exception;
+namespace Cloudflare\APO\API\Exception;
 
 class ZoneSettingFailException extends CloudFlareException
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace CF\WordPress;
+namespace Cloudflare\APO\WordPress;
 
-use CF\API\APIInterface;
-use CF\Integration;
+use Cloudflare\APO\API\APIInterface;
+use Cloudflare\APO\Integration;
 use Psr\Log\LoggerInterface;
 use WP_Taxonomy;
 
@@ -42,7 +42,7 @@ class Hooks
     }
 
     /**
-     * @param \CF\API\APIInterface $api
+     * @param \Cloudflare\APO\API\APIInterface $api
      */
     public function setAPI(APIInterface $api)
     {
@@ -368,13 +368,13 @@ class Hooks
 
     protected function isPluginSpecificCacheEnabled()
     {
-        $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
+        $cacheSettingObject = $this->dataStore->getPluginSetting(\Cloudflare\APO\API\Plugin::SETTING_PLUGIN_SPECIFIC_CACHE);
 
         if (!$cacheSettingObject) {
             return false;
         }
 
-        $cacheSettingValue = $cacheSettingObject[\CF\API\Plugin::SETTING_VALUE_KEY];
+        $cacheSettingValue = $cacheSettingObject[\Cloudflare\APO\API\Plugin::SETTING_VALUE_KEY];
 
         return $cacheSettingValue !== false
             && $cacheSettingValue !== 'off';
@@ -382,13 +382,13 @@ class Hooks
 
     protected function isAutomaticPlatformOptimizationEnabled()
     {
-        $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_AUTOMATIC_PLATFORM_OPTIMIZATION);
+        $cacheSettingObject = $this->dataStore->getPluginSetting(\Cloudflare\APO\API\Plugin::SETTING_AUTOMATIC_PLATFORM_OPTIMIZATION);
 
         if (!$cacheSettingObject) {
             return false;
         }
 
-        $cacheSettingValue = $cacheSettingObject[\CF\API\Plugin::SETTING_VALUE_KEY];
+        $cacheSettingValue = $cacheSettingObject[\Cloudflare\APO\API\Plugin::SETTING_VALUE_KEY];
 
         return $cacheSettingValue !== false
             && $cacheSettingValue !== 'off';
@@ -396,13 +396,13 @@ class Hooks
 
     protected function isAutomaticPlatformOptimizationCacheByDeviceTypeEnabled()
     {
-        $cacheSettingObject = $this->dataStore->getPluginSetting(\CF\API\Plugin::SETTING_AUTOMATIC_PLATFORM_OPTIMIZATION_CACHE_BY_DEVICE_TYPE);
+        $cacheSettingObject = $this->dataStore->getPluginSetting(\Cloudflare\APO\API\Plugin::SETTING_AUTOMATIC_PLATFORM_OPTIMIZATION_CACHE_BY_DEVICE_TYPE);
 
         if (!$cacheSettingObject) {
             return false;
         }
 
-        $cacheSettingValue = $cacheSettingObject[\CF\API\Plugin::SETTING_VALUE_KEY];
+        $cacheSettingValue = $cacheSettingObject[\Cloudflare\APO\API\Plugin::SETTING_VALUE_KEY];
 
         return $cacheSettingValue !== false
             && $cacheSettingValue !== 'off';
@@ -415,7 +415,7 @@ class Hooks
 
     /*
      * php://input can only be read once before PHP 5.6, try to grab it ONLY if the request
-     * is coming from the cloudflare proxy.  We store it in a global so \CF\WordPress\Proxy
+     * is coming from the cloudflare proxy.  We store it in a global so \Cloudflare\APO\WordPress\Proxy
      * can act on the request body later on in the script execution.
      */
     public function getCloudflareRequestJSON()

@@ -1,8 +1,8 @@
 <?php
 
-namespace CF\Test\WordPress;
+namespace Cloudflare\APO\Test\WordPress;
 
-use CF\WordPress\Utils;
+use Cloudflare\APO\WordPress\Utils;
 
 class UtilsTest extends \PHPUnit\Framework\TestCase
 {

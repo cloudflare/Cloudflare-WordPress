@@ -1,10 +1,10 @@
 <?php
 
-namespace CF\WordPress\Test;
+namespace Cloudflare\APO\WordPress\Test;
 
-use CF\Integration\DefaultIntegration;
-use CF\WordPress\Constants\Plans;
-use CF\WordPress\PluginActions;
+use Cloudflare\APO\Integration\DefaultIntegration;
+use Cloudflare\APO\WordPress\Constants\Plans;
+use Cloudflare\APO\WordPress\PluginActions;
 use phpmock\phpunit\PHPMock;
 
 class PluginActionsTest extends \PHPUnit\Framework\TestCase
@@ -25,27 +25,27 @@ class PluginActionsTest extends \PHPUnit\Framework\TestCase
 
     public function setup(): void
     {
-        $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
+        $this->mockConfig = $this->getMockBuilder('Cloudflare\APO\Integration\DefaultConfig')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockDataStore = $this->getMockBuilder('CF\WordPress\DataStore')
+        $this->mockDataStore = $this->getMockBuilder('Cloudflare\APO\WordPress\DataStore')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockGetAdminUrl = $this->getFunctionMock('CF\WordPress', 'get_admin_url');
+        $this->mockGetAdminUrl = $this->getFunctionMock('Cloudflare\APO\WordPress', 'get_admin_url');
         $this->mockLogger = $this->getMockBuilder('\Psr\Log\LoggerInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockPluginAPIClient = $this->getMockBuilder('CF\API\Plugin')
+        $this->mockPluginAPIClient = $this->getMockBuilder('Cloudflare\APO\API\Plugin')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
+        $this->mockWordPressAPI = $this->getMockBuilder('Cloudflare\APO\WordPress\WordPressAPI')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockWordPressClientAPI = $this->getMockBuilder('CF\WordPress\WordPressClientAPI')
+        $this->mockWordPressClientAPI = $this->getMockBuilder('Cloudflare\APO\WordPress\WordPressClientAPI')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockWPLoginUrl = $this->getFunctionMock('CF\WordPress', 'wp_login_url');
-        $this->mockRequest = $this->getMockBuilder('CF\API\Request')
+        $this->mockWPLoginUrl = $this->getFunctionMock('Cloudflare\APO\WordPress', 'wp_login_url');
+        $this->mockRequest = $this->getMockBuilder('Cloudflare\APO\API\Request')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -96,7 +96,7 @@ class PluginActionsTest extends \PHPUnit\Framework\TestCase
 
     public function testReturnApplyDefaultSettingsZoneDetailsThrowsZoneSettingFailException()
     {
-        $this->expectException('\CF\API\Exception\ZoneSettingFailException');
+        $this->expectException('\Cloudflare\APO\API\Exception\ZoneSettingFailException');
 
         $this->mockRequest->method('getUrl')->willReturn('/plugin/:id/settings/default_settings');
 
@@ -107,7 +107,7 @@ class PluginActionsTest extends \PHPUnit\Framework\TestCase
 
     public function testReturnApplyDefaultSettingsChangeZoneSettingsThrowsZoneSettingFailException()
     {
-        $this->expectException('\CF\API\Exception\ZoneSettingFailException');
+        $this->expectException('\Cloudflare\APO\API\Exception\ZoneSettingFailException');
 
         $this->mockRequest->method('getUrl')->willReturn('/plugin/:id/settings/default_settings');
 

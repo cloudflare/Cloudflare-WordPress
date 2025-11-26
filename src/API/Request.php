@@ -1,6 +1,6 @@
 <?php
 
-namespace CF\API;
+namespace Cloudflare\APO\API;
 
 class Request
 {

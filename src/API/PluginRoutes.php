@@ -1,12 +1,12 @@
 <?php
 
-namespace CF\API;
+namespace Cloudflare\APO\API;
 
 class PluginRoutes
 {
     public static $routes = array(
         'account' => array(
-            'class' => 'CF\API\AbstractPluginActions',
+            'class' => 'Cloudflare\APO\API\AbstractPluginActions',
             'methods' => array(
                 'POST' => array(
                     'function' => 'login',
@@ -15,7 +15,7 @@ class PluginRoutes
         ),
 
         'plugin/:id/settings' => array(
-            'class' => 'CF\API\AbstractPluginActions',
+            'class' => 'Cloudflare\APO\API\AbstractPluginActions',
             'methods' => array(
                 'GET' => array(
                     'function' => 'getPluginSettings',
@@ -24,7 +24,7 @@ class PluginRoutes
         ),
 
         'plugin/:id/settings/:human_readable_id' => array(
-            'class' => 'CF\API\AbstractPluginActions',
+            'class' => 'Cloudflare\APO\API\AbstractPluginActions',
             'methods' => array(
                 'PATCH' => array(
                     'function' => 'patchPluginSettings',
@@ -33,7 +33,7 @@ class PluginRoutes
         ),
 
         'config' => array(
-            'class' => 'CF\API\AbstractPluginActions',
+            'class' => 'Cloudflare\APO\API\AbstractPluginActions',
             'methods' => array(
                 'GET' => array(
                     'function' => 'getConfig',

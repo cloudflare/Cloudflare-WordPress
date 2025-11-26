@@ -1,10 +1,10 @@
 <?php
 
-namespace CF\Router\Test;
+namespace Cloudflare\APO\Router\Test;
 
-use CF\API\Request;
-use CF\Integration\DefaultIntegration;
-use CF\Router\DefaultRestAPIRouter;
+use Cloudflare\APO\API\Request;
+use Cloudflare\APO\Integration\DefaultIntegration;
+use Cloudflare\APO\Router\DefaultRestAPIRouter;
 
 class DefaultRestAPIRouterTest extends \PHPUnit\Framework\TestCase
 {
@@ -19,19 +19,19 @@ class DefaultRestAPIRouterTest extends \PHPUnit\Framework\TestCase
 
     public function setup(): void
     {
-        $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
+        $this->mockConfig = $this->getMockBuilder('Cloudflare\APO\Integration\DefaultConfig')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockClientAPI = $this->getMockBuilder('CF\API\Client')
+        $this->mockClientAPI = $this->getMockBuilder('Cloudflare\APO\API\Client')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockAPI = $this->getMockBuilder('CF\Integration\IntegrationAPIInterface')
+        $this->mockAPI = $this->getMockBuilder('Cloudflare\APO\Integration\IntegrationAPIInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockDataStore = $this->getMockBuilder('CF\Integration\DataStoreInterface')
+        $this->mockDataStore = $this->getMockBuilder('Cloudflare\APO\Integration\DataStoreInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockLogger = $this->getMockBuilder('CF\Integration\DefaultLogger')
+        $this->mockLogger = $this->getMockBuilder('Cloudflare\APO\Integration\DefaultLogger')
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockIntegration = new DefaultIntegration($this->mockConfig, $this->mockAPI, $this->mockDataStore, $this->mockLogger);

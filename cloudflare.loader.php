@@ -33,7 +33,7 @@ try {
 }
 
 // Initialize Hooks class which contains WordPress hook functions
-$cloudflareHooks = new \CF\WordPress\Hooks();
+$cloudflareHooks = new \Cloudflare\APO\WordPress\Hooks();
 
 add_action('plugins_loaded', array($cloudflareHooks, 'getCloudflareRequestJSON'));
 

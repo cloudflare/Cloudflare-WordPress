@@ -1,8 +1,8 @@
 <?php
 
-namespace CF\API;
+namespace Cloudflare\APO\API;
 
-use CF\API\Request;
+use Cloudflare\APO\API\Request;
 
 class DefaultHttpClient implements HttpClientInterface
 {

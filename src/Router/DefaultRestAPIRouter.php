@@ -1,11 +1,11 @@
 <?php
 
-namespace CF\Router;
+namespace Cloudflare\APO\Router;
 
-use CF\API\APIInterface;
-use CF\API\Client;
-use CF\API\Request;
-use CF\Integration\IntegrationInterface;
+use Cloudflare\APO\API\APIInterface;
+use Cloudflare\APO\API\Client;
+use Cloudflare\APO\API\Request;
+use Cloudflare\APO\Integration\IntegrationInterface;
 
 class DefaultRestAPIRouter implements RouterInterface
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace CF\Test\API;
+namespace Cloudflare\APO\Test\API;
 
-use CF\Integration\DefaultIntegration;
-use CF\API\Plugin;
+use Cloudflare\APO\Integration\DefaultIntegration;
+use Cloudflare\APO\API\Plugin;
 
 class PluginTest extends \PHPUnit\Framework\TestCase
 {
@@ -17,19 +17,19 @@ class PluginTest extends \PHPUnit\Framework\TestCase
 
     public function setup(): void
     {
-        $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
+        $this->mockConfig = $this->getMockBuilder('Cloudflare\APO\Integration\DefaultConfig')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockWordPressAPI = $this->getMockBuilder('CF\Integration\IntegrationAPIInterface')
+        $this->mockWordPressAPI = $this->getMockBuilder('Cloudflare\APO\Integration\IntegrationAPIInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockDataStore = $this->getMockBuilder('CF\Integration\DataStoreInterface')
+        $this->mockDataStore = $this->getMockBuilder('Cloudflare\APO\Integration\DataStoreInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockLogger = $this->getMockBuilder('CF\Integration\DefaultLogger')
+        $this->mockLogger = $this->getMockBuilder('Cloudflare\APO\Integration\DefaultLogger')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockRequest = $this->getMockBuilder('CF\API\Request')
+        $this->mockRequest = $this->getMockBuilder('Cloudflare\APO\API\Request')
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);

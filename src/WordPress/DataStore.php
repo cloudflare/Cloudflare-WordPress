@@ -1,10 +1,10 @@
 <?php
 
-namespace CF\WordPress;
+namespace Cloudflare\APO\WordPress;
 
-use CF\Integration\DefaultLogger;
-use CF\Integration\DataStoreInterface;
-use CF\API\Plugin;
+use Cloudflare\APO\Integration\DefaultLogger;
+use Cloudflare\APO\Integration\DataStoreInterface;
+use Cloudflare\APO\API\Plugin;
 use Symfony\Polyfill\Tests\Intl\Idn;
 
 class DataStore implements DataStoreInterface
@@ -178,7 +178,7 @@ class DataStore implements DataStoreInterface
 
     public function clearDataStore()
     {
-        $pluginKeys = \CF\API\Plugin::getPluginSettingsKeys();
+        $pluginKeys = \Cloudflare\APO\API\Plugin::getPluginSettingsKeys();
 
         // Delete Plugin Setting Options
         foreach ($pluginKeys as $optionName) {

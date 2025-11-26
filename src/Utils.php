@@ -1,6 +1,6 @@
 <?php
 
-namespace CF;
+namespace Cloudflare\APO;
 
 class Utils
 {

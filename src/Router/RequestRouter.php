@@ -1,10 +1,10 @@
 <?php
 
-namespace CF\Router;
+namespace Cloudflare\APO\Router;
 
-use CF\API\Request;
-use CF\API\APIInterface;
-use CF\Integration\IntegrationInterface;
+use Cloudflare\APO\API\Request;
+use Cloudflare\APO\API\APIInterface;
+use Cloudflare\APO\Integration\IntegrationInterface;
 
 class RequestRouter
 {

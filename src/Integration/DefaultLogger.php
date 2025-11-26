@@ -1,6 +1,6 @@
 <?php
 
-namespace CF\Integration;
+namespace Cloudflare\APO\Integration;
 
 use Psr\Log\AbstractLogger;
 use Psr\Log\LogLevel;

@@ -1,15 +1,15 @@
 <?php
 
-namespace CF\API\Test;
+namespace Cloudflare\APO\API\Test;
 
-use CF\Integration\DefaultIntegration;
-use CF\Integration\DefaultLogger;
-use CF\Integration\DataStoreInterface;
-use CF\Integration\IntegrationAPIInterface;
-use CF\API\HttpClientInterface;
-use \CF\API\Request;
-use \CF\API\AbstractAPIClient;
-use \CF\Integration\DefaultConfig;
+use Cloudflare\APO\Integration\DefaultIntegration;
+use Cloudflare\APO\Integration\DefaultLogger;
+use Cloudflare\APO\Integration\DataStoreInterface;
+use Cloudflare\APO\Integration\IntegrationAPIInterface;
+use Cloudflare\APO\API\HttpClientInterface;
+use \Cloudflare\APO\API\Request;
+use \Cloudflare\APO\API\AbstractAPIClient;
+use \Cloudflare\APO\Integration\DefaultConfig;
 
 class AbstractAPIClientTest extends \PHPUnit\Framework\TestCase
 {

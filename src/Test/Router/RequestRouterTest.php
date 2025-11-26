@@ -1,16 +1,16 @@
 <?php
 
-namespace CF\Router\Test;
+namespace Cloudflare\APO\Router\Test;
 
-use CF\API\Client;
-use CF\API\Request;
-use CF\Integration\DefaultConfig;
-use CF\Integration\DefaultLogger;
-use CF\Integration\DefaultIntegration;
-use CF\Integration\DataStoreInterface;
-use CF\Integration\IntegrationAPIInterface;
-use CF\Router\RequestRouter;
-use CF\Router\DefaultRestAPIRouter;
+use Cloudflare\APO\API\Client;
+use Cloudflare\APO\API\Request;
+use Cloudflare\APO\Integration\DefaultConfig;
+use Cloudflare\APO\Integration\DefaultLogger;
+use Cloudflare\APO\Integration\DefaultIntegration;
+use Cloudflare\APO\Integration\DataStoreInterface;
+use Cloudflare\APO\Integration\IntegrationAPIInterface;
+use Cloudflare\APO\Router\RequestRouter;
+use Cloudflare\APO\Router\DefaultRestAPIRouter;
 
 class RequestRouterTest extends \PHPUnit\Framework\TestCase
 {
@@ -60,10 +60,10 @@ class RequestRouterTest extends \PHPUnit\Framework\TestCase
 
     public function testRoutePassesValidRequestToDefaultRestAPIRouter()
     {
-        $mockDefaultRestAPIRouter = $this->getMockBuilder('CF\Router\DefaultRestAPIRouter')
+        $mockDefaultRestAPIRouter = $this->getMockBuilder('Cloudflare\APO\Router\DefaultRestAPIRouter')
             ->disableOriginalConstructor()
             ->getMock();
-        $mockAPIClient = $this->getMockBuilder('CF\API\Client')
+        $mockAPIClient = $this->getMockBuilder('Cloudflare\APO\API\Client')
             ->disableOriginalConstructor()
             ->getMock();
         $mockAPIClient->method('shouldRouteRequest')->willReturn(true);

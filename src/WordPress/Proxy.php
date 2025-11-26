@@ -1,11 +1,11 @@
 <?php
 
-namespace CF\WordPress;
+namespace Cloudflare\APO\WordPress;
 
-use CF\API;
-use CF\API\Plugin;
-use CF\Integration\IntegrationInterface;
-use CF\Router\RequestRouter;
+use Cloudflare\APO\API;
+use Cloudflare\APO\API\Plugin;
+use Cloudflare\APO\Integration\IntegrationInterface;
+use Cloudflare\APO\Router\RequestRouter;
 
 class Proxy
 {

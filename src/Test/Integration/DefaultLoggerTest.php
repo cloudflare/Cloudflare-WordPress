@@ -1,8 +1,8 @@
 <?php
 
-namespace CF\Integration\Test;
+namespace Cloudflare\APO\Integration\Test;
 
-use CF\Integration\DefaultLogger;
+use Cloudflare\APO\Integration\DefaultLogger;
 
 class DefaultLoggerTest extends \PHPUnit\Framework\TestCase
 {

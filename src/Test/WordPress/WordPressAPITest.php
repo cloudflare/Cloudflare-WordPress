@@ -1,8 +1,8 @@
 <?php
 
-namespace CF\Test\WordPress;
+namespace Cloudflare\APO\Test\WordPress;
 
-use CF\WordPress\WordPressAPI;
+use Cloudflare\APO\WordPress\WordPressAPI;
 
 class WordPressAPITest extends \PHPUnit\Framework\TestCase
 {
@@ -16,29 +16,29 @@ class WordPressAPITest extends \PHPUnit\Framework\TestCase
 
     public function setup(): void
     {
-        $this->mockClientAPI = $this->getMockBuilder('CF\API\Client')
+        $this->mockClientAPI = $this->getMockBuilder('Cloudflare\APO\API\Client')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockWordPressClientAPI = $this->getMockBuilder('CF\WordPress\WordPressClientAPI')
+        $this->mockWordPressClientAPI = $this->getMockBuilder('Cloudflare\APO\WordPress\WordPressClientAPI')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
+        $this->mockConfig = $this->getMockBuilder('Cloudflare\APO\Integration\DefaultConfig')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $this->mockDataStore = $this->getMockBuilder('CF\WordPress\DataStore')
+        $this->mockDataStore = $this->getMockBuilder('Cloudflare\APO\WordPress\DataStore')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $this->mockLogger = $this->getMockBuilder('CF\Integration\DefaultLogger')
+        $this->mockLogger = $this->getMockBuilder('Cloudflare\APO\Integration\DefaultLogger')
                 ->disableOriginalConstructor()
                 ->getMock();
-        $this->mockWordPressWrapper = $this->getMockBuilder('CF\WordPress\WordPressWrapper')
+        $this->mockWordPressWrapper = $this->getMockBuilder('Cloudflare\APO\WordPress\WordPressWrapper')
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->wordpressAPI = new WordPressAPI($this->mockDataStore);
         $this->wordpressAPI->setWordPressWrapper($this->mockWordPressWrapper);
 
-        $this->mockDefaultIntegration = new \CF\Integration\DefaultIntegration($this->mockConfig, $this->wordpressAPI, $this->mockDataStore, $this->mockLogger);
+        $this->mockDefaultIntegration = new \Cloudflare\APO\Integration\DefaultIntegration($this->mockConfig, $this->wordpressAPI, $this->mockDataStore, $this->mockLogger);
     }
 
     /**
@@ -65,7 +65,7 @@ class WordPressAPITest extends \PHPUnit\Framework\TestCase
     {
         $domainName = 'domain.com';
 
-        $this->mockDataStore = $this->getMockBuilder('CF\WordPress\DataStore')
+        $this->mockDataStore = $this->getMockBuilder('Cloudflare\APO\WordPress\DataStore')
                 ->disableOriginalConstructor()
                 ->setMethods(array('getDomainNameCache'))
                 ->getMock();
@@ -81,7 +81,7 @@ class WordPressAPITest extends \PHPUnit\Framework\TestCase
 
     public function testGetDomainListReturnEmpty()
     {
-        $this->mockDataStore = $this->getMockBuilder('CF\WordPress\DataStore')
+        $this->mockDataStore = $this->getMockBuilder('Cloudflare\APO\WordPress\DataStore')
                 ->disableOriginalConstructor()
                 ->setMethods(array('getDomainNameCache'))
                 ->getMock();

@@ -1,9 +1,9 @@
 <?php
 
-namespace CF\API;
+namespace Cloudflare\APO\API;
 
-use CF\Integration\IntegrationInterface;
-use CF\WordPress\Utils;
+use Cloudflare\APO\Integration\IntegrationInterface;
+use Cloudflare\APO\WordPress\Utils;
 
 class Client extends AbstractAPIClient
 {

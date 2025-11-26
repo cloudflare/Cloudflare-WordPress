@@ -3,10 +3,10 @@ if (!defined('ABSPATH')) { // Exit if accessed directly
     exit;
 }
 
-$config = new CF\Integration\DefaultConfig(file_get_contents('config.json', true));
-$logger = new CF\Integration\DefaultLogger($config->getValue('debug'));
-$dataStore = new CF\WordPress\DataStore($logger);
-$wordpressAPI = new CF\WordPress\WordPressAPI($dataStore);
+$config = new Cloudflare\APO\Integration\DefaultConfig(file_get_contents('config.json', true));
+$logger = new Cloudflare\APO\Integration\DefaultLogger($config->getValue('debug'));
+$dataStore = new Cloudflare\APO\WordPress\DataStore($logger);
+$wordpressAPI = new Cloudflare\APO\WordPress\WordPressAPI($dataStore);
 
 $pluginData = get_plugin_data(CLOUDFLARE_PLUGIN_DIR.'cloudflare.php');
 $pluginVersion = $pluginData['Version'];
@@ -24,7 +24,7 @@ wp_enqueue_script('cf-compiledjs', plugins_url('compiled.js', __FILE__), null, $
 //Set global absolute base url
 window.absoluteUrlBase = '<?php echo plugins_url('/cloudflare/'); ?>';
 
-cfCSRFToken = '<?php echo wp_create_nonce(\CF\WordPress\WordPressAPI::API_NONCE); ?>';
+cfCSRFToken = '<?php echo wp_create_nonce(\Cloudflare\APO\WordPress\WordPressAPI::API_NONCE); ?>';
 localStorage.cfEmail = '<?php echo $dataStore->getCloudFlareEmail(); ?>';
 
 /*
@@ -47,11 +47,11 @@ window.RestProxyCallback = (opts) => {
         }
 
         // WordPress Ajax Action
-        opts.parameters['action'] = '<?php echo \CF\WordPress\Hooks::WP_AJAX_ACTION; ?>'
+        opts.parameters['action'] = '<?php echo \Cloudflare\APO\WordPress\Hooks::WP_AJAX_ACTION; ?>'
 
         if (opts.method.toUpperCase() === 'GET') {
-            var clientAPIURL = '<?php echo \CF\API\Client::ENDPOINT; ?>';
-            var pluginAPIURL = '<?php echo \CF\API\Plugin::ENDPOINT; ?>';
+            var clientAPIURL = '<?php echo \Cloudflare\APO\API\Client::ENDPOINT; ?>';
+            var pluginAPIURL = '<?php echo \Cloudflare\APO\API\Plugin::ENDPOINT; ?>';
 
             // If opts.url begins with clientAPIURL or pluginAPIURL,
             // remove the API URL and assign the rest to proxyURL

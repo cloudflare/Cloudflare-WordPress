@@ -1,8 +1,8 @@
 <?php
 
-namespace CF\Router;
+namespace Cloudflare\APO\Router;
 
-use CF\API\Request;
+use Cloudflare\APO\API\Request;
 
 interface RouterInterface
 {

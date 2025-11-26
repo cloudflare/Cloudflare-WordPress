@@ -1,8 +1,8 @@
 <?php
 
-namespace CF\API\Test;
+namespace Cloudflare\APO\API\Test;
 
-use CF\API\Plugin;
+use Cloudflare\APO\API\Plugin;
 
 class AbstractPluginActionsTest extends \PHPUnit\Framework\TestCase
 {
@@ -16,25 +16,25 @@ class AbstractPluginActionsTest extends \PHPUnit\Framework\TestCase
 
     public function setup(): void
     {
-        $this->mockAPIClient = $this->getMockBuilder('\CF\API\Plugin')
+        $this->mockAPIClient = $this->getMockBuilder('\Cloudflare\APO\API\Plugin')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockClientAPI = $this->getMockBuilder('\CF\API\Client')
+        $this->mockClientAPI = $this->getMockBuilder('\Cloudflare\APO\API\Client')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockDataStore = $this->getMockBuilder('\CF\Integration\DataStoreInterface')
+        $this->mockDataStore = $this->getMockBuilder('\Cloudflare\APO\Integration\DataStoreInterface')
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockLogger = $this->getMockBuilder('\Psr\Log\LoggerInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockRequest = $this->getMockBuilder('\CF\API\Request')
+        $this->mockRequest = $this->getMockBuilder('\Cloudflare\APO\API\Request')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockAbstractPluginActions = $this->getMockBuilder('CF\API\AbstractPluginActions')
+        $this->mockAbstractPluginActions = $this->getMockBuilder('Cloudflare\APO\API\AbstractPluginActions')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
-        $this->mockDefaultIntegration = $this->getMockBuilder('\CF\Integration\DefaultIntegration')
+        $this->mockDefaultIntegration = $this->getMockBuilder('\Cloudflare\APO\Integration\DefaultIntegration')
             ->disableOriginalConstructor()
             ->getMockForAbstractClass();
         $this->mockAbstractPluginActions->setAPI($this->mockAPIClient);

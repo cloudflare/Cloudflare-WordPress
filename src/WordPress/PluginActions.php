@@ -1,14 +1,14 @@
 <?php
 
-namespace CF\WordPress;
+namespace Cloudflare\APO\WordPress;
 
-use CF\API\APIInterface;
-use CF\API\AbstractPluginActions;
-use CF\API\Exception\ZoneSettingFailException;
-use CF\API\Plugin;
-use CF\API\Request;
-use CF\Integration\DefaultIntegration;
-use CF\WordPress\Constants\Plans;
+use Cloudflare\APO\API\APIInterface;
+use Cloudflare\APO\API\AbstractPluginActions;
+use Cloudflare\APO\API\Exception\ZoneSettingFailException;
+use Cloudflare\APO\API\Plugin;
+use Cloudflare\APO\API\Request;
+use Cloudflare\APO\Integration\DefaultIntegration;
+use Cloudflare\APO\WordPress\Constants\Plans;
 
 class PluginActions extends AbstractPluginActions
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace CF\API;
+namespace Cloudflare\APO\API;
 
-use CF\Integration\IntegrationInterface;
-use CF\API\DefaultHttpClient;
-use CF\API\HttpClientInterface;
+use Cloudflare\APO\Integration\IntegrationInterface;
+use Cloudflare\APO\API\DefaultHttpClient;
+use Cloudflare\APO\API\HttpClientInterface;
 
 abstract class AbstractAPIClient implements APIInterface
 {

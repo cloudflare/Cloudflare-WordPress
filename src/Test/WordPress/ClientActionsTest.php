@@ -1,10 +1,10 @@
 <?php
 
-namespace CF\WordPress\Test;
+namespace Cloudflare\APO\WordPress\Test;
 
-use CF\API\Request;
-use CF\WordPress\ClientActions;
-use CF\Integration\DefaultIntegration;
+use Cloudflare\APO\API\Request;
+use Cloudflare\APO\WordPress\ClientActions;
+use Cloudflare\APO\Integration\DefaultIntegration;
 
 class ClientActionsTest extends \PHPUnit\Framework\TestCase
 {
@@ -17,19 +17,19 @@ class ClientActionsTest extends \PHPUnit\Framework\TestCase
 
     public function setup(): void
     {
-        $this->mockClientAPI = $this->getMockBuilder('CF\API\Client')
+        $this->mockClientAPI = $this->getMockBuilder('Cloudflare\APO\API\Client')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
+        $this->mockConfig = $this->getMockBuilder('Cloudflare\APO\Integration\DefaultConfig')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
+        $this->mockWordPressAPI = $this->getMockBuilder('Cloudflare\APO\WordPress\WordPressAPI')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockDataStore = $this->getMockBuilder('CF\WordPress\DataStore')
+        $this->mockDataStore = $this->getMockBuilder('Cloudflare\APO\WordPress\DataStore')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockLogger = $this->getMockBuilder('CF\Integration\DefaultLogger')
+        $this->mockLogger = $this->getMockBuilder('Cloudflare\APO\Integration\DefaultLogger')
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);

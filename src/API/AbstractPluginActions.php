@@ -1,9 +1,9 @@
 <?php
 
-namespace CF\API;
+namespace Cloudflare\APO\API;
 
-use CF\Integration\DataStoreInterface;
-use CF\Integration\DefaultIntegration;
+use Cloudflare\APO\Integration\DataStoreInterface;
+use Cloudflare\APO\Integration\DefaultIntegration;
 
 abstract class AbstractPluginActions
 {
@@ -91,7 +91,7 @@ abstract class AbstractPluginActions
 
         $params = array();
         // Only Wordpress gives us access to the zone name, so check for it here
-        if ($this->integrationAPI instanceof \CF\WordPress\WordPressAPI) {
+        if ($this->integrationAPI instanceof \Cloudflare\APO\WordPress\WordPressAPI) {
             $params =  array('name' => $this->integrationAPI->getOriginalDomain());
         }
 

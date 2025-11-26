@@ -1,8 +1,8 @@
 <?php
 
-namespace CF\Test\WordPress;
+namespace Cloudflare\APO\Test\WordPress;
 
-use CF\Integration\DefaultIntegration;
+use Cloudflare\APO\Integration\DefaultIntegration;
 use phpmock\phpunit\PHPMock;
 
 class ProxyTest extends \PHPUnit\Framework\TestCase
@@ -19,27 +19,27 @@ class ProxyTest extends \PHPUnit\Framework\TestCase
 
     public function setup(): void
     {
-        $this->mockConfig = $this->getMockBuilder('CF\Integration\DefaultConfig')
+        $this->mockConfig = $this->getMockBuilder('Cloudflare\APO\Integration\DefaultConfig')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockDataStore = $this->getMockBuilder('CF\WordPress\DataStore')
+        $this->mockDataStore = $this->getMockBuilder('Cloudflare\APO\WordPress\DataStore')
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockLogger = $this->getMockBuilder('\Psr\Log\LoggerInterface')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockWordPressAPI = $this->getMockBuilder('CF\WordPress\WordPressAPI')
+        $this->mockWordPressAPI = $this->getMockBuilder('Cloudflare\APO\WordPress\WordPressAPI')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockWordPressClientAPI = $this->getMockBuilder('CF\WordPress\WordPressClientAPI')
+        $this->mockWordPressClientAPI = $this->getMockBuilder('Cloudflare\APO\WordPress\WordPressClientAPI')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mockRequestRouter = $this->getMockBuilder('\CF\Router\RequestRouter')
+        $this->mockRequestRouter = $this->getMockBuilder('\Cloudflare\APO\Router\RequestRouter')
             ->disableOriginalConstructor()
             ->getMock();
         $this->mockDefaultIntegration = new DefaultIntegration($this->mockConfig, $this->mockWordPressAPI, $this->mockDataStore, $this->mockLogger);
 
-        $this->mockProxy = $this->getMockBuilder('\CF\WordPress\Proxy')
+        $this->mockProxy = $this->getMockBuilder('\Cloudflare\APO\WordPress\Proxy')
             ->setConstructorArgs(array($this->mockDefaultIntegration))
             ->setMethods(array('getJSONBody'))
             ->getMock();
@@ -47,7 +47,7 @@ class ProxyTest extends \PHPUnit\Framework\TestCase
         $this->mockProxy->setWordpressClientAPI($this->mockWordPressClientAPI);
         $this->mockProxy->setRequestRouter($this->mockRequestRouter);
 
-        $mockHeader = $this->getFunctionMock('CF\WordPress', 'header');
+        $mockHeader = $this->getFunctionMock('Cloudflare\APO\WordPress', 'header');
     }
 
     public function testRunHandlesGet()
@@ -57,7 +57,7 @@ class ProxyTest extends \PHPUnit\Framework\TestCase
         $_GET['proxyURLType'] = 'proxyUrlType';
         $this->mockWordPressAPI->method('isCurrentUserAdministrator')->willReturn(true);
         $this->mockRequestRouter->expects($this->once())->method('route');
-        $mockWPDie = $this->getFunctionMock('CF\WordPress', 'wp_die');
+        $mockWPDie = $this->getFunctionMock('Cloudflare\APO\WordPress', 'wp_die');
         $this->mockProxy->run();
     }
 
@@ -69,13 +69,13 @@ class ProxyTest extends \PHPUnit\Framework\TestCase
             'proxyURLType' => 'proxyURLType',
             'cfCSRFToken' => 'cfCSRFToken',
         ));
-        $mockFileGetContents = $this->getFunctionMock('CF\WordPress', 'file_get_contents');
+        $mockFileGetContents = $this->getFunctionMock('Cloudflare\APO\WordPress', 'file_get_contents');
         $mockFileGetContents->expects($this->any())->willReturn($jsonBody);
-        $mockWPVerifyNonce = $this->getFunctionMock('CF\WordPress', 'wp_verify_nonce');
+        $mockWPVerifyNonce = $this->getFunctionMock('Cloudflare\APO\WordPress', 'wp_verify_nonce');
         $mockWPVerifyNonce->expects($this->once())->willReturn(true);
         $this->mockWordPressAPI->method('isCurrentUserAdministrator')->willReturn(true);
         $this->mockRequestRouter->expects($this->once())->method('route');
-        $mockWPDie = $this->getFunctionMock('CF\WordPress', 'wp_die');
+        $mockWPDie = $this->getFunctionMock('Cloudflare\APO\WordPress', 'wp_die');
         $this->mockProxy->run();
     }
 
@@ -104,7 +104,7 @@ class ProxyTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(isset($parameters['proxyURL']));
         $this->assertFalse(isset($parameters['proxyURLType']));
         $this->assertFalse(isset($body['proxyURL']));
-        $this->assertEquals(\CF\API\Client::ENDPOINT . $url, $request->getUrl());
+        $this->assertEquals(\Cloudflare\APO\API\Client::ENDPOINT . $url, $request->getUrl());
     }
 
     public function testCreateRequestGETProxyPlugin()
@@ -127,7 +127,7 @@ class ProxyTest extends \PHPUnit\Framework\TestCase
         $this->assertFalse(isset($parameters['proxyURL']));
         $this->assertFalse(isset($parameters['proxyURLType']));
         $this->assertFalse(isset($body['proxyURL']));
-        $this->assertEquals(\CF\API\Plugin::ENDPOINT . $url, $request->getUrl());
+        $this->assertEquals(\Cloudflare\APO\API\Plugin::ENDPOINT . $url, $request->getUrl());
     }
 
     public function testCreateRequestNonGET()

@@ -6,7 +6,7 @@
  * Time: 2:40 PM.
  */
 
-namespace CF;
+namespace Cloudflare\APO;
 
 class DNSRecord
 {

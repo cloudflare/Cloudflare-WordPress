@@ -1,8 +1,8 @@
 <?php
 
-namespace CF\Test\WordPress;
+namespace Cloudflare\APO\Test\WordPress;
 
-use CF\WordPress\Constants\Plans;
+use Cloudflare\APO\WordPress\Constants\Plans;
 
 class PlansTest extends \PHPUnit\Framework\TestCase
 {

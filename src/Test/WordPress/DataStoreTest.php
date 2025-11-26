@@ -1,9 +1,9 @@
 <?php
 
-namespace CF\Test\WordPress {
+namespace Cloudflare\APO\Test\WordPress {
 
-    use CF\WordPress\DataStore;
-    use CF\API\Plugin;
+    use Cloudflare\APO\WordPress\DataStore;
+    use Cloudflare\APO\API\Plugin;
 
     class DataStoreTest extends \PHPUnit\Framework\TestCase
     {
@@ -13,11 +13,11 @@ namespace CF\Test\WordPress {
 
         public function setup(): void
         {
-            $this->mockLogger = $this->getMockBuilder('CF\Integration\DefaultLogger')
+            $this->mockLogger = $this->getMockBuilder('Cloudflare\APO\Integration\DefaultLogger')
                 ->disableOriginalConstructor()
                 ->getMock();
 
-            $this->mockWordPressWrapper = $this->getMockBuilder('CF\WordPress\WordPressWrapper')
+            $this->mockWordPressWrapper = $this->getMockBuilder('Cloudflare\APO\WordPress\WordPressWrapper')
                 ->disableOriginalConstructor()
                 ->getMock();
 
@@ -120,7 +120,7 @@ namespace CF\Test\WordPress {
 
         public function testClearDataStoreCallsExactNumberOfSqlCalls()
         {
-            $pluginSettings = \CF\API\Plugin::getPluginSettingsKeys();
+            $pluginSettings = \Cloudflare\APO\API\Plugin::getPluginSettingsKeys();
             $numberOfDataStoreKeys = 3;
             $totalNumberOfRowToClear = count($pluginSettings) + $numberOfDataStoreKeys;
 

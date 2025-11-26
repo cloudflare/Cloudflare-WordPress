@@ -1,9 +1,9 @@
 <?php
 
-namespace CF\API\Test;
+namespace Cloudflare\APO\API\Test;
 
-use CF\API\DefaultHttpClient;
-use \CF\API\Request;
+use Cloudflare\APO\API\DefaultHttpClient;
+use \Cloudflare\APO\API\Request;
 
 class DefaultHttpClientTest extends \PHPUnit\Framework\TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace CF\WordPress\Constants\Exceptions;
+namespace Cloudflare\APO\WordPress\Constants\Exceptions;
 
 class ZoneSettingFailException extends \Exception
 {

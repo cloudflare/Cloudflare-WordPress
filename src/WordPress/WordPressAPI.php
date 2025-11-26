@@ -1,9 +1,9 @@
 <?php
 
-namespace CF\WordPress;
+namespace Cloudflare\APO\WordPress;
 
-use CF\Integration\IntegrationAPIInterface;
-use CF\DNSRecord;
+use Cloudflare\APO\Integration\IntegrationAPIInterface;
+use Cloudflare\APO\DNSRecord;
 
 class WordPressAPI implements IntegrationAPIInterface
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace CF\WordPress\Constants;
+namespace Cloudflare\APO\WordPress\Constants;
 
 class Plans
 {
