@@ -1,0 +1,32 @@
+# Distribution files - exclude from exports and deployments
+/.github export-ignore
+/build export-ignore
+/config export-ignore
+/docs export-ignore
+/scripts export-ignore
+/src/Test export-ignore
+/xdebug export-ignore
+/.gitignore export-ignore
+/.gitattributes export-ignore
+/docker-compose.yaml export-ignore
+/Dockerfile.wordpress export-ignore
+/phpcs.xml export-ignore
+/phpunit.xml export-ignore
+/CONTRIBUTING.md export-ignore
+
+# Vendor dev dependencies (handled by scoper build process)
+/vendor/bin export-ignore
+/vendor/johnkary export-ignore
+/vendor/php-mock export-ignore
+/vendor/phpunit export-ignore
+/vendor/squizlabs export-ignore
+/vendor/phpcompatibility export-ignore
+/vendor/dealerdirect export-ignore
+/vendor/phpdocumentor export-ignore
+/vendor/nikic export-ignore
+/vendor/phpstan export-ignore
+/vendor/doctrine export-ignore
+/vendor/myclabs export-ignore
+/vendor/phar-io export-ignore
+/vendor/sebastian export-ignore
+/vendor/theseer export-ignore

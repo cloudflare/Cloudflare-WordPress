@@ -1,0 +1,22 @@
+{
+  "name": "cloudflare/wordpress-plugin-build",
+  "description": "Build autoloader for Cloudflare WordPress plugin with prefixed dependencies",
+  "autoload": {
+    "psr-4": {
+      "Cloudflare\\APO\\": "src/",
+      "Cloudflare\\APO\\Vendor\\Psr\\Log\\": "vendor/psr/log/Psr/Log/",
+      "Cloudflare\\APO\\Vendor\\CloudFlare\\": "vendor/cloudflare/cf-ip-rewrite/src/CloudFlare/",
+      "Cloudflare\\APO\\Vendor\\Symfony\\Polyfill\\Intl\\Idn\\": "vendor/symfony/polyfill-intl-idn/",
+      "Cloudflare\\APO\\Vendor\\Symfony\\Polyfill\\Intl\\Normalizer\\": "vendor/symfony/polyfill-intl-normalizer/"
+    },
+    "files": [
+      "vendor/symfony/polyfill-intl-normalizer/bootstrap.php",
+      "vendor/symfony/polyfill-intl-idn/bootstrap.php"
+    ]
+  },
+  "config": {
+    "platform": {
+      "php": "7.4"
+    }
+  }
+}

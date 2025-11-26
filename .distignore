@@ -4,9 +4,13 @@
 /xdebug
 /scripts
 /docs
+/build
+/config
+/src/Test
 
 .distignore
 .gitignore
+.gitattributes
 .editorconfig
 CONTRIBUTING.md
 docker-compose.yaml

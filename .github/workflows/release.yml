@@ -2,6 +2,7 @@ name: Release plugin
 on:
   release:
     types: [published]
+
 jobs:
   release:
     name: New release
@@ -10,27 +11,79 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Build
-      uses: php-actions/composer@v6
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
       with:
-        command: install
-        dev: no
-        version: 2
-        php_version: 7.4
+        php-version: '8.4'
+        extensions: mbstring, intl
+        tools: composer:v2
+
+    - name: Install dependencies
+      run: composer install --no-dev --optimize-autoloader --prefer-dist --no-progress
+
+    - name: Install PHP-Scoper
+      run: composer global require humbug/php-scoper:^0.18 --prefer-dist --no-progress
+
+    - name: Run PHP-Scoper to prefix vendor dependencies
+      run: composer prefix-deps
+
+    - name: Prepare plugin for deployment
+      run: |
+        mkdir -p build/cloudflare/vendor/composer
+        mkdir -p build/cloudflare/vendor/psr/log
+        mkdir -p build/cloudflare/vendor/cloudflare/cf-ip-rewrite/src
+        mkdir -p build/cloudflare/vendor/symfony
+        
+        # Copy plugin source files (unmodified)
+        cp -r src build/cloudflare/
+        cp cloudflare.php build/cloudflare/
+        cp cloudflare.loader.php build/cloudflare/
+        cp index.php build/cloudflare/
+        cp readme.txt build/cloudflare/
+        cp LICENSE.md build/cloudflare/ 2>/dev/null || true
+        cp config.json build/cloudflare/ 2>/dev/null || true
+        cp userConfig.js build/cloudflare/ 2>/dev/null || true
+        cp compiled.js build/cloudflare/ 2>/dev/null || true
+        
+        # Copy non-PHP assets
+        cp -r assets build/cloudflare/ 2>/dev/null || true
+        cp -r fonts build/cloudflare/ 2>/dev/null || true
+        cp -r lang build/cloudflare/ 2>/dev/null || true
+        cp -r stylesheets build/cloudflare/ 2>/dev/null || true
+        
+        # Copy prefixed vendor dependencies
+        cp -r build/vendor_prefixed/psr/Psr build/cloudflare/vendor/psr/log/
+        cp -r build/vendor_prefixed/cloudflare/src/CloudFlare build/cloudflare/vendor/cloudflare/cf-ip-rewrite/src/
+        cp -r build/vendor_prefixed/symfony/polyfill-intl-idn build/cloudflare/vendor/symfony/
+        cp -r build/vendor_prefixed/symfony/polyfill-intl-normalizer build/cloudflare/vendor/symfony/
+        
+        # Generate autoloader with prefixed namespaces using Composer
+        cp config/composer.build.json build/cloudflare/composer.json
+        (cd build/cloudflare && composer dump-autoload --optimize --quiet)
+        rm build/cloudflare/composer.json
+
+    - name: Update source files to use prefixed vendor namespaces
+      run: php scripts/update-namespaces.php build/cloudflare
 
     - name: Remove unsupported PHP 8 symfony/polyfill return types
       uses: jacobtomlinson/gha-find-replace@v2
       with:
         find: ": string|false"
         replace: " "
-        include: "**/symfony/polyfill-intl-{idn,normalizer}/bootstrap80.php"
+        include: "build/cloudflare/**/symfony/polyfill-intl-{idn,normalizer}/bootstrap80.php"
         regex: false
+
+    - name: Replace source with built plugin
+      run: |
+        rm -rf src vendor
+        cp -r build/cloudflare/* .
 
     - name: WordPress Plugin Deploy
       id: deploy
       uses: 10up/action-wordpress-plugin-deploy@stable
       with:
         generate-zip: true
+        dry-run: true
       env:
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
