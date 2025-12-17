@@ -34,6 +34,7 @@ class ClientTest extends \PHPUnit\Framework\TestCase
 
     public function testBeforeSendAddsRequestHeaders()
     {
+        // nosemgrep: generic.secrets.security.detected-generic-api-key.detected-generic-api-key
         $apiKey = '41db178adf2ef1c82c84db6ca455457646d33';
         $email = 'test@email.com';
 
