@@ -3,48 +3,6 @@
 // Autoload dependencies installed via Composer
 require_once __DIR__.'/vendor/autoload.php';
 
-// deprecated files
-// require_once __DIR__.'/deprecated/Hooks.php';
-// require_once __DIR__.'/deprecated/DNSRecord.php';
-// require_once __DIR__.'/deprecated/SecurityUtil.php';
-// require_once __DIR__.'/deprecated/Utils.php';
-// require_once __DIR__.'/deprecated/API/APIInterface.php';
-// require_once __DIR__.'/deprecated/API/HttpClientInterface.php';
-// require_once __DIR__.'/deprecated/API/AbstractAPIClient.php';
-// require_once __DIR__.'/deprecated/API/AbstractPluginActions.php';
-// require_once __DIR__.'/deprecated/API/Client.php';
-// require_once __DIR__.'/deprecated/API/DefaultHttpClient.php';
-// require_once __DIR__.'/deprecated/API/Host.php';
-// require_once __DIR__.'/deprecated/API/Plugin.php';
-// require_once __DIR__.'/deprecated/API/PluginRoutes.php';
-// require_once __DIR__.'/deprecated/API/Request.php';
-// require_once __DIR__.'/deprecated/API/Exception/CloudFlareException.php';
-// require_once __DIR__.'/deprecated/API/Exception/ZoneSettingFailException.php';
-// require_once __DIR__.'/deprecated/Integration/ConfigInterface.php';
-// require_once __DIR__.'/deprecated/Integration/DataStoreInterface.php';
-// require_once __DIR__.'/deprecated/Integration/IntegrationAPIInterface.php';
-// require_once __DIR__.'/deprecated/Integration/IntegrationInterface.php';
-// require_once __DIR__.'/deprecated/Integration/DefaultConfig.php';
-// require_once __DIR__.'/deprecated/Integration/DefaultIntegration.php';
-// require_once __DIR__.'/deprecated/Integration/DefaultLogger.php';
-// require_once __DIR__.'/deprecated/Router/RouterInterface.php';
-// require_once __DIR__.'/deprecated/Router/DefaultRestAPIRouter.php';
-// require_once __DIR__.'/deprecated/Router/RequestRouter.php';
-// require_once __DIR__.'/deprecated/WordPress/Hooks.php';
-// require_once __DIR__.'/deprecated/WordPress/ClientActions.php';
-// require_once __DIR__.'/deprecated/WordPress/ClientRoutes.php';
-// require_once __DIR__.'/deprecated/WordPress/DataStore.php';
-// require_once __DIR__.'/deprecated/WordPress/HTTP2ServerPush.php';
-// require_once __DIR__.'/deprecated/WordPress/PluginActions.php';
-// require_once __DIR__.'/deprecated/WordPress/PluginRoutes.php';
-// require_once __DIR__.'/deprecated/WordPress/Proxy.php';
-// require_once __DIR__.'/deprecated/WordPress/Utils.php';
-// require_once __DIR__.'/deprecated/WordPress/WordPressAPI.php';
-// require_once __DIR__.'/deprecated/WordPress/WordPressClientAPI.php';
-// require_once __DIR__.'/deprecated/WordPress/WordPressWrapper.php';
-// require_once __DIR__.'/deprecated/WordPress/Constants/Plans.php';
-// require_once __DIR__.'/deprecated/WordPress/Constants/Exceptions/ZoneSettingFailException.php';
-
 use CloudFlare\IpRewrite;
 
 // Exit if accessed directly
