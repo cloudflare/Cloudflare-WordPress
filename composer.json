@@ -2,7 +2,10 @@
   "autoload": {
     "psr-4": {
       "Cloudflare\\APO\\": "src/"
-    }
+    },
+    "classmap": [
+        "deprecated/"
+    ]
   },
   "description": "A Cloudflare plugin for WordPress",
   "license": "BSD-3-Clause",
