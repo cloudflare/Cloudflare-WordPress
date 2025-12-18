@@ -107,8 +107,11 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 
 *Changed*
 
-* Updated namespace CF to Cloudfare\APO implementation to resolve and prevent namespace conflicts with other plugins.
 * Tested with WordPress 6.9 release and bumped "Tested up to" up to 6.9.0.
+
+*Deprecated*
+
+* Namespace CF in favor of Cloudfare\APO, to resolve and prevent namespace conflicts with other plugins.
 
 = 4.13.0 - 2025-10-21 =
 
