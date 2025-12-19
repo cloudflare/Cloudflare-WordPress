@@ -5,7 +5,7 @@ namespace Cloudflare\APO\WordPress;
 use Cloudflare\APO\API\APIInterface;
 use Cloudflare\APO\API\Request;
 use Cloudflare\APO\Integration\DefaultIntegration;
-use Symfony\Polyfill\Tests\Intl\Idn;
+use Cloudflare\APO\IntlUtil;
 
 class ClientActions
 {
@@ -48,7 +48,7 @@ class ClientActions
                 'GET',
                 'zones/',
                 array(
-                    'name' => idn_to_ascii($this->wordpressAPI->getOriginalDomain(), IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46),
+                    'name' => IntlUtil::idn_to_ascii($this->wordpressAPI->getOriginalDomain(), IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46),
                     'status' => 'active',
                 ),
                 null
@@ -77,7 +77,7 @@ class ClientActions
         if ($this->api->responseOk($cfZonesList)) {
             $found = false;
             foreach ($cfZonesList['result'] as $zone) {
-                if (idn_to_ascii($zone['name'], IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46) === idn_to_ascii($wpDomain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46)) {
+                if (IntlUtil::idn_to_ascii($zone['name'], IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46) === IntlUtil::idn_to_ascii($wpDomain, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46)) {
                     $found = true;
                     array_push($domainList, $zone);
                 }

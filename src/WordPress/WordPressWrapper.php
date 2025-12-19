@@ -2,7 +2,7 @@
 
 namespace Cloudflare\APO\WordPress;
 
-use Symfony\Polyfill\Tests\Intl\Idn;
+use Cloudflare\APO\IntlUtil;
 
 class WordPressWrapper
 {
@@ -24,7 +24,7 @@ class WordPressWrapper
     public function getSiteURL()
     {
         if (defined("CLOUDFLARE_DOMAIN") && CLOUDFLARE_DOMAIN != "") {
-            $site_url = idn_to_ascii(CLOUDFLARE_DOMAIN, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+            $site_url = IntlUtil::idn_to_ascii(CLOUDFLARE_DOMAIN, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
         } else {
             $site_url = get_site_url();
         }

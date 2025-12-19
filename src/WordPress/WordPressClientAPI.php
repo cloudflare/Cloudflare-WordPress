@@ -4,7 +4,7 @@ namespace Cloudflare\APO\WordPress;
 
 use Cloudflare\APO\API\Client;
 use Cloudflare\APO\API\Request;
-use Symfony\Polyfill\Tests\Intl\Idn;
+use Cloudflare\APO\IntlUtil;
 
 class WordPressClientAPI extends Client
 {
@@ -15,7 +15,7 @@ class WordPressClientAPI extends Client
      */
     public function getZoneTag($zone_name)
     {
-        $zone_name = idn_to_ascii($zone_name, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+        $zone_name = IntlUtil::idn_to_ascii($zone_name, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
 
         $zone_tag = wp_cache_get('cloudflare/client-api/zone-tag/' . $zone_name);
         if (false !== $zone_tag) {
@@ -28,7 +28,7 @@ class WordPressClientAPI extends Client
         $zone_tag = null;
         if ($this->responseOk($response)) {
             foreach ($response['result'] as $zone) {
-                if (idn_to_ascii($zone['name'], IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46) === idn_to_ascii($zone_name, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46)) {
+                if (IntlUtil::idn_to_ascii($zone['name'], IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46) === IntlUtil::idn_to_ascii($zone_name, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46)) {
                     $zone_tag = $zone['id'];
                     break;
                 }

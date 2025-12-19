@@ -5,7 +5,7 @@ namespace Cloudflare\APO\WordPress;
 use Cloudflare\APO\Integration\DefaultLogger;
 use Cloudflare\APO\Integration\DataStoreInterface;
 use Cloudflare\APO\API\Plugin;
-use Symfony\Polyfill\Tests\Intl\Idn;
+use Cloudflare\APO\IntlUtil;
 
 class DataStore implements DataStoreInterface
 {
@@ -90,7 +90,7 @@ class DataStore implements DataStoreInterface
     public function getDomainNameCache()
     {
         if (defined('CLOUDFLARE_DOMAIN_NAME') && CLOUDFLARE_DOMAIN_NAME !== '') {
-            return idn_to_utf8(CLOUDFLARE_DOMAIN_NAME, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
+            return IntlUtil::idn_to_utf8(CLOUDFLARE_DOMAIN_NAME, IDNA_DEFAULT, INTL_IDNA_VARIANT_UTS46);
         }
 
         $cachedDomainName = $this->get(self::CACHED_DOMAIN_NAME);
