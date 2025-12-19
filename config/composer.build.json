@@ -9,6 +9,9 @@
       "Cloudflare\\APO\\Vendor\\Symfony\\Polyfill\\Intl\\Idn\\": "vendor/symfony/polyfill-intl-idn/",
       "Cloudflare\\APO\\Vendor\\Symfony\\Polyfill\\Intl\\Normalizer\\": "vendor/symfony/polyfill-intl-normalizer/"
     },
+    "classmap": [
+      "deprecated/"
+    ],
     "files": [
       "vendor/symfony/polyfill-intl-normalizer/bootstrap.php",
       "vendor/symfony/polyfill-intl-idn/bootstrap.php"

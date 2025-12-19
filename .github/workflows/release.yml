@@ -39,6 +39,7 @@ jobs:
         
         # Copy plugin source files (unmodified)
         cp -r src build/cloudflare/
+        cp -r deprecated build/cloudflare/
         cp cloudflare.php build/cloudflare/
         cp cloudflare.loader.php build/cloudflare/
         cp index.php build/cloudflare/

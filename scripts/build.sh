@@ -32,6 +32,7 @@ composer prefix-deps
 # Copy plugin source files (unmodified)
 echo "📋 Copying plugin files..."
 cp -r src "${OUTPUT_DIR}/"
+cp -r deprecated "${OUTPUT_DIR}/"
 cp cloudflare.php "${OUTPUT_DIR}/"
 cp cloudflare.loader.php "${OUTPUT_DIR}/"
 cp index.php "${OUTPUT_DIR}/"
