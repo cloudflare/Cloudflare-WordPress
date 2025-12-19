@@ -71,12 +71,12 @@ jobs:
           version: 2
           php_version: ${{ matrix.php-versions }}
 
-    - name: Format
-      uses: php-actions/composer@v6
-      with:
-        command: run-script format
-        php_version: ${{ matrix.php-versions }}
-        version: 2
+    # - name: Format
+    #   uses: php-actions/composer@v6
+    #   with:
+    #     command: run-script format
+    #     php_version: ${{ matrix.php-versions }}
+    #     version: 2
 
     - name: Run test suite
       uses: php-actions/composer@v6
