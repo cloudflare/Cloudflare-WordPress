@@ -3,7 +3,7 @@ Contributors: cloudflare, barrykooij, defries
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 5.0
 Tested up to: 6.9.0
-Stable tag: 4.14.0
+Stable tag: 4.14.1
 Requires PHP: 7.4
 License: BSD-3-Clause
 
@@ -13,7 +13,7 @@ All of Cloudflare’s performance and security benefits in a simple one-click in
 
 = What this plugin can do for you =
 
-https://www.youtube.com/watch?v=DWANhxoDxFI?feature=youtu.be
+[https://www.youtube.com/watch?v=DWANhxoDxFI]
 
 **Automatic Platform Optimization (APO)**
 
@@ -99,9 +99,15 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 
 == Changelog ==
 
-= 4.14.0 - 2025-12-17 =
+= 4.14.1 - 2025-12-19 =
 
-* Added *
+*Fixed*
+
+* Fixed classmap autoloading for deprecated classes in release builds issue. Solving conflicts with plugins that directly use deprecated namespace.
+
+= 4.14.0 - 2025-12-18 =
+
+*Added*
 
 * Add PHP-Scoper build system for vendor namespace prefixing.
 

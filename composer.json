@@ -4,7 +4,7 @@
       "Cloudflare\\APO\\": "src/"
     },
     "classmap": [
-        "deprecated/"
+      "deprecated/"
     ]
   },
   "description": "A Cloudflare plugin for WordPress",
@@ -37,7 +37,7 @@
   "_comment": [
     "php-compatibility-install comes from https://github.com/wimg/PHPCompatibility/issues/102#issuecomment-255778195"
   ],
-  "version": "4.14.0",
+  "version": "4.14.1",
   "config": {
     "platform": {
       "php": "7.4"
