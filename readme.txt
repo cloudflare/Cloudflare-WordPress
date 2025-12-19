@@ -104,6 +104,7 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 *Fixed*
 
 * Fixed classmap autoloading for deprecated classes in release builds issue. Solving conflicts with plugins that directly use deprecated namespace.
+* Add IntlUtil helper class to fix symfony polyfill-intl loading; include Resources/unidata, load Normalizer stub via files autoload, and patch circular constant references.
 
 = 4.14.0 - 2025-12-18 =
 
