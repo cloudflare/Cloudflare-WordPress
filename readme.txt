@@ -3,7 +3,7 @@ Contributors: cloudflare, barrykooij, defries
 Tags: cloudflare, seo, ssl, ddos, speed, security, cdn, performance, free
 Requires at least: 5.0
 Tested up to: 6.9.0
-Stable tag: 4.14.1
+Stable tag: 4.14.2
 Requires PHP: 7.4
 License: BSD-3-Clause
 
@@ -99,7 +99,7 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 
 == Changelog ==
 
-= 4.14.2 - 2025-12-X =
+= 4.14.2 - 2025-12-22 =
 
 *Fixed*
 
