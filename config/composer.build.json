@@ -14,7 +14,6 @@
     ],
     "files": [
       "vendor/symfony/polyfill-intl-normalizer/bootstrap.php",
-      "vendor/symfony/polyfill-intl-normalizer/Resources/stubs/Normalizer.php",
       "vendor/symfony/polyfill-intl-idn/bootstrap.php"
     ]
   },

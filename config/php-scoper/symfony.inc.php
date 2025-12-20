@@ -22,15 +22,6 @@ return [
 
 	'patchers' => [
 		static function ( string $filePath, string $prefix, string $content ): string {
-			// Fix the Normalizer stub to use the fully qualified prefixed namespace
-			if ( str_ends_with( $filePath, 'Resources/stubs/Normalizer.php' ) ) {
-				$content = str_replace(
-					'extends Symfony\\Polyfill\\Intl\\Normalizer\\Normalizer',
-					'extends \\Cloudflare\\APO\\Vendor\\Symfony\\Polyfill\\Intl\\Normalizer\\Normalizer',
-					$content
-				);
-			}
-
 			// Fix the polyfill Normalizer class to use hardcoded constants instead of \Normalizer::
 			// This breaks the circular dependency where the stub extends the polyfill class,
 			// but the polyfill class references \Normalizer constants
@@ -56,6 +47,17 @@ return [
 						'16', // NFC (same as FORM_C)
 						'32', // NFKC (same as FORM_KC)
 					],
+					$content
+				);
+			}
+
+			// Fix Idn.php to use the prefixed Normalizer polyfill instead of \Normalizer
+			// This ensures it works regardless of whether the intl extension is installed
+			if ( str_ends_with( $filePath, 'polyfill-intl-idn/Idn.php' ) ) {
+				$content = str_replace(
+					'\\Normalizer::',
+					'\\Cloudflare\\APO\\Vendor\\Symfony\\Polyfill\\Intl\\Normalizer\\Normalizer::'
+				,
 					$content
 				);
 			}
