@@ -377,7 +377,8 @@ class Hooks
         $cacheSettingValue = $cacheSettingObject[\Cloudflare\APO\API\Plugin::SETTING_VALUE_KEY];
 
         return $cacheSettingValue !== false
-            && $cacheSettingValue !== 'off';
+            && $cacheSettingValue !== 'off'
+            && $cacheSettingValue !== '';
     }
 
     protected function isAutomaticPlatformOptimizationEnabled()
@@ -391,7 +392,8 @@ class Hooks
         $cacheSettingValue = $cacheSettingObject[\Cloudflare\APO\API\Plugin::SETTING_VALUE_KEY];
 
         return $cacheSettingValue !== false
-            && $cacheSettingValue !== 'off';
+            && $cacheSettingValue !== 'off'
+            && $cacheSettingValue !== '';
     }
 
     protected function isAutomaticPlatformOptimizationCacheByDeviceTypeEnabled()
@@ -405,7 +407,8 @@ class Hooks
         $cacheSettingValue = $cacheSettingObject[\Cloudflare\APO\API\Plugin::SETTING_VALUE_KEY];
 
         return $cacheSettingValue !== false
-            && $cacheSettingValue !== 'off';
+            && $cacheSettingValue !== 'off'
+            && $cacheSettingValue !== '';
     }
 
     public function http2ServerPushInit()
