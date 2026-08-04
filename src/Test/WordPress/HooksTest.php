@@ -421,6 +421,15 @@ class HooksTest extends \PHPUnit\Framework\TestCase
         $this->hooks->purgeCacheByRelevantURLs(123);
     }
 
+    public function testPurgeCacheByRelevantURLsNoOpWhenAPOSettingIsEmptyString()
+    {
+        $this->configurePluginSettings(array(Plugin::SETTING_AUTOMATIC_PLATFORM_OPTIMIZATION => ''));
+        $this->mockWordPressAPI->expects($this->never())->method('getDomainList');
+        $this->mockWordPressClientAPI->expects($this->never())->method('zonePurgeFiles');
+
+        $this->hooks->purgeCacheByRelevantURLs(123);
+    }
+
     public function testPurgeCacheByRelevantURLsNoOpWhenDomainListEmpty()
     {
         $this->configurePluginSettings(array(Plugin::SETTING_PLUGIN_SPECIFIC_CACHE => 'on'));
@@ -904,6 +913,7 @@ class HooksTest extends \PHPUnit\Framework\TestCase
             'missing setting returns false' => array(false, false),
             'value off returns false' => array(array('value' => 'off'), false),
             'value false returns false' => array(array('value' => false), false),
+            'value empty string returns false' => array(array('value' => ''), false),
             'value on returns true' => array(array('value' => 'on'), true),
             'value other truthy returns true' => array(array('value' => '1'), true),
         );
