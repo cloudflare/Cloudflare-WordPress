@@ -1,0 +1,97 @@
+name: Integration Tests
+
+on:
+  push:
+    branches: [ '**' ]
+  pull_request:
+    branches: [ '**' ]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: integration-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  matrix:
+    name: WordPress versions
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        coverage: none
+
+    # The five newest WordPress majors, from the WordPress.org API.
+    - name: Build the WordPress and PHP matrix
+      id: matrix
+      run: php scripts/wordpress-test-matrix.php
+
+  integration:
+    name: WordPress ${{ matrix.wordpress }} (PHP ${{ matrix.php }})
+    needs: matrix
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.matrix.outputs.matrix) }}
+    env:
+      WP_ENV_CORE: https://wordpress.org/wordpress-${{ matrix.wordpress }}.zip
+      WP_ENV_PHP_VERSION: ${{ matrix.php }}
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        coverage: none
+        tools: composer:v2
+
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+    - name: Cache composer dependencies
+      uses: actions/cache@v5
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: composer-${{ hashFiles('composer.lock') }}
+        restore-keys: composer-
+
+    - name: Install Composer dependencies
+      run: composer install --prefer-dist --no-progress --no-interaction
+
+    - uses: actions/setup-node@v5
+      with:
+        node-version: '20'
+        cache: npm
+
+    - name: Install npm dependencies
+      run: npm ci --no-audit --no-fund
+
+    - name: Install Chromium for the browser tests
+      run: npx playwright install --with-deps chromium
+
+    - name: Start WordPress (wp-env)
+      run: npm run env:test:start
+
+    - name: Run integration tests
+      run: npm run test:integration
+
+    - name: Run browser tests
+      run: npm run test:e2e
+
+    - name: Upload browser test results
+      if: failure()
+      uses: actions/upload-artifact@v6
+      with:
+        name: browser-test-results-wp-${{ matrix.wordpress }}-php-${{ matrix.php }}
+        path: tests/E2E/.results/
+        retention-days: 14
+        if-no-files-found: ignore

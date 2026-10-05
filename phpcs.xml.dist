@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<ruleset name="Cloudflare">
+    <description>Coding standards for the Cloudflare WordPress plugin.</description>
+
+    <file>src</file>
+    <file>tests</file>
+    <file>cloudflare.php</file>
+    <file>cloudflare.loader.php</file>
+    <file>index.php</file>
+
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/build/*</exclude-pattern>
+
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg name="parallel" value="8"/>
+    <arg name="extensions" value="php"/>
+    <arg value="sp"/>
+
+    <!--
+        Default severity: errors only. Run `composer lint:strict` to include
+        warnings.
+    -->
+    <arg name="warning-severity" value="0"/>
+    <arg name="error-severity" value="1"/>
+
+    <config name="testVersion" value="7.4-"/>
+    <config name="minimum_supported_wp_version" value="6.7"/>
+
+    <!--
+        Code style: PSR-12 (PascalCase classes and files, camelCase methods,
+        4-space indent). The full WordPress standard is not used because it
+        conflicts with that naming and layout.
+    -->
+    <rule ref="PSR12">
+        <exclude name="Generic.Files.LineLength"/>
+    </rule>
+
+    <!-- PHP cross-version compatibility. -->
+    <rule ref="PHPCompatibilityWP"/>
+
+    <!-- WordPress sniffs that catch security and correctness issues. -->
+    <rule ref="WordPress.Security">
+        <!--
+            Exception messages are never rendered as HTML: the AJAX proxy
+            returns them as JSON and the settings UI renders them as text.
+            Escaping at the throw site would put HTML entities in that JSON.
+        -->
+        <exclude name="WordPress.Security.EscapeOutput.ExceptionNotEscaped"/>
+    </rule>
+    <rule ref="WordPress.DB"/>
+    <rule ref="WordPress.WP.AlternativeFunctions"/>
+    <rule ref="WordPress.PHP.StrictInArray"/>
+    <rule ref="WordPress.PHP.DiscouragedPHPFunctions"/>
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="cloudflare"/>
+            </property>
+        </properties>
+    </rule>
+
+    <!--
+        The plugin entry files declare constants and hooks at load time, which
+        is how WordPress plugins bootstrap.
+    -->
+    <rule ref="PSR1.Files.SideEffects">
+        <exclude-pattern>cloudflare.php</exclude-pattern>
+        <exclude-pattern>cloudflare.loader.php</exclude-pattern>
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+
+    <!--
+        Test fixtures stub WordPress core classes in the global namespace,
+        several per file.
+    -->
+    <rule ref="PSR1.Classes.ClassDeclaration">
+        <exclude-pattern>tests/Fixtures/*</exclude-pattern>
+    </rule>
+    <rule ref="Squiz.Classes.ValidClassName">
+        <exclude-pattern>tests/Fixtures/*</exclude-pattern>
+    </rule>
+
+    <!--
+        Security sniffs are production-oriented. Tests feed raw superglobals and
+        stubbed output into the unit under test on purpose.
+    -->
+    <rule ref="WordPress.Security">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+    <rule ref="WordPress.WP.AlternativeFunctions">
+        <exclude-pattern>tests/*</exclude-pattern>
+    </rule>
+</ruleset>

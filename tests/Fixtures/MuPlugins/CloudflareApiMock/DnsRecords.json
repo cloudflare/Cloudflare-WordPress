@@ -1,0 +1,30 @@
+[
+  {
+    "id": "372e67954025e0ba6aaa6d586b9e0b59",
+    "zone_id": "{{zone_id}}",
+    "zone_name": "{{zone_name}}",
+    "name": "{{zone_name}}",
+    "type": "A",
+    "content": "192.0.2.1",
+    "proxiable": true,
+    "proxied": true,
+    "ttl": 1,
+    "locked": false,
+    "created_on": "2024-01-01T05:20:00.12345Z",
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "372e67954025e0ba6aaa6d586b9e0b5a",
+    "zone_id": "{{zone_id}}",
+    "zone_name": "{{zone_name}}",
+    "name": "www.{{zone_name}}",
+    "type": "CNAME",
+    "content": "{{zone_name}}",
+    "proxiable": true,
+    "proxied": true,
+    "ttl": 1,
+    "locked": false,
+    "created_on": "2024-01-01T05:20:00.12345Z",
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  }
+]

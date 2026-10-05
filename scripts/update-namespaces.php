@@ -44,11 +44,16 @@ if ( file_exists( $loaderFile ) ) {
 	file_put_contents( $loaderFile, $content );
 }
 
-// Update all PHP files in src/
-$srcDir = $buildDir . '/src';
-if ( is_dir( $srcDir ) ) {
+// Update all PHP files in src/, and in tests/ when the unit suite has been
+// copied next to the build (see the prepare-build-tests Composer script).
+foreach ( [ 'src', 'tests' ] as $dir ) {
+	$dirPath = $buildDir . '/' . $dir;
+	if ( ! is_dir( $dirPath ) ) {
+		continue;
+	}
+
 	$iterator = new RecursiveIteratorIterator(
-		new RecursiveDirectoryIterator( $srcDir, RecursiveDirectoryIterator::SKIP_DOTS )
+		new RecursiveDirectoryIterator( $dirPath, RecursiveDirectoryIterator::SKIP_DOTS )
 	);
 
 	foreach ( $iterator as $file ) {

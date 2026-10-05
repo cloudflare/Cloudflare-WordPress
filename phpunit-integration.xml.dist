@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Integration suite. Runs inside the wp-env test environment against a real
+    WordPress install: `npm run env:test:start` then `npm run test:integration`.
+
+    stderr="true" keeps PHPUnit's own output off STDOUT, so code under test can
+    call header() without PHP warning that headers were already sent.
+-->
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+    bootstrap="tests/bootstrap-integration.php"
+    cacheResultFile=".phpunit-integration.result.cache"
+    colors="true"
+    stderr="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+    failOnRisky="true"
+    failOnWarning="true"
+    convertDeprecationsToExceptions="true">
+
+    <testsuites>
+        <testsuite name="Integration">
+            <directory suffix="Test.php">tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

@@ -42,7 +42,7 @@ class DefaultIntegration implements IntegrationInterface
     }
 
     /**
-     * @return integrationAPI
+     * @return IntegrationAPIInterface
      */
     public function getIntegrationAPI()
     {
@@ -58,7 +58,7 @@ class DefaultIntegration implements IntegrationInterface
     }
 
     /**
-     * @return DataStore
+     * @return DataStoreInterface
      */
     public function getDataStore()
     {

@@ -50,7 +50,7 @@ class RequestRouter
     /**
      * @param Request $request
      *
-     * @return bool
+     * @return mixed The API response, or null when no router handles the request.
      */
     public function route(Request $request)
     {
@@ -60,6 +60,6 @@ class RequestRouter
             }
         }
 
-        return;
+        return null;
     }
 }

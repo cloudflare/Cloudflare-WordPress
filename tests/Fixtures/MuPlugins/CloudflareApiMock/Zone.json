@@ -1,0 +1,36 @@
+{
+  "id": "{{zone_id}}",
+  "name": "{{zone_name}}",
+  "status": "active",
+  "paused": false,
+  "type": "full",
+  "development_mode": 0,
+  "name_servers": ["bob.ns.cloudflare.com", "lola.ns.cloudflare.com"],
+  "original_name_servers": ["ns1.example.com", "ns2.example.com"],
+  "original_registrar": null,
+  "original_dnshost": null,
+  "created_on": "2024-01-01T05:20:00.12345Z",
+  "modified_on": "2024-01-01T05:20:00.12345Z",
+  "activated_on": "2024-01-02T00:08:28.12345Z",
+  "meta": {
+    "step": 4,
+    "custom_certificate_quota": 0,
+    "page_rule_quota": 3,
+    "phishing_detected": false
+  },
+  "owner": { "id": null, "type": "user", "email": null },
+  "account": { "id": "{{zone_id}}", "name": "Example Account" },
+  "permissions": ["#zone:read", "#zone:edit"],
+  "plan": {
+    "id": "0feeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "name": "Free Website",
+    "price": 0,
+    "currency": "USD",
+    "frequency": "",
+    "is_subscribed": false,
+    "can_subscribe": false,
+    "legacy_id": "free",
+    "legacy_discount": false,
+    "externally_managed": false
+  }
+}

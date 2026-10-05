@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+    bootstrap="tests/bootstrap-build.php"
+    cacheResultFile=".phpunit-build.result.cache"
+    colors="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+    failOnRisky="true"
+    failOnWarning="true"
+    convertDeprecationsToExceptions="true">
+
+    <!--
+        Runs a copy of the unit suite (vendor namespaces prefixed by
+        `composer prepare-build-tests`) against the scoped classes in
+        build/cloudflare.
+    -->
+    <testsuites>
+        <testsuite name="Build">
+            <directory suffix="Test.php">build/tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

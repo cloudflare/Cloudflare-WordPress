@@ -6,8 +6,8 @@ use Cloudflare\APO\API\Request;
 
 class DefaultHttpClient implements HttpClientInterface
 {
-    const CONTENT_TYPE_KEY = 'Content-Type';
-    const APPLICATION_JSON_KEY = 'application/json';
+    public const CONTENT_TYPE_KEY = 'Content-Type';
+    public const APPLICATION_JSON_KEY = 'application/json';
 
     protected $endpoint;
 
@@ -32,7 +32,7 @@ class DefaultHttpClient implements HttpClientInterface
         $response = wp_remote_request($url, $requestOptions);
 
         if (is_wp_error($response)) {
-            throw new \Exception('Request error', $response->get_error_code);
+            throw new \Exception('Request error: ' . $response->get_error_message());
         }
 
         $response_body = json_decode($response['body']);

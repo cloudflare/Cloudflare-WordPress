@@ -4,7 +4,7 @@ namespace Cloudflare\APO\WordPress;
 
 class Utils
 {
-    const COMPOSER_CONFIG_PATH = '/../../composer.json';
+    public const COMPOSER_CONFIG_PATH = '/../../composer.json';
 
     /**
      * @param $haystack
@@ -45,7 +45,7 @@ class Utils
         // blog.domain.com -> domain.com
         // does not work with multiple subdomain
         // sub1.sub2.domain.com -> sub2.domain.com
-        return preg_replace('/^[^.]*.\s*/', '', $domainName);
+        return preg_replace('/^[^.]*.\s*/', '', (string) $domainName);
     }
 
     public static function getComposerJson(): array
@@ -53,6 +53,7 @@ class Utils
         if (!file_exists(dirname(__FILE__) . self::COMPOSER_CONFIG_PATH)) {
             return [];
         }
+        // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Reads a file bundled with the plugin, not a remote URL.
         return json_decode(file_get_contents(dirname(__FILE__) . self::COMPOSER_CONFIG_PATH), true);
     }
 }

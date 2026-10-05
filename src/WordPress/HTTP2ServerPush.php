@@ -78,7 +78,7 @@ class HTTP2ServerPush
 
                 header($newHeader, false);
 
-                $GLOBALS['http2_'.self::http2LinkResourceHintAs(current_filter(), $preload_src).'_srcs'][] = self::http2LinkUrlToRelativePath($preload_src);
+                $GLOBALS['http2_' . self::http2LinkResourceHintAs(current_filter(), $preload_src) . '_srcs'][] = self::http2LinkUrlToRelativePath($preload_src);
             }
         }
 

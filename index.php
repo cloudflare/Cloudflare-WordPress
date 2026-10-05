@@ -8,7 +8,7 @@ $logger = new Cloudflare\APO\Integration\DefaultLogger($config->getValue('debug'
 $dataStore = new Cloudflare\APO\WordPress\DataStore($logger);
 $wordpressAPI = new Cloudflare\APO\WordPress\WordPressAPI($dataStore);
 
-$pluginData = get_plugin_data(CLOUDFLARE_PLUGIN_DIR.'cloudflare.php');
+$pluginData = get_plugin_data(CLOUDFLARE_PLUGIN_DIR . 'cloudflare.php');
 $pluginVersion = $pluginData['Version'];
 
 wp_register_style('cf-corecss', plugins_url('stylesheets/cf.core.css', __FILE__), null, $pluginVersion);
@@ -22,10 +22,10 @@ wp_enqueue_script('cf-compiledjs', plugins_url('compiled.js', __FILE__), null, $
 <div id="root" class="cloudflare-partners site-wrapper"></div>
 <script>
 //Set global absolute base url
-window.absoluteUrlBase = '<?php echo plugins_url('/cloudflare/'); ?>';
+window.absoluteUrlBase = <?php echo wp_json_encode(plugins_url('/cloudflare/')); ?>;
 
-cfCSRFToken = '<?php echo wp_create_nonce(\Cloudflare\APO\WordPress\WordPressAPI::API_NONCE); ?>';
-localStorage.cfEmail = '<?php echo $dataStore->getCloudFlareEmail(); ?>';
+cfCSRFToken = <?php echo wp_json_encode(wp_create_nonce(\Cloudflare\APO\WordPress\WordPressAPI::API_NONCE)); ?>;
+localStorage.cfEmail = <?php echo wp_json_encode((string) $dataStore->getCloudFlareEmail()); ?>;
 
 /*
  * A callback for cf-util-http to proxy all calls to our backend
@@ -47,11 +47,11 @@ window.RestProxyCallback = (opts) => {
         }
 
         // WordPress Ajax Action
-        opts.parameters['action'] = '<?php echo \Cloudflare\APO\WordPress\Hooks::WP_AJAX_ACTION; ?>'
+        opts.parameters['action'] = <?php echo wp_json_encode(\Cloudflare\APO\WordPress\Hooks::WP_AJAX_ACTION); ?>
 
         if (opts.method.toUpperCase() === 'GET') {
-            var clientAPIURL = '<?php echo \Cloudflare\APO\API\Client::ENDPOINT; ?>';
-            var pluginAPIURL = '<?php echo \Cloudflare\APO\API\Plugin::ENDPOINT; ?>';
+            var clientAPIURL = <?php echo wp_json_encode(\Cloudflare\APO\API\Client::ENDPOINT); ?>;
+            var pluginAPIURL = <?php echo wp_json_encode(\Cloudflare\APO\API\Plugin::ENDPOINT); ?>;
 
             // If opts.url begins with clientAPIURL or pluginAPIURL,
             // remove the API URL and assign the rest to proxyURL
@@ -77,7 +77,7 @@ window.RestProxyCallback = (opts) => {
     } else {
         // To avoid static files getting cached add the version number
         // to the url
-        var versionNumber = '<?php echo $pluginVersion; ?>';
+        var versionNumber = <?php echo wp_json_encode((string) $pluginVersion); ?>;
         opts.url = absoluteUrlBase + opts.url + '?ver=' + versionNumber;
     }
 }

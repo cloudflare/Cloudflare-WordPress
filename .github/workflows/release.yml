@@ -2,17 +2,24 @@ name: Release plugin
 on:
   release:
     types: [published]
+  # Manual runs are dry runs: they build the zip WordPress.org would get,
+  # without deploying it.
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   release:
-    name: New release
+    name: ${{ (github.event_name != 'release' || github.repository != 'cloudflare/Cloudflare-WordPress') && 'Dry run' || 'New release' }}
     runs-on: ubuntu-latest
+    env:
+      # Only a published release in the Cloudflare repository deploys to
+      # WordPress.org. Manual runs and every run in a fork are dry runs.
+      DRY_RUN: ${{ github.event_name != 'release' || github.repository != 'cloudflare/Cloudflare-WordPress' }}
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Build plugin
       uses: ./.github/actions/build-plugin
@@ -27,18 +34,31 @@ jobs:
       uses: 10up/action-wordpress-plugin-deploy@stable
       with:
         generate-zip: true
-        dry-run: false
+        dry-run: ${{ env.DRY_RUN }}
       env:
-        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        # The action requires SVN credentials even for a dry run, and forks
+        # have none. Dry runs get placeholders, never the real ones.
+        SVN_USERNAME: ${{ env.DRY_RUN == 'true' && 'dry-run' || secrets.SVN_USERNAME }}
+        SVN_PASSWORD: ${{ env.DRY_RUN == 'true' && 'dry-run' || secrets.SVN_PASSWORD }}
         SLUG: cloudflare
+        # When the version's tag already exists on WordPress.org, the action
+        # zips the published plugin instead of this build. Dry runs use a tag
+        # name that never exists there; real releases take it from the tag.
+        VERSION: ${{ env.DRY_RUN == 'true' && format('dry-run-{0}', github.run_number) || '' }}
 
-    - name: Upload release asset
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # Uploaded as-is, so the artifact downloads as cloudflare.zip itself
+    # instead of a zip inside a zip.
+    - name: Upload the zip as a workflow artifact
+      uses: actions/upload-artifact@v7
       with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ${{ github.workspace }}/cloudflare.zip
-        asset_name: cloudflare.zip
-        asset_content_type: application/zip
+        path: ${{ steps.deploy.outputs.zip-path }}
+        archive: false
+        if-no-files-found: error
+
+    - name: Attach the zip to the release
+      if: github.event_name == 'release'
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TAG: ${{ github.event.release.tag_name }}
+        ZIP: ${{ steps.deploy.outputs.zip-path }}
+      run: gh release upload "$TAG" "$ZIP" --clobber --repo "$GITHUB_REPOSITORY"

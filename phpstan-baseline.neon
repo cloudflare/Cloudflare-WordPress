@@ -1,0 +1,16 @@
+# Cloudflare PHPStan baseline.
+#
+# Entries here mask errors that cannot be fixed (typically genuine WP stub gaps
+# or WP runtime quirks). Adding an entry REQUIRES a paired comment block:
+#
+#   # BASELINE: <one-sentence description of the WP-stub gap or WP runtime quirk>
+#   # Upstream: <link to upstream issue if one exists, otherwise omit this line>
+#   -
+#       message: '#...#'
+#       count: 1
+#       path: src/...
+#
+# Keep this file empty whenever possible.
+
+parameters:
+  ignoreErrors: []

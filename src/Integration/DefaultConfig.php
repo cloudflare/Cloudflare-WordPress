@@ -17,7 +17,7 @@ class DefaultConfig implements ConfigInterface
     /**
      * @param $key
      *
-     * @return value or key or null
+     * @return mixed The configured value, or null when the key is not set.
      */
     public function getValue($key)
     {

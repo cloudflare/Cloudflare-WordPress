@@ -10,13 +10,11 @@ use Cloudflare\APO\Integration\IntegrationInterface;
 class DefaultRestAPIRouter implements RouterInterface
 {
     private $api;
-    private $dataStore;
     private $integration;
-    private $integrationAPI;
     private $logger;
     private $routes;
 
-    const ENDPOINT = 'https://api.cloudflare.com/client/v4/';
+    public const ENDPOINT = 'https://api.cloudflare.com/client/v4/';
 
     // Placeholders you can use to pattern match part of a URI
     public static $API_ROUTING_PLACEHOLDERS = array(
@@ -37,9 +35,7 @@ class DefaultRestAPIRouter implements RouterInterface
     public function __construct(IntegrationInterface $integration, APIInterface $api, $routes)
     {
         $this->api = $api;
-        $this->dataStore = $integration->getDataStore();
         $this->integration = $integration;
-        $this->integrationAPI = $integration->getIntegrationAPI();
         $this->logger = $integration->getLogger();
         $this->routes = $routes;
     }
@@ -75,7 +71,7 @@ class DefaultRestAPIRouter implements RouterInterface
         //substring of everything after the endpoint is the path
         return substr($request->getUrl(), strpos($request->getUrl(), $this->api->getEndpoint()) + strlen($this->api->getEndpoint()));
     }
-    
+
     /**
      * @param Request $request
      *
@@ -98,13 +94,14 @@ class DefaultRestAPIRouter implements RouterInterface
             );
 
             //Check to see if this is our route
-            if (preg_match('#^'.$regex.'/?$#', $request->getUrl())) {
-                if (in_array($request->getMethod(), $route_details_array['methods']) || array_key_exists(
-                    $request->getMethod(),
-                    $route_details_array['methods']
-                )
+            if (preg_match('#^' . $regex . '/?$#', $request->getUrl())) {
+                if (
+                    in_array($request->getMethod(), $route_details_array['methods'], true) || array_key_exists(
+                        $request->getMethod(),
+                        $route_details_array['methods']
+                    )
                 ) {
-                    $this->logger->debug('Route matched for '.$request->getMethod().$request->getUrl().' now using '.$route_details_array['methods'][$request->getMethod()]['function']);
+                    $this->logger->debug('Route matched for ' . $request->getMethod() . $request->getUrl() . ' now using ' . $route_details_array['methods'][$request->getMethod()]['function']);
 
                     return array(
                         'class' => $route_details_array['class'],

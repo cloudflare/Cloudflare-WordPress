@@ -1,0 +1,27 @@
+{
+  "name": "cloudflare-wordpress-plugin",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Cloudflare WordPress plugin: development tooling.",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "env": "wp-env",
+    "env:start": "wp-env start",
+    "env:stop": "wp-env stop",
+    "env:test:start": "wp-env --config=.wp-env.test.json start",
+    "env:test:stop": "wp-env --config=.wp-env.test.json stop",
+    "env:build:start": "wp-env --config=.wp-env.build.json start",
+    "env:build:stop": "wp-env --config=.wp-env.build.json stop",
+    "env:compat:start": "wp-env --config=.wp-env.compat.json start",
+    "env:compat:stop": "wp-env --config=.wp-env.compat.json stop",
+    "test:integration": "wp-env --config=.wp-env.test.json run cli --env-cwd=wp-content/plugins/cloudflare php vendor/bin/phpunit -c phpunit-integration.xml.dist",
+    "test:integration:build": "wp-env --config=.wp-env.build.json run cli --env-cwd=wp-content/cloudflare-tests php vendor/bin/phpunit -c phpunit-integration.xml.dist",
+    "test:e2e": "playwright test",
+    "test:e2e:build": "WP_ENV_CONFIG=.wp-env.build.json playwright test",
+    "test:compatibility": "bash scripts/compatibility-tests.sh"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@wordpress/env": "^11.15.0"
+  }
+}

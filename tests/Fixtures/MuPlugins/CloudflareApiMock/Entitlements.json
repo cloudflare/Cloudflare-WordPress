@@ -1,0 +1,6 @@
+[
+  {
+    "id": "zone.automatic_platform_optimization",
+    "allocation": { "type": "boolean", "value": true }
+  }
+]

@@ -10,9 +10,7 @@ use Cloudflare\APO\IntlUtil;
 class ClientActions
 {
     private $api;
-    private $config;
     private $wordpressAPI;
-    private $dataStore;
     private $logger;
     private $request;
 
@@ -24,9 +22,7 @@ class ClientActions
     public function __construct(DefaultIntegration $defaultIntegration, APIInterface $api, Request $request)
     {
         $this->api = $api;
-        $this->config = $defaultIntegration->getConfig();
         $this->wordpressAPI = $defaultIntegration->getIntegrationAPI();
-        $this->dataStore = $defaultIntegration->getDataStore();
         $this->logger = $defaultIntegration->getLogger();
         $this->request = $request;
     }

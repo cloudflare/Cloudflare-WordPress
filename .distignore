@@ -6,7 +6,11 @@
 /docs
 /build
 /config
-/src/Test
+/tests
+/node_modules
+/.phpstan.cache
+/.phpunit.cache
+/coverage
 
 DOCKER_ENV
 Dockerfile-php-build
@@ -20,5 +24,22 @@ CONTRIBUTING.md
 docker-compose.yaml
 Dockerfile.wordpress
 docker_tag
-phpcs.xml
-phpunit.xml
+phpcs.xml.dist
+phpstan.neon.dist
+phpstan-baseline.neon
+phpunit.xml.dist
+phpunit-build.xml.dist
+phpunit-integration.xml.dist
+phpunit-compatibility.xml.dist
+playwright.config.js
+.wp-env.json
+.wp-env.test.json
+.wp-env.build.json
+.wp-env.compat.json
+package.json
+package-lock.json
+.phpunit.result.cache
+.phpunit-build.result.cache
+.phpunit-integration.result.cache
+.phpunit-compatibility.result.cache
+coverage.xml

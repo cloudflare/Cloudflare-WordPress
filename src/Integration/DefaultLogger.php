@@ -10,7 +10,7 @@ class DefaultLogger extends AbstractLogger implements LoggerInterface
 {
     private $debug;
 
-    const PREFIX = '[Cloudflare]';
+    public const PREFIX = '[Cloudflare]';
 
     /**
      * @param bool|false $debug
@@ -29,7 +29,7 @@ class DefaultLogger extends AbstractLogger implements LoggerInterface
      */
     public function log($level, $message, array $context = array())
     {
-        return error_log(self::PREFIX.' '.strtoupper($level).': '.$message.' '.
+        error_log(self::PREFIX . ' ' . strtoupper($level) . ': ' . $message . ' ' .
             (!empty($context) ? print_r($context, true) : ''));
     }
 
@@ -42,7 +42,7 @@ class DefaultLogger extends AbstractLogger implements LoggerInterface
     public function debug($message, array $context = array())
     {
         if ($this->debug) {
-            return $this->log(LogLevel::DEBUG, $message, $context);
+            $this->log(LogLevel::DEBUG, $message, $context);
         }
     }
 }

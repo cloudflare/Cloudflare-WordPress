@@ -16,13 +16,13 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - name: Build plugin
       uses: ./.github/actions/build-plugin
 
     - name: Upload build artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: build-artifact
         path: build/
@@ -32,7 +32,7 @@ jobs:
       run: composer install --prefer-dist --no-progress
 
     - name: Upload dev vendor
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: vendor-dev
         path: vendor/
@@ -53,7 +53,7 @@ jobs:
         php-version: ${{ matrix.php-versions }}
 
     - name: Download build artifact
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v7
       with:
         name: build-artifact
         path: build/
@@ -73,7 +73,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v5
 
     - uses: shivammathur/setup-php@v2
       with:
@@ -81,13 +81,13 @@ jobs:
         extensions: ${{ matrix.extensions == 'none' && '-intl' || 'intl' }}
 
     - name: Download build artifact
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v7
       with:
         name: build-artifact
         path: build/
 
     - name: Download dev vendor
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v7
       with:
         name: vendor-dev
         path: vendor/
@@ -101,4 +101,61 @@ jobs:
         fi
 
     - name: Run tests against build artifact
-      run: composer run-script test-build
+      run: composer run-script test:build
+
+  integration-build:
+    name: Integration tests (build artifact in wp-env)
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v5
+
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        coverage: none
+
+    - name: Download build artifact
+      uses: actions/download-artifact@v7
+      with:
+        name: build-artifact
+        path: build/
+
+    # PHPUnit and the integration tests, run from the source checkout.
+    - name: Download dev vendor
+      uses: actions/download-artifact@v7
+      with:
+        name: vendor-dev
+        path: vendor/
+
+    - uses: actions/setup-node@v5
+      with:
+        node-version: '20'
+        cache: npm
+
+    - name: Install npm dependencies
+      run: npm ci --no-audit --no-fund
+
+    - name: Install Chromium for the browser tests
+      run: npx playwright install --with-deps chromium
+
+    # Mounts build/ as the plugins folder, next to a conflicting psr/log.
+    - name: Start WordPress with the build (wp-env)
+      run: npm run env:build:start
+
+    - name: Run integration tests against the build
+      run: npm run test:integration:build
+
+    - name: Run browser tests against the build
+      run: npm run test:e2e:build
+
+    - name: Upload browser test results
+      if: failure()
+      uses: actions/upload-artifact@v6
+      with:
+        name: browser-test-results-build
+        path: tests/E2E/.results/
+        retention-days: 14
+        if-no-files-found: ignore

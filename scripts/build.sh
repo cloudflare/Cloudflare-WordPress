@@ -16,9 +16,12 @@ BUILD_DIR="build"
 VENDOR_PREFIXED_DIR="${BUILD_DIR}/vendor_prefixed"
 OUTPUT_DIR="${BUILD_DIR}/cloudflare"
 
-# Clean previous builds
+# Clean previous builds. Empty the build directory rather than deleting it:
+# the wp-env build environment mounts it, and a mount of a deleted directory
+# stays empty inside the container.
 echo "📁 Cleaning previous builds..."
-rm -rf "${BUILD_DIR}"
+mkdir -p "${BUILD_DIR}"
+find "${BUILD_DIR}" -mindepth 1 -delete
 mkdir -p "${VENDOR_PREFIXED_DIR}"
 mkdir -p "${OUTPUT_DIR}"
 

@@ -8,8 +8,8 @@ use Cloudflare\APO\API\HttpClientInterface;
 
 abstract class AbstractAPIClient implements APIInterface
 {
-    const CONTENT_TYPE_KEY = 'Content-Type';
-    const APPLICATION_JSON_KEY = 'application/json';
+    public const CONTENT_TYPE_KEY = 'Content-Type';
+    public const APPLICATION_JSON_KEY = 'application/json';
 
     protected $config;
     protected $data_store;
@@ -80,12 +80,12 @@ abstract class AbstractAPIClient implements APIInterface
 
     /**
      * @param  Request $request
-     * @param  [Array] $response
-     * @return [Array] $paginatedResponse
+     * @param  array $response
+     * @return array
      */
     public function getPaginatedResults(Request $request, $response)
     {
-        if (strtoupper($request->getMethod()) !== 'GET' || !isset($response['result_info']['total_pages'])) {
+        if (strtoupper((string) $request->getMethod()) !== 'GET' || !isset($response['result_info']['total_pages'])) {
             return $response;
         }
 
@@ -162,7 +162,7 @@ abstract class AbstractAPIClient implements APIInterface
 
             $message = print_r($message, true);
         }
-        $this->logger->$logLevel('['.$apiName.'] '.$message);
+        $this->logger->$logLevel('[' . $apiName . '] ' . $message);
     }
 
     /**

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Compatibility runs: the integration suite with one third-party plugin
+    active next to Cloudflare, driven by scripts/compatibility-tests.sh.
+
+    Same as phpunit-integration.xml.dist, except that PHP deprecations are not
+    turned into test errors: third-party plugins trigger them in code paths the
+    tests exercise, and they say nothing about Cloudflare. Errors from the
+    Cloudflare plugin itself still fail the run through the debug.log check in
+    CompatibilityTest, and the regular integration suite stays strict.
+-->
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+    bootstrap="tests/bootstrap-integration.php"
+    cacheResultFile=".phpunit-compatibility.result.cache"
+    colors="true"
+    stderr="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+    failOnRisky="true"
+    failOnWarning="true"
+    convertDeprecationsToExceptions="false">
+
+    <testsuites>
+        <testsuite name="Compatibility">
+            <directory suffix="Test.php">tests/Integration</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

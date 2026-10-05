@@ -1,0 +1,188 @@
+[
+  {
+    "id": "always_online",
+    "value": "on",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "automatic_https_rewrites",
+    "value": "on",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "security_level",
+    "value": "medium",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "waf",
+    "value": "off",
+    "editable": false,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "advanced_ddos",
+    "value": "on",
+    "editable": false,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "development_mode",
+    "value": "off",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z",
+    "time_remaining": 0
+  },
+  {
+    "id": "polish",
+    "value": "off",
+    "editable": false,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "mirage",
+    "value": "off",
+    "editable": false,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "rocket_loader",
+    "value": "off",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "ssl",
+    "value": "flexible",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "always_use_https",
+    "value": "off",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "minify",
+    "value": {
+      "css": "off",
+      "html": "off",
+      "js": "off"
+    },
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "browser_cache_ttl",
+    "value": 14400,
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "cache_level",
+    "value": "aggressive",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "ipv6",
+    "value": "on",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "brotli",
+    "value": "on",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "http2",
+    "value": "on",
+    "editable": false,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "http3",
+    "value": "off",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "tls_1_3",
+    "value": "on",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "min_tls_version",
+    "value": "1.0",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "email_obfuscation",
+    "value": "on",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "hotlink_protection",
+    "value": "off",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "server_side_exclude",
+    "value": "on",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "ip_geolocation",
+    "value": "on",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "websockets",
+    "value": "on",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "opportunistic_encryption",
+    "value": "on",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "0rtt",
+    "value": "off",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "early_hints",
+    "value": "off",
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  },
+  {
+    "id": "automatic_platform_optimization",
+    "value": {
+      "enabled": false,
+      "cf": true,
+      "wordpress": true,
+      "wp_plugin": true,
+      "hostnames": [],
+      "cache_by_device_type": false
+    },
+    "editable": true,
+    "modified_on": "2024-01-01T05:20:00.12345Z"
+  }
+]

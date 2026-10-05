@@ -7,7 +7,7 @@ use Cloudflare\APO\DNSRecord;
 
 class WordPressAPI implements IntegrationAPIInterface
 {
-    const API_NONCE = 'cloudflare-db-api-nonce';
+    public const API_NONCE = 'cloudflare-db-api-nonce';
 
     private $dataStore;
     private $wordPressWrapper;
@@ -123,7 +123,7 @@ class WordPressAPI implements IntegrationAPIInterface
     }
 
     /**
-     * @param domain name
+     * @param string $domainName
      *
      * @return string
      */

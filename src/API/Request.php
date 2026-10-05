@@ -18,7 +18,7 @@ class Request
      */
     public function __construct($method, $url, $parameters, $body)
     {
-        $this->method = strtoupper($method);
+        $this->method = strtoupper((string) $method);
         $this->url = $url;
         $this->parameters = $parameters;
         $this->body = $body;
@@ -37,7 +37,7 @@ class Request
      */
     public function setMethod($method)
     {
-        $this->method = strtoupper($method);
+        $this->method = strtoupper((string) $method);
     }
 
     /**

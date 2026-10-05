@@ -1,0 +1,98 @@
+name: Compatibility Tests
+
+on:
+  push:
+    branches: [ '**' ]
+  pull_request:
+    branches: [ '**' ]
+  # Third-party plugins release on their own schedule: test their latest
+  # versions every week, even without changes here.
+  schedule:
+    - cron: '0 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: compatibility-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plugins:
+    name: Plugin list
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.plugins.outputs.matrix }}
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Read tests/Integration/Compatibility/Plugins.json
+      id: plugins
+      run: |
+        node -e '
+          const list = require("./tests/Integration/Compatibility/Plugins.json");
+          for (const plugin of list.filter((p) => p.skip)) {
+            console.log(`::notice title=${plugin.name} is skipped::${plugin.skip}`);
+          }
+          const include = list.filter((p) => !p.skip).map((p) => ({ slug: p.slug, name: p.name }));
+          require("fs").appendFileSync(process.env.GITHUB_OUTPUT, `matrix=${JSON.stringify({ include })}\n`);
+        '
+
+  compatibility:
+    name: ${{ matrix.name }}
+    needs: plugins
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plugins.outputs.matrix) }}
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        coverage: none
+        tools: composer:v2
+
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+    - name: Cache composer dependencies
+      uses: actions/cache@v5
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: composer-${{ hashFiles('composer.lock') }}
+        restore-keys: composer-
+
+    - name: Install Composer dependencies
+      run: composer install --prefer-dist --no-progress --no-interaction
+
+    - uses: actions/setup-node@v5
+      with:
+        node-version: '20'
+        cache: npm
+
+    - name: Install npm dependencies
+      run: npm ci --no-audit --no-fund
+
+    - name: Install Chromium for the browser tests
+      run: npx playwright install --with-deps chromium
+
+    - name: Start WordPress (wp-env)
+      run: npm run env:compat:start
+
+    - name: Run the integration suite and browser tests next to ${{ matrix.name }}
+      run: npm run test:compatibility -- ${{ matrix.slug }}
+
+    - name: Upload browser test results
+      if: failure()
+      uses: actions/upload-artifact@v6
+      with:
+        name: browser-test-results-${{ matrix.slug }}
+        path: tests/E2E/.results/
+        retention-days: 14
+        if-no-files-found: ignore

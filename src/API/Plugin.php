@@ -6,22 +6,22 @@ use Cloudflare\APO\Integration\IntegrationInterface;
 
 class Plugin extends Client
 {
-    const PLUGIN_API_NAME = 'PLUGIN API';
-    const ENDPOINT = 'https://partners.cloudflare/plugins/';
+    public const PLUGIN_API_NAME = 'PLUGIN API';
+    public const ENDPOINT = 'https://partners.cloudflare/plugins/';
 
     //plugin/:id/settings/:human_readable_id setting names
-    const SETTING_DEFAULT_SETTINGS = 'default_settings';
-    const SETTING_IP_REWRITE = 'ip_rewrite';
-    const SETTING_PROTOCOL_REWRITE = 'protocol_rewrite';
-    const SETTING_PLUGIN_SPECIFIC_CACHE = 'plugin_specific_cache';
-    const SETTING_PLUGIN_SPECIFIC_CACHE_TAG = 'plugin_specific_cache_tag';
-    const SETTING_AUTOMATIC_PLATFORM_OPTIMIZATION = 'automatic_platform_optimization';
-    const SETTING_AUTOMATIC_PLATFORM_OPTIMIZATION_CACHE_BY_DEVICE_TYPE = 'automatic_platform_optimization_cache_by_device_type';
+    public const SETTING_DEFAULT_SETTINGS = 'default_settings';
+    public const SETTING_IP_REWRITE = 'ip_rewrite';
+    public const SETTING_PROTOCOL_REWRITE = 'protocol_rewrite';
+    public const SETTING_PLUGIN_SPECIFIC_CACHE = 'plugin_specific_cache';
+    public const SETTING_PLUGIN_SPECIFIC_CACHE_TAG = 'plugin_specific_cache_tag';
+    public const SETTING_AUTOMATIC_PLATFORM_OPTIMIZATION = 'automatic_platform_optimization';
+    public const SETTING_AUTOMATIC_PLATFORM_OPTIMIZATION_CACHE_BY_DEVICE_TYPE = 'automatic_platform_optimization_cache_by_device_type';
 
-    const SETTING_ID_KEY = 'id';
-    const SETTING_VALUE_KEY = 'value';
-    const SETTING_EDITABLE_KEY = 'editable';
-    const SETTING_MODIFIED_DATE_KEY = 'modified_on';
+    public const SETTING_ID_KEY = 'id';
+    public const SETTING_VALUE_KEY = 'value';
+    public const SETTING_EDITABLE_KEY = 'editable';
+    public const SETTING_MODIFIED_DATE_KEY = 'modified_on';
 
     public static function getPluginSettingsKeys()
     {
@@ -59,7 +59,7 @@ class Plugin extends Client
      */
     public function callAPI(Request $request)
     {
-        return $this->createAPIError('The url: '.$request->getUrl().' is not a valid path.');
+        return $this->createAPIError('The url: ' . $request->getUrl() . ' is not a valid path.');
     }
 
     public function createAPISuccessResponse($result)

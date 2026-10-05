@@ -1,10 +1,28 @@
 *.DS_Store
 vendor/
+node_modules/
 xdebug/*
-.phpunit.result.cache
 .idea
 .secrets
 .actrc
 .github/act/
 # PHP-Scoper build output
 build/
+
+# PHPUnit
+/.phpunit.cache/
+/.phpunit.result.cache
+/.phpunit-build.result.cache
+/.phpunit-integration.result.cache
+/.phpunit-compatibility.result.cache
+/coverage/
+/coverage.xml
+
+# Playwright
+/tests/E2E/.auth/
+/tests/E2E/.results/
+/tests/E2E/.baseline/
+/playwright-report/
+
+# PHPStan
+/.phpstan.cache/

@@ -1,0 +1,39 @@
+# Cloudflare PHPStan configuration.
+#
+# Starts at level 5 so the existing code base can be brought to green first;
+# raise the level step by step towards 8 as the reported errors are fixed.
+#
+# Baseline additions require a `# BASELINE:` comment block per entry in
+# phpstan-baseline.neon explaining the WP stub gap or WP runtime quirk.
+
+includes:
+  - phpstan-baseline.neon
+
+parameters:
+  level: 5
+  phpVersion: 70400
+  paths:
+    - src
+    - deprecated
+    - tests/Unit
+    - tests/Integration
+    - cloudflare.php
+    - cloudflare.loader.php
+  treatPhpDocTypesAsCertain: false
+  reportUnmatchedIgnoredErrors: true
+  tmpDir: .phpstan.cache
+  bootstrapFiles:
+    - vendor/autoload.php
+    - tests/phpstan-bootstrap.php
+  dynamicConstantNames:
+    - CLOUDFLARE_MIN_PHP_VERSION
+    - CLOUDFLARE_MIN_WP_VERSION
+    - CLOUDFLARE_PLUGIN_DIR
+    - CLOUDFLARE_EMAIL
+    - CLOUDFLARE_API_KEY
+    - CLOUDFLARE_DOMAIN_NAME
+    - CLOUDFLARE_HTTP2_SERVER_PUSH_ACTIVE
+    - CLOUDFLARE_HTTP2_SERVER_PUSH_HEADER_SIZE
+    - CLOUDFLARE_HTTP2_SERVER_PUSH_LOG
+    - LOGGED_IN_COOKIE
+    - AUTH_COOKIE

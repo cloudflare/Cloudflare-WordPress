@@ -18,7 +18,7 @@ class PluginActions extends AbstractPluginActions
     protected $request;
     protected $userConfig;
 
-    const CONFIG = [
+    public const CONFIG = [
         "debug" => false,
         "featureManagerIsFullZoneProvisioningEnabled" => false,
         "isDNSPageEnabled" => false,
@@ -47,14 +47,14 @@ class PluginActions extends AbstractPluginActions
         "integrationName" => "wordpress"
     ];
 
-    const BANNED_KEYS = [
+    public const BANNED_KEYS = [
         'isDNSPageEnabled',
         'useHostAPILogin',
         'integrationName',
     ];
 
-    const USER_CONFIG_PATH = '/../../config.json';
-    const COMPOSER_CONFIG_PATH = '/../../composer.json';
+    public const USER_CONFIG_PATH = '/../../config.json';
+    public const COMPOSER_CONFIG_PATH = '/../../composer.json';
 
     public function __construct(DefaultIntegration $defaultIntegration, APIInterface $api, Request $request)
     {
@@ -159,6 +159,7 @@ class PluginActions extends AbstractPluginActions
     {
         if ($this->userConfig === null) {
             if (file_exists(dirname(__FILE__) . self::USER_CONFIG_PATH)) {
+                // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Reads a file bundled with the plugin, not a remote URL.
                 $userConfigContent = file_get_contents(dirname(__FILE__) . self::USER_CONFIG_PATH);
             }
 
@@ -178,6 +179,7 @@ class PluginActions extends AbstractPluginActions
     public function getComposerJson()
     {
         if ($this->composer === null && file_exists(dirname(__FILE__) . self::COMPOSER_CONFIG_PATH)) {
+            // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Reads a file bundled with the plugin, not a remote URL.
             $this->composer = json_decode(file_get_contents(dirname(__FILE__) . self::COMPOSER_CONFIG_PATH), true);
         }
     }

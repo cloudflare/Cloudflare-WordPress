@@ -1,51 +1,90 @@
 {
-  "autoload": {
-    "psr-4": {
-      "Cloudflare\\APO\\": "src/"
+    "name": "cloudflare/wordpress-plugin",
+    "description": "A Cloudflare plugin for WordPress",
+    "type": "wordpress-plugin",
+    "license": "BSD-3-Clause",
+    "version": "4.14.5",
+    "require": {
+        "cloudflare/cf-ip-rewrite": "^1.0.0",
+        "symfony/polyfill-intl-idn": "*",
+        "psr/log": "^1.0"
     },
-    "classmap": [
-      "deprecated/"
-    ]
-  },
-  "description": "A Cloudflare plugin for WordPress",
-  "license": "BSD-3-Clause",
-  "name": "cloudflare/wordpress-plugin",
-  "type": "wordpress-plugin",
-  "require": {
-    "cloudflare/cf-ip-rewrite": "^1.0.0",
-    "symfony/polyfill-intl-idn": "*",
-    "psr/log": "^1.0"
-  },
-  "require-dev": {
-    "symfony/yaml": "^5.4",
-    "johnkary/phpunit-speedtrap": "*",
-    "php-mock/php-mock-phpunit": "*",
-    "phpunit/phpunit": "^9.0",
-    "squizlabs/php_codesniffer": "*",
-    "phpcompatibility/php-compatibility": "*",
-    "dealerdirect/phpcodesniffer-composer-installer": "*",
-    "phpdocumentor/reflection-docblock": "*"
-  },
-  "scripts": {
-    "format": "php vendor/bin/phpcs -d date.timezone=UTC --standard=phpcs.xml",
-    "test": "php vendor/bin/phpunit",
-    "test-build": "php vendor/bin/phpunit -c phpunit.build.xml",
-    "clean-crash-test": "rm -f vendor/phpunit/php-code-coverage/tests/_files/Crash.php",
-    "fix-polyfill-return-types": "php scripts/fix-polyfill-return-types.php",
-    "remove-php-8-symfony-polyfill-bootstraps": "rm -f vendor/symfony/polyfill-ctype/bootstrap80.php vendor/symfony/polyfill-intl-idn/bootstrap80.php vendor/symfony/polyfill-intl-normalizer/bootstrap80.php",
-    "prefix-deps": "bash scripts/prefix-dependencies.sh",
-    "build": "bash scripts/build.sh"
-  },
-  "_comment": [
-    "php-compatibility-install comes from https://github.com/wimg/PHPCompatibility/issues/102#issuecomment-255778195"
-  ],
-  "version": "4.14.4",
-  "config": {
-    "platform": {
-      "php": "7.4"
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "johnkary/phpunit-speedtrap": "^4.0",
+        "php-mock/php-mock-phpunit": "^2.10",
+        "php-stubs/wordpress-stubs": "^6.9",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-phpunit": "^2.0",
+        "phpunit/phpunit": "^9.6",
+        "squizlabs/php_codesniffer": "^3.10",
+        "szepeviktor/phpstan-wordpress": "^2.0",
+        "wp-coding-standards/wpcs": "^3.1"
     },
-    "allow-plugins": {
-      "dealerdirect/phpcodesniffer-composer-installer": true
+    "autoload": {
+        "psr-4": {
+            "Cloudflare\\APO\\": "src/"
+        },
+        "classmap": [
+            "deprecated/"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Cloudflare\\APO\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        },
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true
+        },
+        "sort-packages": true
+    },
+    "scripts": {
+        "lint": "@php vendor/bin/phpcs",
+        "lint:fix": "@php vendor/bin/phpcbf",
+        "lint:strict": "@php vendor/bin/phpcs --warning-severity=1",
+        "stan": "@php vendor/bin/phpstan analyse --memory-limit=2G",
+        "stan:baseline": "@php vendor/bin/phpstan analyse --memory-limit=2G --generate-baseline=phpstan-baseline.neon",
+        "test": "@php vendor/bin/phpunit --testsuite Unit",
+        "test:build": [
+            "@prepare-build-tests",
+            "@php vendor/bin/phpunit -c phpunit-build.xml.dist"
+        ],
+        "prepare-build-tests": "rm -rf build/tests && mkdir -p build/tests && cp -R tests/Unit build/tests/Unit && php scripts/update-namespaces.php build",
+        "test:integration": "@php vendor/bin/phpunit -c phpunit-integration.xml.dist",
+        "test:coverage": "@php vendor/bin/phpunit --testsuite Unit --coverage-html coverage/ --coverage-clover coverage.xml --coverage-text",
+        "qa": [
+            "@lint",
+            "@stan",
+            "@test"
+        ],
+        "fix-polyfill-return-types": "php scripts/fix-polyfill-return-types.php",
+        "remove-php-8-symfony-polyfill-bootstraps": "rm -f vendor/symfony/polyfill-ctype/bootstrap80.php vendor/symfony/polyfill-intl-idn/bootstrap80.php vendor/symfony/polyfill-intl-normalizer/bootstrap80.php",
+        "prefix-deps": "bash scripts/prefix-dependencies.sh",
+        "build": "bash scripts/build.sh"
+    },
+    "scripts-descriptions": {
+        "lint": "Run PHPCS (errors only).",
+        "lint:fix": "Auto-fix PHPCS violations with PHPCBF.",
+        "lint:strict": "Run PHPCS including warnings.",
+        "stan": "Run PHPStan static analysis.",
+        "stan:baseline": "Regenerate the PHPStan baseline.",
+        "test": "Run the PHPUnit unit suite (no WordPress runtime).",
+        "test:build": "Run the unit suite against the scoped build in build/cloudflare (run composer build first).",
+        "prepare-build-tests": "Copy the unit suite to build/tests with vendor namespaces prefixed.",
+        "test:integration": "Run the integration suite. Runs inside wp-env; from the host use npm run test:integration.",
+        "test:coverage": "Run the unit suite with coverage: HTML in coverage/, Clover in coverage.xml and a summary. Needs pcov or Xdebug.",
+        "qa": "Run lint, stan and the unit tests.",
+        "fix-polyfill-return-types": "Remove PHP 8 return types from the symfony polyfills.",
+        "remove-php-8-symfony-polyfill-bootstraps": "Remove the PHP 8 bootstrap files of the symfony polyfills.",
+        "prefix-deps": "Prefix vendor dependencies with PHP-Scoper.",
+        "build": "Build the scoped plugin into build/cloudflare."
     }
-  }
 }

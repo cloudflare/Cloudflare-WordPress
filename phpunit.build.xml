@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true" bootstrap="bootstrap-build-tests.php">
-	<testsuites>
-		<testsuite name="Build Artifact Test Suite">
-			<directory>./build/cloudflare/src/Test/</directory>
-		</testsuite>
-	</testsuites>
-</phpunit>

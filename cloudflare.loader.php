@@ -1,7 +1,7 @@
 <?php
 
 // Autoload dependencies installed via Composer
-require_once __DIR__.'/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 use CloudFlare\IpRewrite;
 
@@ -25,8 +25,17 @@ try {
         // Rewrite Cloudflare IPs when the plugin is loaded,
         // Doing this later in the plugin lifecycle will not update the IPs correctly
         add_action('plugins_loaded', function () {
-            $_SERVER['REMOTE_ADDR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
-            $_SERVER['HTTP_X_FORWARDED_FOR'] = $_SERVER['HTTP_CF_CONNECTING_IP'];
+            // Only trust the header when it holds a valid IP address.
+            $connectingIp = isset($_SERVER['HTTP_CF_CONNECTING_IP'])
+                ? filter_var(wp_unslash($_SERVER['HTTP_CF_CONNECTING_IP']), FILTER_VALIDATE_IP)
+                : false;
+
+            if ($connectingIp === false) {
+                return;
+            }
+
+            $_SERVER['REMOTE_ADDR'] = $connectingIp;
+            $_SERVER['HTTP_X_FORWARDED_FOR'] = $connectingIp;
         }, 1);
     }
 } catch (\RuntimeException $e) {
@@ -56,10 +65,10 @@ if (is_admin()) {
     add_action('plugin_action_links_cloudflare/cloudflare.php', array($cloudflareHooks, 'pluginActionLinks'));
 
     // Load Activation Script
-    register_activation_hook(CLOUDFLARE_PLUGIN_DIR.'cloudflare.php', array($cloudflareHooks, 'activate'));
+    register_activation_hook(CLOUDFLARE_PLUGIN_DIR . 'cloudflare.php', array($cloudflareHooks, 'activate'));
 
     // Load Deactivation Script
-    register_deactivation_hook(CLOUDFLARE_PLUGIN_DIR.'cloudflare.php', array($cloudflareHooks, 'deactivate'));
+    register_deactivation_hook(CLOUDFLARE_PLUGIN_DIR . 'cloudflare.php', array($cloudflareHooks, 'deactivate'));
 }
 
 // Load Automatic Cache Purge

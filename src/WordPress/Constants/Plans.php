@@ -4,10 +4,10 @@ namespace Cloudflare\APO\WordPress\Constants;
 
 class Plans
 {
-    const FREE_PLAN = 'free';
-    const PRO_PLAN = 'pro';
-    const BIZ_PLAN = 'business';
-    const ENT_PLAN = 'enterprise';
+    public const FREE_PLAN = 'free';
+    public const PRO_PLAN = 'pro';
+    public const BIZ_PLAN = 'business';
+    public const ENT_PLAN = 'enterprise';
 
     public static function planNeedsUpgrade($currentPlan, $minimumPlan)
     {

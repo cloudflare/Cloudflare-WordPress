@@ -24,7 +24,42 @@ other cool features to take advantage of; check out the website for more details
 This isn't included in the development dependencies due to too many conflicts
 with other packages.
 
+## wp-env
+
+[wp-env](https://www.npmjs.com/package/@wordpress/env) runs WordPress in Docker
+from the configuration files in the root of the repository. It is installed by
+`npm install`. There are four environments, each with its own database:
+
+| Environment | Config | Site | Start | Used for |
+|---|---|---|---|---|
+| Development | `.wp-env.json` | http://localhost:8878 | `npm run env:start` | Trying out changes |
+| Tests | `.wp-env.test.json` | http://cloudflare.localhost:8879 | `npm run env:test:start` | `npm run test:integration`, `npm run test:e2e` |
+| Build | `.wp-env.build.json` | http://cloudflare.localhost:8877 | `npm run env:build:start` | `npm run test:integration:build`, `npm run test:e2e:build` |
+| Compatibility | `.wp-env.compat.json` | http://cloudflare.localhost:8876 | `npm run env:compat:start` | `npm run test:compatibility` |
+
+The development and test environments load the plugin from this checkout, the
+build environment loads `build/cloudflare` (run `composer build` first). All of
+them use the latest WordPress and activate the plugin after starting. They run
+PHP 7.4, except the compatibility environment, which runs PHP 8.3 because
+several of the third-party plugins it tests need PHP 8.0. Log in at `/wp-admin` with `admin` / `password`.
+The test, build and compatibility sites use `cloudflare.localhost` instead of
+`localhost`; [testing.md](testing.md#integration-tests) explains why.
+
+Stop an environment with the matching `stop` script, for example
+`npm run env:test:stop`. Run WP-CLI in one with `npx wp-env run cli wp ...`,
+adding `--config=` with the environment's config file for the other
+environments, for example `--config=.wp-env.test.json`.
+
+If a folder the environment mounts is deleted and recreated while it runs, for
+example by switching branches, the container keeps seeing the deleted, empty
+folder. Stop and start the environment again. See
+[testing.md](testing.md#troubleshooting) for this and other problems.
+
 ## Docker
+
+The Docker Compose setup below predates wp-env. It is still useful for step
+debugging with Xdebug and for inspecting HTTP traffic with MITMProxy; use wp-env
+for running the tests.
 
 To make the development environment somewhat reproducible, we ship a Docker
 Compose configuration file in the root of the repository. A simple

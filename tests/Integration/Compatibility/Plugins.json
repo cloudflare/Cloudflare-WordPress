@@ -1,0 +1,22 @@
+[
+  { "slug": "nitropack", "name": "NitroPack", "requires": [] },
+  {
+    "slug": "bigcommerce",
+    "name": "BigCommerce",
+    "requires": [],
+    "skip": "Needs a connected BigCommerce store: without one it stops every front-end page with an uncaught Channel_Not_Found_Exception, with or without Cloudflare."
+  },
+  { "slug": "easy-digital-downloads", "name": "Easy Digital Downloads", "requires": [] },
+  { "slug": "woocommerce", "name": "WooCommerce", "requires": [] },
+  { "slug": "redis-cache", "name": "Redis Object Cache", "requires": [] },
+  { "slug": "yith-woocommerce-wishlist", "name": "YITH WooCommerce Wishlist", "requires": ["woocommerce"] },
+  { "slug": "wp-easycart", "name": "WP EasyCart", "requires": [] },
+  { "slug": "ecwid-shopping-cart", "name": "Ecwid Ecommerce Shopping Cart", "requires": [] },
+  { "slug": "bookly-responsive-appointment-booking-tool", "name": "Bookly", "requires": [] },
+  { "slug": "wptouch", "name": "WPTouch", "requires": [] },
+  { "slug": "tinywp-mobile-detect", "name": "Mobile Detect", "requires": [] },
+  { "slug": "wp-mobilizer", "name": "WP-Mobilizer", "requires": [] },
+  { "slug": "any-mobile-theme-switcher", "name": "Any Mobile Theme Switcher", "requires": [] },
+  { "slug": "jetpack", "name": "Jetpack", "requires": [] },
+  { "slug": "hummingbird-performance", "name": "Hummingbird", "requires": [] }
+]

@@ -8,4 +8,5 @@ interface APIInterface
     public function createAPIError($message);
     public function responseOk($response);
     public function getEndpoint();
+    public function getAPIClientName();
 }

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+    bootstrap="tests/bootstrap.php"
+    cacheResultFile=".phpunit.result.cache"
+    colors="true"
+    beStrictAboutOutputDuringTests="true"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+    failOnRisky="true"
+    failOnWarning="true"
+    convertDeprecationsToExceptions="true">
+
+    <testsuites>
+        <!-- Default suite. Pure unit tests, no WordPress runtime required. -->
+        <testsuite name="Unit">
+            <directory suffix="Test.php">tests/Unit</directory>
+        </testsuite>
+    </testsuites>
+
+    <listeners>
+        <listener class="JohnKary\PHPUnit\Listener\SpeedTrapListener"/>
+    </listeners>
+
+    <!-- Reports are requested by `composer test:coverage`. -->
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </coverage>
+</phpunit>

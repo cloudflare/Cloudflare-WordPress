@@ -35,7 +35,34 @@ Below are Cloudflare maintained repositories the plugins depend on.
 
 ## WordPress Plugin Specific Details
 
-Cloudflare WordPress Plugin uses PHPUnit for testing. WordPress specific function are mocked inside [WordPressWrapper](https://github.com/cloudflare/Cloudflare-WordPress/blob/master/src/WordPress/WordPressWrapper.php) class. Everything under `src/` directory should have unit test written.
+### Development setup
+
+You need PHP 7.4 or later with Composer 2 for the unit tests and static checks, and Node.js 20 or later with Docker for the integration and browser tests.
+
+```sh
+composer install
+npm install
+```
+
+Before you open a pull request, run the checks CI enforces:
+
+```sh
+composer qa                 # PHPCS, PHPStan and the unit tests
+npm run env:test:start      # a WordPress test site in Docker (wp-env)
+npm run test:integration    # the integration tests on that site
+npm run test:e2e            # the browser tests on that site (needs: npx playwright install chromium)
+```
+
+### Tests
+
+* Code in `src/` should be covered by unit tests in `tests/Unit`, which mirrors the `src/` folders. WordPress is not loaded there: WordPress functions are mocked with php-mock.
+* Behaviour that depends on WordPress itself, such as hooks, options, AJAX requests or cache purges, should be covered by integration tests in `tests/Integration`, which run against a real WordPress install.
+
+[docs/testing.md](docs/testing.md) describes every suite, the test helpers and the supported PHP and WordPress versions. [docs/developer-tools.md](docs/developer-tools.md) describes the local environments.
+
+### Coding standards
+
+The plugin follows PSR-12, checked by `composer lint` together with PHP compatibility and the WordPress security sniffs. `composer stan` runs PHPStan. Do not add entries to `phpstan-baseline.neon` without a `# BASELINE:` comment explaining why the error cannot be fixed.
 
 ## Frontend Updates
 

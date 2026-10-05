@@ -1,0 +1,86 @@
+name: PHPStan
+
+on:
+  push:
+    branches: [ '**' ]
+  pull_request:
+    branches: [ '**' ]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phpstan-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phpstan:
+    name: PHPStan
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        coverage: none
+        tools: composer:v2
+
+    - name: Get composer cache directory
+      id: composer-cache
+      run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+    - name: Cache composer dependencies
+      uses: actions/cache@v5
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: composer-${{ hashFiles('composer.lock') }}
+        restore-keys: composer-
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-interaction
+
+    - name: Run PHPStan
+      run: composer stan -- --error-format=github
+
+  baseline-drift:
+    name: PHPStan baseline drift
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v5
+      with:
+        fetch-depth: 0
+
+    - name: Check that new phpstan-baseline.neon entries are explained
+      shell: bash
+      run: |
+        set -euo pipefail
+        BASE="origin/${{ github.base_ref }}"
+        git fetch origin "${{ github.base_ref }}" --depth=1
+
+        # Lines added to the baseline that start a new ignore entry. Commented
+        # lines, such as the example in the file header, are skipped.
+        ADDED=$(git diff "$BASE"...HEAD -- phpstan-baseline.neon \
+          | grep -E '^\+[[:space:]]*message:' \
+          | wc -l \
+          | tr -d ' ')
+
+        if [ "$ADDED" = "0" ]; then
+          echo "No new baseline entries. OK."
+          exit 0
+        fi
+
+        JUSTIFIED=$(git diff "$BASE"...HEAD -- phpstan-baseline.neon \
+          | grep -E '^\+[[:space:]]*#[[:space:]]*BASELINE:' \
+          | wc -l \
+          | tr -d ' ')
+
+        if [ "$JUSTIFIED" -lt "$ADDED" ]; then
+          echo "::error file=phpstan-baseline.neon::The baseline grew by $ADDED entries but only $JUSTIFIED have a '# BASELINE: <reason>' comment."
+          exit 1
+        fi
+
+        echo "All $ADDED new baseline entries are explained. OK."

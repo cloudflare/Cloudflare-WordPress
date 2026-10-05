@@ -4,13 +4,13 @@ namespace Cloudflare\APO\API;
 
 class Host extends AbstractAPIClient
 {
-    const CF_INTEGRATION_HEADER = 'CF-Integration';
-    const CF_INTEGRTATION_VERSION_HEADER = 'CF-Integration-Version';
-    const HOST_API_NAME = 'HOST API';
+    public const CF_INTEGRATION_HEADER = 'CF-Integration';
+    public const CF_INTEGRTATION_VERSION_HEADER = 'CF-Integration-Version';
+    public const HOST_API_NAME = 'HOST API';
     //self::ENDPOINT_BASE_URL . self::ENDPOINT_PATH isn't a thing so you have to update it twice if it changes.
-    const ENDPOINT_BASE_URL = 'https://api.cloudflare.com/';
-    const ENDPOINT_PATH = 'host-gw.html';
-    const ENDPOINT = 'https://api.cloudflare.com/host-gw.html';
+    public const ENDPOINT_BASE_URL = 'https://api.cloudflare.com/';
+    public const ENDPOINT_PATH = 'host-gw.html';
+    public const ENDPOINT = 'https://api.cloudflare.com/host-gw.html';
 
     /**
      * @param Request $request
@@ -30,7 +30,7 @@ class Host extends AbstractAPIClient
 
         $body = $request->getBody();
         $user_key_actions = array('zone_set', 'full_zone_set');
-        if (in_array(strtolower($body['act'] ?? ""), $user_key_actions)) {
+        if (in_array(strtolower($body['act'] ?? ""), $user_key_actions, true)) {
             $body['user_key'] = $this->data_store->getHostAPIUserKey();
         }
         $body['host_key'] = $this->integrationAPI->getHostAPIKey();

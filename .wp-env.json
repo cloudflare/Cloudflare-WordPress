@@ -1,0 +1,20 @@
+{
+  "core": null,
+  "phpVersion": "7.4",
+  "port": 8878,
+  "plugins": [],
+  "themes": [],
+  "mappings": {
+    "wp-content/plugins/cloudflare": "."
+  },
+  "config": {
+    "WP_DEBUG": true,
+    "WP_DEBUG_LOG": true,
+    "WP_DEBUG_DISPLAY": false,
+    "SCRIPT_DEBUG": true
+  },
+  "testsEnvironment": false,
+  "lifecycleScripts": {
+    "afterStart": "npx wp-env run cli wp plugin activate cloudflare"
+  }
+}
