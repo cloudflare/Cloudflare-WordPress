@@ -37,6 +37,29 @@ Ensure all desired changes are merged into master from their feature and bugfix
 branches. Ensure that CI is all passing. If it is not, do not create a new
 release -- fix any failures or violations.
 
+### Test the release zip (dry run)
+
+The "Release plugin" workflow can build the zip WordPress.org would get without
+deploying it. Run it manually from the Actions tab ("Run workflow"), or from
+the command line:
+
+```sh
+gh workflow run release.yml --ref <branch>
+```
+
+Manual runs are always dry runs, and so is every run in a fork, including a
+published release there. Only a published release in
+`cloudflare/Cloudflare-WordPress` deploys to WordPress.org.
+
+A dry run:
+
+- builds the plugin;
+- copies the files the same way a real release does, using `.distignore`;
+- skips the SVN commit;
+- uploads `cloudflare.zip` as an artifact of the run.
+
+Install that zip on a test site to smoke test the release before publishing it.
+
 ### Create a new GitHub release
 
 1. Open `https://github.com/cloudflare/CloudFlare-WordPress/releases`.
