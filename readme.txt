@@ -99,7 +99,7 @@ Yes, Cloudflare works with, and helps speed up your site even more, if you have 
 
 == Changelog ==
 
-= 4.14.5 - TBD =
+= 4.14.5 - 2026-10-05 =
 
 *Fixed*
 
