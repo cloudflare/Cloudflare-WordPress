@@ -120,6 +120,15 @@ class WordPressClientAPI extends Client
      */
     public function getPageRules($zoneId, $status = "active")
     {
+        // The Page Rules endpoint rejects Account Owned Tokens with a 400
+        // (error 1011), so skip the request rather than log an error on
+        // every purge.
+        if (self::isAccountOwnedToken($this->data_store->getClientV4APIKey())) {
+            $this->logger->debug('Page Rules are not available to Account Owned Tokens, treating the zone as having none');
+
+            return [];
+        }
+
         $request = new Request('GET', 'zones/' . $zoneId . "/pagerules?status=$status", array(), null);
         $response = $this->callAPI($request);
 
@@ -182,8 +191,16 @@ class WordPressClientAPI extends Client
         if (wp_remote_retrieve_response_code($requestResponse) > 299) {
             $errorMessage = wp_remote_retrieve_response_message($requestResponse);
 
+            $responseLog = array('type' => 'response', 'reason' => $errorMessage, 'code' => wp_remote_retrieve_response_code($requestResponse));
+            // Keep the errors Cloudflare returned, as the HTTP reason alone
+            // ("Bad Request") rarely says what went wrong.
+            $errorBody = json_decode(wp_remote_retrieve_body($requestResponse), true);
+            if (!empty($errorBody['errors']) && is_array($errorBody['errors'])) {
+                $responseLog['errors'] = $errorBody['errors'];
+            }
+
             $this->logAPICall($this->getAPIClientName(), array_merge(array('type' => 'request', 'path' => $url), $requestParams), true);
-            $this->logAPICall($this->getAPIClientName(), array('type' => 'response', 'reason' => $errorMessage, 'code' => wp_remote_retrieve_response_code($requestResponse)), true);
+            $this->logAPICall($this->getAPIClientName(), $responseLog, true);
 
             return $this->createAPIError($errorMessage);
         }

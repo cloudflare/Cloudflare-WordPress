@@ -56,6 +56,22 @@ class Client extends AbstractAPIClient
     }
 
     /**
+     * Returns true when the supplied credential is an Account Owned Token.
+     *
+     * Only the scannable "cfat_" format can be told apart. A pre-2026 Account
+     * Owned Token looks the same as a User API Token, so this returns false
+     * for it.
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public static function isAccountOwnedToken($key)
+    {
+        return is_string($key) && strncmp($key, 'cfat_', 5) === 0;
+    }
+
+    /**
      * @param Request $request
      *
      * @return Request

@@ -4,6 +4,7 @@ namespace Cloudflare\APO\Tests\Integration;
 
 use Cloudflare\APO\API\Plugin;
 use Cloudflare\APO\Tests\Integration\Support\HttpRecorder;
+use Cloudflare\APO\WordPress\DataStore;
 
 /**
  * Publishing, updating, unpublishing and removing content purges its URLs.
@@ -149,5 +150,40 @@ class PurgeOnPostChangeTest extends PurgeTestCase
         wp_delete_post($postId, true);
 
         $this->assertContains($publishedUrl, $this->purgedUrls());
+    }
+
+    public function testAccountOwnedTokenPurgesWithoutRequestingPageRules()
+    {
+        update_option(DataStore::API_KEY, 'cfat_' . str_repeat('b', 40) . 'X1y2');
+
+        $postId = $this->createPost(array('post_status' => 'publish'));
+
+        // The Page Rules endpoint rejects Account Owned Tokens, so the plugin
+        // should not ask for them.
+        $this->assertSame(array(), $this->http->requestsTo('GET', $this->zonePath('pagerules')));
+        $this->assertContains(get_permalink($postId), $this->purgedUrls());
+    }
+
+    public function testFailedPageRulesRequestStillPurgesAndLogsTheCloudflareError()
+    {
+        $this->http->respondTo('GET', $this->zonePath('pagerules'), array(
+            'success' => false,
+            'errors' => array(array('code' => 1011, 'message' => 'Page Rules endpoint does not support account owned tokens.')),
+            'messages' => array(),
+            'result' => null,
+        ), 400);
+
+        $log = tempnam(sys_get_temp_dir(), 'cf-log');
+        $previousLog = ini_set('error_log', $log);
+        try {
+            $postId = $this->createPost(array('post_status' => 'publish'));
+        } finally {
+            ini_set('error_log', $previousLog);
+        }
+        $logged = (string) file_get_contents($log);
+        unlink($log);
+
+        $this->assertContains(get_permalink($postId), $this->purgedUrls());
+        $this->assertStringContainsString('Page Rules endpoint does not support account owned tokens.', $logged);
     }
 }

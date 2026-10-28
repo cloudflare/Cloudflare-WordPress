@@ -277,6 +277,28 @@ class ClientTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    /**
+     * @dataProvider providerIsAccountOwnedToken
+     */
+    public function testIsAccountOwnedToken($key, $expected)
+    {
+        $this->assertSame($expected, Client::isAccountOwnedToken($key));
+    }
+
+    public function providerIsAccountOwnedToken()
+    {
+        return array(
+            'new cfat_ Account API Token' => array('cfat_' . str_repeat('b', 40) . 'X1y2', true),
+            'new cfut_ User API Token' => array('cfut_' . str_repeat('a', 40) . 'X1y2', false),
+            'new cfk_ Global API Key' => array('cfk_' . str_repeat('a', 40) . 'X1y2', false),
+            // A pre-2026 Account Owned Token cannot be told apart from a User API Token.
+            'pre-2026 API Token' => array(str_repeat('A', 40), false),
+            'pre-2026 Global API Key' => array(str_repeat('a', 37), false),
+            'empty string' => array('', false),
+            'null input' => array(null, false),
+        );
+    }
+
     public function testClientApiErrorReturnsValidStructure()
     {
         $expectedErrorResponse = array(
